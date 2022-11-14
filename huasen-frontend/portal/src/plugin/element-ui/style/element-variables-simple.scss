@@ -1,0 +1,34 @@
+// 默认主题色变量
+$--color-primary: rgba(255, 0, 0, 0.8);
+// 改变 icon 字体路径
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+// 引入单个组件的scss文件
+@import '~element-ui/packages/theme-chalk/src/button';
+@import '~element-ui/packages/theme-chalk/src/input';
+@import '~element-ui/packages/theme-chalk/src/dropdown';
+@import '~element-ui/packages/theme-chalk/src/tabs';
+@import '~element-ui/packages/theme-chalk/src/upload';
+@import '~element-ui/packages/theme-chalk/src/radio';
+@import '~element-ui/packages/theme-chalk/src/collapse';
+@import '~element-ui/packages/theme-chalk/src/color-picker';
+@import '~element-ui/packages/theme-chalk/src/slider';
+@import '~element-ui/packages/theme-chalk/src/select';
+@import '~element-ui/packages/theme-chalk/src/option';
+@import '~element-ui/packages/theme-chalk/src/option-group';
+@import '~element-ui/packages/theme-chalk/src/tooltip';
+@import '~element-ui/packages/theme-chalk/src/notification';
+@import '~element-ui/packages/theme-chalk/src/form';
+@import '~element-ui/packages/theme-chalk/src/form-item';
+@import '~element-ui/packages/theme-chalk/src/row';
+@import '~element-ui/packages/theme-chalk/src/col';
+@import '~element-ui/packages/theme-chalk/src/table';
+@import '~element-ui/packages/theme-chalk/src/table-column';
+@import '~element-ui/packages/theme-chalk/src/popconfirm';
+@import '~element-ui/packages/theme-chalk/src/pagination';
+@import '~element-ui/packages/theme-chalk/src/drawer';
+@import '~element-ui/packages/theme-chalk/src/loading';
+@import '~element-ui/packages/theme-chalk/src/switch';
+@import '~element-ui/packages/theme-chalk/src/dialog';
+@import '~element-ui/packages/theme-chalk/src/empty';
+
+@import './element-common.scss';

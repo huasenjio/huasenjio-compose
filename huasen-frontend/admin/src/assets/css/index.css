@@ -1,0 +1,12 @@
+/* 主题文件 */
+@import url('./theme.scss');
+/* 项目样式 */
+@import url('./content.scss');
+/* 图标文件 */
+@import url('../font/iconfont.css');
+/* 浏览器样式归一化 */
+@import url('./normalize.css');
+/* element组件样式 */
+@import url('../../../node_modules/element-ui/lib/theme-chalk/index.css');
+/* tailwindcss样式 */
+@import url('./tailwind.css');

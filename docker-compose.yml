@@ -1,0 +1,112 @@
+# 版本号
+version: "3"
+# 自定义网络
+networks:
+  # 网络名字
+  huasenNetwork:
+    # 网关驱动
+    driver: bridge
+# 容器服务
+services:
+  # 服务名称
+  mongo:
+    # 安装镜像
+    image: mongo:4.2.2
+    # 容器名称
+    container_name: mongo
+    privileged: true
+    volumes:
+      # /data/db数据目录挂载到宿主机
+      - ./huasen-mongo/volume:/data/db
+      # init-mongo.js文件会在mongodb容器初始化完成之后执行，给数据库创建默认的角色。
+      - ./huasen-mongo/init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js
+    command: mongod --bind_ip 0.0.0.0
+    environment:
+      # 设置时区为上海（东八区）
+      TZ: Asia/Shanghai
+      # 初始化mongodb的账户，账户创建在admin下，拥有超管权限。
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Mongo12345*
+      MONGO_INITDB_DATABASE: admin
+    ports:
+      # 将容器的27017端口映射到宿主机的27017端口
+      - 37017:27017
+    networks:
+      # 设置网络
+      - huasenNetwork
+
+  redis:
+    image: redis:6.0.10-alpine
+    container_name: redis
+    privileged: true
+    # restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 7379:6379
+    # 挂载配置文件和数据
+    volumes:
+      - ./huasen-redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./huasen-redis/data:/data:rw
+    # 执行配置
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - huasenNetwork
+
+  nginx:
+    image: nginx:1.23.1
+    container_name: nginx
+    volumes:
+      # 将容器中的nginx配置挂载到宿主机上对应的文件
+      - ./huasen-nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./huasen-nginx/www:/home/www
+      - ./huasen-nginx/log:/var/log/nginx
+      - ./huasen-nginx/html:/usr/share/nginx/html
+    # 端口暴露
+    ports:
+      - 80:80
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - huasenNetwork
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    privileged: true
+    user: root
+    volumes:
+      - ./huasen-jenkins/:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/lib/x86_64-linux-gnu/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - huasenNetwork
+
+  server:
+    # 指定Dockerflie构建镜像
+    build:
+      context: ./huasen-server
+    # 定义容器名称
+    container_name: server
+    privileged: true
+    user: root
+    # 代理日志文件
+    volumes:
+      - ./huasen-store/:/app/huasen-store
+      - ./huasen-log/:/app/huasen-server/log/
+    ports:
+      - "3000:3000"
+      - "8181:8181"
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - huasenNetwork

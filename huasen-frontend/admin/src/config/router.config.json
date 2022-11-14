@@ -1,0 +1,78 @@
+[
+   {
+      "path": "/",
+      "redirect": "/home"
+   },
+   {
+      "path": "/home",
+      "name": "Home",
+      "menuCode": "000",
+      "component": "home/Home",
+      "title": "数据表盘",
+      "children": []
+   },
+   {
+      "path": "/error404",
+      "name": "Error404",
+      "menuCode": "000",
+      "component": "error/Error404",
+      "title": "404",
+      "children": []
+   },
+   {
+      "path": "/error403",
+      "name": "Error403",
+      "menuCode": "000",
+      "component": "error/Error403",
+      "title": "403",
+      "children": []
+   },
+   {
+      "path": "/public",
+      "name": "Public",
+      "menuCode": "000",
+      "component": "public/Public",
+      "title": "发布文章",
+      "children": []
+   },
+   {
+      "path": "/article-manage",
+      "name": "NewsManage",
+      "menuCode": "000",
+      "component": "article-manage/ArticleManage",
+      "title": "文章管理",
+      "children": []
+   },
+   {
+      "path": "/take-manage",
+      "name": "TakeManage",
+      "menuCode": "000",
+      "component": "take-manage/TakeManage",
+      "title": "订阅管理",
+      "children": []
+   },
+   {
+      "path": "/account-manage",
+      "name": "AccountManage",
+      "menuCode": "000",
+      "component": "account-manage/AccountManage",
+      "title": "账号管理",
+      "children": []
+   },
+   {
+      "path": "/file-manage",
+      "name": "FileManage",
+      "menuCode": "000",
+      "component": "file-manage/FileManage",
+      "title": "文件管理",
+      "children": []
+   },
+   {
+      "path": "/take",
+      "name": "Take",
+      "menuCode": "000",
+      "component": "take/Take",
+      "title": "订阅调整",
+      "children": []
+   }
+]

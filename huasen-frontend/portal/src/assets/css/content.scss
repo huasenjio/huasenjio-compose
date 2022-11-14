@@ -1,0 +1,37 @@
+body {
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+// 鼠标小手
+.pointer {
+  cursor: pointer;
+}
+
+// 文字溢出处理
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+// 右键菜单选择颜色
+.hs-right-menu-shadow {
+  box-shadow: 0 0px 0px 2px var(--red-400), 0px 0px 0px 4px var(--blue-400) !important;
+}
+
+// 继承主题样式
+.inherit-theme {
+  .inherit-text {
+    color: inherit !important;
+  }
+}

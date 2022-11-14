@@ -1,0 +1,8 @@
+/* 进度条颜色 */
+#nprogress .bar {
+  background: var(--danger) !important;
+}
+/* 加载成功图标 */
+#nprogress .spinner-icon {
+  display: none;
+}

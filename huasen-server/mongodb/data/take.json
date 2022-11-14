@@ -1,0 +1,310 @@
+[
+  {
+    "typeName": "实用·工具",
+    "sites": [
+      { "name": "熊猫缩图", "url": "https://tinypng.com/", "icon": "huasen-store/icon/1666498883227.png", "describe": "在线图片压缩工具", "remark": "" },
+      { "name": "二维码制作", "url": "https://www.qrdream.com/", "icon": "huasen-store/icon/1666499008478.png", "describe": "免费制作生成二维码的网站", "remark": "" },
+      { "name": "错别字检测提示", "url": "http://www.biezi.com/", "icon": "huasen-store/icon/1666499092617.png", "describe": "在线自动检测错别字工具", "remark": "" },
+      { "name": "网易见外工作台", "url": "https://jianwai.youdao.com/", "icon": "huasen-store/icon/1666499251234.png", "describe": "AI智能语音转写听翻平台", "remark": "" },
+      { "name": "蜜蜂剪辑", "url": "https://beecut.cn/online-video-editor", "icon": "huasen-store/icon/1666499264881.png", "describe": "在线音视频编辑工具", "remark": "" },
+      { "name": "泼辣修图", "url": "https://editor.polaxiong.com/", "icon": "huasen-store/icon/1666499305336.png", "describe": "在线修图调色工具", "remark": "" },
+      { "name": "白描网页版", "url": "https://web.baimiaoapp.com/", "icon": "huasen-store/icon/1666499391628.png", "describe": "灵动的扫描识别神器", "remark": "" },
+      { "name": "图片去除背景", "url": "https://www.remove.bg/", "icon": "huasen-store/icon/1666499654383.png", "describe": "专业的图片背景去除工具", "remark": "" },
+      { "name": "视频去除背景", "url": "https://www.unscreen.com/", "icon": "huasen-store/icon/1666499746343.png", "describe": "视频去除背景工具", "remark": "" },
+      { "name": "Loading图标生成器", "url": "https://www.intogif.com/loading/", "icon": "huasen-store/icon/1666499780427.png", "describe": "在线loading图标生成工具", "remark": "" },
+      { "name": "稿定图片", "url": "https://www.uupoop.com/", "icon": "huasen-store/icon/1666499833272.png", "describe": "在线PS图片编辑工具", "remark": "" },
+      { "name": "All2All", "url": "https://www.alltoall.net/", "icon": "huasen-store/icon/1666499966556.png", "describe": "专注于文件格式转换的免费网站", "remark": "" },
+      { "name": "PDF工具", "url": "https://www.pdf2go.com/zh", "icon": "huasen-store/icon/1666500076141.png", "describe": "在线PDF编辑网站", "remark": "" },
+      { "name": "在线录屏", "url": "https://toolwa.com/record/", "icon": "huasen-store/icon/1666500097014.png", "describe": "无需安装的在线录屏网站", "remark": "" },
+      { "name": "顽固狗加密", "url": "https://www.dogged.cn/", "icon": "huasen-store/icon/1666500180472.png", "describe": "支持多种格式的在线文件加密网站", "remark": "" },
+      { "name": "视频转GIF", "url": "https://www.apowersoft.cn/video-to-gif-online", "icon": "huasen-store/icon/1666500318232.png", "describe": "在线视频片段转化GIF工具", "remark": "" },
+      { "name": "空投", "url": "https://airportal.cn/", "icon": "huasen-store/icon/1666504413567.png", "describe": "跨设备文件传输网站", "remark": "" },
+      { "name": "流程图画板", "url": "https://excalidraw.com/", "icon": "huasen-store/icon/1666504514636.png", "describe": "在线手绘流程图画板", "remark": "" },
+      { "name": "在线工具箱", "url": "http://www.atoolbox.net/", "icon": "huasen-store/icon/1666504581222.png", "describe": "好用丰富的在线工具箱", "remark": "" },
+      { "name": "DeepL翻译器", "url": "https://www.deepl.com/translator", "icon": "huasen-store/icon/1666504639003.png", "describe": "支持即时翻译文本的专业翻译器", "remark": "" },
+      { "name": "Waifu2x", "url": "http://waifu2x.udp.jp/", "icon": "huasen-store/icon/1666504789223.png", "describe": "支持动漫风格图片无损放大", "remark": "" },
+      { "name": "图片无损缩放", "url": "https://icons8.com/upscaler", "icon": "huasen-store/icon/1666504929143.png", "describe": "在线提高图像分辨率网站", "remark": "" },
+      { "name": "Panzoid", "url": "https://panzoid.com/", "icon": "huasen-store/icon/1666504996436.png", "describe": "在线制作炫酷视频片头网站", "remark": "" },
+      { "name": "在线白板", "url": "http://tool.mkblog.cn/whiteboard/", "icon": "huasen-store/icon/1666505030295.png", "describe": "在线高颜值的支持压感的白板", "remark": "" },
+      { "name": "翻页时钟", "url": "http://a.huasen.cc/server/public/app/flip-clock/index.html", "icon": "huasen-store/icon/1666505066783.png", "describe": "在线桌面翻页时钟", "remark": "" },
+      { "name": "123APP", "url": "https://123apps.com/cn/", "icon": "huasen-store/icon/1666505327223.png", "describe": "支持处理音频/PDF的多功能工具箱", "remark": "" },
+      { "name": "即时工具", "url": "https://www.67tool.com/", "icon": "huasen-store/icon/1666505504330.png", "describe": "安全/快捷/好用的工具箱", "remark": "" },
+      { "name": "牛奶快传", "url": "https://cowtransfer.com/", "icon": "huasen-store/icon/1666505530102.png", "describe": "在线大文件传输工具", "remark": "" },
+      { "name": "老照片无损修复", "url": "https://jpghd.com/", "icon": "", "describe": "人工智能无损修复老旧图片", "remark": "" },
+      { "name": "智影", "url": "https://zenvideo.qq.com/", "icon": "", "describe": "超好用在线智能创作平台", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "文艺·视听",
+    "sites": [
+      { "name": "网易云", "url": "https://music.163.com/", "icon": "huasen-store/icon/1666507242478.png", "describe": "专注于发现与分享的音乐平台", "remark": "" },
+      { "name": "QQ音乐", "url": "https://y.qq.com/", "icon": "huasen-store/icon/1666507321938.png", "describe": "海量版权的网络音乐服务产品", "remark": "" },
+      { "name": "电影狗", "url": "https://www.dianyinggou.com/yingku/", "icon": "huasen-store/icon/1666507697404.png", "describe": "影视资源搜索引擎", "remark": "" },
+      { "name": "电影猫推荐", "url": "https://www.mvcat.com/", "icon": "huasen-store/icon/1666507733270.png", "describe": "专业的影视推荐平台", "remark": "" },
+      { "name": "此刻", "url": "https://www.cikeee.com/", "icon": "huasen-store/icon/1666507800607.png", "describe": "每天推荐一部优秀电影", "remark": "" },
+      { "name": "哔哩哔哩", "url": "https://www.bilibili.com/", "icon": "huasen-store/icon/1666507825660.png", "describe": "国内知名的视频弹幕网站", "remark": "" },
+      { "name": "腾讯视频", "url": "https://v.qq.com/", "icon": "huasen-store/icon/1666507869718.png", "describe": "", "remark": "" },
+      { "name": "爱奇艺", "url": "https://www.iqiyi.com/", "icon": "huasen-store/icon/1666507878589.png", "describe": "", "remark": "" },
+      { "name": "优酷", "url": "https://movie.youku.com/", "icon": "huasen-store/icon/1666507972726.png", "describe": "", "remark": "" },
+      { "name": "虎牙直播", "url": "https://www.huya.com/", "icon": "huasen-store/icon/1666507985744.png", "describe": "", "remark": "" },
+      { "name": "斗鱼直播", "url": "https://www.douyu.com/", "icon": "huasen-store/icon/1666508003156.png", "describe": "", "remark": "" },
+      { "name": "白噪音魔盒", "url": "http://a.huasen.cc/server/public/app/white-noise/index.html", "icon": "", "describe": "混合场景发出白噪音助眠音乐", "remark": "" },
+      { "name": "豆瓣FM", "url": "https://douban.fm/", "icon": "huasen-store/icon/1666508066362.png", "describe": "发现你的私属好音乐", "remark": "" },
+      { "name": "荔枝FM", "url": "https://www.lizhi.fm/", "icon": "huasen-store/icon/1666508090010.png", "describe": "有声小说/相声/评书/脱口秀/广播剧/听书", "remark": "" },
+      { "name": "喜马拉雅", "url": "https://www.ximalaya.com/", "icon": "huasen-store/icon/1666508111664.png", "describe": "为您找到每一天的精神食粮", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "热点·资讯",
+    "sites": [
+      { "name": "后续", "url": "https://houxu.app/", "icon": "huasen-store/icon/1666508165053.png", "describe": "万事皆有后续", "remark": "" },
+      { "name": "TheTop", "url": "https://the.top/", "icon": "huasen-store/icon/1666508190229.png", "describe": "每日热点资讯排行榜", "remark": "" },
+      { "name": "雷峰网", "url": "https://www.leiphone.com/", "icon": "huasen-store/icon/1666508224622.png", "describe": "具有代表性的实力型科技新媒体与信息服务平台", "remark": "" },
+      { "name": "网易数读", "url": "https://data.163.com/", "icon": "huasen-store/icon/1666508249547.png", "describe": "数据图表说明热点问题", "remark": "" },
+      { "name": "今日热榜", "url": "https://tophub.today/", "icon": "huasen-store/icon/1666508292010.png", "describe": "提供各站热榜聚合追踪全网热点", "remark": "" },
+      { "name": "Readhub", "url": "https://readhub.cn/topics", "icon": "huasen-store/icon/1666508384522.png", "describe": "每天三分钟的科技新闻聚合阅读", "remark": "" },
+      { "name": "虎嗅网", "url": "https://www.huxiu.com/", "icon": "huasen-store/icon/1666508405226.png", "describe": "不错过互联网的每个重要时刻", "remark": "" },
+      { "name": "36kr", "url": "https://36kr.com/", "icon": "huasen-store/icon/1666508441634.png", "describe": "独家的视角为用户深度剖析最前沿的资讯", "remark": "" },
+      { "name": "梅花网", "url": "https://www.meihua.info/", "icon": "huasen-store/icon/1666508457641.png", "describe": "聚焦行业营销案例作品库", "remark": "" },
+      { "name": "巨潮资讯网", "url": "http://www.cninfo.com.cn/new/index", "icon": "", "describe": "为投资者提供一站式的证券市场信息服务", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "邮箱·笔记",
+    "sites": [
+      { "name": "网易邮箱", "url": "https://mail.163.com/", "icon": "huasen-store/icon/1666508492668.png", "describe": "", "remark": "" },
+      { "name": "QQ邮箱", "url": "https://mail.qq.com/", "icon": "huasen-store/icon/1666508516456.png", "describe": "", "remark": "" },
+      { "name": "谷歌邮箱", "url": "https://www.google.com/intl/zh-CN_cn/gmail/about/", "icon": "huasen-store/icon/1666508530924.png", "describe": "", "remark": "" },
+      { "name": "有道笔记", "url": "https://note.youdao.com/web/", "icon": "huasen-store/icon/1666508552279.png", "describe": "", "remark": "" },
+      { "name": "印象笔记", "url": "https://www.yinxiang.com/", "icon": "huasen-store/icon/1666508568854.png", "describe": "", "remark": "" },
+      { "name": "幕布笔记", "url": "https://mubu.com/", "icon": "huasen-store/icon/1666508598862.png", "describe": "", "remark": "" },
+      { "name": "Notion", "url": "https://www.notion.so/product", "icon": "huasen-store/icon/1666508612962.png", "describe": "专业的笔记网站", "remark": "" },
+      { "name": "腾讯文档", "url": "https://docs.qq.com/", "icon": "huasen-store/icon/1666508727007.png", "describe": "", "remark": "" },
+      { "name": "石墨文档", "url": "https://shimo.im/", "icon": "huasen-store/icon/1666508746871.png", "describe": "", "remark": "" },
+      { "name": "金山文档", "url": "https://www.kdocs.cn/welcome", "icon": "huasen-store/icon/1666508767991.png", "describe": "", "remark": "" },
+      { "name": "秘塔写作猫", "url": "https://xiezuocat.com/#/", "icon": "huasen-store/icon/1666509024548.png", "describe": "在线辅助写作网站", "remark": "" },
+      { "name": "英语写作辅助", "url": "http://aimwriting.mtutor.engkoo.com/", "icon": "huasen-store/icon/1666509056764.png", "describe": "在线英语写作语法纠正平台", "remark": "" },
+      { "name": "临时邮箱", "url": "https://www.linshiyouxiang.net/", "icon": "huasen-store/icon/1666508797990.png", "describe": "免费完全匿名的临时邮箱", "remark": "" },
+      { "name": "TempMail", "url": "https://temp-mail.org/zh/", "icon": "huasen-store/icon/1666508912080.png", "describe": "提供临时安全匿名免费的一次性电子邮件地址", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "生活·消费",
+    "sites": [
+      { "name": "快递100", "url": "https://www.kuaidi100.com/", "icon": "huasen-store/icon/1666509596267.png", "describe": "查询快递物流信息", "remark": "" },
+      { "name": "快递投诉", "url": "https://sswz.spb.gov.cn/index.html", "icon": "huasen-store/icon/1666509624956.png", "describe": "快递公司的不法行为进行投诉", "remark": "" },
+      { "name": "美食杰", "url": "http://www.meishi.cc/", "icon": "huasen-store/icon/1666509656460.png", "describe": "值得你收藏的美食视频教学网站", "remark": "" },
+      { "name": "12306", "url": "https://www.12306.cn/index/", "icon": "huasen-store/icon/1666510047987.png", "describe": "中国铁路出行信息平台", "remark": "" },
+      { "name": "淘宝网", "url": "https://www.taobao.com/", "icon": "huasen-store/icon/1666510116680.png", "describe": "", "remark": "" },
+      { "name": "京东商城", "url": "https://www.jd.com/", "icon": "huasen-store/icon/1666510143904.png", "describe": "", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "学习·求职",
+    "sites": [
+      { "name": "腾讯课堂", "url": "https://ke.qq.com/", "icon": "huasen-store/icon/1666510234046.png", "describe": "", "remark": "" },
+      { "name": "中国慕课", "url": "https://www.icourse163.org/", "icon": "huasen-store/icon/1666510251306.png", "describe": "", "remark": "" },
+      { "name": "网易云课堂", "url": "https://study.163.com/", "icon": "huasen-store/icon/1666510270226.png", "describe": "", "remark": "" },
+      { "name": "公开课", "url": "https://open.163.com/", "icon": "huasen-store/icon/1666510339327.png", "describe": "", "remark": "" },
+      { "name": "极简简历", "url": "https://www.polebrief.com/edit", "icon": "huasen-store/icon/1666510384500.png", "describe": "在线制作简历网站", "remark": "" },
+      { "name": "锤子简历", "url": "https://www.100chui.com/", "icon": "huasen-store/icon/1666510442235.png", "describe": "模版丰富的简历制作平台", "remark": "" },
+      { "name": "超级简历", "url": "https://www.wondercv.com/", "icon": "huasen-store/icon/1666510491667.png", "describe": "", "remark": "" },
+      { "name": "实习僧", "url": "https://www.shixiseng.com/", "icon": "huasen-store/icon/1666510509191.png", "describe": "实习生招聘信息网站", "remark": "" },
+      { "name": "牛客求职", "url": "https://www.nowcoder.com/jobs/recommend/campus", "icon": "huasen-store/icon/1666510577314.png", "describe": "高时效更新校园招聘信息的平台", "remark": "" },
+      { "name": "拉勾网", "url": "https://www.lagou.com/", "icon": "huasen-store/icon/1666510603377.png", "describe": "回复率较高的工作招聘平台", "remark": "" },
+      { "name": "应届生求职网", "url": "http://www.yingjiesheng.com/", "describe": "应届生招聘信息发布平台", "icon": "huasen-store/icon/", "remark": "" },
+      { "name": "丁香人才", "url": "https://www.jobmd.cn/", "icon": "huasen-store/icon/1666510638935.png", "describe": "专注于医学生的求职网站", "remark": "" },
+      { "name": "范文网", "url": "https://www.diyifanwen.com/", "icon": "huasen-store/icon/1666510682024.png", "describe": "提供写作参考的范文模版网站", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "知识·科普",
+    "sites": [
+      { "name": "全历史", "url": "https://www.allhistory.com/", "icon": "huasen-store/icon/1666510868728.png", "describe": "知识图谱为核心引擎多维度呈现历史知识", "remark": "" },
+      { "name": "医学微视", "url": "https://www.mvyxws.com/", "icon": "huasen-store/icon/1666510885119.png", "describe": "中国医学科普微视频百科全书", "remark": "" },
+      { "name": "译学馆", "url": "https://www.yxgapp.com/", "icon": "huasen-store/icon/1666510904487.png", "describe": "科普有趣的知识频道", "remark": "" },
+      { "name": "纪妖", "url": "https://www.cbaigui.com/", "icon": "huasen-store/icon/1666510918488.png", "describe": "收集介绍中国古今传说的妖怪", "remark": "" },
+      { "name": "全景故宫", "url": "https://pano.dpm.org.cn/", "icon": "huasen-store/icon/1666511029759.png", "describe": "360全景视感受故宫浑厚的文化", "remark": "" },
+      { "name": "故宫博物馆", "url": "https://digicol.dpm.org.cn/", "icon": "huasen-store/icon/1666510941763.png", "describe": "故宫数字文物博物馆", "remark": "" },
+      { "name": "指尖上", "url": "https://www.zhijianshang.com/", "icon": "huasen-store/icon/1666511064110.png", "describe": "指尖上的全球360全景", "remark": "" },
+      { "name": "古诗文网", "url": "https://www.gushiwen.cn/", "icon": "huasen-store/icon/1666511115128.png", "describe": "古诗文网作为传承经典的网站专注于古诗文服务", "remark": "" },
+      { "name": "WikiHow", "url": "https://zh.wikihow.com/", "icon": "huasen-store/icon/1666511131032.png", "describe": "互联网上值得信赖的指南网站", "remark": "" },
+      { "name": "中国科普博览", "url": "http://www.kepu.net.cn/", "icon": "huasen-store/icon/1666511155146.png", "describe": "传播有温度有态度的新科学观", "remark": "" },
+      { "name": "小鸡词典", "url": "https://jikipedia.com/", "icon": "huasen-store/icon/1666511188988.png", "describe": "一个基于梗文化的娱乐科普社区", "remark": "" },
+      { "name": "科学网", "url": "https://paper.sciencenet.cn/", "icon": "huasen-store/icon/1666511215139.png", "describe": "丰富实用的科学信息服务以及交流互动的网络平台", "remark": "" },
+      { "name": "每日一文", "url": "https://meiriyiwen.com/", "icon": "huasen-store/icon/1666511232167.png", "describe": "每天静下心来读一篇文章", "remark": "" },
+      { "name": "TopBook", "url": "https://topbook.cc/", "icon": "huasen-store/icon/1666511262696.png", "describe": "高效生活视频书", "remark": "" },
+      { "name": "少数派", "url": "https://sspai.com/", "icon": "huasen-store/icon/1666511280399.png", "describe": "品质生活必备网站", "remark": "" },
+      { "name": "CPU天梯榜", "url": "https://topic.expreview.com/CPU/", "icon": "", "describe": "CPU版本参数天梯榜", "remark": "" },
+      { "name": "显卡天梯榜", "url": "https://topic.expreview.com/GPU/", "icon": "", "describe": "显卡参数性能天梯榜", "remark": "" },
+      { "name": "电源天梯榜", "url": "https://topic.expreview.com/Power/", "icon": "", "describe": "电源性能排行榜单", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "游戏·解压",
+    "sites": [
+      { "name": "童年游戏机", "url": "http://lab.mkblog.cn/FCGames/#/", "icon": "", "describe": "免费在线FC小游戏", "remark": "" },
+      { "name": "自由钢琴", "url": "https://www.autopiano.cn/", "icon": "huasen-store/icon/1666511396234.png", "describe": "支持在线弹奏钢琴", "remark": "" },
+      { "name": "霸王游戏机", "url": "https://www.yikm.net/", "icon": "huasen-store/icon/1666511410266.png", "describe": "童年的小霸王游戏机", "remark": "" },
+      { "name": "云段子", "url": "http://www.yduanzi.com/", "icon": "huasen-store/icon/1666511434761.png", "describe": "", "remark": "" },
+      { "name": "我的世界", "url": "https://classic.minecraft.net/", "icon": "huasen-store/icon/1666511457277.png", "describe": "我的游戏在线联机版本", "remark": "" },
+      { "name": "贪吃蛇", "url": "http://slither.io/", "icon": "huasen-store/icon/1666511501382.png", "describe": "在线联网贪吃蛇小游戏", "remark": "" },
+      { "name": "桌球", "url": "http://www.heyzxz.me/pcol/", "icon": "huasen-store/icon/1666511541687.png", "describe": "在线娱乐桌球游戏", "remark": "" },
+      { "name": "单词游戏", "url": "https://zty.pe/", "icon": "huasen-store/icon/1666511564222.png", "describe": "边玩边记单词小游戏", "remark": "" },
+      { "name": "蜂眼消消乐", "url": "https://hex.frvr.com/", "icon": "huasen-store/icon/1666511601624.png", "describe": "酷似消消乐的益智小游戏", "remark": "" },
+      { "name": "在线架子鼓", "url": "http://tool.mkblog.cn/durms/", "icon": "huasen-store/icon/1666511624567.png", "describe": "在线架子鼓打击乐器", "remark": "" },
+      { "name": "蝌蚪聊天室", "url": "http://kedou.workerman.net/", "icon": "huasen-store/icon/1666511664318.png", "describe": "即时通讯的小蝌蚪聊天室", "remark": "" },
+      { "name": "在线电子音乐", "url": "https://learningmusic.ableton.com/zh-Hans/index.html", "icon": "huasen-store/icon/1666511688301.png", "describe": "在线开始音乐创作之旅", "remark": "" },
+      { "name": "折纸俱乐部", "url": "http://cn.origami-club.com/", "icon": "huasen-store/icon/1666511721428.png", "describe": "折纸教程分享平台", "remark": "" },
+      { "name": "米粒小车", "url": "https://bruno-simon.com/", "icon": "huasen-store/icon/1666511823736.png", "describe": "模拟遥控操作小车", "remark": "" },
+      { "name": "围捕小猫", "url": "http://a.huasen.cc/server/public/app/round-cat/index.html", "icon": "", "describe": "圈住小猫的益智游戏", "remark": "" },
+      { "name": "荒庙逃亡", "url": "http://a.huasen.cc/server/public/app/temple-run/index.html", "icon": "", "describe": "荒庙逃亡跑酷游戏", "remark": "" },
+      { "name": "俄罗斯方块", "url": "http://a.huasen.cc/server/public/app/tetris/index.html", "icon": "", "describe": "俄罗斯方块经典怀旧版", "remark": "" },
+      { "name": "PlayLines", "url": "https://lines.frvr.com/", "icon": "huasen-store/icon/1666511892667.png", "describe": "相同颜色相连的益智小游戏", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "设计·酷站",
+    "sites": [
+      { "name": "花瓣", "url": "https://huaban.com/", "icon": "huasen-store/icon/1666511922387.png", "describe": "陪你做生活的设计师", "remark": "" },
+      { "name": "站酷", "url": "https://www.zcool.com.cn/", "icon": "huasen-store/icon/1666511938311.png", "describe": "专业的设计创意互动平台", "remark": "" },
+      { "name": "涂鸦王国", "url": "https://www.gracg.com/", "icon": "huasen-store/icon/1666511953054.png", "describe": "原创插画内容创作平台", "remark": "" },
+      { "name": "创客贴", "url": "https://www.chuangkit.com/designtools/startdesign", "icon": "huasen-store/icon/1666511962635.png", "describe": "专注图片模板在线设计", "remark": "" },
+      { "name": "懒设计", "url": "https://www.fotor.com.cn/", "icon": "huasen-store/icon/1666511986045.png", "describe": "创意图文设计神器", "remark": "" },
+      { "name": "觅元素", "url": "https://www.51yuansu.com/", "icon": "huasen-store/icon/1666512012676.png", "describe": "免抠设计元素下载网站", "remark": "" },
+      { "name": "设备样机展示", "url": "https://deviceshots.com/", "icon": "huasen-store/icon/1666512038742.png", "describe": "多端设备样机展示制作平台", "remark": "" },
+      { "name": "UnDraw", "url": "https://undraw.co/illustrations", "icon": "huasen-store/icon/1666512079879.png", "describe": "提供精美的扁平插画网站", "remark": "" },
+      { "name": "iconstore", "url": "https://iconstore.co/", "icon": "huasen-store/icon/1666512123334.png", "describe": "可商用的免费图标库下载平台", "remark": "" },
+      { "name": "Iconfont", "url": "https://www.iconfont.cn/", "icon": "huasen-store/icon/1666512208477.png", "describe": "专业的矢量图标库", "remark": "" },
+      { "name": "手绘涂鸦", "url": "https://www.opendoodles.com/", "icon": "huasen-store/icon/1666512238340.png", "describe": "一套免费的开源插图库", "remark": "" },
+      { "name": "AutoDraw", "url": "https://www.autodraw.com/", "icon": "huasen-store/icon/1666512307441.png", "describe": "AI辅助涂鸦创作网站", "remark": "" },
+      { "name": "玛良动效", "url": "https://design.alipay.com/emotion", "icon": "huasen-store/icon/1666512349068.png", "describe": "一站式动效制作平台", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "产品·运营",
+    "sites": [
+      { "name": "人人产品经理", "url": "http://www.woshipm.com/", "icon": "huasen-store/icon/1666512394984.png", "describe": "产品爱好者学习交流平台", "remark": "" },
+      { "name": "产品壹佰", "url": "http://www.chanpin100.com/", "icon": "huasen-store/icon/1666512434605.png", "describe": "优质的产品经理学习网站", "remark": "" },
+      { "name": "墨刀", "url": "https://modao.cc/brand", "icon": "huasen-store/icon/1666512458578.png", "describe": "产品设计一体化在线协同办公平台", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "美图·壁纸",
+    "sites": [
+      { "name": "图虫", "url": "https://tuchong.com/explore/", "icon": "huasen-store/icon/1666512499998.png", "describe": "国内优秀摄影师交流社区", "remark": "" },
+      { "name": "Pixabay", "url": "https://pixabay.com/photos/", "icon": "huasen-store/icon/1666512517116.png", "describe": "提供令人惊叹的免费库存照片下载平台", "remark": "" },
+      { "name": "StockSnap", "url": "https://stocksnap.io/", "icon": "huasen-store/icon/1666512576138.png", "describe": "汇聚千上万的无版权库存图片", "remark": "" },
+      { "name": "Wallhaven", "url": "https://wallhaven.cc/toplist", "icon": "huasen-store/icon/1666512602282.png", "describe": "资源丰富的壁纸网站", "remark": "" },
+      { "name": "Pixivic", "url": "https://pixivic.com/?VNK=8cb3416c", "icon": "huasen-store/icon/1666512622872.png", "describe": "各类动漫二次元插画", "remark": "" },
+      { "name": "Akspic", "url": "https://akspic.ru/", "icon": "huasen-store/icon/1666512633014.png", "describe": "高质量的壁纸免费下载平台", "remark": "" },
+      { "name": "Unsplash", "url": "https://unsplash.com/", "icon": "huasen-store/icon/1666512655037.png", "describe": "免费优质的图片分享网站", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "色彩·搭配",
+    "sites": [
+      { "name": "中国传统颜色", "url": "http://zhongguose.com/", "icon": "huasen-store/icon/1666512692063.png", "describe": "收集各种中国的传统颜色", "remark": "" },
+      { "name": "ColorHunt", "url": "https://colorhunt.co/", "icon": "huasen-store/icon/1666512704616.png", "describe": "设计师和艺术家的调色板", "remark": "" },
+      { "name": "ColorDrop", "url": "https://colordrop.io/", "icon": "huasen-store/icon/1666512730403.png", "describe": "颜色策划搭配方案神器", "remark": "" },
+      { "name": "WebGradients", "url": "https://webgradients.com/", "icon": "huasen-store/icon/1666512753969.png", "describe": "线性渐变球体配色网站", "remark": "" },
+      { "name": "Uigradients", "url": "https://uigradients.com/#Shore", "icon": "huasen-store/icon/1666512773766.png", "describe": "线性渐变背景配色网站", "remark": "" },
+      { "name": "Gradient", "url": "https://gradient.shapefactory.co/", "icon": "huasen-store/icon/1666512797381.png", "describe": "可调节的渐变配色网站", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "资源·专区",
+    "sites": [
+      { "name": "极简插件", "url": "https://chrome.zzzmh.cn/#/index", "icon": "huasen-store/icon/1666512815502.png", "describe": "谷歌浏览器插件扩展收录下载网站", "remark": "" },
+      { "name": "快捷指令库", "url": "https://www.rcuts.com/", "icon": "huasen-store/icon/1666512845712.png", "describe": "IOS系统快捷指令库", "remark": "" },
+      { "name": "字体转换器", "url": "https://www.diyiziti.com/", "icon": "huasen-store/icon/1666512882910.png", "describe": "在线转换书法字体网站", "remark": "" },
+      { "name": "PPT模版", "url": "https://www.1ppt.com/", "icon": "", "describe": "幻灯片背景/模版/素材下载网站", "remark": "" },
+      { "name": "PPT超级市场", "url": "https://www.pptsupermarket.com/", "icon": "", "describe": "优质/高效/安全的PPT模板下载网站", "remark": "" },
+      { "name": "耳聆网", "url": "https://www.ear0.com/", "icon": "huasen-store/icon/1666513006200.png", "describe": "汇聚专业录音师/业余爱好者的声音分享下载平台", "remark": "" },
+      { "name": "小森平音效", "url": "https://taira-komori.jpn.org/freesoundcn.html", "icon": "", "describe": "音效分享下载平台", "remark": "" },
+      { "name": "百字", "url": "https://www.100font.com/", "icon": "huasen-store/icon/1666513085113.png", "describe": "专注于收集可商用字体的网站", "remark": "" },
+      { "name": "LookAE", "url": "https://www.lookae.com/", "icon": "huasen-store/icon/1666513155913.png", "describe": "大众脸为您提供的CG后期技术交流平台", "remark": "" },
+      { "name": "优品PPT", "url": "https://www.ypppt.com/", "icon": "huasen-store/icon/1666513179967.png", "describe": "有情怀的免费PPT模板下载网站", "remark": "" },
+      { "name": "MSDN", "url": "https://msdn.itellyou.cn/", "icon": "", "describe": "原版微软系统/软件/资源下载平台", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "趣站·创意",
+    "sites": [
+      { "name": "StarsEmmision", "url": "https://wangyasai.github.io/Stars-Emmision/", "icon": "huasen-store/icon/1666513222614.png", "describe": "在线生成光束射线的网站", "remark": "" },
+      { "name": "炫酷光绘", "url": "http://weavesilk.com/", "icon": "huasen-store/icon/1666513245745.png", "describe": "炫酷的对称光束生成网站", "remark": "" },
+      { "name": "Emoji合成", "url": "https://tikolu.net/emojimix/", "icon": "huasen-store/icon/1666513265884.png", "describe": "支持emoji图标融合制成新图标", "remark": "" },
+      { "name": "Species", "url": "http://www.species-in-pieces.com/", "icon": "huasen-store/icon/1666513312132.png", "describe": "定时轮播濒危灭绝物种的抽象图片", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "编程·社区",
+    "sites": [
+      { "name": "GitHub", "url": "https://github.com/", "icon": "huasen-store/icon/1666513399272.png", "describe": "最大的代码存放网站和开源社区", "remark": "" },
+      { "name": "码云", "url": "https://gitee.com/", "icon": "huasen-store/icon/1666513422238.png", "describe": "中国最大的开源社区", "remark": "" },
+      { "name": "菜鸟教程", "url": "https://www.runoob.com/", "icon": "huasen-store/icon/1666513437402.png", "describe": "汇聚较为全面的编程入门基础教程", "remark": "" },
+      { "name": "W3school", "url": "https://www.w3school.com.cn/index.html", "icon": "huasen-store/icon/1666513459027.png", "describe": "前端入门技术学习网站", "remark": "" },
+      { "name": "稀土掘金", "url": "https://juejin.cn/", "icon": "huasen-store/icon/1666513495306.png", "describe": "聚集很多技术大牛和极客的开发者社区", "remark": "" },
+      { "name": "SegmentFault", "url": "https://segmentfault.com/", "icon": "huasen-store/icon/1666513509096.png", "describe": "思否是中国领先的开发者技术社区", "remark": "" },
+      { "name": "CSDN", "url": "https://www.csdn.net/", "icon": "huasen-store/icon/1666513540908.png", "describe": "又爱又恨的中文IT技术交流平台", "remark": "" },
+      { "name": "CodeLf", "url": "https://unbug.github.io/", "icon": "huasen-store/icon/1666513554175.png", "describe": "变量命名推荐网站", "remark": "" },
+      { "name": "Cubic", "url": "https://cubic-bezier.com/", "icon": "huasen-store/icon/1666513567416.png", "describe": "在线预览CSS动画函数", "remark": "" },
+      { "name": "LeetCode", "url": "https://leetcode-cn.com/", "icon": "huasen-store/icon/1666513590359.png", "describe": "力扣提供海量算法技术面试资源", "remark": "" },
+      { "name": "响应式灵感", "url": "https://mediaqueri.es/", "icon": "huasen-store/icon/1666513605735.png", "describe": "网站响应式的成功案例", "remark": "" },
+      { "name": "阿里云", "url": "https://www.aliyun.com/", "icon": "huasen-store/icon/1666513655353.png", "describe": "安全稳定的云产品及服务", "remark": "" },
+      { "name": "腾讯云", "url": "https://cloud.tencent.com/", "icon": "huasen-store/icon/1666513683068.png", "describe": "为企业和开发者提供安全稳定的云计算服务", "remark": "" },
+      { "name": "Codepen", "url": "https://codepen.io/", "icon": "huasen-store/icon/1666513696012.png", "describe": "在线的代码调试编辑工具", "remark": "" },
+      { "name": "吾爱破解", "url": "https://www.52pojie.cn/", "icon": "", "describe": "致力于软件安全与病毒分析", "remark": "" },
+      { "name": "Neumorphism", "url": "https://neumorphism.io/", "icon": "", "describe": "在线生成现代拟物风格图标", "remark": "" },
+      { "name": "Uiverse", "url": "https://uiverse.io/", "icon": "", "describe": "新颖炫酷的用户界面元素", "remark": "" },
+      { "name": "Coolbackgrounds", "url": "https://coolbackgrounds.io/", "icon": "", "describe": "炫酷背景图片生成器", "remark": "" },
+      { "name": "Autoprefixer", "url": "https://autoprefixer.github.io/", "icon": "", "describe": "在线CSS样式兼容性处理网站", "remark": "" },
+      { "name": "Babel", "url": "https://babeljs.io/repl", "icon": "", "describe": "Javascript语法转换器", "remark": "" },
+      { "name": "astexplorer", "url": "https://astexplorer.net/", "icon": "huasen-store/icon/1666537201375.png", "describe": "支持多种语言导出AST树", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "微软·软件",
+    "sites": [
+      { "name": "火绒安全", "url": "https://www.huorong.cn/", "icon": "huasen-store/icon/1666513931047.png", "describe": "良心的安全电脑管理软件", "remark": "" },
+      { "name": "7zip", "url": "https://www.7-zip.org/", "icon": "huasen-store/icon/1666513953189.png", "describe": "体积小无广告的解压缩工具", "remark": "" },
+      { "name": "Geek", "url": "https://geekuninstaller.pro/", "icon": "huasen-store/icon/1666513981156.png", "describe": "超好用的卸载工具", "remark": "" },
+      { "name": "新Edge浏览器", "url": "https://www.microsoft.com/zh-cn/edge", "icon": "huasen-store/icon/1666514003644.png", "describe": "功能齐全的小白必备浏览器", "remark": "" },
+      { "name": "CCleaner", "url": "https://www.ccleaner.com/download", "icon": "huasen-store/icon/1666514014668.png", "describe": "一款强力的垃圾清理软件", "remark": "" },
+      { "name": "系统操作箱", "url": "https://www.aliyundrive.com/s/ZJECYtPDzYu", "icon": "huasen-store/icon/1666514072032.png", "describe": "", "remark": "" },
+      { "name": "Todesk", "url": "https://www.todesk.com/", "icon": "huasen-store/icon/1666514099886.png", "describe": "远程操控软件", "remark": "" },
+      { "name": "多译", "url": "https://duoyiapp.com/", "icon": "huasen-store/icon/1666514147586.png", "describe": "快速提升翻译效率", "remark": "" },
+      { "name": "万彩办公大师", "url": "http://www.wofficebox.com/", "icon": "huasen-store/icon/1666514178778.png", "describe": "办公必备的小工具百宝箱", "remark": "" },
+      { "name": "全局鼠标手势", "url": "https://www.yingdev.com/projects/wgestures", "icon": "huasen-store/icon/1666514197484.png", "describe": "鼠标手势控制软件", "remark": "" },
+      { "name": "GIF录制工具", "url": "https://www.screentogif.com/", "icon": "huasen-store/icon/1666514222765.png", "describe": "好用的GIF图片录屏工具", "remark": "" },
+      { "name": "listen1", "url": "http://listen1.github.io/listen1/", "icon": "huasen-store/icon/1666514237526.png", "describe": "开源的跨平台软件音乐", "remark": "" },
+      { "name": "讯飞语记", "url": "https://iflynote.com/", "icon": "huasen-store/icon/1666514273691.png", "describe": "支持实时语音识别软件", "remark": "" },
+      { "name": "洋芋图像工具箱", "url": "https://www.potatofield.cn/imagetoolkit/", "icon": "huasen-store/icon/1666514307844.png", "describe": "一个适用于创意行业从业者的图像工具箱", "remark": "" },
+      { "name": "优效日历", "url": "http://www.youxiao.cn/", "icon": "huasen-store/icon/1666514336481.png", "describe": "界面简洁的桌面日历软件", "remark": "" },
+      { "name": "Snipaste", "url": "https://zh.snipaste.com/", "icon": "huasen-store/icon/1666514355988.png", "describe": "截图神器", "remark": "" },
+      { "name": "Everything", "url": "https://www.voidtools.com/zh-cn/", "icon": "huasen-store/icon/1666514462063.png", "describe": "支持名称快速定位文件和文件夹", "remark": "" },
+      { "name": "QuickLook", "url": "https://pooi.moe/QuickLook/", "icon": "huasen-store/icon/1666514479249.png", "describe": "支持选择文件后空格预览", "remark": "" },
+      { "name": "小黄条", "url": "https://www.yynote.cn/", "icon": "huasen-store/icon/1666514508760.png", "describe": "桌面便签/任务清单/备忘录的效率工具", "remark": "" },
+      { "name": "Quicker", "url": "https://getquicker.net/", "icon": "huasen-store/icon/1666514536602.png", "describe": "鼠标党的指尖工具箱", "remark": "" },
+      { "name": "录屏神器", "url": "https://www.aliyundrive.com/s/tK32yFZG85u", "icon": "huasen-store/icon/1666514562835.png", "describe": "十分好用的录屏工具", "remark": "" },
+      { "name": "UTool", "url": "https://u.tools/", "icon": "huasen-store/icon/1666514611775.png", "describe": "键盘党的自由组合工具集", "remark": "" },
+      { "name": "DeskGo", "url": "https://guanjia.qq.com/product/zmzl/", "icon": "huasen-store/icon/1666515007079.png", "describe": "桌面整理收纳工具（下载独立版）", "remark": "" },
+      { "name": "PicGo", "url": "https://molunerfinn.com/PicGo/", "icon": "huasen-store/icon/1666514673440.png", "describe": "开源/免费/功能强大的图床软件", "remark": "" }
+    ]
+  },
+  {
+    "typeName": "苹果·软件",
+    "sites": [
+      { "name": "Appstorrent", "url": "https://appstorrent.ru/", "icon": "", "describe": "国外资源丰富的MAC软件下载平台", "remark": "" },
+      { "name": "马可菠萝", "url": "https://www.macbl.com/", "icon": "huasen-store/icon/1666514728680.png", "describe": "苹果软件推荐下载平台", "remark": "" },
+      { "name": "Mos", "url": "https://mos.caldis.me/", "icon": "huasen-store/icon/1666514753054.png", "describe": "鼠标丝滑滚动神器", "remark": "" },
+      { "name": "Keka", "url": "https://www.keka.io/en/", "icon": "huasen-store/icon/1666514771612.png", "describe": "轻便的解压缩神器", "remark": "" },
+      { "name": "TextMate", "url": "https://macromates.com/", "icon": "huasen-store/icon/1666514794899.png", "describe": "简洁的文本编辑工具", "remark": "" },
+      { "name": "Movist", "url": "https://movist.en.softonic.com/mac", "icon": "huasen-store/icon/1666514979416.png", "describe": "支持各种音频文件的播放器", "remark": "" },
+      { "name": "多线程下载工具", "url": "https://www.freedownloadmanager.org/zh/", "icon": "huasen-store/icon/1666514834728.png", "describe": "支持多线程任务下载工具", "remark": "" },
+      { "name": "AdGuard", "url": "https://adguard.com/zh_cn/welcome.html", "icon": "huasen-store/icon/1666514863712.png", "describe": "摆脱烦恼的广告屏蔽工具", "remark": "" },
+      { "name": "UPic", "url": "https://github.com/gee1k/uPic/tags", "icon": "huasen-store/icon/1666514881527.png", "describe": "免费而强大的Mac图床客户端", "remark": "" },
+      { "name": "数码荔枝", "url": "https://store.lizhi.io/", "icon": "", "describe": "专注于分享优秀的正版软件", "remark": "" }
+    ]
+  }
+]

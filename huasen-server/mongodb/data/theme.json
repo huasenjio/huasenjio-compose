@@ -1,0 +1,23 @@
+{
+  "pure": [
+    {
+      "color": "#FFFFFF",
+      "background": "#31c2e0"
+    },
+    {
+      "color": "#FFFFFF",
+      "background": "#8e54e9"
+    }
+  ],
+
+  "wallpaper": [
+    {
+      "headerFontColor": "#FFFFFF",
+      "background": "http://a.huasen.cc/server/huasen-public-static/admin/1651391905656.jpeg"
+    },
+    {
+      "headerFontColor": "#000000",
+      "background": "http://a.huasen.cc/server/huasen-public-static/admin/1651395152865.jpeg"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+.icon-lhs { background-image: url(./sprite.png);background-size: 1820px 1360px;}
+.icon-lhs-0 { width: 440px; height: 440px; background-position: 0px 0px; }
+.icon-lhs-1 { width: 440px; height: 440px; background-position: -460px 0px; }
+.icon-lhs-2 { width: 440px; height: 440px; background-position: 0px -460px; }
+.icon-lhs-3 { width: 440px; height: 440px; background-position: -460px -460px; }
+.icon-lhs-4 { width: 440px; height: 440px; background-position: -920px 0px; }
+.icon-lhs-5 { width: 440px; height: 440px; background-position: -920px -460px; }
+.icon-lhs-6 { width: 440px; height: 440px; background-position: 0px -920px; }
+.icon-lhs-7 { width: 440px; height: 440px; background-position: -460px -920px; }
+.icon-lhs-8 { width: 440px; height: 440px; background-position: -920px -920px; }
+.icon-lhs-9 { width: 440px; height: 440px; background-position: -1380px 0px; }
+.icon-lhs-10 { width: 440px; height: 440px; background-position: -1380px -460px; }
+.icon-lhs-default { width: 280px; height: 280px; background-position: -1380px -920px; }

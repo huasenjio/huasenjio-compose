@@ -1,0 +1,15 @@
+info face="SF Fedora" size=75 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=8,8,8,8 spacing=0,0
+common lineHeight=64 base=41 scaleW=512 scaleH=256 pages=1 packed=0
+page id=0 file="cost.png"
+chars count=10
+char id=32   x=0     y=0     width=0     height=0     xoffset=0     yoffset=41    xadvance=38     page=0  chnl=0 
+char id=57   x=0     y=0     width=99     height=86     xoffset=-6     yoffset=-31    xadvance=67     page=0  chnl=0 
+char id=54   x=99     y=0     width=83     height=86     xoffset=-2     yoffset=-32    xadvance=66     page=0  chnl=0 
+char id=52   x=182     y=0     width=100     height=86     xoffset=-6     yoffset=-31    xadvance=70     page=0  chnl=0 
+char id=50   x=282     y=0     width=93     height=86     xoffset=-3     yoffset=-31    xadvance=71     page=0  chnl=0 
+char id=56   x=375     y=0     width=94     height=85     xoffset=-3     yoffset=-31    xadvance=67     page=0  chnl=0 
+char id=55   x=0     y=86     width=108     height=85     xoffset=0     yoffset=-30    xadvance=66     page=0  chnl=0 
+char id=51   x=108     y=86     width=104     height=85     xoffset=0     yoffset=-31    xadvance=70     page=0  chnl=0 
+char id=49   x=212     y=86     width=81     height=85     xoffset=-1     yoffset=-30    xadvance=58     page=0  chnl=0 
+char id=48   x=293     y=86     width=89     height=85     xoffset=1     yoffset=-31    xadvance=68     page=0  chnl=0 
+char id=53   x=382     y=86     width=102     height=84     xoffset=0     yoffset=-30    xadvance=70     page=0  chnl=0 

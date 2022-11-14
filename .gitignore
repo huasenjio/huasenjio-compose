@@ -1,0 +1,35 @@
+# 系统标识文件
+.DS_Store
+
+# 项目文件
+node_modules
+huasen-server/log/error.log
+huasen-server/log/warn.log
+
+/dist
+/huasen-store/default/*
+/huasen-mongo/volume/*
+/huasen-redis/data/*
+/huasen-nginx/log/*
+/huasen-jenkins/*
+/huasen-server/log/*
+/huasen-log/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
