@@ -144,12 +144,12 @@ vim /etc/docker/daemon.json
 
 // 写入配置
 {
-	"registry-mirrors": [ 
+  "registry-mirrors": [ 
     "https://registry.docker-cn.com",
-   	"http://hub-mirror.c.163.com",
+    "http://hub-mirror.c.163.com",
     "https://docker.mirrors.ustc.edu.cn"
   ],
-	"ipv6":false
+  "ipv6":false
 }
 
 // 重载配置
