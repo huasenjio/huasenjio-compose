@@ -164,7 +164,7 @@ sudo systemctl restart docker
 1）下载资源
 
 ```javascript
-curl -L https://get.daocloud.io/docker/compose/releases/download/v2.12.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+curl -L https://get.daocloud.io/docker/compose/releases/download/v1.23.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 ```
 
 2）设置权限
