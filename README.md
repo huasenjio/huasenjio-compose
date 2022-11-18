@@ -173,7 +173,13 @@ curl -L https://get.daocloud.io/docker/compose/releases/download/v1.23.1/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-3）查看版本
+3）建立软连接
+
+```javascript
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+
+4）查看版本
 
 ```javascript
 docker-compose --version
