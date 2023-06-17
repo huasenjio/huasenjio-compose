@@ -1,0 +1,46 @@
+[
+  {
+    "path": "/",
+    "redirect": "/home"
+  },
+  {
+    "path": "/home",
+    "name": "Home",
+    "menuCode": "000",
+    "component": "home/Home",
+    "title": "花森主页",
+    "children": []
+  },
+  {
+    "path": "/error404",
+    "name": "Error404",
+    "menuCode": "000",
+    "component": "error/Error404",
+    "title": "404",
+    "children": []
+  },
+  {
+    "path": "/error403",
+    "name": "Error403",
+    "menuCode": "000",
+    "component": "error/Error403",
+    "title": "403",
+    "children": []
+  },
+  {
+    "path": "/article",
+    "name": "Article",
+    "menuCode": "000",
+    "component": "article/Article",
+    "title": "文章专栏",
+    "children": []
+  },
+  {
+    "path": "/read/:id",
+    "name": "Read",
+    "menuCode": "000",
+    "component": "read/Read",
+    "title": "阅读",
+    "children": []
+  }
+]

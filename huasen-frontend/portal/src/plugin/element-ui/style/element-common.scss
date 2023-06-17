@@ -1,0 +1,77 @@
+// 去除下拉菜单弹出层的小箭头
+.el-popper[x-placement^='bottom-end'] {
+  .popper__arrow {
+    display: none;
+  }
+}
+
+// 去除select弹出层的箭头
+.el-popper {
+  .popper__arrow {
+    display: none;
+  }
+}
+
+// 修复颜色选择器偏移
+.el-color-dropdown {
+  .el-color-dropdown__btns {
+    display: flex;
+    align-items: center;
+  }
+}
+
+// 取消tab的focus效果
+.el-tabs__item:focus.is-active.is-focus:not(:active) {
+  box-shadow: 0 0;
+  border-radius: 0;
+}
+
+.el-tooltip__popper {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.el-popconfirm {
+  .el-popconfirm__main {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    padding: 10px 0;
+  }
+}
+
+// 分页组件的pageSize选择框不对齐
+.el-select-dropdown[class~='page-size-popper'] {
+  min-width: 100px !important;
+  .el-select-dropdown__item {
+    width: 100px !important;
+  }
+}
+
+// 修改element原生的loading图标
+.el-loading-spinner {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 54px;
+    height: 38px;
+    background-image: url('~@/assets/img/loading/1.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+  .el-loading-text {
+    display: none;
+    // margin-top: 54px;
+  }
+  .circular {
+    display: none;
+  }
+}

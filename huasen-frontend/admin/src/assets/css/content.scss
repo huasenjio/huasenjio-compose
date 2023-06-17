@@ -1,0 +1,44 @@
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+/*滚动条宽度*/
+::-webkit-scrollbar {
+  display: block;
+  width: 4px;
+  height: 4px;
+}
+
+/*槽*/
+::-webkit-scrollbar-track {
+  background-color: var(--gray-0);
+  border-radius: 12px;
+}
+
+/*滚动条*/
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background-color: var(--gray-100);
+}
+
+/*拖拽*/
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 12px;
+  background-color: var(--gray-200);
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+// 进度条组件样式
+#nprogress .spinner-icon {
+  display: none;
+}

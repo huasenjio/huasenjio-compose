@@ -1,0 +1,24 @@
+/*滚动条宽度*/
+::-webkit-scrollbar {
+  display: block;
+  width: 2px;
+  height: 2px;
+}
+
+/*槽*/
+::-webkit-scrollbar-track {
+  background-color: var(--gray-0);
+  border-radius: 12px;
+}
+
+/*滚动条*/
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background-color: var(--gray-100);
+}
+
+/*拖拽*/
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 12px;
+  background-color: var(--gray-200);
+}

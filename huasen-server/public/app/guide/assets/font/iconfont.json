@@ -1,0 +1,65 @@
+{
+  "id": "3512082",
+  "name": "花森小窝",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "用户个人展示页",
+  "glyphs": [
+    {
+      "icon_id": "14401714",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "21053828",
+      "name": "网络",
+      "font_class": "wangluo",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "15873400",
+      "name": "星球",
+      "font_class": "xingqiu",
+      "unicode": "e66e",
+      "unicode_decimal": 58990
+    },
+    {
+      "icon_id": "405727",
+      "name": "qq",
+      "font_class": "qq",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "982375",
+      "name": "邮箱",
+      "font_class": "youxiang",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "986184",
+      "name": "微信",
+      "font_class": "weixin-copy",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
+      "icon_id": "13743932",
+      "name": "gitee-fill-round",
+      "font_class": "gitee-fill-round",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "23179687",
+      "name": "bilibili-fill",
+      "font_class": "bilibili-fill",
+      "unicode": "e7ac",
+      "unicode_decimal": 59308
+    }
+  ]
+}

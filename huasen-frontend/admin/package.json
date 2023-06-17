@@ -1,0 +1,78 @@
+{
+  "name": "huasen-manager",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "awe-dnd": "^0.3.4",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "echarts-liquidfill": "^3.1.0",
+    "element-ui": "^2.15.5",
+    "html2canvas": "^1.4.1",
+    "jsencrypt": "^3.2.1",
+    "mavon-editor": "^2.10.4",
+    "mockjs2": "^1.0.8",
+    "moment": "^2.29.1",
+    "nprogress": "^0.2.0",
+    "sass": "~1.26.5",
+    "showdown": "^1.9.1",
+    "tailwindcss": "^1.9.6",
+    "vue": "^2.6.11",
+    "vue-i18n": "^8.25.0",
+    "vue-json-editor": "^1.4.3",
+    "vue-router": "^3.5.2",
+    "vuedraggable": "^2.24.3",
+    "vuex": "^3.6.2",
+    "webpack-spritesmith": "^1.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "echarts": "^5.3.1",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "sass-loader": "7.3.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-empty": "off",
+      "no-debugger": "off",
+      "no-prototype-builtins": "off"
+    },
+    "globals": {
+      "document": true,
+      "localStorage": true,
+      "window": true,
+      "define": true
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

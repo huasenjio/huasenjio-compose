@@ -1,0 +1,21 @@
+/* 取消浏览器样式 */
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  /* 自定义功能类 */
+  .pointer {
+  }
+  /* 响应式的功能类 */
+  /* 示例：sm:pointer */
+  @variants responsive {
+    .pointer {
+    }
+  }
+  /* 状态功能类 */
+  /* 示例：hover:pointer */
+  @variants hover {
+    .pointer {
+    }
+  }
+}

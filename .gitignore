@@ -1,0 +1,26 @@
+# 系统和软件标识
+.DS_Store
+.idea
+.vscode
+
+# 项目文件
+node_modules
+/dist
+/huasen-store/default/*
+/huasen-mongo/volume/*
+/huasen-redis/data/*
+/huasen-nginx/log/*
+/huasen-server/log/*
+/huasen-jenkins/*
+/huasen-server/log/*
+/huasen-log/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
