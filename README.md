@@ -227,7 +227,7 @@ git version
 
 （1）卸载旧版本
 
-```javascript
+```bash
 yum remove -y docker \
   docker-client \
   docker-client-latest \
@@ -242,7 +242,7 @@ yum remove -y docker \
 
 （2）安装依赖工具包
 
-```javascript
+```bash
 yum install -y yum-utils \
   device-mapper-persistent-data \
   lvm2
@@ -250,32 +250,32 @@ yum install -y yum-utils \
 
 （3）设置 yum 源
 
-```javascript
+```bash
 sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 sudo yum makecache fast
 ```
 
 （4）安装 docker
 
-```javascript
+```bash
 yum install -y docker-ce
 ```
 
 （5）启动 docker
 
-```javascript
+```bash
 systemctl start docker.service
 ```
 
 （6）设置开机自启动
 
-```javascript
+```bash
 systemctl enable docker.service
 ```
 
 （7）设置权限
 
-```javascript
+```bash
 sudo chmod a+rw /var/run/docker.sock
 ```
 
@@ -289,7 +289,7 @@ sudo chmod a+rw /var/run/docker.sock
 
 如果系统没有自带 vim 编辑器，则使用如下命令进行安装。
 
-```javascript
+```bash
 yum -y install vim*
 ```
 
@@ -297,7 +297,7 @@ yum -y install vim*
 
 默认通过官方镜像源拉取，速度特别**慢**，并且容易**卡死**，所以需要替换**镜像源**，如果目录下不存在 daemon.json 配置文件，则新建配置文件，执行 `vim /etc/docker/daemon.json` 命令，输入配置如下：
 
-```javascript
+```bash
 {
   "registry-mirrors": [
     "https://registry.docker-cn.com",
@@ -326,13 +326,13 @@ yum -y install vim*
 
 （1）下载资源
 
-```javascript
+```bash
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 ```
 
 （2）设置权限
 
-```javascript
+```bash
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -340,13 +340,13 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 不建立软连接，可能无法使用 docker-compose 命令。
 
-```javascript
-ln - s / usr / local / bin / docker - compose / usr / bin / docker - compose;
+```shell
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
 
 （4）查看版本
 
-```javascript
+```bash
 docker-compose --version
 ```
 
@@ -356,13 +356,13 @@ docker-compose --version
 
 （1）通过 git 拉取源码
 
-```javascript
+```bash
 git clone https://github.com/huasenjio/huasenjio-compose.git
 ```
 
 （2）进入 huasenjio-compose 目录
 
-```javascript
+```bash
 cd huasenjio-compose
 ```
 
@@ -370,7 +370,7 @@ cd huasenjio-compose
 
 执行运行容器命令后，docker 将自动拉取安装配置 nginx、mongodb、redis、jenkins、后端服务，第一次会比较缓慢，请耐心等待，如果遇到卡死的情况，使用`ctrl + c`终止命令，然后重复执行运行容器命令即可。
 
-```javascript
+```bash
 docker-compose up -d
 ```
 
@@ -378,10 +378,10 @@ docker-compose up -d
 
 容器启动成功之后，我们在浏览器地址栏输入如下地址：
 
-```javascript
-官网地址：协议://ip/portal/
-后台管理地址：协议://ip/admin/
-默认后台管理密码：admin@qq.com/12345
+```bash
+官网：协议://ip/portal/
+后台管理：协议://ip/admin/
+默认管理员：admin@qq.com/12345
 ```
 
 ## ❓ 常见 QA
@@ -416,7 +416,7 @@ docker-compose up -d
 
 （8）如何操作服务器防火墙？
 
-```javascript
+```bash
 开启防火墙：systemctl start firewalld
 关闭防火墙：systemctl stop firewalld
 查看防火墙：systemctl status firewalld
@@ -434,23 +434,23 @@ docker-compose up -d
 
 （10-1）使用脚本
 
-进入项目根目录，使用 chmod u+x ./bin/* 为脚本设置可执行权限，然后执行 ./bin/upgrade.sh，耐心等待，拉取新代码，升级网站。
+进入项目根目录，使用 chmod u+x ./bin/\* 为脚本设置可执行权限，然后执行 ./bin/upgrade.sh，耐心等待，拉取新代码，升级网站。
 
 （10-2）使用 jenkins
 
-网站采用 docker-compose 编排容器，一键部署网站的同时，也在8080端口安装 jenkins 用于实现 CI/CD ，详细视频教程 https://www.bilibili.com/video/BV1vg4y1E7xy/，另外注意 jenkins 会占用大概20%的内存，如果不使用可以关闭，进入项目根目录，执行 docker-compose stop jenkins，完成停止 jenkins 容器。
+网站采用 docker-compose 编排容器，一键部署网站的同时，也在 8080 端口安装 jenkins 用于实现 CI/CD ，详细视频教程 https://www.bilibili.com/video/BV1vg4y1E7xy/，另外注意 jenkins 会占用大概 20%的内存，如果不使用可以关闭，进入项目根目录，执行 docker-compose stop jenkins，完成停止 jenkins 容器。
 
 （11）如何修改前端界面？
 
 > ⚠️ 需要 node.js 环境
 
-进入官网的源码路径 /huasenjio-compose/huasen-frontend/portal 的终端，执行 npm install，安装依赖，然后执行 npm run server 启动项目进行开发，改动代码之后，使用npm run build 打包代码，构建后的代码输出在 /huasenjio-compose/huasen-server/public/webapp/portal 下，需要拷贝到服务器的对应位置，最后执行 /huasenjio-compose/bin/update.sh 脚本更新网站。
+进入官网的源码路径 /huasenjio-compose/huasen-frontend/portal 的终端，执行 npm install，安装依赖，然后执行 npm run server 启动项目进行开发，改动代码之后，使用 npm run build 打包代码，构建后的代码输出在 /huasenjio-compose/huasen-server/public/webapp/portal 下，需要拷贝到服务器的对应位置，最后执行 /huasenjio-compose/bin/update.sh 脚本更新网站。
 
 （12）如何修改后台管理界面？
 
 > ⚠️ 需要 node.js 环境
 
-进入后台管理的源码路径 /huasenjio-compose/huasen-frontend/admin 的终端，执行 npm install，安装依赖，然后执行 npm run server 启动项目进行开发，改动代码之后，使用npm run build 打包代码，构建后的代码输出在 /huasenjio-compose/huasen-server/public/webapp/admin 下，需要拷贝到服务器的对应位置，最后执行 /huasenjio-compose/bin/update.sh 脚本更新网站。
+进入后台管理的源码路径 /huasenjio-compose/huasen-frontend/admin 的终端，执行 npm install，安装依赖，然后执行 npm run server 启动项目进行开发，改动代码之后，使用 npm run build 打包代码，构建后的代码输出在 /huasenjio-compose/huasen-server/public/webapp/admin 下，需要拷贝到服务器的对应位置，最后执行 /huasenjio-compose/bin/update.sh 脚本更新网站。
 
 （13）如何修改后端服务？
 
@@ -460,7 +460,7 @@ docker-compose up -d
 
 （14）如何修改 nginx 的运行端口？
 
-进入项目根目录，打开`docker-compose.yml`，修改 published 属性，端口号建议选3000-10000范围，然后执行 /huasen-compose/bin/update.sh 脚本更新网站。
+进入项目根目录，打开`docker-compose.yml`，修改 published 属性，端口号建议选 3000-10000 范围，然后执行 /huasen-compose/bin/update.sh 脚本更新网站。
 
 ## 📽 视频教程
 
@@ -520,7 +520,7 @@ docker volume prune -f
 
 ### 目录结构
 
-```javascript
+```bash
 ├── huasen-mongo       // mongodb 数据库配置和数据
 ├── huasen-nginx       // nginx 配置
 ├── huasen-redis       // redis 配置和数据

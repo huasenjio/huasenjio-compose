@@ -29,3 +29,7 @@
 ### upgrade.sh
 
 拉取仓库代码，重新构建全部镜像，排除 mongodb 数据、redis 数据、jenkins 程序文件，更新全部文件，合并静态文件夹，升级网站。
+
+### install.sh
+
+网站部署脚本，执行期间先卸载 docker，然后重新安装 git、docker、docker-compose 程序。执行时发生报错或阻塞，使用 `ctrl + c` 中断程序，然后重新执行脚本。
