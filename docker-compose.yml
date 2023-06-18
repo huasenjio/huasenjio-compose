@@ -22,7 +22,7 @@ services:
       # init-mongo-open.js 文件会在 mongodb 容器初始化完成之后执行，创建数据库默认的角色
       - ./huasen-mongo/init-mongo-open.js:/docker-entrypoint-initdb.d/init-mongo-open.js
     # 执行命令
-    command: sh -c "mongod --bind_ip 0.0.0.0 & sleep 10 && mongo /docker-entrypoint-initdb.d/init-mongo-open.js && tail -f /huasen-mongo/tail/null"
+    command: sh -c "mongod --bind_ip 0.0.0.0 & sleep 5 && mongo /docker-entrypoint-initdb.d/init-mongo-open.js && tail -f /huasen-mongo/tail/null"
     environment:
       # 设置时区为上海（东八区）
       TZ: Asia/Shanghai
@@ -106,8 +106,6 @@ services:
     container_name: server
     privileged: true
     user: root
-    # 睡眠 10 秒钟，等待数据库创建角色
-    command: sh -c "sleep 20"
     # 代理日志文件
     volumes:
       - ./huasen-log/:/app/huasen-server/log
