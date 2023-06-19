@@ -14,6 +14,7 @@ daemon_file="/etc/docker/daemon.json"
 # docker 镜像源
 mirror1="http://hub-mirror.c.163.com"
 mirror2="https://docker.mirrors.ustc.edu.cn"
+mirror3="https://registry.docker-cn.com"
 
 echo '0.正在初始化...'
 # 安装 vim 工具
@@ -57,15 +58,15 @@ docker version
 echo '4.正在 docker 镜像源...'
 # 配置 docker 镜像源
 if [ ! -f "$daemon_file" ]; then
-    echo '{"registry-mirrors":["'$mirror1'","'$mirror2'"],"ipv6":false}' > $daemon_file
+    echo '{"registry-mirrors":["'$mirror1'","'$mirror2'","'$mirror3'"],"ipv6":false}' > $daemon_file
     echo "Created $daemon_file and added mirrors"
 else
     # 判断配置文件中是否已经存在镜像源
-    if grep -q "$mirror1" "$daemon_file" && grep -q "$mirror2" "$daemon_file"; then
+    if grep -q "$mirror1" "$daemon_file" && grep -q "$mirror2" "$daemon_file" && grep -q "$mirror3" "$daemon_file"; then
         echo "The mirrors already exist in $daemon_file"
     else
         # 追加镜像源
-        sed -i '/registry-mirrors/ s/\[/\[\"'$mirror1'\",\"'$mirror2'\",/' $daemon_file
+        sed -i '/registry-mirrors/ s/\[/\[\"'$mirror1'\",\"'$mirror2'\",\"'$mirror3'\",/' $daemon_file
         echo "Added mirrors to $daemon_file"
     fi
 fi
