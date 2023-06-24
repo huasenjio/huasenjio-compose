@@ -3,7 +3,7 @@
  * @Date: 2021-11-27 22:38:22
  * @LastEditors: huasenjio
  * @LastEditTime: 2022-10-20 01:08:51
- * @Description: 登陆面板
+ * @Description: 登录面板
 -->
 <template>
   <HsDialog title="" :fullscreen="true" :show-close="false" :close-on-press-escape="false" :visible.sync="showWrapSign">
@@ -13,7 +13,7 @@
       </div>
       <div class="tab">
         <ul>
-          <li>登陆后台管理系统</li>
+          <li>登录后台管理系统</li>
         </ul>
         <div class="content">
           <span class="panel">
@@ -27,7 +27,7 @@
                 </el-form-item>
               </el-form>
               <div class="btn" @click="login">
-                登 陆
+                登 录
               </div>
             </section>
           </span>
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     ...mapMutations(['commitAll']),
-    // 登陆处理
+    // 登录处理
     login() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -80,7 +80,7 @@ export default {
             secret: true,
           }).then(res => {
             this.STORAGE.setItem(this.CONSTANT.localManage, res.data);
-            // 关闭登陆面板
+            // 关闭登录面板
             this.commitAll({
               showWrapSign: false,
             });

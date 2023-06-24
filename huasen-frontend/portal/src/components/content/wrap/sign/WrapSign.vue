@@ -36,7 +36,7 @@
                 </el-form-item>
               </el-form>
               <div class="btn" @click="login">
-                登 陆
+                登 录
               </div>
             </section>
           </span>

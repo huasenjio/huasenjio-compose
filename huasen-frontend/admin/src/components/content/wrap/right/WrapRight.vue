@@ -14,7 +14,7 @@
         <i class="iconfont icon-json tool" @click="openJsonToolPanel"></i>
         <i class="iconfont icon-daima tool" @click="openRumtimePanel"></i>
       </div>
-      <div class="right" title="退出登陆">
+      <div class="right" title="退出登录">
         <i class="iconfont icon-exit-line" @click="exit"></i>
       </div>
     </header>
