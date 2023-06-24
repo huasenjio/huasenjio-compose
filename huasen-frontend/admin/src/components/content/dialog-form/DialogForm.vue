@@ -32,6 +32,7 @@
                 <div class="result-view-container"><IconResultContainer id="icon-text-target-container" :isTextMode="true" :color.sync="iconColor" :text="iconText"></IconResultContainer></div>
               </el-tab-pane>
               <el-tab-pane label="上传图标" name="upload">
+                <div>已选图标</div>
                 <el-upload
                   :headers="headers"
                   :style="getUploadedStyle(formTtem.type)"
@@ -48,13 +49,13 @@
                 <IconColorSelect :color.sync="iconImgModeColor"></IconColorSelect>
                 <div>推荐图标</div>
                 <ul class="favicon-group">
-                  <li class="rounded" :class="{ select: selectFaviconIndex === index }" v-for="(item, index) in favicons" :key="TOOL.stringToMD5(item) + index" @click="selectFavicon(index)">
-                    <img class="w-full h-full" v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" :id="TOOL.stringToMD5(item)" :src="item" alt="image" />
+                  <li class="rounded" :class="{ select: selectFaviconIndex === index }" v-for="(item, index) in favicons" :key="index" @click="selectFavicon(index)">
+                    <img class="w-full h-full" v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" :id="index" :src="item" alt="image" />
                   </li>
                 </ul>
                 <div>图标效果</div>
-                <div class="result-view-container">
-                  <IconResultContainer id="icon-img-target-container" :isTextMode="false" :color.sync="iconImgModeColor" :url="favicons[selectFaviconIndex]"></IconResultContainer>
+                <div v-if="faviconIconURL" class="result-view-container">
+                  <IconResultContainer id="icon-img-target-container" :isTextMode="false" :color.sync="iconImgModeColor" :url="faviconIconURL"></IconResultContainer>
                 </div>
               </el-tab-pane>
               <el-input class="mt-px-10" placeholder="图标地址" :disabled="!showUpload" v-model="formData[formTtem.key]">
@@ -188,6 +189,9 @@ export default {
         token: this.$store.state.manage.token,
       };
     },
+    faviconIconURL() {
+      return this.favicons[this.selectFaviconIndex] || '';
+    },
     showCreateUrl() {
       return this.activeName === 'text' || this.activeName === 'query';
     },
@@ -232,7 +236,7 @@ export default {
       if (this.activeName === 'text') {
         node = document.getElementById('icon-text-target-container');
       } else if (this.activeName === 'query') {
-        if (!this.favicons[this.selectFaviconIndex]) {
+        if (!this.faviconIconURL) {
           this.$tips('error', '未选择图标', 'top-right', 1200);
         } else {
           node = document.getElementById('icon-img-target-container');

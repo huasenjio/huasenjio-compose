@@ -39,9 +39,10 @@ export default {
 
   watch: {
     url: {
-      handler() {
+      handler(val) {
         this.$forceUpdate();
       },
+      deep: true,
       immediate: true,
     },
   },
