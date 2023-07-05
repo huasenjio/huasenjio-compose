@@ -10,6 +10,14 @@
       <!-- 搜索引擎下拉菜单 -->
       <div class="left">
         <i :class="currentSearch.iconClass"></i>
+        <!-- placeholder -->
+        <div v-if="showPlaceholder" class="left-placeholder">
+          <div class="left-placeholder-unfocus" key="unfocus">
+            按下
+            <div class="focus-icon">/</div>
+            立即搜索...
+          </div>
+        </div>
       </div>
       <!-- 搜索输入框 -->
       <div class="center">
@@ -17,12 +25,14 @@
           ref="searchInput"
           v-model="searchText"
           @input="handleIdea"
+          @focus="handleFocus"
+          @blur="handleBlur"
           @keyup.up.native.prevent="handleUp"
           @keyup.down.native.prevent="handleDown"
           @keydown.tab.shift.native.prevent.exact="handlePrevTab"
           @keydown.tab.native.prevent.exact="handleNextTab"
           :autofocus="true"
-          placeholder="搜索一下..."
+          :placeholder="isSearchInputFocus ? '搜索一下...' : ''"
           clearable
         >
         </el-input>
@@ -51,6 +61,9 @@ import { AF } from '@/plugin/AF.js';
 import { jsonp } from '@/network/http.js';
 import { mapState } from 'vuex';
 
+import Bus from '@/plugin/event-bus.js';
+import * as BusType from '@/plugin/event-type.js';
+
 import searchs from '@/config/search.config.js';
 
 export default {
@@ -73,13 +86,17 @@ export default {
       activeIdeaIndex: -1,
       currentSearch: {},
       ideas: [],
+      isSearchInputFocus: false,
     };
   },
   computed: {
-    ...mapState(['sites']),
+    ...mapState(['user', 'sites']),
     // 显示建议面板
     showIdeas() {
       return this.searchText && this.ideas.length !== 0 ? true : false;
+    },
+    showPlaceholder() {
+      return !this.searchText && !this.isSearchInputFocus;
     },
     // 站内支持搜索网络链接，直接跳转网站
     instationEngine() {
@@ -97,6 +114,7 @@ export default {
     },
   },
   watch: {
+    // 选中的建议索引
     activeSearchIndex: {
       handler(newV, oldV) {
         this.currentSearch = this.searchs[newV];
@@ -112,11 +130,41 @@ export default {
         }
       },
     },
+    // 监听极简模式状态
+    'user.config.simpleMode': {
+      // 从极简模式切回普通模式
+      handler(nV, oV) {
+        if (oV === true && nV === false) this.initEventBus();
+      },
+      deep: true,
+    },
   },
   mounted() {
+    // 初始化皮肤主题数据
     this.$store.dispatch('initLocalStyleInfo');
+    // 初始化事件总线
+    this.initEventBus();
+  },
+  destroyed() {
+    Bus.unSubEv(BusType.HOME_FUCOS);
   },
   methods: {
+    initEventBus() {
+      Bus.subEv(BusType.HOME_FUCOS, key => {
+        this.handleSearchFucos(key);
+      });
+    },
+    handleFocus() {
+      this.isSearchInputFocus = true;
+    },
+    handleBlur() {
+      this.isSearchInputFocus = false;
+    },
+    handleSearchFucos(key) {
+      if (key === '/' && this.$refs.searchInput) {
+        this.$refs.searchInput.focus();
+      }
+    },
     handleNextTab(event) {
       let index = this.activeSearchIndex < this.searchs.length - 1 ? this.activeSearchIndex + 1 : 0;
       this.selectEngine(index);
@@ -281,6 +329,26 @@ export default {
         font-size: 24px;
         font-weight: 500;
         cursor: pointer;
+      }
+      .left-placeholder {
+        position: absolute;
+        left: 65px;
+        width: 140px;
+        height: 20px;
+        color: var(--gray-500);
+        .left-placeholder-unfocus {
+          display: flex;
+          align-items: center;
+          .focus-icon {
+            width: 14px;
+            height: 18px;
+            margin: 0 4px;
+            border-radius: 2px;
+            border: 1px solid var(--gray-500);
+            text-align: center;
+            line-height: 18px;
+          }
+        }
       }
     }
     .center {

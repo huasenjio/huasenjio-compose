@@ -13,7 +13,7 @@
           <img v-lazy="{ unload: require('@/assets/img/error/slogan.png') }" class="w-full h-full" :src="this.user.headImg" />
         </div>
         <div class="name text">
-          <div>{{ user.name || '花酱大人' }}</div>
+          <div>{{ user.name || '暂无昵称' }}</div>
           <div class="text text-sm text-gray-400">{{ user.id || 'localspace@qq.com' }}</div>
         </div>
         <i class="iconfont icon-tuichu" @click="exit"></i>

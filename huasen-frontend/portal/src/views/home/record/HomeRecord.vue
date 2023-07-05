@@ -66,6 +66,9 @@
 import { mapState, mapMutations } from 'vuex';
 import { getElementFormValidator } from '@/plugin/strategy.js';
 
+import Bus from '@/plugin/event-bus.js';
+import * as BusType from '@/plugin/event-type.js';
+
 import DialogForm from '@/components/content/dialogForm/DialogForm.vue';
 import CustomWallpaperDrawer from '@/components/content/customWallPaperDrawer/CustomWallpaperDrawer.vue';
 
@@ -114,6 +117,16 @@ export default {
   },
   computed: {
     ...mapState(['user', 'config']),
+  },
+  watch: {
+    // 打开编辑面板时，关闭监听 / 聚焦搜索框事件。
+    showForm(val) {
+      if (val) {
+        Bus.pubEv(BusType.HOME_DESTROY_KEYUP_SLASH);
+      } else {
+        Bus.pubEv(BusType.HOME_CREATE_KEYUP_SLASH);
+      }
+    },
   },
   methods: {
     ...mapMutations(['commitAll']),
@@ -231,6 +244,7 @@ export default {
 
     // 恢复保存数据
     async handleRecovery() {
+      Bus.pubEv(BusType.HOME_DESTROY_KEYUP_SLASH);
       try {
         let rawData;
         if (navigator.clipboard && window.isSecureContext) {
@@ -259,6 +273,8 @@ export default {
         });
       } catch (err) {
         this.$tips('error', '恢复数据失败', 'top-right', 2000);
+      } finally {
+        Bus.pubEv(BusType.HOME_CREATE_KEYUP_SLASH);
       }
     },
     openCustomWallpaper() {

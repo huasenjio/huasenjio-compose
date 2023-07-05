@@ -61,6 +61,15 @@ export default {
         context.commit('commitAll', {
           appConfig: {
             article: res.data.article,
+            site: {
+              name: that.LODASH.get(res.data, 'site.name') || '花森',
+              logoURL: that.LODASH.get(res.data, 'site.logoURL') || require('@/assets/img/logo/favicon.svg'),
+              redirectURL: that.LODASH.get(res.data, 'site.redirectURL') || 'http://huasen.cc/',
+              home: {
+                title: that.LODASH.get(res.data, 'site.home.title') || '花森小窝',
+                url: that.LODASH.get(res.data, 'site.home.url') || 'http://huasen.cc/',
+              },
+            },
           },
           themeConfig: res.data.theme,
         });

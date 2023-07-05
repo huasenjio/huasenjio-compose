@@ -62,13 +62,30 @@ export default {
     this.initScrollEvent();
     this.initEventBus();
     this.initLocalStyleInfo();
+
+    // 创建事件总线
+    Bus.pubEv(BusType.HOME_CREATE_KEYUP_SLASH);
   },
   destroyed() {
+    // 先销毁keyup
+    Bus.pubEv(BusType.HOME_DESTROY_KEYUP_SLASH);
+
     Bus.unSubEv(BusType.HOME_SCROLL_TO);
+    Bus.unSubEv(BusType.HOME_CREATE_KEYUP_SLASH);
+    Bus.unSubEv(BusType.HOME_DESTROY_KEYUP_SLASH);
   },
   methods: {
     ...mapMutations(['commitAll']),
     ...mapActions(['initLocalStyleInfo']),
+
+    handleHomeSearchFucos(event) {
+      Bus.pubEv(BusType.HOME_FUCOS, event.key);
+
+      setTimeout(() => {
+        Bus.pubEv(BusType.HOME_SCROLL_TO, 0, true);
+      }, 200);
+    },
+
     // 按下tab，切换搜索引擎
     initScrollEvent() {
       let debounce = this.TOOL.debounce(event => {
@@ -106,6 +123,14 @@ export default {
       Bus.subEv(BusType.HOME_SCROLL_TO, (top, isTop) => {
         let y = isTop ? top : this.$refs.siteContent.$el.offsetTop - 85 + top;
         this.homeContentScrollTo(y);
+      });
+
+      // 初始化聚焦事件总线
+      Bus.subEv(BusType.HOME_CREATE_KEYUP_SLASH, () => {
+        document.addEventListener('keyup', this.handleHomeSearchFucos);
+      });
+      Bus.subEv(BusType.HOME_DESTROY_KEYUP_SLASH, () => {
+        document.removeEventListener('keyup', this.handleHomeSearchFucos);
       });
     },
 

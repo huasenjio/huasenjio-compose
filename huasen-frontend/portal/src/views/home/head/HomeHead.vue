@@ -44,14 +44,21 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="item in journals" :key="item._id" :command="item._id">
-            {{ item.name }}
-          </el-dropdown-item>
+          <template v-if="journals.length">
+            <el-dropdown-item v-for="item in journals" :key="item._id" :command="item._id">
+              {{ item.name }}
+            </el-dropdown-item>
+          </template>
+          <template v-else>
+            <el-dropdown-item :disabled="true">
+              空空如也
+            </el-dropdown-item>
+          </template>
         </el-dropdown-menu>
       </el-dropdown>
     </section>
     <section v-if="showMenu" @click="sign" class="sign">
-      {{ signText || '花酱大人' }}
+      {{ signText || '暂无昵称' }}
     </section>
   </div>
 </template>
@@ -90,8 +97,8 @@ export default {
       links: [
         {
           iconfontClass: 'iconfont icon-md-home',
-          text: '花森小窝',
-          url: 'http://huasen.cc/',
+          text: this.$store.state.appConfig.site.home.title || '花森小窝',
+          url: this.$store.state.appConfig.site.home.url || 'http://huasen.cc/',
           isArticle: false,
         },
         {
@@ -146,7 +153,7 @@ export default {
         },
       ).then(res => {
         if (res.data.length !== 0) {
-          this.journals = res.data;
+          this.journals = res.data || [];
           this.handleSelectJournal(this.journals[0]._id);
         }
       });
@@ -271,8 +278,13 @@ export default {
       align-items: center;
       li {
         margin-left: 12px;
+        display: flex;
+        align-items: center;
+        span {
+          display: inline-block;
+          max-width: 86px;
+        }
         cursor: pointer;
-
         &:first-of-type {
           margin-left: 0;
         }

@@ -6,7 +6,7 @@
  * @Description: 
 -->
 <template>
-  <div class="read">
+  <div class="read" v-loading="loading">
     <main>
       <header>
         <div class="title-group flex my-px-10">
@@ -24,11 +24,11 @@
           </div>
         </div>
         <div class="info-group">
-          <div class="text">{{ `花森原创 · 最后修改于${time}` }}</div>
+          <div class="text">{{ `${appConfig.site.name}原创 · 最后修改于${time}` }}</div>
         </div>
       </header>
       <div class="content">
-        <HMarkdown :value="article.content"></HMarkdown>
+        <HMarkdown :value="article.content || content"></HMarkdown>
         <footer class="footer-group">
           <div class="text">版权说明：MIT开源协议</div>
           <div class="text">免责声明：文章仅供学习交流 禁止用于商业用途</div>
@@ -38,10 +38,12 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
   name: 'Read',
   data() {
     return {
+      loading: true,
       article: {
         title: '文章标题',
         time: '1979-01-01',
@@ -58,6 +60,7 @@ export default {
     this.showSidebar();
   },
   computed: {
+    ...mapState(['appConfig']),
     tags() {
       return this.article.tag ? this.article.tag.split('/') : [];
     },
@@ -79,11 +82,23 @@ export default {
       }
     },
     queryArticleById(_id) {
-      this.API.getArtcileById({ _id })
+      this.API.getArtcileById(
+        { _id },
+        {
+          notify: false,
+        },
+      )
         .then(res => {
-          let article = res.data[0];
-          if (article) {
-            this.article = article;
+          if (!res.data[0]) {
+            this.$tips('error', '文章找不到了', 'top-right', 1200, () => {
+              this.$router.push('/article');
+            });
+          } else {
+            let article = res.data[0];
+            if (article) {
+              this.article = article;
+              this.loading = false;
+            }
           }
         })
         .catch(err => {

@@ -8,7 +8,7 @@
 <template>
   <div v-rightMenu class="wrap-left">
     <div class="logo">
-      <img src="~@/assets/img/logo/favicon.svg" />
+      <img :src="logoURL" />
     </div>
     <ul class="navbar">
       <router-link :to="item.path" v-for="(item, index) in this.navs" :key="index">
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import navs from '@/config/nav.config.js';
 export default {
   name: 'WrapLeft',
@@ -30,6 +31,13 @@ export default {
     return {
       navs,
     };
+  },
+  computed: {
+    ...mapState(['appConfig']),
+
+    logoURL() {
+      return this.appConfig.site.logoURL;
+    },
   },
 };
 </script>

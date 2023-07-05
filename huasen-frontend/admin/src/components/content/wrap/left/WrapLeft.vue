@@ -8,7 +8,7 @@
 <template>
   <div class="wrap-left">
     <div class="logo">
-      <div class="text title">花森后台管理</div>
+      <div class="text title">{{ site.name }}后台管理</div>
     </div>
     <div class="navbar">
       <router-link :to="item.path" v-for="item in this.navs" :key="item.path">
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import navs from '@/config/nav.config.js';
 export default {
   name: 'WrapLeft',
@@ -29,6 +30,9 @@ export default {
     return {
       navs,
     };
+  },
+  computed: {
+    ...mapState(['site']),
   },
 };
 </script>
@@ -56,6 +60,7 @@ export default {
       position: relative;
       left: 20px;
       top: 5px;
+      width: 120px;
       font-size: 20px;
     }
   }

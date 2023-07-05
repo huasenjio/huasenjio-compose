@@ -20,7 +20,9 @@ import watermark from '@/plugin/watermark.js';
 
 export default {
   name: 'App',
+
   components: { Wrap, BrowserTips },
+
   computed: {
     ...mapState(['manage']),
     // 判断浏览器支持
@@ -34,8 +36,10 @@ export default {
       }
     },
   },
-  mounted() {
-    this.$store.dispatch('initManage');
+
+  async mounted() {
+    await this.$store.dispatch('initManage');
+    await this.$store.dispatch('initAppConfig');
     watermark({
       watermark_txt: this.manage.id,
     });

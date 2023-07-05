@@ -8,7 +8,7 @@
     "name": "Home",
     "menuCode": "000",
     "component": "home/Home",
-    "title": "花森主页",
+    "title": "主页",
     "children": []
   },
   {
@@ -32,7 +32,7 @@
     "name": "Article",
     "menuCode": "000",
     "component": "article/Article",
-    "title": "文章专栏",
+    "title": "文章",
     "children": []
   },
   {

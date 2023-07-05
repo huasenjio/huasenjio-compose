@@ -60,7 +60,7 @@ export default {
             },
             {
               strategy: 'isJSONObject',
-              errMsg: '请输入JSON对象',
+              errMsg: '请输入正确 JSON 对象',
             },
           ],
         },
