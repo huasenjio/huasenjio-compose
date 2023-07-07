@@ -64,14 +64,14 @@ app.use('/journal', JournalRouter);
 
 let redirectURL = undefined;
 try {
-  redirectURL = require('./setting.json').redirectURL;
+  redirectURL = require('./setting.json').site.redirectURL;
 } catch (err) {
   global.huasen.formatError(err, '未捕获的全局错误');
 }
-
 // 404页面重定向
 app.get('*', function (req, res) {
-  res.redirect(redirectURL ? redirectURL : 'http://huasen.cc/');
+  let url = redirectURL && typeof redirectURL === 'string' ? redirectURL : 'http://huasen.cc/';
+  res.redirect(url);
 });
 
 //  全局处理错误
