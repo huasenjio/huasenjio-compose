@@ -94,11 +94,24 @@ export default {
       takes: [],
       journals: [],
       currentJournal: {},
-      links: [
+    };
+  },
+
+  computed: {
+    ...mapState(['showWrapLeft', 'user']),
+    showGrossGlass() {
+      return this.showMenu && document.body.clientWidth <= 1024 ? true : false;
+    },
+    signText() {
+      return this.user.token ? this.user.name : '注册登录';
+    },
+    links() {
+      let site = this.$store.state.appConfig.site;
+      return [
         {
           iconfontClass: 'iconfont icon-md-home',
-          text: this.$store.state.appConfig.site.home.title || '花森小窝',
-          url: this.$store.state.appConfig.site.home.url || 'http://huasen.cc/',
+          text: site.home.title || '花森小窝',
+          url: site.home.url || 'http://huasen.cc/',
           isArticle: false,
         },
         {
@@ -113,17 +126,7 @@ export default {
           url: this.$store.state.appConfig.article.about,
           isArticle: true,
         },
-      ],
-    };
-  },
-
-  computed: {
-    ...mapState(['showWrapLeft', 'user']),
-    showGrossGlass() {
-      return this.showMenu && document.body.clientWidth <= 1024 ? true : false;
-    },
-    signText() {
-      return this.user.token ? this.user.name : '注册登录';
+      ];
     },
   },
 

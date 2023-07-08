@@ -55,28 +55,28 @@ export default {
   },
 
   // 初始化配置
-  initAppConfigInfo(context, payload) {
-    that.API.findAppConfig({}, { notify: false })
-      .then(res => {
-        context.commit('commitAll', {
-          appConfig: {
-            article: res.data.article,
-            site: {
-              name: that.LODASH.get(res.data, 'site.name') || '花森',
-              logoURL: that.LODASH.get(res.data, 'site.logoURL') || require('@/assets/img/logo/favicon.svg'),
-              redirectURL: that.LODASH.get(res.data, 'site.redirectURL') || 'http://huasen.cc/',
-              home: {
-                title: that.LODASH.get(res.data, 'site.home.title') || '花森小窝',
-                url: that.LODASH.get(res.data, 'site.home.url') || 'http://huasen.cc/',
-              },
+  async initAppConfigInfo(context, payload) {
+    let res = await that.API.findAppConfig({}, { notify: false });
+    try {
+      context.commit('commitAll', {
+        appConfig: {
+          article: that.LODASH.get(res.data, 'article'),
+          site: {
+            name: that.LODASH.get(res.data, 'site.name') || '花森',
+            logoURL: that.LODASH.get(res.data, 'site.logoURL') || require('@/assets/img/logo/favicon.svg'),
+            redirectURL: that.LODASH.get(res.data, 'site.redirectURL') || 'http://huasen.cc/',
+            home: {
+              title: that.LODASH.get(res.data, 'site.home.title') || '花森小窝',
+              url: that.LODASH.get(res.data, 'site.home.url') || 'http://huasen.cc/',
             },
           },
-          themeConfig: res.data.theme,
-        });
-      })
-      .catch(err => {
-        that.$tips('error', '初始化配置出错', 'top-right', 2000);
+        },
+        themeConfig: that.LODASH.get(res.data, 'theme'),
       });
+      console.log('初始化配置成功');
+    } catch (err) {
+      that.$tips('error', '初始化配置出错', 'top-right', 2000);
+    }
   },
 
   // 保存当前用户快照
