@@ -48,17 +48,22 @@ export default {
   },
 
   created() {
-    // 移除loading
-    this.removeLoading();
+    // 移除开屏动画
+    let loadingDOM = document.getElementById('js-app-loading-container');
+    if (loadingDOM) {
+      document.body.removeChild(loadingDOM);
+    }
+
     // 调整文档大小，避免网站在移动端网页中，无法适应屏幕的问题
     initScaleDocument();
   },
 
-  mounted() {
+  async mounted() {
     // 加载处理用户信息
     this.initLocalUserInfo();
     this.initLocalStyleInfo();
-    this.initAppConfigInfo();
+    await this.initAppConfigInfo();
+    console.log('页面已挂载成功');
   },
 
   destroyed() {
@@ -68,13 +73,6 @@ export default {
   methods: {
     // 导入vuex中的方法
     ...mapActions(['initLocalUserInfo', 'initLocalStyleInfo', 'initAppConfigInfo']),
-    // 移除开屏动画，vue实例挂载后移除加载爱心加载效果
-    removeLoading() {
-      let loadingDOM = document.getElementById('loading-id9527');
-      if (loadingDOM) {
-        document.body.removeChild(loadingDOM);
-      }
-    },
   },
 };
 </script>
