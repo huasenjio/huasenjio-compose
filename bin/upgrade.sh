@@ -53,7 +53,9 @@ echo '5.正在升级数据...'
 rsync -av --exclude="huasen-mongo/volume" --exclude="huasen-redis/data" --exclude="huasen-jenkins" --exclude="huasen-store" --exclude="huasen-server/setting.json" $tempPath/$gitStorageName $projectPath/../
 
 # 合并静态资源
+set +e
 cp -frap $tempPath/$gitStorageName/huasen-store/* $projectPath/huasen-store/
+set -e
 
 # 设置可执行权限
 chmod u+x $projectPath/bin/*
