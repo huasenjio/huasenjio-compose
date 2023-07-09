@@ -110,6 +110,7 @@ services:
     volumes:
       - ./huasen-log/:/app/huasen-server/log
       - ./huasen-store/:/app/huasen-store
+      - ./huasen-server/setting.json:/app/huasen-server/setting.json
     ports:
       - "3000:3000"
       - "8181:8181"

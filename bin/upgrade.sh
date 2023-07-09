@@ -20,7 +20,7 @@ projectPath="/root/huasenjio-compose"
 # 远程仓库名称
 gitStorageName="huasenjio-compose"
 # 远程仓库地址
-gitStoragePath="https://github.com/huasenjio/huasenjio-compose.git"
+gitStoragePath="https://gitee.com/HuaSenJioJio/huasenjio-compose.git"
 
 # 缓存目录
 tempPath="/root/huasen-temp"
@@ -45,12 +45,13 @@ docker-compose down
 echo '4.正在备份数据文件...'
 # 开启报错继续执行
 set +e
-find "$projectPath" -mindepth 1 -depth ! -path "$projectPath/huasen-mongo/volume/*" ! -path "$projectPath/huasen-redis/data/*" ! -path "$projectPath/huasen-store/*" ! -path "$projectPath/huasen-jenkins/*" -delete
+find "$projectPath" -mindepth 1 -depth ! -path "$projectPath/huasen-mongo/volume/*" ! -path "$projectPath/huasen-redis/data/*" ! -path "$projectPath/huasen-store/*" ! -path "$projectPath/huasen-jenkins/*" ! -path "$projectPath/huasen-server/setting.json" -delete
 # 开启报错中断执行
 set -e
 
 echo '5.正在升级数据...'
-rsync -av --exclude="huasen-mongo/volume" --exclude="huasen-redis/data" --exclude="huasen-jenkins" --exclude="huasen-store" $tempPath/$gitStorageName $projectPath/../
+rsync -av --exclude="huasen-mongo/volume" --exclude="huasen-redis/data" --exclude="huasen-jenkins" --exclude="huasen-store" --exclude="huasen-server/setting.json" $tempPath/$gitStorageName $projectPath/../
+
 # 合并静态资源
 cp -frap $tempPath/$gitStorageName/huasen-store/* $projectPath/huasen-store/
 
