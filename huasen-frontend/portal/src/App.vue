@@ -49,7 +49,7 @@ export default {
 
   created() {
     // 移除开屏动画
-    let loadingDOM = document.getElementById('js-app-loading-container');
+    let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');
     if (loadingDOM) {
       document.body.removeChild(loadingDOM);
     }
