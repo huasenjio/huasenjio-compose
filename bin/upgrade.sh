@@ -50,7 +50,8 @@ find "$projectPath" -mindepth 1 -depth ! -path "$projectPath/huasen-mongo/volume
 set -e
 
 echo '5.正在升级数据...'
-rsync -av --exclude="huasen-mongo/volume" --exclude="huasen-redis/data" --exclude="huasen-jenkins" --exclude="huasen-store" --exclude="huasen-server/setting.json" $tempPath/$gitStorageName $projectPath/../
+cd $tempPath/$gitStorageName
+rsync -av --exclude="huasen-mongo/volume" --exclude="huasen-redis/data" --exclude="huasen-jenkins" --exclude="huasen-store" --exclude="huasen-server/setting.json" ./ $projectPath
 
 # 合并静态资源
 set +e
@@ -61,6 +62,7 @@ set -e
 chmod u+x $projectPath/bin/*
 
 echo '6.正在重启容器...'
+cd $projectPath
 # 构建镜像
 docker-compose build server
 # 重启容器

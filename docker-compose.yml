@@ -83,11 +83,9 @@ services:
     volumes:
       # 挂载目录到容器
       - ./huasen-jenkins/:/var/jenkins_home
-      # 代理部署目录到容器
-      - ./:/huasen-compose
+      - ./huasen-jenkins-cache:/huasen-jenkins-cache
       # 代理docker-compose到容器
       - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
-      # 代理docker到容器
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
       - /usr/lib/x86_64-linux-gnu/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7
