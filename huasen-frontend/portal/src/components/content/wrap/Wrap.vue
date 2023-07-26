@@ -7,12 +7,17 @@
 -->
 <template>
   <div class="hs-wrap">
-    <WrapLeft v-show="showWrapLeft && !simpleMode"></WrapLeft>
-    <WrapRight v-show="!simpleMode"></WrapRight>
-    <WrapSidebar v-show="showWrapSidebar && !simpleMode"></WrapSidebar>
-    <WrapSign></WrapSign>
-    <WrapPerson></WrapPerson>
-    <WrapSimple v-if="simpleMode"></WrapSimple>
+    <div class="wrap-body">
+      <WrapLeft v-show="showWrapLeft && !simpleMode"></WrapLeft>
+      <WrapRight v-show="!simpleMode"></WrapRight>
+      <WrapSidebar v-show="showWrapSidebar && !simpleMode"></WrapSidebar>
+      <WrapSign></WrapSign>
+      <WrapPerson></WrapPerson>
+      <WrapSimple v-if="simpleMode"></WrapSimple>
+    </div>
+    <div v-if="showWrapFooter" class="wrap-footer">
+      <a :href="appConfig.site.footer.url" target="__block">{{ appConfig.site.footer.text }}</a>
+    </div>
   </div>
 </template>
 <script>
@@ -39,9 +44,12 @@ export default {
   },
 
   computed: {
-    ...mapState(['showWrapLeft', 'showWrapConnect', 'showWrapSidebar', 'user']),
+    ...mapState(['showWrapLeft', 'showWrapConnect', 'showWrapSidebar', 'user', 'appConfig']),
     simpleMode() {
       return this.user.config.simpleMode;
+    },
+    showWrapFooter() {
+      return this.appConfig.site.footer.url && this.appConfig.site.footer.text;
     },
   },
 };
@@ -49,11 +57,26 @@ export default {
 
 <style lang="scss" scoped>
 .hs-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+  .wrap-body {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .wrap-footer {
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+    border-top: 1px solid var(--gray-50);
+    background-color: var(--gray-0);
+    z-index: 1;
+    a {
+      color: var(--gray-600);
+    }
+  }
 }
 </style>

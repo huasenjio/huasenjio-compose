@@ -69,6 +69,10 @@ export default {
               title: that.LODASH.get(res.data, 'site.home.title') || '花森小窝',
               url: that.LODASH.get(res.data, 'site.home.url') || 'http://huasen.cc/',
             },
+            footer: {
+              text: that.LODASH.get(res.data, 'site.footer.text') || '',
+              url: that.LODASH.get(res.data, 'site.footer.url') || '',
+            },
           },
         },
         themeConfig: that.LODASH.get(res.data, 'theme'),

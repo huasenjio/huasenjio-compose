@@ -65,6 +65,10 @@ export default {
         title: '花森小窝',
         url: 'http://huasen.cc/',
       },
+      footer: {
+        text: '',
+        url: '',
+      },
     },
   },
 };
