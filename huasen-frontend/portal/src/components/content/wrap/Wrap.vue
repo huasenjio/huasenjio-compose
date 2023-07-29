@@ -49,7 +49,7 @@ export default {
       return this.user.config.simpleMode;
     },
     showWrapFooter() {
-      return this.appConfig.site.footer.url && this.appConfig.site.footer.text;
+      return this.appConfig.site.footer.text;
     },
   },
 };
