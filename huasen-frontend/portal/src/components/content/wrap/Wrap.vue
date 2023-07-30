@@ -57,10 +57,13 @@ export default {
 
 <style lang="scss" scoped>
 .hs-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
   .wrap-body {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     overflow: hidden;
