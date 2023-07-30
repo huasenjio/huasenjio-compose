@@ -521,7 +521,9 @@ https://www.bilibili.com/video/BV1xA411z7QA
 
 （3）自动化部署教程
 
-https://www.bilibili.com/video/BV1vg4y1E7xy，视频中的示例脚本已过时，以文档内提供的 shell 脚本为准！
+> ⚠️ 视频中的示例脚本已过时，以文档内提供的 shell 脚本为准！
+
+https://www.bilibili.com/video/BV1vg4y1E7xy
 
 （3-1）构建完成后执行的 shell 脚本
 
