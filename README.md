@@ -655,5 +655,5 @@ npm run dev
 
 如果项目帮助到大家，可以为我的 bilibili 视频，送上免费的点赞和硬币。另外，阔绰的小伙伴可以请我喝一杯蜜雪冰城🥤～
 
-![XbsNIS2fjTmgpzv](https://s2.loli.net/2023/07/30/XbsNIS2fjTmgpzv.png)
+![vM5uLVcEabZeoJF](https://s2.loli.net/2023/07/30/vM5uLVcEabZeoJF.png)
 
