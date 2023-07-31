@@ -21,8 +21,8 @@ services:
       - ./huasen-mongo/tail/null:/huasen-mongo/tail/null
       # init-mongo-open.js 文件会在 mongodb 容器初始化完成之后执行，创建数据库默认的角色
       - ./huasen-mongo/init-mongo-open.js:/docker-entrypoint-initdb.d/init-mongo-open.js
-    # 执行命令
-    command: sh -c "mongod --bind_ip 0.0.0.0 & sleep 5 && mongo /docker-entrypoint-initdb.d/init-mongo-open.js && tail -f /huasen-mongo/tail/null"
+    # 执行命令，windows 系统下，设置 15 秒的睡眠时间，避免 mongo 没有启动，执行初始化脚本失败
+    command: sh -c "mongod --bind_ip 0.0.0.0 & sleep 15 && mongo /docker-entrypoint-initdb.d/init-mongo-open.js && tail -f /huasen-mongo/tail/null"
     environment:
       # 设置时区为上海（东八区）
       TZ: Asia/Shanghai

@@ -10,8 +10,7 @@
 // root       MONGO_INITDB_ROOT_USERNAME
 // password   MONGO_INITDB_ROOT_PASSWORD
 
-// db.auth("root", "guaiMongo233*");
-
+db.auth("root", "Mongo12345*");
 const huasenDB = db.getSiblingDB("huasen");
 
 // printjson(huasenDB.getUser("huasenjio"));
