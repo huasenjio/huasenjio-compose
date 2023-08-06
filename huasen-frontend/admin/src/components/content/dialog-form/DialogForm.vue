@@ -14,7 +14,14 @@
           <!-- 输入框 -->
           <el-input v-if="formTtem.type === 'input'" :disabled="handleDisabled(formTtem)" v-model="formData[formTtem.key]"></el-input>
           <!-- 选择框 -->
-          <el-select v-if="formTtem.type === 'select'" v-model="formData[formTtem.key]" :popper-append-to-body="false">
+          <el-select
+            v-if="formTtem.type === 'select'"
+            v-model="formData[formTtem.key]"
+            :allow-create="getSelectByAttr('selectConfig.allow-create', formTtem)"
+            :filterable="getSelectByAttr('selectConfig.filterable', formTtem)"
+            :multiple="getSelectByAttr('selectConfig.multiple', formTtem)"
+            :popper-append-to-body="false"
+          >
             <el-option v-for="(option, i) in formTtem.selectOptions" :key="i" :label="option.label" :value="option.value"> </el-option>
           </el-select>
           <!-- 开关 -->
@@ -207,6 +214,11 @@ export default {
     handleSelectIcon(url) {
       this.formData.icon = url;
       this.closeLab();
+    },
+
+    getSelectByAttr(attr, data) {
+      let value = this.LODASH.get(data, attr);
+      return value || null;
     },
 
     handleRemoveIcon(path) {

@@ -145,6 +145,17 @@ export default {
           type: 'select',
           selectOptions: this.CONSTANT.dictionary.code,
         },
+        // {
+        //   label: '所属栏目',
+        //   key: 'columnCode',
+        //   type: 'select',
+        //   selectOptions: [],
+        //   selectConfig: {
+        //     'allow-create': true,
+        //     filterable: true,
+        //     multiple: true,
+        //   },
+        // },
         {
           label: '备注',
           key: 'remarks',
@@ -170,6 +181,7 @@ export default {
         expand: '{}',
         enabled: true,
         code: 0,
+        // columnCode: [],
       },
       pageNo: 1,
       pageSize: 10,
@@ -177,6 +189,7 @@ export default {
   },
   mounted() {
     this.queryData();
+    // this.queryColumnData();
   },
   methods: {
     queryData() {
@@ -193,6 +206,27 @@ export default {
         this.tableData = res.data.list;
         this.total = res.data.total;
         this.cancel();
+      });
+    },
+
+    queryColumnData() {
+      this.API.findColumnByList({}, { notify: false }).then(res => {
+        let columnMap = this.getColumnMap();
+        if (columnMap) {
+          columnMap.selectOptions = res.data.map(item => {
+            return {
+              label: item.name,
+              value: item._id,
+            };
+          });
+        }
+      });
+    },
+
+    // 获取到栏目的映射对象地址
+    getColumnMap() {
+      return this.formMap.find(el => {
+        return el.key === 'columnCode';
       });
     },
 
@@ -256,14 +290,15 @@ export default {
     },
 
     save() {
+      let params = { ...this.form };
       if (this.mode === 'edit') {
-        this.API.updateSite(this.form).then(res => {
+        this.API.updateSite(params).then(res => {
           this.queryData();
         });
       } else if (this.mode === 'add') {
-        delete this.form._id;
-        delete this.form._v;
-        this.API.addSite(this.form).then(res => {
+        delete params._id;
+        delete params._v;
+        this.API.addSite(params).then(res => {
           this.queryData();
         });
       }

@@ -14,9 +14,9 @@
           <el-col v-for="(formItem, index) in formMap" :key="index" :span="formItem.span || 5">
             <el-form-item>
               <!-- input -->
-              <el-input v-if="formItem.type == 'input'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)" clearable></el-input>
+              <el-input v-if="formItem.type == 'input'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)" @keyup.native.enter="search" clearable></el-input>
               <!-- select -->
-              <el-select v-if="formItem.type == 'select'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)">
+              <el-select v-if="formItem.type == 'select'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)" @change="search">
                 <el-option label="全部" value=""></el-option>
                 <el-option v-for="item in formItem.selectOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
@@ -175,7 +175,7 @@ export default {
         pageNo: 1,
         pageSize: 10,
       },
-      // 是否显示多选按钮
+      // 是否显示多选删除按钮
       showRemoveMany: false,
     };
   },
