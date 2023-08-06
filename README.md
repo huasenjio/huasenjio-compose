@@ -414,7 +414,7 @@ docker-compose up -d
 
 #### 🏁 流程
 
-进入宝塔面板，安装 docker，拉取 git 源码，修改 docker-compose.yml 文件，添加 compose 模版，添加运行项目。如果宝塔面板已安装 nginx，需要修改 docker-compose.yml配置文件的 nginx 的运行端口，否则端口冲突，无法启动容器。
+进入宝塔面板，安装 docker，拉取 git 源码，修改 docker-compose.yml 文件，添加 compose 模版，添加运行项目。如果宝塔面板已安装 nginx，需要修改 docker-compose.yml 配置文件的 nginx 的运行端口，否则端口冲突，无法启动容器。
 
 ### 方式3：一键脚本部署
 
@@ -427,7 +427,7 @@ docker-compose up -d
 
 #### 🏁 流程
 
-把 `huasenjio-compose/bin/install.sh` 脚本，传输到服务器，使用 `chmod u+x huasen-compose/bin/*` 设置权限之后，执行 `install.sh `脚本，自动安装部署。更多操作脚本，请查阅 `huasenjio-compose/bin/readme.md` 文档。
+进入服务器，执行`curl -O https://n.huasen.cc/huasen-store/open-sh/install.sh ; chmod +x install.sh ; ./install.sh`命令，下载安装脚本并且执行。如果运行失败，重新运行即可。更多操作脚本，请查阅 `huasenjio-compose/bin/readme.md` 文档。
 
 ## ❓ 常见 QA
 
