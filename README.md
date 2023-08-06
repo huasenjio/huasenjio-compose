@@ -184,7 +184,7 @@
 
 ![sTKvBmOVftdGn2g](https://s2.loli.net/2023/04/27/sTKvBmOVftdGn2g.png)
 
-#### 12.文章管理
+#### 12.文件管理
 
 ![UdWPTGeXF4hyxza](https://s2.loli.net/2023/02/05/UdWPTGeXF4hyxza.png)
 
