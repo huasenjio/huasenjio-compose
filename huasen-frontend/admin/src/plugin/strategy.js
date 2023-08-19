@@ -78,22 +78,15 @@ let strategies = {
       return errorMsg;
     }
   },
-  isSeries: function(value, errorMsg) {
+  isSiteList: function(value, errorMsg) {
     try {
       if (value === '') return false;
-
-      let serie = JSON.parse(value);
-      let isArray = Object.prototype.toString.call(serie) === '[object Array]';
+      let sites = JSON.parse(value);
+      let isArray = Object.prototype.toString.call(sites) === '[object Array]';
       if (!isArray) return errorMsg;
-
-      let legal = serie.every(type => {
-        // 类型格式
-        let typeStruc = Object.prototype.toString.call(type) === '[object Object]' && type.hasOwnProperty('typeName') && type.hasOwnProperty('sites');
+      let legal = sites.every(site => {
         // 网站格式
-        let siteStruc = type['sites'].every(site => {
-          return site.hasOwnProperty('name') && site.hasOwnProperty('url') && site.hasOwnProperty('icon') && site.hasOwnProperty('describe') && site.hasOwnProperty('remark');
-        });
-        return typeStruc && siteStruc;
+        return Object.prototype.toString.call(site) === '[object Object]' && site.hasOwnProperty('name') && site.hasOwnProperty('url');
       });
       // 不合法情况下返回错误文字
       return legal ? false : errorMsg;

@@ -15,20 +15,20 @@ li {
 
 /*槽*/
 ::-webkit-scrollbar-track {
-  background-color: var(--gray-0);
+  background-color: var(--gray-100);
   border-radius: 12px;
 }
 
 /*滚动条*/
 ::-webkit-scrollbar-thumb {
   border-radius: 12px;
-  background-color: var(--gray-100);
+  background-color: var(--gray-200);
 }
 
 /*拖拽*/
 ::-webkit-scrollbar-thumb:hover {
   border-radius: 12px;
-  background-color: var(--gray-200);
+  background-color: var(--gray-300);
 }
 
 .text {

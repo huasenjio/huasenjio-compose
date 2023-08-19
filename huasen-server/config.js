@@ -2,11 +2,20 @@
  * @Autor: huasenjio
  * @Date: 2021-10-04 11:39:03
  * @LastEditors: huasenjio
- * @LastEditTime: 2023-04-15 12:43:42
+ * @LastEditTime: 2023-02-04 14:29:05
  * @Description: 后端服务配置文件
  */
 
 const path = require('path');
+const _ = require('lodash');
+
+// 解析动态配置
+let setting = {};
+try {
+  setting = require('./setting.json');
+} catch (err) {
+  console.error('配置解析失败', err);
+}
 
 // 获取命令行传递的参数集合
 let args = process.argv.find(row => {
@@ -50,7 +59,25 @@ const REDIS = {
   password: 'Redis12345*', // redis密码
 };
 
-// QQ邮箱服务配置
+// 实际邮箱配置
+const mail = _.get(setting, 'site.mail') || {};
+let { host, port, auth } = { ...mail };
+const MAIL = {
+  host: host || QQ_MAIL.host,
+  port: port || QQ_MAIL.port,
+  secure: true,
+  auth: {
+    user: _.get(auth, 'user') ? _.get(auth, 'user') : QQ_MAIL.auth.user,
+    pass: _.get(auth, 'pass') ? _.get(auth, 'pass') : QQ_MAIL.auth.pass,
+  },
+};
+
+// 站点配置
+const SITE = {
+  redirectURL: _.get(setting, 'site.redirectURL') || 'http://huasen.cc/',
+};
+
+// QQ邮箱服务配置示例
 const QQ_MAIL = {
   host: 'smtp.qq.com', // QQ邮箱厂商
   port: 465,
@@ -61,7 +88,7 @@ const QQ_MAIL = {
   },
 };
 
-// 网易邮箱服务配置
+// 网易邮箱服务配置示例
 const WY_MAIL = {
   host: 'smtp.163.com',
   port: 465,
@@ -161,8 +188,11 @@ module.exports = {
   STATUS,
   ADMIN,
 
+  MAIL,
   QQ_MAIL,
   WY_MAIL,
+
+  SITE,
 
   PORT_SERVER,
 

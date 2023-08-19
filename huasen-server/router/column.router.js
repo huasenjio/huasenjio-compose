@@ -9,7 +9,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { add, findAllByPage, remove, update, findByCode, findByList } = require('../controller/column.controller.js');
+const { add, findAllByPage, remove, update, findByCode, findByList, bindSite } = require('../controller/column.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower } = require('../middleware/manage.middleware.js');
 
@@ -19,5 +19,6 @@ router.post('/remove', handleJWT, checkManagePower, remove);
 router.post('/update', handleJWT, checkManagePower, update);
 router.post('/findByCode', handleJWT, findByCode);
 router.post('/list', handleJWT, checkManagePower, findByList);
+router.post('/bindSite', handleJWT, checkManagePower, bindSite);
 
 module.exports = router;

@@ -6,9 +6,9 @@
  * @Description: 邮箱验证码系统
  */
 const nodemailer = require('nodemailer');
-const { QQ_MAIL, POOL_MAIL } = require('../config.js');
+const { MAIL, POOL_MAIL } = require('../config.js');
 const { setRedisItem, getRedisItem, delRedisItem } = require('../plugin/ioredis/common.js');
-const transporter = nodemailer.createTransport(QQ_MAIL); // 创建发送邮箱对象
+const transporter = nodemailer.createTransport(MAIL); // 创建发送邮箱对象
 
 class Mailer {
   constructor() {
@@ -44,7 +44,7 @@ class Mailer {
     return new Promise((resolve, reject) => {
       transporter.sendMail(
         {
-          from: `花森提示 <${QQ_MAIL.auth.user}>`, // 发送方信息
+          from: `花森提示 <${MAIL.auth.user}>`, // 发送方信息
           to: mail, // 接受者QQ邮箱地址
           subject: '花森主页：n.huasen.cc', // 标题
           text: `邮箱验证码：${code}`, // 文本信息或者html信息

@@ -14,5 +14,6 @@ const addColumn = post('/column/add');
 const removeColumn = post('/column/remove');
 const updateColumn = post('/column/update');
 const findColumnByList = post('/column/list');
+const bindSiteToColumn = post('/column/bindSite');
 
-export { findColumnByPage, addColumn, removeColumn, updateColumn, findColumnByList };
+export { findColumnByPage, addColumn, removeColumn, updateColumn, findColumnByList, bindSiteToColumn };

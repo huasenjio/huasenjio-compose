@@ -8,7 +8,7 @@
 
 <template>
   <div>
-    <HsDialog class="dialog-form" v-bind="$attrs" v-on="$listeners" @comfirmDialog="comfirmDialog" @closeDialog="closeDialog" @close="close">
+    <HsDialog class="dialog-form" v-bind="$attrs" v-on="$listeners" :title="title" @comfirmDialog="comfirmDialog" @closeDialog="closeDialog" @close="close">
       <el-form ref="form" class="form-group" :model="formData" :rules="formRule" label-position="top">
         <el-form-item v-for="(formTtem, index) in formMap" :key="index" :label="formTtem.label" :prop="formTtem.key">
           <!-- 输入框 -->
@@ -130,6 +130,10 @@ export default {
   },
 
   props: {
+    title: {
+      type: String,
+      default: '',
+    },
     // 弹窗状态：add || edit
     mode: {
       type: String,

@@ -41,6 +41,22 @@
       @comfirmForm="save"
       @cancelForm="cancel"
     ></DialogForm>
+    <DialogForm
+      v-if="showImport"
+      ref="dialogImportForm"
+      width="420"
+      maxHeight="480"
+      title="导入站点"
+      :visible.sync="showImport"
+      :formMap="importFormMap"
+      :formData.sync="importForm"
+      :formRule="importRule"
+      :close-on-click-modal="false"
+      :mode="importMode"
+      :buttons="{ comfirm: '确 认', cancel: '取 消' }"
+      @comfirmForm="saveImportSite"
+      @cancelForm="cancelImportSite"
+    ></DialogForm>
   </div>
 </template>
 
@@ -112,7 +128,9 @@ export default {
       ],
 
       show: false,
+      showImport: false,
       mode: 'add',
+      importMode: 'add',
       formMap: [
         {
           label: '名称',
@@ -145,17 +163,17 @@ export default {
           type: 'select',
           selectOptions: this.CONSTANT.dictionary.code,
         },
-        // {
-        //   label: '所属栏目',
-        //   key: 'columnCode',
-        //   type: 'select',
-        //   selectOptions: [],
-        //   selectConfig: {
-        //     'allow-create': true,
-        //     filterable: true,
-        //     multiple: true,
-        //   },
-        // },
+        {
+          label: '网站标签',
+          key: 'siteTag',
+          type: 'select',
+          selectOptions: [],
+          selectConfig: {
+            'allow-create': true,
+            filterable: true,
+            multiple: true,
+          },
+        },
         {
           label: '备注',
           key: 'remarks',
@@ -167,10 +185,41 @@ export default {
           type: 'input',
         },
       ],
+      importFormMap: [
+        {
+          label: '网站标签',
+          key: 'siteTag',
+          type: 'select',
+          selectOptions: [],
+          selectConfig: {
+            'allow-create': true,
+            filterable: true,
+            multiple: true,
+          },
+        },
+        {
+          label: '所属栏目',
+          key: 'columnId',
+          type: 'select',
+          selectOptions: [],
+          selectConfig: {
+            filterable: true,
+            multiple: true,
+          },
+        },
+        {
+          label: '网站数据',
+          key: 'siteData',
+          type: 'textarea',
+        },
+      ],
       rule: {
         name: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']), trigger: 'blur' }],
         url: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isUrl::请输入正确的网址']), trigger: 'blur' }],
         expand: [{ validator: getElementFormValidator(['isJSONObject::请输入JSON对象']), trigger: 'blur' }],
+      },
+      importRule: {
+        siteData: [{ validator: getElementFormValidator(['isSiteList::格式：[{"name":"名称","url":"http://huasen.cc","description":"描述"}]']), trigger: 'blur' }],
       },
       form: {
         name: '',
@@ -181,16 +230,23 @@ export default {
         expand: '{}',
         enabled: true,
         code: 0,
-        // columnCode: [],
+        siteTag: [],
+      },
+      importForm: {
+        siteTag: [],
+        columnId: [],
+        siteData: '',
       },
       pageNo: 1,
       pageSize: 10,
     };
   },
+
   mounted() {
     this.queryData();
-    // this.queryColumnData();
+    this.queryColumnData();
   },
+
   methods: {
     queryData() {
       let params = Object.assign(
@@ -207,26 +263,35 @@ export default {
         this.total = res.data.total;
         this.cancel();
       });
+      this.API.findSiteTagByList({}, { notify: false }).then(res => {
+        let existObj = this.formMap.find(item => item.key === 'siteTag');
+        let importExistObj = this.importFormMap.find(item => item.key === 'siteTag');
+        let tags = res.data.map(tagName => {
+          return {
+            label: tagName,
+            value: tagName,
+          };
+        });
+        if (existObj) {
+          existObj.selectOptions = [...tags];
+        }
+        if (importExistObj) {
+          importExistObj.selectOptions = [...tags];
+        }
+      });
     },
 
     queryColumnData() {
       this.API.findColumnByList({}, { notify: false }).then(res => {
-        let columnMap = this.getColumnMap();
-        if (columnMap) {
-          columnMap.selectOptions = res.data.map(item => {
+        let columnItem = this.importFormMap.find(el => el.key === 'columnId');
+        if (columnItem) {
+          columnItem.selectOptions = res.data.map(item => {
             return {
               label: item.name,
               value: item._id,
             };
           });
         }
-      });
-    },
-
-    // 获取到栏目的映射对象地址
-    getColumnMap() {
-      return this.formMap.find(el => {
-        return el.key === 'columnCode';
       });
     },
 
@@ -254,33 +319,22 @@ export default {
     },
 
     handleAddMany() {
-      this.$prompt('网链', '导入文本数据', {
-        confirmButtonText: '导入',
-        cancelButtonText: '取消',
-        inputValidator: val => {
-          try {
-            let temp = JSON.parse(val);
-            return !!Array.isArray(temp);
-          } catch (err) {
-            return false;
-          }
-        },
-        inputErrorMessage: '数据格式：[{"name":"名称","url":"huasen.cc","description":"描述"}]',
-      })
-        .then(({ value }) => {
-          let sites = JSON.parse(value);
-          this.API.addManySite({ sites }).then(res => {
-            this.queryData();
-          });
-        })
-        .catch(err => {});
+      this.showImport = true;
     },
 
     handleEdit(index, row) {
       this.show = true;
       this.mode = 'edit';
       this.$nextTick(() => {
-        this.form = Object.assign(this.form, row);
+        let siteTag = [];
+        try {
+          // 数据处理
+          let expand = JSON.parse(row.expand || '{}');
+          siteTag = expand.tag || [];
+        } catch (err) {
+          this.$tips('error', '数据处理失败', 'top-right', 1200);
+        }
+        this.form = Object.assign(this.form, row, { siteTag: siteTag });
       });
     },
 
@@ -291,6 +345,14 @@ export default {
 
     save() {
       let params = { ...this.form };
+      try {
+        let expand = JSON.parse(params.expand || '{}');
+        expand.tag = params.siteTag;
+        // 利用代码报错中断
+        let newExpand = JSON.stringify(expand);
+        params.expand = newExpand;
+      } catch (err) {}
+
       if (this.mode === 'edit') {
         this.API.updateSite(params).then(res => {
           this.queryData();
@@ -302,6 +364,46 @@ export default {
           this.queryData();
         });
       }
+    },
+
+    saveImportSite() {
+      let params = { ...this.importForm };
+      try {
+        let sites = JSON.parse(params.siteData);
+        sites.forEach(item => {
+          if (params.siteTag.length) {
+            // 忽略JSON数据中的tag数据
+            let expandTemp = {};
+            expandTemp.tag = params.siteTag;
+            item.expand = JSON.stringify(expandTemp);
+          }
+        });
+        // 上传
+        this.API.addManySite({ sites }).then(res => {
+          let siteIds = res.data.map(item => item._id);
+          // 刷新数据列表
+          this.queryData();
+          // 导入站点绑定到栏目
+          this.bindSiteToColumn(params.columnId, siteIds);
+          this.cancelImportSite();
+        });
+      } catch (err) {
+        this.$tips('error', '数据格式非法', 'top-right', 1200);
+      }
+    },
+
+    // 绑定栏目和网链
+    bindSiteToColumn(columnIds, siteIds) {
+      if (columnIds.length && siteIds.length) {
+        this.API.bindSiteToColumn({ columnIds, siteIds }, { notify: false });
+      }
+    },
+
+    cancelImportSite() {
+      if (this.$refs.dialogImportForm) {
+        this.$refs.dialogImportForm.close();
+      }
+      this.showImport = false;
     },
 
     cancel() {

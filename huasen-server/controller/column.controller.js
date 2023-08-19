@@ -6,6 +6,8 @@
  * @Description: 栏目表控制器
  */
 
+const { Column } = require('../service/index.js');
+
 function findAllByPage(req, res, next) {
   let { pageNo, pageSize, name, code } = req.huasenParams;
   // 模糊查询参数
@@ -107,8 +109,8 @@ function findByCode(req, res, next) {
         ],
       },
     ],
-    takes => {
-      global.huasen.responseData(res, takes, 'SUCCESS', '查询栏目成功', false);
+    columns => {
+      global.huasen.responseData(res, columns, 'SUCCESS', '查询栏目成功', false);
     },
   );
 }
@@ -122,8 +124,40 @@ function findByList(req, res, next) {
         payloads: [],
       },
     ],
-    takes => {
-      global.huasen.responseData(res, takes, 'SUCCESS', '查询栏目成功', false);
+    columns => {
+      global.huasen.responseData(res, columns, 'SUCCESS', '查询栏目成功', false);
+    },
+  );
+}
+
+function bindSite(req, res, next) {
+  let { columnIds, siteIds } = req.huasenParams;
+  req.epWorking(
+    [
+      {
+        schemaName: 'Column',
+        methodName: 'find',
+        payloads: [{ _id: { $in: columnIds } }],
+      },
+    ],
+    async columns => {
+      if (columns.length) {
+        let updateOperations = [];
+        // 遍历合入站点数据
+        columns.forEach(async item => {
+          try {
+            let siteStore = JSON.parse(item.siteStore);
+            item.siteStore = JSON.stringify(Array.from(new Set([...siteStore, ...siteIds])));
+            updateOperations.push({
+              $set: { siteStore: item.siteStore },
+            });
+          } catch (err) {
+            console.error('绑定站点异常', err);
+          }
+        });
+        let updateResult = await Column.updateMany({ _id: { $in: columnIds } }, updateOperations);
+        global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
+      }
     },
   );
 }
@@ -135,4 +169,5 @@ module.exports = {
   remove,
   findByCode,
   findByList,
+  bindSite,
 };

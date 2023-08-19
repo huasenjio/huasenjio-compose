@@ -16,5 +16,6 @@ const removeSite = post('/site/remove');
 const removeManySite = post('/site/removeMany');
 const updateSite = post('/site/update');
 const findSiteByList = post('/site/list');
+const findSiteTagByList = post('/site/siteTagList');
 
-export { findSiteByPage, addSite, addManySite, removeSite, removeManySite, updateSite, findSiteByList };
+export { findSiteByPage, addSite, addManySite, removeSite, removeManySite, updateSite, findSiteByList, findSiteTagByList };

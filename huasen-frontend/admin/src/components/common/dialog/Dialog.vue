@@ -6,7 +6,7 @@
  * @Description: 二次封装el-dialog
 -->
 <template>
-  <el-dialog ref="hsDialog" :class="{ 'shadow-dialog': showShadow }" v-bind="$attrs" v-on="$listeners" :width="dialogWidth" :style="dialogStyle" @scroll.capture.native="handleScroll">
+  <el-dialog ref="hsDialog" :class="{ 'shadow-dialog': showShadow }" :title="title" v-bind="$attrs" v-on="$listeners" :width="dialogWidth" :style="dialogStyle" @scroll.capture.native="handleScroll">
     <!-- 默认插槽 -->
     <slot></slot>
     <!-- 底部插槽 -->
@@ -26,6 +26,10 @@ export default {
   name: 'HsDialog',
 
   props: {
+    title: {
+      type: String,
+      default: '',
+    },
     // 设置width属性，所以不会透传width属性，进行二次处理
     width: {
       type: [Number, String],
@@ -47,7 +51,7 @@ export default {
 
   data() {
     return {
-      af: new AF(this, 100),
+      af: new AF(this, 80),
     };
   },
 
@@ -93,9 +97,12 @@ export default {
     // 滚动时，隐藏下拉选择框
     handleScroll(ev) {
       this.af.run(() => {
-        let nodes = document.getElementsByClassName('el-select-dropdown');
-        for (let i = 0; i < nodes.length; i++) {
-          nodes[i].style.display = 'none';
+        // 下拉选择组件的滚动不关闭dropdown
+        if (!ev.target._prevClass.includes('el-select-dropdown__wrap')) {
+          let nodes = document.getElementsByClassName('el-select-dropdown');
+          for (let i = 0; i < nodes.length; i++) {
+            nodes[i].style.display = 'none';
+          }
         }
       });
     },

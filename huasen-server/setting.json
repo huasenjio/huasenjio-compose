@@ -38,6 +38,14 @@
     "footer": {
       "text": "",
       "url": ""
+    },
+    "mail": {
+      "host": "smtp.qq.com",
+      "port": 465,
+      "auth": {
+        "user": "932397243@qq.com",
+        "pass": ""
+      }
     }
   }
 }

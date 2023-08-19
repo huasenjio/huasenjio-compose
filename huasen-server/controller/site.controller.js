@@ -64,7 +64,7 @@ function addMany(req, res, next) {
         },
       ],
       result => {
-        global.huasen.responseData(res, result, 'SUCCESS', '添加站点成功', false);
+        global.huasen.responseData(res, result, 'SUCCESS', '导入站点成功', false);
       },
     );
   }
@@ -147,8 +147,8 @@ function findByCode(req, res, next) {
         ],
       },
     ],
-    takes => {
-      global.huasen.responseData(res, takes, 'SUCCESS', '查询站点成功', false);
+    sites => {
+      global.huasen.responseData(res, sites, 'SUCCESS', '查询站点成功', false);
     },
   );
 }
@@ -162,8 +162,37 @@ function findByList(req, res, next) {
         payloads: [],
       },
     ],
-    takes => {
-      global.huasen.responseData(res, takes, 'SUCCESS', '查询站点成功', false);
+    sites => {
+      global.huasen.responseData(res, sites, 'SUCCESS', '查询站点成功', false);
+    },
+  );
+}
+
+function findSiteTagByList(req, res, next) {
+  req.epWorking(
+    [
+      {
+        schemaName: 'Site',
+        methodName: 'find',
+        payloads: [],
+      },
+    ],
+    sites => {
+      let tags = [];
+      sites.map(item => {
+        try {
+          if (!item.expand || item.expand === '{}') return;
+          let expandObj = JSON.parse(item.expand);
+          if (Array.isArray(expandObj.tag)) {
+            tags = tags.concat(expandObj.tag);
+          }
+        } catch (err) {
+          console.log('站点标签解析异常', err);
+        }
+      });
+      // 数据去重
+      tags = Array.from(new Set(tags));
+      global.huasen.responseData(res, tags, 'SUCCESS', '查询站点成功', false);
     },
   );
 }
@@ -177,4 +206,5 @@ module.exports = {
   findByList,
   removeMany,
   addMany,
+  findSiteTagByList,
 };

@@ -11,14 +11,14 @@ const path = require('path');
 const app = express();
 
 // 启动端口
-const { PORT_SERVER } = require('./config.js');
+const { SITE, PORT_SERVER } = require('./config.js');
 
 // 引入程序
 const db = require('./mongodb/db.js');
 const log = require('./plugin/log.js');
 const ws = require('./plugin/ws/ws.js');
 const schedule = require('./schedule/schedule.js');
-const globalTool = require('./global/index.js');
+const initGlobal = require('./global/index.js');
 
 // 全局中间件
 const { handleAccessInformation, handleBlackList, handleRequestError, handleRequest, handleRequestParams } = require('./middleware/common.middleware.js');
@@ -62,16 +62,9 @@ app.use('/site', SiteRouter);
 app.use('/column', ColumnRouter);
 app.use('/journal', JournalRouter);
 
-let redirectURL = undefined;
-try {
-  redirectURL = require('./setting.json').site.redirectURL;
-} catch (err) {
-  global.huasen.formatError(err, '未捕获的全局错误');
-}
 // 404页面重定向
 app.get('*', function (req, res) {
-  let url = redirectURL && typeof redirectURL === 'string' ? redirectURL : 'http://huasen.cc/';
-  res.redirect(url);
+  res.redirect(SITE.redirectURL);
 });
 
 //  全局处理错误
