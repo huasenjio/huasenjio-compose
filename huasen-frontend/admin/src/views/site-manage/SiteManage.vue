@@ -366,7 +366,7 @@ export default {
       }
     },
 
-    saveImportSite() {
+    async saveImportSite() {
       let params = { ...this.importForm };
       try {
         let sites = JSON.parse(params.siteData);
@@ -379,23 +379,19 @@ export default {
           }
         });
         // 上传
-        this.API.addManySite({ sites }).then(res => {
-          let siteIds = res.data.map(item => item._id);
-          // 刷新数据列表
-          this.queryData();
-          // 导入站点绑定到栏目
-          this.bindSiteToColumn(params.columnId, siteIds);
-          this.cancelImportSite();
-        });
+        let siteResult = await this.API.addManySite({ sites });
+        // 解析到导入链接的id
+        let siteIds = siteResult.data.map(item => item._id);
+        // 若选择栏目，则发送请求，绑定链接
+        if (params.columnId.length && siteIds.length) {
+          await this.API.bindSiteToColumn({ columnId: params.columnId, siteIds }, { notify: false });
+        }
+        // 刷新数据列表
+        this.queryData();
+        // 关闭导入弹窗
+        this.cancelImportSite();
       } catch (err) {
-        this.$tips('error', '数据格式非法', 'top-right', 1200);
-      }
-    },
-
-    // 绑定栏目和网链
-    bindSiteToColumn(columnIds, siteIds) {
-      if (columnIds.length && siteIds.length) {
-        this.API.bindSiteToColumn({ columnIds, siteIds }, { notify: false });
+        this.$tips('error', '导入失败', 'top-right', 1200);
       }
     },
 

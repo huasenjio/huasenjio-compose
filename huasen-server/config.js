@@ -59,6 +59,17 @@ const REDIS = {
   password: 'Redis12345*', // redis密码
 };
 
+// QQ邮箱服务配置示例
+const QQ_MAIL = {
+  host: 'smtp.qq.com', // QQ邮箱厂商
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'QQ邮箱', //  发送方邮箱地址
+    pass: 'QQ邮箱 mtp', //  自己申请的mtp的通行码
+  },
+};
+
 // 实际邮箱配置
 const mail = _.get(setting, 'site.mail') || {};
 let { host, port, auth } = { ...mail };
@@ -75,17 +86,6 @@ const MAIL = {
 // 站点配置
 const SITE = {
   redirectURL: _.get(setting, 'site.redirectURL') || 'http://huasen.cc/',
-};
-
-// QQ邮箱服务配置示例
-const QQ_MAIL = {
-  host: 'smtp.qq.com', // QQ邮箱厂商
-  port: 465,
-  secure: true,
-  auth: {
-    user: 'QQ邮箱', //  发送方邮箱地址
-    pass: 'QQ邮箱 mtp', //  自己申请的mtp的通行码
-  },
 };
 
 // 网易邮箱服务配置示例
