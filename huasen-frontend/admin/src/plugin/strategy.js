@@ -80,7 +80,7 @@ let strategies = {
   },
   isSiteList: function(value, errorMsg) {
     try {
-      if (value === '') return false;
+      if (value === '') return errorMsg;
       let sites = JSON.parse(value);
       let isArray = Object.prototype.toString.call(sites) === '[object Array]';
       if (!isArray) return errorMsg;

@@ -141,22 +141,29 @@ function bindSite(req, res, next) {
       },
     ],
     async columns => {
-      if (columns.length) {
-        let updateOperations = [];
-        // 遍历合入站点数据
-        columns.forEach(async item => {
-          try {
-            let siteStore = JSON.parse(item.siteStore);
-            item.siteStore = JSON.stringify(Array.from(new Set([...siteStore, ...siteIds])));
-            updateOperations.push({
-              $set: { siteStore: item.siteStore },
-            });
-          } catch (err) {
-            console.error('绑定站点异常', err);
-          }
-        });
-        let updateResult = await Column.updateMany({ _id: { $in: columnIds } }, updateOperations);
-        global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
+      try {
+        if (columns.length) {
+          let bulkUpdates = [];
+          // 遍历合入站点数据
+          columns.forEach(async item => {
+            try {
+              let siteStore = JSON.parse(item.siteStore);
+              item.siteStore = JSON.stringify(Array.from(new Set([...siteStore, ...siteIds])));
+              bulkUpdates.push({
+                updateOne: {
+                  filter: { _id: item._id },
+                  update: { $set: { siteStore: item.siteStore } },
+                },
+              });
+            } catch (err) {
+              console.error('绑定站点异常', err);
+            }
+          });
+          let updateResult = await Column.bulkWrite(bulkUpdates);
+          global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
   );

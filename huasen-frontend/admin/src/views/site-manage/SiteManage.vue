@@ -384,7 +384,7 @@ export default {
         let siteIds = siteResult.data.map(item => item._id);
         // 若选择栏目，则发送请求，绑定链接
         if (params.columnId.length && siteIds.length) {
-          await this.API.bindSiteToColumn({ columnId: params.columnId, siteIds }, { notify: false });
+          await this.API.bindSiteToColumn({ columnIds: params.columnId, siteIds }, { notify: false });
         }
         // 刷新数据列表
         this.queryData();
