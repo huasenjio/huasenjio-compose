@@ -1,5 +1,5 @@
 # 安装 Node 精简版
-FROM node:16.19.1-alpine3.16
+FROM node:16-alpine3.17 
 # FROM node:14.20-alpine
 # 设置维护者信息 
 LABEL maintainer="huasen<huasenjio@163.com>"
