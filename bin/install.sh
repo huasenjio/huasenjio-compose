@@ -16,6 +16,9 @@ mirror1="http://hub-mirror.c.163.com"
 mirror2="https://docker.mirrors.ustc.edu.cn"
 mirror3="https://registry.docker-cn.com"
 
+docker_compose_url="https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)"
+docker_compose_path="/usr/local/bin/docker-compose"
+
 echo '0.正在初始化...'
 # 安装 vim 工具
 yum -y install vim*
@@ -75,8 +78,19 @@ systemctl restart docker
 
 echo '5.正在 docker-compose 程序...'
 # 安装 docker-compose 程序
-curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+if [ -f "$docker_compose_path" ]; then
+    echo "docker-compose is already downloaded."
+else
+    echo "Downloading docker-compose..."
+    if curl -L "$docker_compose_url" -o "$docker_compose_path"; then
+        chmod +x "$docker_compose_path"
+        echo "docker-compose downloaded successfully."
+    else
+        echo "Failed to download docker-compose."
+    fi
+fi
+# curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# chmod +x /usr/local/bin/docker-compose
 if [ -L "/usr/bin/docker-compose" ]; then
     echo "Symbolic link /usr/bin/docker-compose already exists."
 else
