@@ -313,7 +313,7 @@ export default {
     comfirmDialog() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$emit('comfirmForm');
+          this.$emit('comfirmForm', this.formData);
         }
       });
     },

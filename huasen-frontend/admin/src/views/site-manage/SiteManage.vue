@@ -94,10 +94,10 @@ export default {
           label: '备注',
           key: 'remarks',
         },
-        {
-          label: '拓展字段',
-          key: 'expand',
-        },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        // },
         {
           label: '权限码',
           key: 'code',
@@ -175,15 +175,26 @@ export default {
           },
         },
         {
+          label: '所属栏目',
+          key: 'columnId',
+          type: 'select',
+          selectOptions: [],
+          selectConfig: {
+            'allow-create': true,
+            filterable: true,
+            multiple: true,
+          },
+        },
+        {
           label: '备注',
           key: 'remarks',
           type: 'input',
         },
-        {
-          label: '拓展字段',
-          key: 'expand',
-          type: 'input',
-        },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        //   type: 'input',
+        // },
       ],
       importFormMap: [
         {
@@ -216,10 +227,10 @@ export default {
       rule: {
         name: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']), trigger: 'blur' }],
         url: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isUrl::请输入正确的网址']), trigger: 'blur' }],
-        expand: [{ validator: getElementFormValidator(['isJSONObject::请输入JSON对象']), trigger: 'blur' }],
+        expand: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isJSONObject::请输入JSON对象']), trigger: 'blur' }],
       },
       importRule: {
-        siteData: [{ validator: getElementFormValidator(['isSiteList::格式：[{"name":"名称","url":"http://huasen.cc","description":"描述"}]']), trigger: 'blur' }],
+        siteData: [{ validator: getElementFormValidator(['isSiteList::格式: [{"name":"名称","url":"http://huasen.cc/","description":"描述"}]']), trigger: 'blur' }],
       },
       form: {
         name: '',
@@ -231,14 +242,19 @@ export default {
         enabled: true,
         code: 0,
         siteTag: [],
+        columnId: [],
       },
       importForm: {
         siteTag: [],
         columnId: [],
         siteData: '',
       },
+      initForm: null,
       pageNo: 1,
       pageSize: 10,
+
+      siteTagNameOptions: [],
+      columnOptions: [],
     };
   },
 
@@ -256,42 +272,43 @@ export default {
         },
         this.searchForm,
       );
+      // 请求站点数据
       this.API.findSiteByPage(params, {
         notify: false,
       }).then(res => {
         this.tableData = res.data.list;
         this.total = res.data.total;
         this.cancel();
+        this.cancelImportSite();
       });
+      // 请求站点的所有标签
       this.API.findSiteTagByList({}, { notify: false }).then(res => {
         let existObj = this.formMap.find(item => item.key === 'siteTag');
         let importExistObj = this.importFormMap.find(item => item.key === 'siteTag');
-        let tags = res.data.map(tagName => {
+        this.siteTagNameOptions = res.data.map(tagName => {
           return {
             label: tagName,
             value: tagName,
           };
         });
-        if (existObj) {
-          existObj.selectOptions = [...tags];
-        }
-        if (importExistObj) {
-          importExistObj.selectOptions = [...tags];
-        }
+        if (existObj) existObj.selectOptions = [...this.siteTagNameOptions];
+        if (importExistObj) importExistObj.selectOptions = [...this.siteTagNameOptions];
       });
     },
 
+    // 请求栏目信息
     queryColumnData() {
       this.API.findColumnByList({}, { notify: false }).then(res => {
-        let columnItem = this.importFormMap.find(el => el.key === 'columnId');
-        if (columnItem) {
-          columnItem.selectOptions = res.data.map(item => {
-            return {
-              label: item.name,
-              value: item._id,
-            };
-          });
-        }
+        this.columnOptions = res.data.map(item => {
+          return {
+            label: item.name,
+            value: item._id,
+          };
+        });
+        let importFormColumnItem = this.importFormMap.find(el => el.key === 'columnId');
+        let formColumnItem = this.formMap.find(el => el.key === 'columnId');
+        if (importFormColumnItem) importFormColumnItem.selectOptions = [...this.columnOptions];
+        if (formColumnItem) formColumnItem.selectOptions = [...this.columnOptions];
       });
     },
 
@@ -316,6 +333,9 @@ export default {
     handleAdd() {
       this.show = true;
       this.mode = 'add';
+      this.$nextTick(() => {
+        this.initForm = this.LODASH.cloneDeep(this.form);
+      });
     },
 
     handleAddMany() {
@@ -325,16 +345,22 @@ export default {
     handleEdit(index, row) {
       this.show = true;
       this.mode = 'edit';
-      this.$nextTick(() => {
+      this.$nextTick(async () => {
         let siteTag = [];
+        let columnId = [];
         try {
-          // 数据处理
+          // 拓展数据处理
           let expand = JSON.parse(row.expand || '{}');
           siteTag = expand.tag || [];
+          let columnResult = await this.API.findSiteColmunByList({ siteId: row._id });
+          columnId = columnResult.data || [];
         } catch (err) {
-          this.$tips('error', '数据处理失败', 'top-right', 1200);
+          this.$tips('error', '初始化编辑数据异常', 'top-right', 2000);
         }
-        this.form = Object.assign(this.form, row, { siteTag: siteTag });
+        // 整理编辑数据
+        this.form = Object.assign(this.form, row, { siteTag, columnId });
+        // 保存编辑表单的初始值
+        this.initForm = this.LODASH.cloneDeep(this.form);
       });
     },
 
@@ -343,29 +369,73 @@ export default {
       this.queryData();
     },
 
-    save() {
+    async save(form) {
       let params = { ...this.form };
-      try {
-        let expand = JSON.parse(params.expand || '{}');
-        expand.tag = params.siteTag;
-        // 利用代码报错中断
-        let newExpand = JSON.stringify(expand);
-        params.expand = newExpand;
-      } catch (err) {}
-
+      let needUnbind = [];
+      let needBind = [];
+      let needCreat = [];
+      let needCreatedId = [];
+      this.initForm.columnId.forEach(el => {
+        if (params.columnId.indexOf(el) === -1) {
+          // 原本有，现在无，即需要解除绑定的栏目
+          needUnbind.push(el);
+        }
+      });
+      params.columnId.forEach((el, index) => {
+        if (this.initForm.columnId.indexOf(el) === -1) {
+          let exist = this.columnOptions.find(item => {
+            return item.value === el;
+          });
+          if (!exist) {
+            // 现在有，选项无，即需要添加的栏目名称
+            needCreat.push({
+              name: el,
+            });
+            params.columnId.splice(index, 1);
+          } else {
+            // 现在有，原本无，即需要建立绑定的栏目
+            needBind.push(el);
+          }
+        }
+      });
+      if (needCreat.length) {
+        const columnResult = await this.API.addColumn({ data: needCreat });
+        needCreatedId = columnResult.data.map(item => item._id);
+      }
+      // 处理拓展字段
+      let expand = JSON.parse(params.expand);
+      expand = Object.prototype.toString.call(expand) === '[object Object]' ? expand : {};
+      // 拼凑标签
+      expand.tag = params.siteTag;
+      // 拼凑存储参数
+      expand.columnStore = params.columnId.concat(needCreatedId);
+      // 利用代码报错中断
+      let newExpand = JSON.stringify(expand);
+      params.expand = newExpand;
+      // 添加/编辑站点数据
+      let siteIds = [];
       if (this.mode === 'edit') {
-        this.API.updateSite(params).then(res => {
-          this.queryData();
-        });
+        await this.API.updateSite(params);
+        siteIds.push(params._id);
       } else if (this.mode === 'add') {
         delete params._id;
         delete params._v;
-        this.API.addSite(params).then(res => {
-          this.queryData();
-        });
+        let siteResult = await this.API.addSite(params);
+        siteIds.push(siteResult.data[0]._id);
       }
+      let columnIds = needBind.concat(needCreatedId);
+      // 选择性绑定/解绑
+      if (columnIds.length) {
+        await this.API.bindSiteToColumn({ columnIds, siteIds });
+      }
+      if (needUnbind.length) {
+        await this.API.unbindSiteToColumn({ columnIds: needUnbind, siteIds });
+      }
+      this.queryColumnData();
+      this.queryData();
     },
 
+    // 导入链接
     async saveImportSite() {
       let params = { ...this.importForm };
       try {
@@ -373,25 +443,22 @@ export default {
         sites.forEach(item => {
           if (params.siteTag.length) {
             // 忽略JSON数据中的tag数据
-            let expandTemp = {};
-            expandTemp.tag = params.siteTag;
-            item.expand = JSON.stringify(expandTemp);
+            let expand = {};
+            expand.tag = params.siteTag;
+            expand.columnStore = params.columnId.length ? [...params.columnId] : undefined;
+            item.expand = JSON.stringify(expand);
           }
         });
-        // 上传
+        // 添加站点链接
         let siteResult = await this.API.addManySite({ sites });
-        // 解析到导入链接的id
-        let siteIds = siteResult.data.map(item => item._id);
         // 若选择栏目，则发送请求，绑定链接
-        if (params.columnId.length && siteIds.length) {
+        if (params.columnId.length) {
+          let siteIds = siteResult.data.map(item => item._id);
           await this.API.bindSiteToColumn({ columnIds: params.columnId, siteIds }, { notify: false });
         }
-        // 刷新数据列表
         this.queryData();
-        // 关闭导入弹窗
-        this.cancelImportSite();
       } catch (err) {
-        this.$tips('error', '导入失败', 'top-right', 1200);
+        this.$tips('error', '导入失败', 'top-right', 2000);
       }
     },
 
@@ -407,6 +474,7 @@ export default {
         this.$refs.dialogForm.close();
       }
       this.show = false;
+      this.initForm = null;
     },
   },
 };

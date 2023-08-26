@@ -80,6 +80,8 @@ export default {
       selectSites: [],
       selectSiteIndex: [],
       sites: [],
+      // 初始化选中的链接id
+      preSelectSiteIndex: [],
     };
   },
 
@@ -132,6 +134,8 @@ export default {
       handler(nV, oV) {
         try {
           this.selectSiteIndex = Array.isArray(JSON.parse(nV.siteStore)) ? [...JSON.parse(nV.siteStore)] : [];
+          // 保存第一次初始化的选中链接
+          this.preSelectSiteIndex = [...this.selectSiteIndex];
         } catch (err) {
           this.selectSiteIndex = [];
         }
@@ -186,14 +190,31 @@ export default {
       }
     },
 
-    save() {
+    async save() {
+      let needBindSite = [];
+      let needUnbindSite = [];
+      needUnbindSite = this.preSelectSiteIndex.filter(el => this.selectSiteIndex.indexOf(el) === -1);
+      needBindSite = this.selectSiteIndex.filter(el => this.preSelectSiteIndex.indexOf(el) === -1);
+      // 更改栏目
       let siteStore = this.selectSites.map(item => item._id);
-      this.API.updateColumn({
+      await this.API.updateColumn({
         _id: this.currentColumn._id,
         siteStore: JSON.stringify(siteStore),
-      }).then(res => {
-        this.$emit('save');
       });
+      // 选择性绑定/解绑
+      if (needBindSite.length) {
+        await this.API.bindColumnToSite({
+          columnId: this.currentColumn._id,
+          sites: needBindSite,
+        });
+      }
+      if (needUnbindSite.length) {
+        await this.API.unbindColumnToSite({
+          columnId: this.currentColumn._id,
+          sites: needUnbindSite,
+        });
+      }
+      this.$emit('save');
     },
 
     cancel() {

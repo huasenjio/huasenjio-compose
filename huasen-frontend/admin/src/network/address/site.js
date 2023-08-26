@@ -17,5 +17,8 @@ const removeManySite = post('/site/removeMany');
 const updateSite = post('/site/update');
 const findSiteByList = post('/site/list');
 const findSiteTagByList = post('/site/siteTagList');
+const findSiteColmunByList = post('/site/siteColumnList');
+const bindColumnToSite = post('/site/bindColumn');
+const unbindColumnToSite = post('/site/unbindColumn');
 
-export { findSiteByPage, addSite, addManySite, removeSite, removeManySite, updateSite, findSiteByList, findSiteTagByList };
+export { findSiteByPage, addSite, addManySite, removeSite, removeManySite, updateSite, findSiteByList, findSiteTagByList, findSiteColmunByList, bindColumnToSite, unbindColumnToSite };

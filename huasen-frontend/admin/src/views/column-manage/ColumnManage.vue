@@ -70,18 +70,6 @@ export default {
           key: 'banner',
         },
         {
-          label: '备注',
-          key: 'remarks',
-        },
-        {
-          label: '网址仓库',
-          key: 'siteStore',
-        },
-        {
-          label: '拓展字段',
-          key: 'expand',
-        },
-        {
           label: '权限码',
           key: 'code',
         },
@@ -89,6 +77,18 @@ export default {
           label: '是否可用',
           key: 'enabled',
         },
+        {
+          label: '备注',
+          key: 'remarks',
+        },
+        // {
+        //   label: '网址仓库',
+        //   key: 'siteStore',
+        // },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        // },
       ],
 
       // 搜索表单
@@ -130,19 +130,9 @@ export default {
           type: 'banner',
         },
         {
-          label: '备注',
-          key: 'remarks',
-          type: 'input',
-        },
-        {
-          label: '网址仓库',
-          key: 'siteStore',
-          type: 'input',
-        },
-        {
-          label: '拓展字段',
-          key: 'expand',
-          type: 'input',
+          label: '是否可用',
+          key: 'enabled',
+          type: 'switch',
         },
         {
           label: '权限码',
@@ -151,10 +141,20 @@ export default {
           selectOptions: this.CONSTANT.dictionary.code,
         },
         {
-          label: '是否可用',
-          key: 'enabled',
-          type: 'switch',
+          label: '备注',
+          key: 'remarks',
+          type: 'input',
         },
+        // {
+        //   label: '网址仓库',
+        //   key: 'siteStore',
+        //   type: 'input',
+        // },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        //   type: 'input',
+        // },
       ],
       rule: {
         name: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']), trigger: 'blur' }],
@@ -240,7 +240,7 @@ export default {
       } else if (this.mode === 'add') {
         delete this.form._id;
         delete this.form._v;
-        this.API.addColumn(this.form).then(res => {
+        this.API.addColumn({ data: this.form }).then(res => {
           this.queryData();
         });
       }

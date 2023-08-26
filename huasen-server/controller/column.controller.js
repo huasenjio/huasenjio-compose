@@ -38,12 +38,13 @@ function findAllByPage(req, res, next) {
 }
 
 function add(req, res, next) {
+  let { data } = { ...req.huasenParams };
   req.epWorking(
     [
       {
         schemaName: 'Column',
         methodName: 'insertMany',
-        payloads: [req.huasenParams],
+        payloads: [data],
       },
     ],
     result => {
@@ -130,6 +131,7 @@ function findByList(req, res, next) {
   );
 }
 
+// 链接绑定至栏目
 function bindSite(req, res, next) {
   let { columnIds, siteIds } = req.huasenParams;
   req.epWorking(
@@ -141,29 +143,62 @@ function bindSite(req, res, next) {
       },
     ],
     async columns => {
-      try {
-        if (columns.length) {
-          let bulkUpdates = [];
-          // 遍历合入站点数据
-          columns.forEach(async item => {
-            try {
-              let siteStore = JSON.parse(item.siteStore);
-              item.siteStore = JSON.stringify(Array.from(new Set([...siteStore, ...siteIds])));
-              bulkUpdates.push({
-                updateOne: {
-                  filter: { _id: item._id },
-                  update: { $set: { siteStore: item.siteStore } },
-                },
-              });
-            } catch (err) {
-              console.error('绑定站点异常', err);
-            }
-          });
-          let updateResult = await Column.bulkWrite(bulkUpdates);
-          global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
-        }
-      } catch (err) {
-        console.log(err);
+      if (columns.length) {
+        let bulkUpdates = [];
+        // 遍历合入站点数据
+        columns.forEach(item => {
+          try {
+            let siteStore = JSON.parse(item.siteStore);
+            item.siteStore = JSON.stringify(Array.from(new Set([...siteStore, ...siteIds])));
+            bulkUpdates.push({
+              updateOne: {
+                filter: { _id: item._id },
+                update: { $set: { siteStore: item.siteStore } },
+              },
+            });
+          } catch (err) {
+            global.huasen.responseData(res, {}, 'ERROR', '数据异常', false);
+          }
+        });
+        let updateResult = await Column.bulkWrite(bulkUpdates);
+        global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
+      }
+    },
+  );
+}
+
+// 链接解绑栏目
+function unbindSite(req, res, next) {
+  let { columnIds, siteIds } = req.huasenParams;
+  req.epWorking(
+    [
+      {
+        schemaName: 'Column',
+        methodName: 'find',
+        payloads: [{ _id: { $in: columnIds } }],
+      },
+    ],
+    async columns => {
+      if (columns.length) {
+        let bulkUpdates = [];
+        // 遍历合入站点数据
+        columns.forEach(async item => {
+          try {
+            let siteStore = JSON.parse(item.siteStore);
+            siteStore = siteStore.filter(el => siteIds.indexOf(el) === -1);
+            item.siteStore = JSON.stringify(siteStore);
+            bulkUpdates.push({
+              updateOne: {
+                filter: { _id: item._id },
+                update: { $set: { siteStore: item.siteStore } },
+              },
+            });
+          } catch (err) {
+            global.huasen.responseData(res, {}, 'ERROR', '数据异常', false);
+          }
+        });
+        let updateResult = await Column.bulkWrite(bulkUpdates);
+        global.huasen.responseData(res, updateResult, 'SUCCESS', '解绑成功', false);
       }
     },
   );
@@ -177,4 +212,5 @@ module.exports = {
   findByCode,
   findByList,
   bindSite,
+  unbindSite,
 };

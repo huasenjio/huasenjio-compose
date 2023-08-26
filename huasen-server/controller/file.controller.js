@@ -33,7 +33,7 @@ function findAllIcon(req, res, next) {
     let ext = fileName.split('.').slice(-1).join('');
     return fileType.includes(ext);
   });
-  global.huasen.responseData(res, files, 'SUCCESS', '图标查询成功', false);
+  global.huasen.responseData(res, files, 'SUCCESS', '初始化图标库成功', false);
 }
 
 function remove(req, res, next) {
