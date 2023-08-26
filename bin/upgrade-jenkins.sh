@@ -5,11 +5,11 @@ set -e
 
 echo "1.定义地址变量..."
 # 根目录名称
-projectName="huasen-compose"
+projectName="huasenjio-compose"
 # 根目录的绝对路径
-projectPath="/root/huasen-compose"
+projectPath="/root/huasenjio-compose"
 # 升级源码路径
-upgradePath="/root/huasen-compose/huasen-jenkins-cache"
+upgradePath="/root/huasenjio-compose/huasen-jenkins-cache"
 
 echo "2.正在停止容器..."
 # 进入根目录

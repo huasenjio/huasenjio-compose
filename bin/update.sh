@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 工程根目录
-projectPath="/root/huasen-compose"
+projectPath="/root/huasenjio-compose"
 
 # 进入工程根目录
 cd $projectPath
