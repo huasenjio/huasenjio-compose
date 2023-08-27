@@ -153,17 +153,6 @@ export default {
           type: 'input',
         },
         {
-          label: '是否可用',
-          key: 'enabled',
-          type: 'switch',
-        },
-        {
-          label: '权限码',
-          key: 'code',
-          type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
-        },
-        {
           label: '网站标签',
           key: 'siteTag',
           type: 'select',
@@ -186,9 +175,20 @@ export default {
           },
         },
         {
+          label: '权限码',
+          key: 'code',
+          type: 'select',
+          selectOptions: this.CONSTANT.dictionary.code,
+        },
+        {
           label: '备注',
           key: 'remarks',
           type: 'input',
+        },
+        {
+          label: '是否可用',
+          key: 'enabled',
+          type: 'switch',
         },
         // {
         //   label: '拓展字段',

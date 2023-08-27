@@ -120,19 +120,14 @@ export default {
           type: 'input',
         },
         {
-          label: '描述',
-          key: 'description',
-          type: 'input',
-        },
-        {
           label: '封面',
           key: 'banner',
           type: 'banner',
         },
         {
-          label: '是否可用',
-          key: 'enabled',
-          type: 'switch',
+          label: '描述',
+          key: 'description',
+          type: 'input',
         },
         {
           label: '权限码',
@@ -144,6 +139,11 @@ export default {
           label: '备注',
           key: 'remarks',
           type: 'input',
+        },
+        {
+          label: '是否可用',
+          key: 'enabled',
+          type: 'switch',
         },
         // {
         //   label: '网址仓库',

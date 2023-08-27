@@ -9,15 +9,19 @@ const path = require('path');
 const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
 const uploadConfigMap = {
   icon: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png'],
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'],
     uploadPath: path.resolve(process.cwd(), '../huasen-store/icon'),
   },
   banner: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png'],
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'],
     uploadPath: path.resolve(process.cwd(), '../huasen-store/banner'),
   },
+  article: {
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'],
+    uploadPath: path.resolve(process.cwd(), '../huasen-store/article'),
+  },
   img: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png'],
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'],
     uploadPath: path.resolve(process.cwd(), '../huasen-store/img'),
   },
   default: {

@@ -187,7 +187,9 @@ export default {
   },
 
   created() {
-    this.queryIcon();
+    if (this.formMap.some(el => el.type === 'icon')) {
+      this.queryIcon();
+    }
   },
 
   mounted() {

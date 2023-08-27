@@ -6,7 +6,7 @@ set -e
 # 部署路径
 project_name="/root"
 # git 仓库定制
-git_path="https://github.com/huasenjio/huasenjio-compose.git"
+git_path="https://gitee.com/HuaSenJioJio/huasenjio-compose.git"
 # git 仓库名称
 git_name="huasenjio-compose"
 # docker 镜像文件

@@ -9,6 +9,7 @@
 <template>
   <div class="h-markdown-editor">
     <mavon-editor
+      ref="mavonEditor"
       class="markdown-editor"
       v-model="valueCP"
       :toolbars="this.toolbars"
@@ -20,6 +21,7 @@
       :tabSize="2"
       @save="save"
       @change="change"
+      @imgAdd="handleImgAdd"
     >
     </mavon-editor>
   </div>
@@ -73,6 +75,10 @@ export default {
         return '';
       },
     },
+    onImgAdd: {
+      type: Function,
+      default: () => {},
+    },
   },
   computed: {
     valueCP: {
@@ -93,6 +99,10 @@ export default {
     },
     change() {
       this.$emit('change');
+    },
+    async handleImgAdd(position, file) {
+      let url = await this.onImgAdd(position, file);
+      this.$refs.mavonEditor.$img2Url(position, url);
     },
   },
 };

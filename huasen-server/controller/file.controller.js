@@ -18,7 +18,7 @@ function findAll(req, res, next) {
   files = files.filter(filePath => {
     let fileName = filePath.split(/\/|\\/).slice(-1).join('');
     let ext = fileName.split('.').slice(-1).join('');
-    return fileType.includes(ext);
+    return fileType.includes(ext.toLowerCase());
   });
   global.huasen.responseData(res, files, 'SUCCESS', '文件查询成功', false);
 }
@@ -31,7 +31,7 @@ function findAllIcon(req, res, next) {
   files = files.filter(filePath => {
     let fileName = filePath.split(/\/|\\/).slice(-1).join('');
     let ext = fileName.split('.').slice(-1).join('');
-    return fileType.includes(ext);
+    return fileType.includes(ext.toLowerCase());
   });
   global.huasen.responseData(res, files, 'SUCCESS', '初始化图标库成功', false);
 }
