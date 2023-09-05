@@ -12,11 +12,15 @@
   overflow: hidden;
   visibility: hidden;
   background-color: #212121;
+  z-index: 10;
 }
 #js-app-loading__container--routine::after {
   display: block;
   content: '初次遇见 · 稍等片刻';
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #fff;
   z-index: 2;
 }
