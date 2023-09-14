@@ -29,7 +29,7 @@
         <div class="selecting">
           <div class="header">
             <div class="title">待选择</div>
-            <el-input placeholder="请输入网址名称" suffix-icon="el-icon-search" v-model="searchText"> </el-input>
+            <el-input placeholder="请输入栏目名称" suffix-icon="el-icon-search" v-model="searchText"> </el-input>
           </div>
           <ul class="column-group">
             <li class="column" v-for="column in displayColumns" :key="column._id" @click="selectSite(column)">

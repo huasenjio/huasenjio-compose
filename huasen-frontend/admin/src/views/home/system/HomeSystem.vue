@@ -14,8 +14,8 @@
       <div class="disk-text text">
         <div class="text-item text">磁盘名：{{ disk.diskName }}</div>
         <div class="text-item text">空闲容量：{{ disk.freeValue }}</div>
-        <div class="text-item text">已用占比：{{ disk.useUsage * 100 + '%' }}</div>
-        <div class="text-item text">空闲容量：{{ disk.useValue }}</div>
+        <div class="text-item text">使用占比：{{ disk.useUsage * 100 + '%' }}</div>
+        <div class="text-item text">已用容量：{{ disk.useValue }}</div>
         <div class="text-item text">总磁盘容量：{{ disk.totalValue }}</div>
       </div>
       <!-- 水滴图 -->
