@@ -17,13 +17,13 @@
 
 name: Bug Issues
 title: "Bug 标题"
-description: 一定场景下功能没有按预期工作
+description: 该 issues 用于一定场景下功能没有按预期工作，请慎重选择！
 labels: ["type: bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        请大家注意标点符号、措辞、语法规范，认真写好每一句话，锻炼自己把话说清楚的能力，若潦草不认真，不予答复，希望理解！
+        请大家注意标点符号、措辞、语法规范，认真写好每一句话，锻炼自己把话说清楚的能力，若潦草不认真，不予答复并删除，希望理解！
 
   - type: checkboxes
     attributes:
@@ -73,7 +73,7 @@ body:
       description: >
         复现问题的步骤？
       placeholder: >
-        例如：我点击 a 按钮，弹出 b 弹窗，然后点击提交，发生异常。
+        例如：我点击 a 按钮，弹出 b 弹窗，然后点击提交，发生了异常！
     validations:
       required: true
 
