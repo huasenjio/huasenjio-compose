@@ -17,7 +17,7 @@
 
 name: Bug Issues
 title: "[Bug] 标题"
-description: 该 issues 用于一定场景下功能没有按预期工作，请慎重选择！
+description: 该 issues 用于一定场景下功能没有按预期工作的异常问题，请慎重选择！
 labels: ["type: bug"]
 body:
   - type: markdown
@@ -63,7 +63,7 @@ body:
       label: 功能场景
       description: 使用什么功能模块出现异常？
       placeholder: >
-        无需描述具体问题，仅说明异常场景即可，例如：主页面 || 登陆功能 ...
+        此处无需描述具体问题，仅说明异常场景即可，例如：主页面 || 登陆功能 ...
     validations:
       required: true
 

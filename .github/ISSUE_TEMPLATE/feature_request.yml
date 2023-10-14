@@ -15,10 +15,10 @@
 # limitations under the License.
 #
 
-name: 改进方案
-title: "[改进方案] 标题"
-description: 该 issues 用于提出项目的改进建议，请慎重选择！
-labels: ["type: enhancement"]
+name: 功能推荐
+title: "[功能推荐] 标题"
+description: 该 issues 用于为项目的推荐新功能，请慎重选择！
+labels: ["type: feature"]
 body:
   - type: markdown
     attributes:
@@ -37,19 +37,10 @@ body:
 
   - type: textarea
     attributes:
-      label: 功能场景
-      description: 针对什么功能场景提出的改进建议？
+      label: 功能推荐
+      description: 简单描述您推荐的新功能
       placeholder: >
-        此处无需描述具体方案，仅说明功能场景即可，例如：主页面 || 登陆功能 ...
-    validations:
-      required: true
-
-  - type: textarea
-    attributes:
-      label: 改进方案
-      description: 详细描述优化方案
-      placeholder: >
-        对您的建议进行清晰简洁地描述，最好客观地说明建议的优缺点。
+        清晰简洁地描述推荐功能，最好客观地说明功能的作用。
     validations:
       required: true
 
@@ -57,7 +48,7 @@ body:
     attributes:
       label: 你愿意提交 PR 吗？
       description: >
-        如果您已经很好地理解了如何实现方案，我们非常乐意您能贡献代码。
+        如果您已经很好地理解了如何实现推荐功能，我们非常乐意您能贡献代码。
       options:
         - label: 是的，我愿意提交 PR ！
 

@@ -15,10 +15,10 @@
 # limitations under the License.
 #
 
-name: 改进方案
-title: "[改进方案] 标题"
-description: 该 issues 用于提出项目的改进建议，请慎重选择！
-labels: ["type: enhancement"]
+name: 提问
+title: "[提问] 标题"
+description: 该 issues 用于提出在文档或代码中没有得到解答的疑问，请慎重选择！
+labels: ["type: question"]
 body:
   - type: markdown
     attributes:
@@ -37,37 +37,12 @@ body:
 
   - type: textarea
     attributes:
-      label: 功能场景
-      description: 针对什么功能场景提出的改进建议？
+      label: 疑问内容
+      description: 文档或项目上的疑问
       placeholder: >
-        此处无需描述具体方案，仅说明功能场景即可，例如：主页面 || 登陆功能 ...
+        清晰简洁地描述您的疑问
     validations:
       required: true
-
-  - type: textarea
-    attributes:
-      label: 改进方案
-      description: 详细描述优化方案
-      placeholder: >
-        对您的建议进行清晰简洁地描述，最好客观地说明建议的优缺点。
-    validations:
-      required: true
-
-  - type: checkboxes
-    attributes:
-      label: 你愿意提交 PR 吗？
-      description: >
-        如果您已经很好地理解了如何实现方案，我们非常乐意您能贡献代码。
-      options:
-        - label: 是的，我愿意提交 PR ！
-
-  - type: checkboxes
-    attributes:
-      label: 行为准则
-      description: >
-        行为准则有助于为每个人创造一个安全的空间，我们要求每个人都同意它。
-      options:
-        - label: 严格遵守中华人民共和国相关法律，项目仅供大家学习交流，请勿用于商业用途！
 
   - type: markdown
     attributes:
