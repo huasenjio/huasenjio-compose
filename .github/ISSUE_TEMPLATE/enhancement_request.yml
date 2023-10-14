@@ -15,10 +15,10 @@
 # limitations under the License.
 #
 
-name: Bug Issues
-title: "[Bug] 标题"
-description: 该 issues 用于一定场景下功能没有按预期工作，请慎重选择！
-labels: ["type: bug"]
+name: 改进方案
+title: "[改进方案] 标题"
+description: 该 issues 用于提出项目的改进建议，请慎重选择！
+labels: ["type: enhancement"]
 body:
   - type: markdown
     attributes:
@@ -35,56 +35,23 @@ body:
             我已经搜索了[issues](https://github.com/huasenjio/huasenjio-compose/issues)，没有发现类似的问题。
           required: true
 
-  - type: dropdown
-    attributes:
-      label: 环境
-      description: 选择网站部署的运行环境
-      options:
-        - Mac
-        - Windows
-        - Linux
-        - Other
-    validations:
-      required: true
-
-  - type: dropdown
-    attributes:
-      label: 源码版本
-      description: 选择部署网站的源码版本
-      options:
-        - 不清楚
-        - 1.0.0
-        - 其它
-    validations:
-      required: true
-
   - type: textarea
     attributes:
       label: 功能场景
-      description: 使用什么功能模块出现异常？
+      description: 针对什么功能场景提出的改进建议？
       placeholder: >
-        无需描述具体问题，仅说明异常场景即可，例如：主页面 || 登陆功能 ...
+        无需描述具体方案，仅说明功能场景即可，例如：主页面 || 登陆功能 ...
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: 复现步骤
-      description: >
-        复现问题的步骤？
+      label: 改进方案
+      description: 详细描述优化方案
       placeholder: >
-        例如：我点击 a 按钮，弹出 b 弹窗，然后点击提交，发生了异常！
+        对您的建议进行清晰简洁的描述，最好客观的说明建议的优缺点。
     validations:
       required: true
-
-  - type: textarea
-    attributes:
-      label: 问题现象
-      description: 产生的现象？
-      placeholder: >
-        描述问题的现象
-    validations:
-      required: false
 
   - type: checkboxes
     attributes:
