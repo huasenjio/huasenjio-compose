@@ -13,7 +13,7 @@
       <WrapSidebar v-show="showWrapSidebar && !simpleMode"></WrapSidebar>
       <WrapSign></WrapSign>
       <WrapPerson></WrapPerson>
-      <WrapSimple v-if="simpleMode"></WrapSimple>
+      <WrapSimple v-show="simpleMode"></WrapSimple>
     </div>
     <div v-if="showWrapFooter" class="wrap-footer">
       <a :href="appConfig.site.footer.url" target="__block">{{ appConfig.site.footer.text }}</a>

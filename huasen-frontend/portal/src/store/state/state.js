@@ -47,10 +47,14 @@ export default {
   themeConfig: {
     pure: [],
     wallpaper: [],
+    defaultWallpaper: {},
   },
 
   // 系统配置
   appConfig: {
+    // 配别配置加载情况
+    loaded: false,
+
     article: {
       id: '',
       course: '',

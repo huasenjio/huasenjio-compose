@@ -16,7 +16,7 @@
 import Wrap from '@/components/content/wrap/Wrap.vue';
 import BrowserTips from '@/components/content/browserTips/BrowserTips.vue';
 
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { initScaleDocument, destoryScaleDocument } from '@/plugin/scale-document.js';
 
 export default {
@@ -29,6 +29,8 @@ export default {
   components: { Wrap, BrowserTips },
 
   computed: {
+    ...mapState(['user', 'appConfig']),
+
     // 判断浏览器支持
     isSupport() {
       let temp = this.TOOL.judgeIE();
@@ -59,10 +61,20 @@ export default {
   },
 
   async mounted() {
+    // 优先处理应用配置
+    await this.initAppConfigInfo({
+      callback: () => {
+        let brandName = this.LODASH.get(this.appConfig, 'site.name');
+        if (brandName) {
+          document.title = brandName;
+        }
+      },
+    });
+
     // 加载处理用户信息
-    this.initLocalUserInfo();
-    this.initLocalStyleInfo();
-    await this.initAppConfigInfo();
+    await this.initLocalUserInfo();
+    await this.initLocalStyleInfo();
+
     console.log('页面已挂载成功');
   },
 

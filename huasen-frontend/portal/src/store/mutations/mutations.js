@@ -4,6 +4,12 @@
  * @LastEditors: huasenjio
  * @LastEditTime: 2022-10-25 00:05:07
  * @Description:
+ *
+ * 覆盖规则：
+ * 1.payload节点存在，state节点不存在，新增state节点，值与payload节点相同；
+ * 2.payload和state节点类型不相等，payload覆盖state；
+ * 3.payload节点是空对象或数组，payload覆盖state；
+ * 4.state节点是array、function、symbol、null、undefined、布尔值、字符、数字类型，payload覆盖state；
  */
 
 export default {

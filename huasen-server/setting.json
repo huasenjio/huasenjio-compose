@@ -25,7 +25,11 @@
         "headerFontColor": "#000000",
         "background": "https://s2.loli.net/2023/03/31/W9n7RoFvhtlpg6U.jpg"
       }
-    ]
+    ],
+    "defaultWallpaper": {
+      "headerFontColor": "#FFFFFF",
+      "background": "https://s2.loli.net/2023/03/31/W9n7RoFvhtlpg6U.jpg"
+    }
   },
   "site": {
     "name": "花森",
