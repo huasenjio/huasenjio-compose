@@ -37,12 +37,14 @@ const handleAccessInformation = function (req, res, next) {
     .then(async pool => {
       // 解析nginx反向代理后的真实ip
       let ip = req.headers['x-forwarded-for'] || req.ip;
+      let payload = Object.assign(req.query, req.body);
       // 生成标识
       let uid = getUid(16, 8);
       // 记录信息
       let userAccess = {
         uid,
         ip,
+        payload,
         url: req.url,
         method: req.method,
         originalUrl: req.originalUrl,
@@ -50,10 +52,11 @@ const handleAccessInformation = function (req, res, next) {
         referer: req.get('referer'),
         agent: req.get['user-agent'],
         dot: req.get('dot'),
-        time: moment().format('YYYY-MM-DD hh:mm:ss'),
+        time: moment().format('YYYY-MM-DD HH:mm:ss'),
       };
       let rawData = JSON.stringify(userAccess);
-      await setObjectFiledRedisItem(POOL_ACCESS, uid, rawData);
+      // 添加 "r"标识，纯数字使用eval函数会有问题
+      await setObjectFiledRedisItem(POOL_ACCESS, "r" + uid, rawData);
     })
     .catch(err => {
       next(err);

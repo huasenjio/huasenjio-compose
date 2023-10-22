@@ -22,7 +22,7 @@ function requestIntercept(config) {
   // 注入token
   config.headers.token = state.user.token;
   // 公钥加密
-  if (rsaPublicKey && config.method === 'post' && config._secret) {
+  if (rsaPublicKey && config.method === 'post' && config._secret && config.data) {
     let payload = {
       secretMethod: 'rsa',
       secretText: rsaEncryptLong('public', rsaPublicKey, JSON.stringify(config.data), 117),

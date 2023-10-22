@@ -51,7 +51,9 @@ export default {
   methods: {
     comfirmDialog() {
       this.resultText = '无';
-      this.API.executeRuntimeCode(this.form).then(res => {
+      this.API.executeRuntimeCode(this.form, {
+        secret: true,
+      }).then(res => {
         this.resultText = JSON.stringify(res.data, null, 4);
       });
     },

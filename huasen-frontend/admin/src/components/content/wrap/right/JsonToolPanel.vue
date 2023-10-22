@@ -27,7 +27,7 @@
             <el-input class="object-input" type="textarea" placeholder="JS 字面量" resize="none" v-model="objectText"></el-input>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="可视化预览" name="view">
+        <el-tab-pane :disabled="isError" label="可视化预览" name="view">
           <div class="json-tool-panel-right">
             <VueJsonEditor class="json-edit" v-model="json" :show-btns="false" :expandedOnStart="true" mode="view"></VueJsonEditor>
           </div>
@@ -102,8 +102,8 @@ export default {
             };
             this.objectText = this.parseValue(obj, 1, retractMap[this.retract]);
           } else if (val === 'json') {
-            // 对象2json
-            let tempObj = eval(`(${this.objectText})`);
+            const sanitizedText = this.objectText.replace(/\b0(\d+)\b/g, "$1");
+            let tempObj = eval(`(${sanitizedText})`);
             this.jsonText = JSON.stringify(tempObj, null, this.retract);
           }
         } catch (err) {
@@ -139,7 +139,7 @@ export default {
         return `[${rows.join(', ')}${endWrap}]`;
       } else if (type === '[object String]') {
         // string
-        return value === '' ? `""` : `"${value}"`;
+        return JSON.stringify(value);
       } else {
         // number || boolean
         return value;

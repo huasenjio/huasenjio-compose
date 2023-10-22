@@ -40,7 +40,7 @@ let accessRecordJob = schedule.scheduleJob('0 0 3 * * *', async () => {
     let logObject = {
       id: String(getUid(16, 8)),
       time: moment().format('YYYYMMDD'),
-      log,
+      log: JSON.parse(JSON.stringify(log)),
     };
     await Record.insertMany(logObject);
     await delRedisItem(POOL_ACCESS);
@@ -62,7 +62,7 @@ let accessCPUJob = schedule.scheduleJob('0 * * * * *', async () => {
 });
 
 // 每天凌晨记录数据快照
-let accessYesterdaySummary = schedule.scheduleJob('0 0 0 * * *', async () => {
+let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
   try {
     global.huasen.createEpWorking(
       [
@@ -95,6 +95,6 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 0 * * *', async () => {
       },
     );
   } catch (err) {
-    global.huasen.formatError(err, '记录汇总数据任务错误');
+    global.huasen.formatError(err, '数据库快照任务错误');
   }
 });

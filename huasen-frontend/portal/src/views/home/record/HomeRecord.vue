@@ -46,12 +46,12 @@
     <main v-rightMenu>
       <ul v-balance>
         <li class="record-item" v-for="(item, index) in user.records" :key="`${item}-${index}`">
-          <a class="inherit-text text" v-if="!isEditMode" :href="item.url" target="_blank">
+          <a class="inherit-text text" v-if="!isEditMode" :title="item.remark" :href="item.url" target="_blank">
             {{ item.name }}
           </a>
           <!-- 编辑的替身 -->
           <a v-else @click="handleEdit(item, index)" class="pointer text" :class="{ 'edit-mode': isEditMode }">
-            点击编辑
+            {{ item.name }}
           </a>
           <!-- 删除按钮 -->
           <i v-if="isDeleteMode" @click="handleDelete(item)" class="iconfont icon-md-close-circle delete-icon"> </i>

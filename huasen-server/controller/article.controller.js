@@ -45,13 +45,21 @@ function findAllByPage(req, res, next) {
 }
 
 function findById(req, res, next) {
+  let { proof } = req.huasenJWT;
   let { _id } = req.huasenParams;
   req.epWorking(
     [
       {
         schemaName: 'Article',
         methodName: 'find',
-        payloads: [{ _id }],
+        payloads: [
+          {
+            // 筛选
+            _id,
+            // 筛选出小于等于用户权限的文章
+            code: { $lte: proof.code },
+          },
+        ],
       },
     ],
     result => {
@@ -109,7 +117,7 @@ function findByCode(req, res, next) {
         methodName: 'find',
         payloads: [
           {
-            // 筛选出小于等于用户权限的订阅源
+            // 筛选出小于等于用户权限的文章
             code: { $lte: proof.code },
             // 不是草稿
             isDraft: false,

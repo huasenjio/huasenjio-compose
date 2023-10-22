@@ -32,7 +32,6 @@ export default {
             config,
           },
         });
-        debugger;
       }
     } catch (err) {
       that.$tips('error', '初始化失败', 'top-right', 2000, () => {

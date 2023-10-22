@@ -98,7 +98,7 @@ export default {
     handleScroll(ev) {
       this.af.run(() => {
         // 下拉选择组件的滚动不关闭dropdown
-        if (!ev.target._prevClass.includes('el-select-dropdown__wrap')) {
+        if (ev.target._prevClass && !ev.target._prevClass.includes('el-select-dropdown__wrap')) {
           let nodes = document.getElementsByClassName('el-select-dropdown');
           for (let i = 0; i < nodes.length; i++) {
             nodes[i].style.display = 'none';

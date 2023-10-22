@@ -266,11 +266,9 @@ function getUid(len, radix) {
 }
 
 function handleRate(nV, oV) {
-  if (nV === 0 && oV === 0) return '+0%';
-  if (nV === 0 && oV !== 0) return '-100%';
-  if (nV !== 0 && oV === 0) return '+100%';
+  if (oV === 0) return '--%';
 
-  let rate = Math.abs((nV - oV) / nV).toFixed(2);
+  let rate = Math.abs((nV - oV) / oV).toFixed(2);
   let flag = nV < oV ? '-' : '+';
   return flag + rate + '%';
 }

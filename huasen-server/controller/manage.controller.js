@@ -312,7 +312,7 @@ function executeRuntimeCode(req, res, next) {
 
 function findAppConfig(req, res, next) {
   let systemConfig = require('../setting.json');
-  global.huasen.responseData(res, systemConfig, 'SUCCESS', '查询配置成功', false);
+  global.huasen.responseData(res, systemConfig, 'SUCCESS', '查询配置成功', true);
 }
 
 function saveAppConfig(req, res, next) {

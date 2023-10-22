@@ -243,9 +243,12 @@ export default {
     },
 
     queryIcon() {
-      this.API.findAllIcon().then(res => {
-        this.icons = res.data;
-      });
+      this.API.findAllIcon({}, { notify: false }).then(
+        res => {
+          this.icons = res.data;
+        },
+        { notify: false },
+      );
     },
 
     // 根据数据生成图片，存储到服务器，获取存储地址链接
@@ -355,7 +358,7 @@ export default {
         this.$tips('error', '请输入网站地址', 'top-right', 1200);
         return;
       }
-      this.API.findAppFavicon({ url: this.formData['url'] }).then(res => {
+      this.API.findAppFavicon({ url: this.formData['url'] }, { notify: false }).then(res => {
         this.favicons = res.data;
       });
     },

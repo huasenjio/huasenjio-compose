@@ -19,6 +19,7 @@ router.post('/remove', handleJWT, checkManagePower, remove);
 router.post('/update', handleJWT, checkManagePower, update);
 router.post('/findByCode', handleJWT, findByCode);
 router.post('/list', handleJWT, checkManagePower, findByList);
+
 router.post('/bindSite', handleJWT, checkManagePower, bindSite);
 router.post('/unbindSite', handleJWT, checkManagePower, unbindSite);
 

@@ -104,7 +104,9 @@ export default {
         name,
         headImg,
       };
-      this.API.backup(params);
+      this.API.backup(params, {
+        secret: true,
+      });
     },
 
     // 同步云端数据

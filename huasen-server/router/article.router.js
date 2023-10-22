@@ -16,8 +16,9 @@ const { checkManagePower } = require('../middleware/manage.middleware.js');
 router.post('/add', handleJWT, checkManagePower, handleUselessParams, add);
 router.get('/findByPage', handleJWT, checkManagePower, findAllByPage);
 router.get('/remove', handleJWT, checkManagePower, remove);
-router.get('/findById', findById);
 router.post('/update', handleJWT, checkManagePower, update);
+
+router.get('/findById', handleJWT, findById);
 
 // 用户调用
 router.post('/findByCode', handleJWT, findByCode);

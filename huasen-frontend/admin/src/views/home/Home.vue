@@ -88,15 +88,15 @@ export default {
       traces: [],
       tracesMap: [
         {
-          label: '操作名',
+          label: '动作',
           key: 'operateName',
         },
         {
-          label: '访问链接',
+          label: '链接',
           key: 'url',
         },
         {
-          label: '站点名',
+          label: '站点',
           key: 'host',
         },
         {
@@ -104,7 +104,7 @@ export default {
           key: 'ip',
         },
         {
-          label: '逆向链接',
+          label: '逆链',
           key: 'referer',
         },
         {
@@ -112,7 +112,11 @@ export default {
           key: 'method',
         },
         {
-          label: '访问时间',
+          label: '有效载荷',
+          key: 'payload',
+        },
+        {
+          label: '时间',
           key: 'time',
         },
       ],

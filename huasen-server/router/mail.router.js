@@ -8,6 +8,7 @@
 
 const express = require('express');
 const router = express.Router();
+
 const { getCode } = require('../controller/mail.controller.js');
 
 router.get('/getCode', getCode);

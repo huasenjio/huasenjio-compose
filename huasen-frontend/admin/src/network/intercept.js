@@ -21,7 +21,7 @@ function requestIntercept(config) {
   config.headers.dot = 'manage';
   config.headers.token = state.manage.token;
   // 公钥加密
-  if (window.rsaPublicKey && config.method === 'post' && config._secret) {
+  if (window.rsaPublicKey && config.method === 'post' && config._secret && config.data) {
     let payload = {
       secretMethod: 'rsa',
       secretText: rsaEncryptLong('public', window.rsaPublicKey, JSON.stringify(config.data), 117),

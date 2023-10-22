@@ -37,7 +37,7 @@
     </header>
     <!-- 中间表格 -->
     <main v-if="showContent">
-      <el-table ref="table" :data="tableData" :stripe="true" :border="true" highlight-current-row @selection-change="handleSelectionChange" height="100%">
+      <el-table ref="table" :data="tableData" :stripe="true" :border="true" highlight-current-row @selection-change="handleSelectionChange" @cell-dblclick="handleCopy" height="100%">
         <!-- 多选 -->
         <el-table-column v-if="showSelection" type="selection" width="48"> </el-table-column>
         <!-- 序号 -->
@@ -252,6 +252,10 @@ export default {
         args.shift();
         this.$emit(eventName, ...args);
       });
+    },
+
+    handleCopy(row, column, cell, event) {
+      this.TOOL.copyTextToClip(cell.innerText, '已拷贝单元格内容');
     },
   },
 };

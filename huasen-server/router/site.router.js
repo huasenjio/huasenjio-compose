@@ -15,7 +15,6 @@ const { checkManagePower } = require('../middleware/manage.middleware.js');
 router.post('/add', handleJWT, checkManagePower, handleUselessParams, add);
 router.post('/addMany', handleJWT, checkManagePower, handleUselessParams, addMany);
 router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);
-router.post('/findByCode', handleJWT, findByCode);
 router.post('/remove', handleJWT, checkManagePower, remove);
 router.post('/removeMany', handleJWT, checkManagePower, removeMany);
 router.post('/update', handleJWT, checkManagePower, update);
@@ -24,5 +23,8 @@ router.post('/siteTagList', handleJWT, checkManagePower, findSiteTagByList);
 router.post('/siteColumnList', handleJWT, checkManagePower, findSiteColumnByList);
 router.post('/bindColumn', handleJWT, checkManagePower, bindColumn);
 router.post('/unbindColumn', handleJWT, checkManagePower, unbindColumn);
+
+// 用户调用
+router.post('/findByCode', handleJWT, findByCode);
 
 module.exports = router;

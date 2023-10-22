@@ -37,9 +37,20 @@ export default {
     },
   },
 
-  async mounted() {
-    await this.$store.dispatch('initManage');
-    await this.$store.dispatch('initAppConfig');
+  created() {
+    // 移除开屏动画
+    let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');
+    if (loadingDOM) {
+      document.body.removeChild(loadingDOM);
+    }
+
+    // 初始化本地数据
+    this.$store.dispatch('initManage');
+    // 请求应用配置
+    this.$store.dispatch('initAppConfig');
+  },
+
+  mounted() {
     watermark({
       watermark_txt: this.manage.id,
     });

@@ -16,7 +16,10 @@ router.post('/add', handleUselessParams, add);
 router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);
 router.post('/remove', handleJWT, checkManagePower, remove);
 router.post('/update', handleJWT, checkManagePower, update);
+
 router.post('/findByCode', handleJWT, findByCode);
+
+// 用户调用
 router.post('/findAll', findAll);
 router.post('/findJournalInformationById', handleJWT, findJournalInformationById);
 

@@ -28,8 +28,10 @@ router.post('/uvOverview', handleJWT, checkManagePower, uvOverview);
 router.post('/visitor', handleJWT, checkManagePower, visitor);
 
 router.post('/executeRuntimeCode', handleJWT, checkManagePower, checkManageHighestPower, executeRuntimeCode);
-router.post('/findAppConfig', findAppConfig);
 router.post('/saveAppConfig', handleJWT, checkManagePower, checkManageHighestPower, saveAppConfig);
-router.post('/findAppFavicon', handleJWT, findAppFavicon);
+router.post('/findAppFavicon', handleJWT, checkManagePower, findAppFavicon);
+
+// 用户调
+router.post('/findAppConfig', findAppConfig);
 
 module.exports = router;

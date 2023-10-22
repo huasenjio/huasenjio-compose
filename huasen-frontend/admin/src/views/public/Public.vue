@@ -132,9 +132,14 @@ export default {
         // 路由跳转携带参数
         if (Object.keys(this.$route.params).length !== 0) {
           let result = await this.API.findArticleById({ _id: this.$route.params['_id'] });
-          this.articleForm = result.data.pop();
-          // 解析展示的标签
-          this.tags = this.articleForm.tag ? this.articleForm.tag.split('/') : [];
+          let article = result.data.pop();
+          if (article) {
+            this.articleForm = article;
+            // 解析展示的标签
+            this.tags = this.articleForm.tag ? this.articleForm.tag.split('/') : [];
+          } else {
+            this.$router.go(-1);
+          }
         }
         // 默认赋值
         this.articleForm.manageId = this.manage.id;

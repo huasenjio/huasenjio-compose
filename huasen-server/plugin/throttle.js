@@ -61,8 +61,18 @@ class Throttle {
     // 存入集合
     this.executionMap.set(unit.uid, unitTimer);
     unit.req['epWorking'] = unit.res['epWorking'] = epWorking;
+
     // 存储单元信息到请求对象
     unit.req['huasenUnit'] = unit.res['huasenUnit'] = ep['huasenUnit'] = unit;
+
+    // 因为网站目前只通过send响应数据，所以重写send方法，销毁请求，释放资源
+    const originalSend = unit.res.send;
+    const that = this;
+    unit.res.send = function (data) {
+      originalSend.call(this, data);
+      that.deleteRequest(unit);
+    };
+
     // 放行请求
     unit.next();
   }

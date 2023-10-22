@@ -21,9 +21,9 @@ const diskOverview = post('/manage/diskOverview');
 const uvOverview = post('/manage/uvOverview');
 const visitor = post('/manage/visitor');
 
-const executeRuntimeCode = post('/manage/executeRuntimeCode');
 const findAppConfig = post('/manage/findAppConfig');
 const saveAppConfig = post('/manage/saveAppConfig');
+const executeRuntimeCode = post('/manage/executeRuntimeCode');
 const findAppFavicon = post('/manage/findAppFavicon');
 
 export { login, findManageByPage, addManage, removeManage, updateManage, uploadFile, overview, diskOverview, uvOverview, visitor, executeRuntimeCode, findAppConfig, saveAppConfig, findAppFavicon };

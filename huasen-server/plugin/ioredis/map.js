@@ -107,29 +107,6 @@ function delObjectFiledRedisItem(key, filedKeys, expire) {
  * @param {Number} expire
  * @returns 
  */
-function getObjectFiledRedisItem(key, filedKey, expire) {
-  return new Promise((resolve, reject) => {
-    if (!key || typeof key !== 'string') reject()
-    if (!filedKey || typeof filedKey !== 'string') reject()
-
-    ioRedisClient.hgetall(key, filedKey).then(value => {
-      if (expire && Number.isInteger(expire)) {
-        ioRedisClient.expire(key, expire)
-      }
-      resolve(value)
-    }).catch(err => {
-      reject(err)
-    })
-  })
-}
-
-/**
- * 查取对象类型的属性
- * @param {String} key 
- * @param {String} filedKey 
- * @param {Number} expire
- * @returns 
- */
 function isExistObjectFiledRedisItem(key, filedKey, expire) {
   return new Promise((resolve, reject) => {
     if (!key || typeof key !== 'string') reject()
@@ -148,7 +125,6 @@ module.exports = {
   setObjectRedisItem,
   getObjectRedisItem,
   setObjectFiledRedisItem,
-  getObjectFiledRedisItem,
   delObjectFiledRedisItem,
   isExistObjectFiledRedisItem
 }

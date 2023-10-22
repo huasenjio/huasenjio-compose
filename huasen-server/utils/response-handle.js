@@ -64,8 +64,6 @@ function responseData(response, data, tag, msg, isSecret) {
       response.append('Public-Secret', Buffer.from(rsaPublicKey).toString('base64'));
     }
     response.status(status).send(formatData);
-    // 销毁请求，释放资源，放行请求
-    throttle.deleteRequest(response.huasenUnit);
   }
 }
 

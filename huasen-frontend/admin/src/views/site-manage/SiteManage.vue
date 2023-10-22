@@ -352,7 +352,7 @@ export default {
           // 拓展数据处理
           let expand = JSON.parse(row.expand || '{}');
           siteTag = expand.tag || [];
-          let columnResult = await this.API.findSiteColmunByList({ siteId: row._id });
+          let columnResult = await this.API.findSiteColmunByList({ siteId: row._id }, { notify: false });
           columnId = columnResult.data || [];
         } catch (err) {
           this.$tips('error', '初始化编辑数据异常', 'top-right', 2000);
@@ -399,7 +399,7 @@ export default {
         }
       });
       if (needCreat.length) {
-        const columnResult = await this.API.addColumn({ data: needCreat });
+        const columnResult = await this.API.addColumn({ data: needCreat }, { notify: false });
         needCreatedId = columnResult.data.map(item => item._id);
       }
       // 处理拓展字段
@@ -426,10 +426,10 @@ export default {
       let columnIds = needBind.concat(needCreatedId);
       // 选择性绑定/解绑
       if (columnIds.length) {
-        await this.API.bindSiteToColumn({ columnIds, siteIds });
+        await this.API.bindSiteToColumn({ columnIds, siteIds }, { notify: false });
       }
       if (needUnbind.length) {
-        await this.API.unbindSiteToColumn({ columnIds: needUnbind, siteIds });
+        await this.API.unbindSiteToColumn({ columnIds: needUnbind, siteIds }, { notify: false });
       }
       this.queryColumnData();
       this.queryData();

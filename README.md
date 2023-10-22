@@ -184,7 +184,7 @@
 
 #### 11.网链管理
 
-![sTKvBmOVftdGn2g](https://s2.loli.net/2023/04/27/sTKvBmOVftdGn2g.png)
+![Rzaui4Jd6xQstgK](https://s2.loli.net/2023/10/21/Rzaui4Jd6xQstgK.png)
 
 #### 12.文件管理
 

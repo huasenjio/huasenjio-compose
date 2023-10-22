@@ -8,7 +8,7 @@
 
 <template>
   <div class="sheet">
-    <el-table class="table-group" :data="displayTableData" :stripe="true" :border="true" max-height="360" highlight-current-row>
+    <el-table class="table-group" :data="displayTableData" :stripe="true" :border="true" @cell-dblclick="handleCopy" max-height="360" highlight-current-row>
       <!-- 序号 -->
       <el-table-column type="index" width="80" label="序号"> </el-table-column>
       <!-- 数据列 -->
@@ -80,6 +80,9 @@ export default {
     },
     handleCurrentPageChange(currentPage) {
       this.currentPage = currentPage;
+    },
+    handleCopy(row, column, cell, event) {
+      this.TOOL.copyTextToClip(cell.innerText, '已拷贝单元格内容');
     },
   },
 };
