@@ -42,7 +42,7 @@ export default {
         site,
       });
     } catch (err) {
-      throw err;
+      console.log(err);
       // that.$tips('error', '初始化配置失败', 'top-right', 1000, () => {});
     }
   },
