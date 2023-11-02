@@ -17,12 +17,14 @@
       </div>
       <input @change="fileChange($event)" type="file" id="upload-file" multiple style="display: none" />
       <div class="img-box" v-show="imgList.length !== 0">
-        <div class="item shadow-lg" v-for="(item, index) in imgList" v-dragging="{ item: item, list: imgList, group: 'color' }" :key="index">
+        <div class="item shadow-md" v-for="(item, index) in imgList" v-dragging="{ item: item, list: imgList, group: 'color' }" :key="index">
           <div class="top">
             <i class="iconfont icon-tianjia" @click="uploadFile(index)"></i>
             <img src="./img/delete.png" class="icon-delete" @click="fileDel(index)" />
           </div>
-          <img :src="item.file.src" />
+          <div class="w-full h-full flex justify-center items-center p-px-8">
+            <img class="max-w-full max-h-full" :src="item.file.src" />
+          </div>
         </div>
       </div>
     </footer>
@@ -175,7 +177,7 @@ export default {
 .hs-file-upload {
   width: 100%;
   color: var(--gray-700);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   .content {
     width: 100%;
     height: 200px;
