@@ -99,9 +99,12 @@ const WY_MAIL = {
   },
 };
 
-// 令牌密钥配置
+/**
+ * 令牌密钥配置
+ * 密钥格式：32位数子/字母
+ */
 const JWT = {
-  screat: 'Lyh9gVf9dQstDgtvD6fuhy9ygYgycrWs', // jwt加密密钥
+  screat: _.get(setting, 'site.jwt') || 'Lyh9gVf9dQstDgtvD6fuhy9ygYgycrWs', // jwt加密密钥
   expiresIn: 604800, // 7天失效时间
 };
 
@@ -115,7 +118,7 @@ const SESSION = {
 
 // 文件上传配置
 const STORE = {
-  acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'svg+xml', 'application/pdf'], // 文件默认允许的类型
+  acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'svg+xml', 'application/pdf', 'application/json'], // 文件默认允许的类型
   fileSize: 1024 * 1024 * 10, // 限制10m大小
   target: 'file', // 获取前端上传文件的key值
   encoding: 'utf-8', // 传输的编码格式
@@ -145,7 +148,11 @@ const ADMIN = {
   password: '12345',
 };
 
-// 对称密钥
+/**
+ * 对称密钥
+ * 密钥格式：16位数子/字母
+ * 特别注意：需要部署之前修改，否则数据无法解析
+ */
 const SECRET_AES = ['dj38Ca8F8hag23nD', 'k4h9HdcXmEr83nsF'];
 
 /**
@@ -153,6 +160,7 @@ const SECRET_AES = ['dj38Ca8F8hag23nD', 'k4h9HdcXmEr83nsF'];
  * 密钥位数：2048位（bit）
  * 密钥格式：PKCS#8
  * 输出格式：PEM/Base64
+ * 推荐在线生成站点：https://try8.cn/tool/cipher/rsa
  */
 
 // 非对称公钥
