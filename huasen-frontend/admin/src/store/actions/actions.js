@@ -42,9 +42,8 @@ export default {
         site,
       });
     } catch (err) {
-      that.$tips('error', '初始化配置失败', 'top-right', 1000, () => {
-        location.reload();
-      });
+      throw err;
+      // that.$tips('error', '初始化配置失败', 'top-right', 1000, () => {});
     }
   },
 };
