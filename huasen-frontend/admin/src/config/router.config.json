@@ -90,5 +90,13 @@
     "component": "record-manage/RecordManage",
     "title": "日志管理",
     "children": []
+  },
+  {
+    "path": "/setting",
+    "name": "Setting",
+    "menuCode": "001",
+    "component": "setting/Setting",
+    "title": "系统配置",
+    "children": []
   }
 ]

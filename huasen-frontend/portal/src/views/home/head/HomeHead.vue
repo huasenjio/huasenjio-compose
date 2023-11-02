@@ -110,14 +110,14 @@ export default {
       return [
         {
           iconfontClass: 'iconfont icon-md-home',
-          text: site.home.title || '花森小窝',
-          url: site.home.url || 'http://huasen.cc/',
+          text: site.guidePageName,
+          url: site.guidePageUrl,
           isArticle: false,
         },
         {
           iconfontClass: 'iconfont icon-md-stats',
           text: '更新日志',
-          url: this.$store.state.appConfig.article.course,
+          url: this.$store.state.appConfig.article.changelog,
           isArticle: true,
         },
         {

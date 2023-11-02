@@ -58,7 +58,7 @@ export default {
     .text-group {
       line-height: 60px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 400;
       letter-spacing: 1.2px;
       color: var(--gray-50);
     }

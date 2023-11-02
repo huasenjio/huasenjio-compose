@@ -29,6 +29,7 @@
       :title="mode == 'add' ? '添加管理员' : '编辑管理员'"
       :visible.sync="show"
       :mode="mode"
+      :close-on-click-modal="false"
       :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       :formMap="formMap"
       :formData.sync="form"

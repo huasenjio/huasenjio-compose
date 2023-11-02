@@ -22,7 +22,7 @@
       </li>
     </ul>
     <section v-if="showConnect" class="connect-panel animate__animated animate__fadeIn">
-      <img src="~@/assets/img/logo/weixin.png" />
+      <img :src="appConfig.site.serviceQRCodeUrl" />
     </section>
   </div>
 </template>
@@ -54,7 +54,8 @@ export default {
       this.TOOL.jumpToRead(this, help);
     },
 
-    // 调整仓库
+    // 特别提醒：修改仓库地址将视为侵权
+    // Special reminder: Modifying the warehouse address will be regarded as infringement
     goStorage() {
       window.open('https://github.com/huasenjio/huasenjio-compose', '_blank');
     },

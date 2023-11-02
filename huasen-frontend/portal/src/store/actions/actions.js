@@ -65,17 +65,13 @@ export default {
           loaded: true,
           article: that.LODASH.get(res.data, 'article'),
           site: {
-            name: that.LODASH.get(res.data, 'site.name') || '花森',
-            logoURL: that.LODASH.get(res.data, 'site.logoURL') || require('@/assets/img/logo/favicon.svg'),
-            redirectURL: that.LODASH.get(res.data, 'site.redirectURL') || 'http://huasen.cc/',
-            home: {
-              title: that.LODASH.get(res.data, 'site.home.title') || '花森小窝',
-              url: that.LODASH.get(res.data, 'site.home.url') || 'http://huasen.cc/',
-            },
-            footer: {
-              text: that.LODASH.get(res.data, 'site.footer.text') || '',
-              url: that.LODASH.get(res.data, 'site.footer.url') || '',
-            },
+            name: that.LODASH.get(res.data, 'site.brandName') || '花森',
+            logoURL: that.LODASH.get(res.data, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
+            redirectURL: that.LODASH.get(res.data, 'site.redirectUrl') || 'http://huasen.cc/',
+            guidePageName: that.LODASH.get(res.data, 'site.guidePageName') || '花森小窝',
+            guidePageUrl: that.LODASH.get(res.data, 'site.guidePageUrl') || 'http://huasen.cc/',
+            footerHtml: that.LODASH.get(res.data, 'site.footerHtml') || '',
+            serviceQRCodeUrl: that.LODASH.get(res.data, 'site.serviceQRCodeUrl') || require('@/assets/img/logo/weixin.png'),
           },
         },
         themeConfig: that.LODASH.get(res.data, 'theme'),
@@ -85,8 +81,8 @@ export default {
       context.commit('commitAll', state);
 
       // 设置默认壁纸
-      let bg = that.LODASH.get(res.data, 'theme.defaultWallpaper.background');
-      let headerFontColor = that.LODASH.get(res.data, 'theme.defaultWallpaper.headerFontColor');
+      let bg = that.LODASH.get(res.data, 'theme.default.bg');
+      let headerFontColor = that.LODASH.get(res.data, 'theme.default.color');
 
       if (bg) {
         context.commit('commitAll', {

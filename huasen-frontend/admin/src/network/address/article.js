@@ -9,8 +9,9 @@ import { get, post } from '../request.js';
 
 const addArticle = post('/article/add');
 const findArticleByPage = get('/article/findByPage');
+const findArticleByList = get('/article/findByList');
 const removeArticle = get('/article/remove');
 const findArticleById = get('/article/findById');
 const updateArticle = post('/article/update');
 
-export { addArticle, findArticleByPage, removeArticle, findArticleById, updateArticle };
+export { addArticle, findArticleByPage, removeArticle, findArticleById, updateArticle, findArticleByList };

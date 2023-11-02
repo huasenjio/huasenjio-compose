@@ -29,6 +29,7 @@
       :title="mode == 'add' ? '添加用户' : '编辑用户'"
       :visible.sync="show"
       :mode="mode"
+      :close-on-click-modal="false"
       :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       :formMap="formMap"
       :formData.sync="form"

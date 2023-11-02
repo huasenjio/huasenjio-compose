@@ -253,12 +253,13 @@ export default {
       }
       .image {
         display: flex;
-        justify-content: space-between;
         flex-wrap: wrap;
         li {
+          flex-shrink: 0;
+          flex-grow: 0;
           width: 180px;
           height: 108px;
-          margin: 3px auto;
+          margin: 3px 10px;
           border-radius: 3px;
           display: flex;
           justify-content: center;

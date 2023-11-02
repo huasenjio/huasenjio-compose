@@ -11,4 +11,4 @@ import { get, post } from '../request.js';
 
 const findAppConfig = post('/manage/findAppConfig');
 
-export default { findAppConfig };
+export default {};

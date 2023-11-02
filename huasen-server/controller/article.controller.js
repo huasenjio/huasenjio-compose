@@ -44,6 +44,21 @@ function findAllByPage(req, res, next) {
   );
 }
 
+function findAllByList(req, res, next) {
+  req.epWorking(
+    [
+      {
+        schemaName: 'Article',
+        methodName: 'find',
+        payloads: [],
+      },
+    ],
+    result => {
+      global.huasen.responseData(res, result, 'SUCCESS', '查询文章成功', false);
+    },
+  );
+}
+
 function findById(req, res, next) {
   let { proof } = req.huasenJWT;
   let { _id } = req.huasenParams;
@@ -134,6 +149,7 @@ function findByCode(req, res, next) {
 module.exports = {
   add,
   findAllByPage,
+  findAllByList,
   remove,
   findById,
   update,

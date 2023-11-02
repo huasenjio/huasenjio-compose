@@ -18,13 +18,13 @@
             <i class="iconfont icon-tuichu text-xl"></i>
           </div>
         </div>
-        <div class="tag-group text">
+        <div class="info-group">
+          <div class="text">{{ `${appConfig.site.name}原创 · 最后修改于${time}` }}</div>
+        </div>
+        <div class="tag-group text border border-gray-300 border-dashed">
           <div v-for="item in tags" :key="item" v-randomColor class="text-white inline-block text-xs px-px-8 py-px-2 first:mx-px-0 mx-px-4 rounded-full">
             {{ item }}
           </div>
-        </div>
-        <div class="info-group">
-          <div class="text">{{ `${appConfig.site.name}原创 · 最后修改于${time}` }}</div>
         </div>
       </header>
       <div class="content">
@@ -150,7 +150,10 @@ export default {
       }
       .tag-group {
         width: 100%;
-        height: 22px;
+        padding: 12px 4px;
+        border-radius: 4px;
+        box-sizing: border-box;
+        background-color: var(--gray-100);
         margin: 10px 0;
       }
       .info-group {

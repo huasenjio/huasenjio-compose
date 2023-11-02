@@ -58,7 +58,7 @@
         </li>
       </ul>
     </main>
-    <DialogForm v-if="showForm" :visible.sync="showForm" ref="dialogForm" width="400" :buttons="{ comfirm: '确 认', cancel: '取 消' }" :title="title" :formData="formData" :formMap="formMap" :formRule="formRule" @comfirmForm="save" @cancelForm="cancel"></DialogForm>
+    <DialogForm v-if="showForm" :visible.sync="showForm" ref="dialogForm" width="400" :buttons="{ comfirm: '确 认', cancel: '取 消' }" :title="title" :close-on-click-modal="false" :formData="formData" :formMap="formMap" :formRule="formRule" @comfirmForm="save" @cancelForm="cancel"></DialogForm>
     <CustomWallpaperDrawer v-if="showCustom" title="个性墙纸" :visible.sync="showCustom" :direction="'rtl'" :size="435"></CustomWallpaperDrawer>
   </div>
 </template>

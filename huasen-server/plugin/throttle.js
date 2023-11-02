@@ -53,17 +53,18 @@ class Throttle {
       // 调入全局的错误处理函数
       unit.next(err);
     });
+
+    // 挂载事件分发器，任务执行器，单元信息到请求对象
     unit['ep'] = ep;
+    unit.req['epWorking'] = unit.res['epWorking'] = epWorking;
+    unit.req['huasenUnit'] = unit.res['huasenUnit'] = ep['huasenUnit'] = unit;
+
     // 开始倒计时
     let unitTimer = setTimeout(() => {
       this.deleteRequest(unit);
     }, this.sleepTime);
     // 存入集合
     this.executionMap.set(unit.uid, unitTimer);
-    unit.req['epWorking'] = unit.res['epWorking'] = epWorking;
-
-    // 存储单元信息到请求对象
-    unit.req['huasenUnit'] = unit.res['huasenUnit'] = ep['huasenUnit'] = unit;
 
     // 因为网站目前只通过send响应数据，所以重写send方法，销毁请求，释放资源
     const originalSend = unit.res.send;
@@ -82,11 +83,18 @@ class Throttle {
     if (unit.res.writableEnded) {
       // 已经正常响应
     } else {
-      // 处理超时的请求，手动返回
+      // 超时的请求手动响应
       global.huasen.responseData(unit.res, {}, 'ERROR', '处理超时', false);
     }
+
     clearTimeout(this.executionMap[unit.uid]);
     this.executionMap.delete(unit.uid);
+
+    // 建议删除引用，避免内存泄漏
+    delete unit.req['epWorking'];
+    delete unit.res['epWorking'];
+
+    // 处理队列第一个请求
     this.executionFirstRequest();
   }
 
@@ -111,7 +119,7 @@ class Throttle {
 }
 
 // 实例化
-const throttle = new Throttle(100, 100, 12000);
+const throttle = new Throttle(20, 100, 20000);
 
 module.exports = {
   throttle,

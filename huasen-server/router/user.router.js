@@ -7,7 +7,7 @@
  */
 const express = require('express');
 const router = express.Router();
-const { login, register, updatePassword, consistentFromCloud, backup, add, findAllByPage, remove, update } = require('../controller/user.controller.js');
+const { login, register, updatePassword, consistentFromCloud, backup, add, findAllByPage, remove, update, findAppConfig } = require('../controller/user.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower, checkManageHighestPower } = require('../middleware/manage.middleware.js');
 const { checkUserAccountUnique } = require('../middleware/user.middleware.js');
@@ -18,6 +18,7 @@ router.post('/register', checkMailCode, checkUserAccountUnique, handleUselessPar
 router.post('/updatePassword', checkMailCode, handleUselessParams, updatePassword);
 router.post('/backup', handleJWT, handleUselessParams, backup);
 router.post('/consistentFromCloud', handleJWT, consistentFromCloud);
+router.post('/findAppConfig', handleJWT, findAppConfig);
 
 router.post('/add', handleJWT, checkManagePower, checkUserAccountUnique, handleUselessParams, add);
 router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);

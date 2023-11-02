@@ -65,14 +65,10 @@ export default {
       name: '花森',
       logoURL: require('@/assets/img/logo/favicon.svg'),
       redirectURL: 'http://huasen.cc/',
-      home: {
-        title: '花森小窝',
-        url: 'http://huasen.cc/',
-      },
-      footer: {
-        text: '',
-        url: '',
-      },
+      guidePageName: '花森小窝',
+      guidePageUrl: 'http://huasen.cc/',
+      footerHtml: '',
+      serviceQRCodeUrl: require('@/assets/img/logo/weixin.png'),
     },
   },
 };

@@ -1,19 +1,24 @@
 {
-  "article": {
-    "id": "9527",
-    "course": "63666be7964404694b299520",
-    "about": "63666be7964404694b299521",
-    "help": "63666be7964404694b299522"
+  "site": {
+    "brandName": "花森",
+    "brandUrl": "",
+    "redirectUrl": "http://huasen.cc/",
+    "guidePageName": "花森小窝",
+    "guidePageUrl": "http://huasen.cc/",
+    "footerHtml": "<a href=\"https://beian.miit.gov.cn/\">桂ICP备20001761号</a>",
+    "jwt": "",
+    "jwtLiveTime": 604800,
+    "serviceQRCodeUrl": ""
   },
   "theme": {
     "pure": [
       {
-        "color": "#FFFFFF",
-        "background": "#31c2e0"
+        "color": "#ffffff",
+        "background": "#000000"
       },
       {
-        "color": "#FFFFFF",
-        "background": "#8e54e9"
+        "color": "#ffffff",
+        "background": "#000000"
       }
     ],
     "wallpaper": [
@@ -26,30 +31,20 @@
         "background": "https://s2.loli.net/2023/03/31/W9n7RoFvhtlpg6U.jpg"
       }
     ],
-    "defaultWallpaper": {
-      "headerFontColor": "#FFFFFF",
-      "background": "https://s2.loli.net/2023/03/31/W9n7RoFvhtlpg6U.jpg"
+    "default": {
+      "bg": "https://s2.loli.net/2023/03/31/W9n7RoFvhtlpg6U.jpg",
+      "color": "#000000"
     }
   },
-  "site": {
-    "name": "花森",
-    "logoURL": "",
-    "redirectURL": "http://huasen.cc/",
-    "home": {
-      "title": "花森小窝",
-      "url": "http://huasen.cc/"
-    },
-    "footer": {
-      "text": "",
-      "url": ""
-    },
-    "mail": {
-      "host": "smtp.qq.com",
-      "port": 465,
-      "auth": {
-        "user": "932397243@qq.com",
-        "pass": ""
-      }
-    }
+  "mail": {
+    "host": "smtp.qq.com",
+    "port": 465,
+    "user": "932397243@qq.com",
+    "mtp": "uwmymxafifpsbfec"
+  },
+  "article": {
+    "changelog": "648c79d1cdf0f0076b134525",
+    "about": "648c79d1cdf0f0076b134525",
+    "help": "648c79d1cdf0f0076b134525"
   }
 }

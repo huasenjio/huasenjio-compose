@@ -33,7 +33,7 @@ let strategies = {
   // 是否是网址链接
   isUrl: function (value, errorMsg) {
     if (value === '') return;
-    if (!/^((https?:\/\/)|(www\.))((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost|([a-zA-Z0-9]+\.[a-zA-Z0-9]+)+)((\/[a-zA-Z0-9]*)+|(:\d+\/)|(\/#\/))/.test(value) && !/^public\/default(\/[a-zA-Z0-9-]+)+(\/\w+\.\w+)$/.test(value)) {
+    if (!/^((https?:\/\/)|(www\.))((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost|(([a-zA-Z0-9\\-]+\.)+[a-zA-Z0-9]+))/.test(value)) {
       return errorMsg;
     }
   },
@@ -55,17 +55,8 @@ let strategies = {
       return errorMsg;
     }
   },
-  isPlateNumber: function (value, errorMsg) {
-    if (
-      !/^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/.test(
-        value,
-      )
-    ) {
-      return errorMsg;
-    }
-  },
   isEmail: function (value, errorMsg) {
-    if (/[^\x00-\xff]/.test(value) || !/^(([^()[\]\\.,;:\s@\"]+(\.[^()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)) {
+    if (!/^[A-Za-z0-9]+([-._][A-Za-z0-9]+)*@[A-Za-z0-9]+(-[A-Za-z0-9]+)*(\.[A-Za-z]{2,6}|[A-Za-z]{2,4}\.[A-Za-z]{2,3})$/.test(value)) {
       return errorMsg;
     }
   },

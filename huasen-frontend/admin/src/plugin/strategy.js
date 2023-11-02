@@ -15,14 +15,19 @@ let strategies = {
       return errorMsg;
     }
   },
-
+  // 英文 || 数字
+  isEnglish: function(value, errorMsg) {
+    if (value === '') return;
+    if (!/^[0-9a-zA-Z]+$/.test(value)) {
+      return errorMsg;
+    }
+  },
   // 数字字母下划线
   isPassword: function(value, errorMsg) {
     if (!/(^\w+$)/.test(value)) {
       return errorMsg;
     }
   },
-
   isMobile: function(value, errorMsg) {
     if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
       return errorMsg;
@@ -47,10 +52,38 @@ let strategies = {
   },
   // 网址链接
   isUrl: function(value, errorMsg) {
-    if (!/^((https?:\/\/)|(www\.))((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost|([a-zA-Z0-9\\-]+\.[a-zA-Z0-9-]+)+)((\/[a-zA-Z0-9]*)+|(:\d+\/)|(\/#\/))/.test(value)) {
+    if (value === '') return;
+    if (!/^((https?:\/\/)|(www\.))((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost|(([a-zA-Z0-9\\-]+\.)+[a-zA-Z0-9]+))/.test(value)) {
       return errorMsg;
     }
   },
+  // 图片链接
+  isImgUrl: function(value, errorMsg) {
+    if (value === '') return;
+    if (!/^((https?:\/\/)|(www\.))((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost|(([a-zA-Z0-9\\-]+\.)+[a-zA-Z0-9]+))/.test(value) && !/^huasen-store\/.+/.test(value)) {
+      return errorMsg;
+    }
+  },
+
+  // imgUrl || 颜色代码
+  isBg: function(value, errorMsg) {
+    if (value === '') return;
+    if (
+      !/^(#([0-9A-Fa-f]{3}){1,2}|rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)|rgba\(\d{1,3},\s*\d{1,3},\s*\d{1,3},\s*(0(\.\d+)?|1(\.0+)?)\))$/.test(value) &&
+      !/^((https?:\/\/)|(www\.))((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost|(([a-zA-Z0-9\\-]+\.)+[a-zA-Z0-9]+))/.test(value) &&
+      !/^huasen-store\/.+/.test(value)
+    ) {
+      return errorMsg;
+    }
+  },
+  // 颜色代码
+  isColorCode: function(value, errorMsg) {
+    if (value === '') return;
+    if (!/^(#([0-9A-Fa-f]{3}){1,2}|rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)|rgba\(\d{1,3},\s*\d{1,3},\s*\d{1,3},\s*(0(\.\d+)?|1(\.0+)?)\))$/.test(value)) {
+      return errorMsg;
+    }
+  },
+
   // 访问IP
   isIp: function(value, errMsg) {
     if (value === '') return false;
@@ -64,17 +97,9 @@ let strategies = {
       return errorMsg;
     }
   },
-  isPlateNumber: function(value, errorMsg) {
-    if (
-      !/^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/.test(
-        value,
-      )
-    ) {
-      return errorMsg;
-    }
-  },
+  // 邮箱
   isEmail: function(value, errorMsg) {
-    if (!/^(([^()[\]\\.,;:\s@\\"]+(\.[^()[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)) {
+    if (!/^[A-Za-z0-9]+([-._][A-Za-z0-9]+)*@[A-Za-z0-9]+(-[A-Za-z0-9]+)*(\.[A-Za-z]{2,6}|[A-Za-z]{2,4}\.[A-Za-z]{2,3})$/.test(value)) {
       return errorMsg;
     }
   },
@@ -124,18 +149,6 @@ let strategies = {
       return errorMsg;
     }
   },
-  isManageConfig: function(value, errorMsg) {
-    try {
-      if (value === '') return false;
-      let config = JSON.parse(value);
-      let isObject = Object.prototype.toString.call(config) === '[object Object]';
-      if (!isObject) return errorMsg;
-      let legal = config.hasOwnProperty('article') && config.article.hasOwnProperty('id') && config.article.hasOwnProperty('course') && config.article.hasOwnProperty('about') && config.article.hasOwnProperty('help');
-      if (!legal) return errorMsg;
-    } catch (error) {
-      return errorMsg;
-    }
-  },
 };
 
 // 执行器
@@ -172,6 +185,17 @@ class Validator {
   }
 }
 
+// let errText = checkParamsByRules([
+//   {
+//     value: this.systemConfig,
+//     rules: [
+//       {
+//         strategy: 'isNoEmpty',
+//         errMsg: '必填项',
+//       },
+//     ],
+//   },
+// ]);
 function checkParamsByRules(arr) {
   for (let item of arr) {
     let v = new Validator();

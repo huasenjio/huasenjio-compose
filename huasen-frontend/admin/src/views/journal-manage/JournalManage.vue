@@ -33,11 +33,12 @@
       :formData.sync="form"
       :formRule="rule"
       :mode="mode"
+      :close-on-click-modal="false"
       :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       @comfirmForm="save"
       @cancelForm="cancel"
     ></DialogForm>
-    <ColumnSelector v-if="showColumnSelector" title="配置订阅源" size="500" :visible.sync="showColumnSelector" :currentJournal="currentJournal" @save="handleJournalSave"></ColumnSelector>
+    <ColumnSelector v-if="showColumnSelector" title="配置订阅源" size="500" :visible.sync="showColumnSelector" :wrapperClosable="false" :currentJournal="currentJournal" @save="handleJournalSave"></ColumnSelector>
   </div>
 </template>
 

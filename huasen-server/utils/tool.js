@@ -270,7 +270,7 @@ function handleRate(nV, oV) {
 
   let rate = Math.abs((nV - oV) / oV).toFixed(2);
   let flag = nV < oV ? '-' : '+';
-  return flag + rate + '%';
+  return flag + rate * 100 + '%';
 }
 
 async function downloadAndConvertToBase64(imageUrl) {

@@ -30,6 +30,7 @@
       :title="mode == 'add' ? '添加黑名单' : '编辑黑名单'"
       :visible.sync="show"
       :mode="mode"
+      :close-on-click-modal="false"
       :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       :formMap="formMap"
       :formData.sync="form"

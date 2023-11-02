@@ -10,7 +10,7 @@
     <header>
       <div class="left">
         <i title="折叠" class="iconfont icon-a-unfoldcross-line tool" @click="hiddenWrapLeft"></i>
-        <i title="系统配置" class="iconfont icon-xitongpeizhi tool" @click="openSetPanel"></i>
+        <!-- <i title="系统配置" class="iconfont icon-xitongpeizhi tool" @click="openSetPanel"></i> -->
         <i title="JSON编辑器" class="iconfont icon-json tool" @click="openJsonToolPanel"></i>
         <i title="动态代码执行器" class="iconfont icon-daima tool" @click="openRumtimePanel"></i>
       </div>

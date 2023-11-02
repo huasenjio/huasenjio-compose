@@ -14,6 +14,7 @@ const register = post('/user/register');
 const updatePassword = post('/user/updatePassword');
 const backup = post('/user/backup');
 const consistentFromCloud = post('/user/consistentFromCloud');
+const findAppConfig = post('/user/findAppConfig');
 
 export default {
   login,
@@ -21,4 +22,5 @@ export default {
   updatePassword,
   backup,
   consistentFromCloud,
+  findAppConfig,
 };

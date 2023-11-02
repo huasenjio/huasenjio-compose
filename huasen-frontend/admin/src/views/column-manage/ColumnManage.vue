@@ -33,11 +33,12 @@
       :formData.sync="form"
       :formRule="rule"
       :mode="mode"
+      :close-on-click-modal="false"
       :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       @comfirmForm="save"
       @cancelForm="cancel"
     ></DialogForm>
-    <SiteSelector v-if="showSiteSelector" title="配置栏目" size="500" :visible.sync="showSiteSelector" :currentColumn="currentColumn" @save="handleColumnSave"></SiteSelector>
+    <SiteSelector v-if="showSiteSelector" title="配置栏目" size="500" :visible.sync="showSiteSelector" :wrapperClosable="false" :currentColumn="currentColumn" @save="handleColumnSave"></SiteSelector>
   </div>
 </template>
 

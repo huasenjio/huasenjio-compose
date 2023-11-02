@@ -15,9 +15,7 @@
       <WrapPerson></WrapPerson>
       <WrapSimple v-show="simpleMode"></WrapSimple>
     </div>
-    <div v-if="showWrapFooter" class="wrap-footer">
-      <a :href="appConfig.site.footer.url" target="__block">{{ appConfig.site.footer.text }}</a>
-    </div>
+    <div v-if="showWrapFooter" v-html="appConfig.site.footerHtml" class="wrap-footer"></div>
   </div>
 </template>
 <script>
@@ -49,7 +47,7 @@ export default {
       return this.user.config.simpleMode;
     },
     showWrapFooter() {
-      return this.appConfig.site.footer.text;
+      return this.appConfig.site.footerHtml;
     },
   },
 };

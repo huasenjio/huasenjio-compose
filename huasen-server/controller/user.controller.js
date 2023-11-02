@@ -5,6 +5,7 @@
  * @LastEditTime: 2023-03-31 00:10:48
  * @Description: 用户表控制器
  */
+const _ = require('lodash');
 const JWT = require('../plugin/jwt.js');
 const { encrypt, decrypt } = require('../utils/aes.js');
 
@@ -239,6 +240,12 @@ function update(req, res, next) {
   );
 }
 
+function findAppConfig(req, res, next) {
+  let systemConfig = require('../setting.json');
+  let result = _.omit(systemConfig, ['mail', 'site.jwt', 'site.jwtLiveTime', 'a.jwtLiveTime']);
+  global.huasen.responseData(res, result, 'SUCCESS', '查询配置成功', true);
+}
+
 module.exports = {
   login,
   register,
@@ -250,4 +257,6 @@ module.exports = {
   findAllByPage,
   remove,
   update,
+
+  findAppConfig,
 };

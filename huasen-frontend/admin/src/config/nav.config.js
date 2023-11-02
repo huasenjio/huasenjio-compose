@@ -53,4 +53,9 @@ export default [
     path: '/file-manage',
     iconClass: 'iconfont icon-a-documentationupload-line',
   },
+  {
+    name: '系统配置',
+    path: '/setting',
+    iconClass: 'iconfont icon-xitongpeizhi',
+  },
 ];
