@@ -1,7 +1,8 @@
 // 构建px的尺寸
 /**
- * 注入精细化变量
+ * 注入精细化变量 <= 800
  * top-px-98
+ * -top-px-98
  * p-px-50
  * m-px-50
  * w-px-50
@@ -10,14 +11,17 @@
  */
 function useFullPx() {
   let fullPxs = {};
+  let negativeFullSize = {};
   new Array(800).fill(1).forEach((item, index) => {
     if (index % 2 === 0 || index % 5 === 0) {
       fullPxs[`px-${index}`] = `${index}px`;
+      negativeFullSize[`-px-${index}`] = `-${index}px`;
     }
   });
-  return fullPxs;
+  return { fullPxs, negativeFullSize };
 }
-let sizePxs = useFullPx();
+let sizePxs = useFullPx().fullPxs;
+let negativeSizePxs = useFullPx().negativeFullSize;
 
 module.exports = {
   future: {
@@ -319,6 +323,7 @@ module.exports = {
       '28px': '28px',
       '30px': '30px',
       '32px': '32px',
+      '54px': '54px',
     },
     fontWeight: {
       hairline: '100',
@@ -341,6 +346,7 @@ module.exports = {
       '0': '0',
       auto: 'auto',
       ...sizePxs,
+      ...negativeSizePxs,
     },
     letterSpacing: {
       tighter: '-0.05em',
@@ -801,7 +807,7 @@ module.exports = {
     fontStyle: ['responsive'],
     fontWeight: ['responsive', 'hover', 'focus'],
     height: ['responsive'],
-    inset: ['responsive'],
+    inset: ['responsive', 'hover', 'focus'],
     justifyContent: ['responsive'],
     justifyItems: ['responsive'],
     justifySelf: ['responsive'],
