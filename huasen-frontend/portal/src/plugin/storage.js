@@ -32,7 +32,7 @@ class Storage {
     localStorage.removeItem(key);
   }
   clear() {
-    let flag = confirm('您确定清除本地所有存储吗？（恢复初始模式）');
+    let flag = confirm('您确定清除本地所有存储吗？重置网站，解决一切问题！');
     if (flag) {
       localStorage.clear();
     }
