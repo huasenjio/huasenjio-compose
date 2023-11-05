@@ -268,33 +268,9 @@ module.exports = {
     },
     // 字体
     fontFamily: {
-      sans: [
-        'ui-sans-serif',
-        'system-ui',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        '"Noto Sans"',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-        '"Noto Color Emoji"',
-      ],
+      sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
       serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
-      mono: [
-        'ui-monospace',
-        'SFMono-Regular',
-        'Menlo',
-        'Monaco',
-        'Consolas',
-        '"Liberation Mono"',
-        '"Courier New"',
-        'monospace',
-      ],
+      mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
     },
     // 文字大小
     fontSize: {
@@ -808,8 +784,7 @@ module.exports = {
     transitionProperty: {
       none: 'none',
       all: 'all',
-      DEFAULT:
-        'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
+      DEFAULT: 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
       colors: 'background-color, border-color, color, fill, stroke',
       opacity: 'opacity',
       shadow: 'box-shadow',
@@ -853,24 +828,7 @@ module.exports = {
   },
 
   // 变体顺序
-  variantOrder: [
-    'first',
-    'last',
-    'odd',
-    'even',
-    'visited',
-    'checked',
-    'empty',
-    'read-only',
-    'group-hover',
-    'group-focus',
-    'focus-within',
-    'hover',
-    'focus',
-    'focus-visible',
-    'active',
-    'disabled',
-  ],
+  variantOrder: ['first', 'last', 'odd', 'even', 'visited', 'checked', 'empty', 'read-only', 'group-hover', 'group-focus', 'focus-within', 'hover', 'focus', 'focus-visible', 'active', 'disabled'],
   // 变体触发条件
   variants: {
     accessibility: ['responsive', 'focus-within', 'focus'],
@@ -960,7 +918,7 @@ module.exports = {
     lineHeight: ['responsive'],
     listStylePosition: ['responsive'],
     listStyleType: ['responsive'],
-    margin: ['responsive'],
+    margin: ['responsive', 'first', 'last', 'hover'],
     maxHeight: ['responsive'],
     maxWidth: ['responsive'],
     minHeight: ['responsive'],
