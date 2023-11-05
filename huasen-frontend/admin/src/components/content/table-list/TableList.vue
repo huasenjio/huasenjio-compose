@@ -45,7 +45,14 @@
         <!-- 数据列 -->
         <el-table-column v-for="(col, index) in tableMap" :key="index" :label="col.label" :width="col.width" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <div class="text">{{ scope.row[col.key] | emptyTip }}</div>
+            <!-- 图标 -->
+            <template v-if="col.key === 'icon'">
+              <div class="w-full h-px-30 flex items-center">
+                <img v-lazy class="max-w-full max-h-full" :src="scope.row[col.key]" alt="icon.png" />
+              </div>
+            </template>
+            <!-- 其它 -->
+            <div v-else class="text">{{ scope.row[col.key] | emptyTip }}</div>
           </template>
         </el-table-column>
         <!-- 操作 -->

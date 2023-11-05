@@ -89,6 +89,7 @@ export default {
         {
           label: '网站图标',
           key: 'icon',
+          width: 100,
         },
         {
           label: '备注',
@@ -159,6 +160,16 @@ export default {
           selectOptions: [],
           selectConfig: {
             'allow-create': true,
+            filterable: true,
+            multiple: true,
+          },
+        },
+        {
+          label: '置顶标记',
+          key: 'sitePin',
+          type: 'select',
+          selectOptions: this.CONSTANT.dictionary.pin,
+          selectConfig: {
             filterable: true,
             multiple: true,
           },
@@ -242,6 +253,7 @@ export default {
         enabled: true,
         code: 0,
         siteTag: [],
+        sitePin: [],
         columnId: [],
       },
       importForm: {
@@ -347,18 +359,20 @@ export default {
       this.mode = 'edit';
       this.$nextTick(async () => {
         let siteTag = [];
+        let sitePin = [];
         let columnId = [];
         try {
           // 拓展数据处理
           let expand = JSON.parse(row.expand || '{}');
           siteTag = expand.tag || [];
+          sitePin = expand.pin || [];
           let columnResult = await this.API.findSiteColmunByList({ siteId: row._id }, { notify: false });
           columnId = columnResult.data || [];
         } catch (err) {
           this.$tips('error', '初始化编辑数据异常', 'top-right', 2000);
         }
         // 整理编辑数据
-        this.form = Object.assign(this.form, row, { siteTag, columnId });
+        this.form = Object.assign(this.form, row, { siteTag, sitePin, columnId });
         // 保存编辑表单的初始值
         this.initForm = this.LODASH.cloneDeep(this.form);
       });
@@ -370,6 +384,7 @@ export default {
     },
 
     async save(form) {
+      console.log(form.sitePin);
       let params = { ...this.form };
       let needUnbind = [];
       let needBind = [];
@@ -407,6 +422,7 @@ export default {
       expand = Object.prototype.toString.call(expand) === '[object Object]' ? expand : {};
       // 拼凑标签
       expand.tag = params.siteTag;
+      expand.pin = params.sitePin;
       // 拼凑存储参数
       expand.columnStore = params.columnId.concat(needCreatedId);
       // 利用代码报错中断
@@ -440,6 +456,16 @@ export default {
       let params = { ...this.importForm };
       try {
         let sites = JSON.parse(params.siteData);
+        // 字段过滤
+        sites = sites.map(item => {
+          let { name, url, description } = item;
+          return {
+            name,
+            url,
+            description,
+          };
+        });
+
         sites.forEach(item => {
           if (params.siteTag.length) {
             // 忽略JSON数据中的tag数据
@@ -456,6 +482,7 @@ export default {
           let siteIds = siteResult.data.map(item => item._id);
           await this.API.bindSiteToColumn({ columnIds: params.columnId, siteIds }, { notify: false });
         }
+        // 导入后刷新站点
         this.queryData();
       } catch (err) {
         this.$tips('error', '导入失败', 'top-right', 2000);
