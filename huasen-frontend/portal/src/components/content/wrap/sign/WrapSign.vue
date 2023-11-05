@@ -32,7 +32,7 @@
                   <el-input v-model="submitForm.id" placeholder="请输入邮箱"> </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="请输入密码"></el-input>
+                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="请输入密码：数字｜字母｜下划线"></el-input>
                 </el-form-item>
               </el-form>
               <div class="btn" @click="login">
@@ -48,7 +48,7 @@
                   <el-input v-model="submitForm.id" placeholder="请输入邮箱"> </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="请输入密码"></el-input>
+                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="请输入密码：数字｜字母｜下划线"></el-input>
                 </el-form-item>
                 <el-form-item prop="mailCode">
                   <div class="mail-code-group">
