@@ -53,5 +53,23 @@ export default {
         label: '否',
       },
     ],
+    pin: [
+      {
+        value: 1,
+        label: '热',
+      },
+      {
+        value: 2,
+        label: '墙',
+      },
+      {
+        value: 3,
+        label: '优',
+      },
+      {
+        value: 4,
+        label: '免',
+      },
+    ],
   },
 };

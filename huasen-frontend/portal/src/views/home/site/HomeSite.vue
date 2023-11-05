@@ -15,7 +15,15 @@
         </header>
         <main>
           <ul v-balance>
-            <a class="site inherit-text" v-for="(site, i) in item.sites" :key="`${site.url}-${i}`" :href="site.url" :title="site.describe" target="_blank">
+            <a class="relative site inherit-text" v-for="(site, i) in item.sites" :key="`${site.url}-${i}`" :href="site.url" :title="site.describe" target="_blank">
+              <div class="absolute -top-px-6 right-px-0 w-full h-px-16 flex justify-end">
+                <div v-for="(pin, pinIndex) in handlePin(site)" :key="`${pin}-${pinIndex}`" :style="{ backgroundColor: LODASH.get(pinMap, pin + '.color') }" class="w-px-16 h-px-16 mr-px-2 text-12px text-gray-0 flex justify-center items-center rounded-full">
+                  <template v-if="LODASH.get(pinMap, pin)">
+                    {{ LODASH.get(pinMap, pin + '.label') }}
+                  </template>
+                </div>
+              </div>
+
               <div class="site-card inherit-text text w-px-180 sm:w-px-150">
                 <div class="img-group">
                   <img v-lazy :src="imgUrl(site)" />
@@ -37,7 +45,26 @@ import { mapState } from 'vuex';
 export default {
   name: 'HomeSite',
   data() {
-    return {};
+    return {
+      pinMap: {
+        1: {
+          label: '热',
+          color: 'var(--danger)',
+        },
+        2: {
+          label: '墙',
+          color: 'var(--warning)',
+        },
+        3: {
+          label: '优',
+          color: 'var(--success)',
+        },
+        4: {
+          label: '免',
+          color: 'var(--primary)',
+        },
+      },
+    };
   },
   computed: {
     ...mapState(['categorySites']),
@@ -48,6 +75,17 @@ export default {
   methods: {
     imgUrl(site) {
       return site.icon ? site.icon : require('@/assets/img/error/image-error.png');
+    },
+
+    handlePin(site) {
+      let pin = [];
+      try {
+        let expand = JSON.parse(site.expand);
+        pin = expand.pin.slice(0, 6);
+      } catch (err) {
+        pin = [];
+      }
+      return pin;
     },
   },
 };
@@ -132,7 +170,7 @@ export default {
                 }
               }
               &:hover {
-                transform: translateY(-3px);
+                transform: translateY(-2px);
                 box-shadow: 0 26px 40px -24px var(--gray-800);
               }
             }
