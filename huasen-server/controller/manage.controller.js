@@ -77,7 +77,7 @@ function add(req, res, next) {
 function findAllByPage(req, res, next) {
   let { pageNo, pageSize, id, code } = req.huasenParams;
   // 模糊查询参数
-  let params = { id: { $regex: new RegExp(id) } };
+  let params = { id: { $regex: new RegExp(id, 'i') } };
   if (code !== '' && code !== undefined && code !== null) {
     params.code = code;
   }

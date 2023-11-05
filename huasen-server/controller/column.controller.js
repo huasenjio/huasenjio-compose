@@ -11,7 +11,7 @@ const { Column } = require('../service/index.js');
 function findAllByPage(req, res, next) {
   let { pageNo, pageSize, name, code } = req.huasenParams;
   // 模糊查询参数
-  let params = { name: { $regex: new RegExp(name) } };
+  let params = { name: { $regex: new RegExp(name, 'i') } };
   // 处理权限码模糊查询
   if (code !== '' && code !== undefined && code !== null) {
     params.code = code;

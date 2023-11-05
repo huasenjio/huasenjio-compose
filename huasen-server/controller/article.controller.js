@@ -30,7 +30,7 @@ function findAllByPage(req, res, next) {
         methodName: 'findAllByPage',
         payloads: [
           {
-            $and: [{ title: { $regex: new RegExp(title) } }, { manageId: { $regex: new RegExp(manageId) } }],
+            $and: [{ title: { $regex: new RegExp(title, 'i') } }, { manageId: { $regex: new RegExp(manageId, 'i') } }],
           },
           pageNo,
           pageSize,
