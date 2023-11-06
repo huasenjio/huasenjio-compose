@@ -236,7 +236,7 @@ function handleBalance(el) {
   // 获取所有的子节点，并且转换成为数组
   let childs = [...el.childNodes];
   // css计算像素存在小误差，设置10px的误差值
-  let pWidth = el.clientWidth - 10;
+  let pWidth = el.clientWidth - 5;
   // 找出子节点中最大的宽度
   let childMaxWidth = childs.reduce((pre, cur) => {
     return pre > cur.clientWidth ? pre : cur.clientWidth;
@@ -259,9 +259,10 @@ function handleBalance(el) {
   // 当rowCount为零时，代表父容器宽度不足以容纳一个子元素，所以不需要调整间距
   if (!rowCount) return;
   let space = pWidth - rowCount * childMaxWidth;
-  let margin = Number((space / rowCount) | 0);
+  let margin = Number((space / rowCount / 2) | 0);
   childs.forEach(item => {
     item.style.marginLeft = `${margin}px`;
+    item.style.marginRight = `${margin}px`;
   });
 }
 
