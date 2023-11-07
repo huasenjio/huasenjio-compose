@@ -47,6 +47,7 @@ let strategies = {
   },
   // 网址链接
   isUrl: function(value, errorMsg) {
+    if (value === '') return;
     if (!/^((https?:\/\/)|(www\.))((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost|(([a-zA-Z0-9\\-]+\.)+[a-zA-Z0-9]+))/.test(value)) {
       return errorMsg;
     }
