@@ -8,7 +8,7 @@
 <template>
   <div class="read" v-loading="loading">
     <main>
-      <header>
+      <header class="mb-px-40">
         <div class="title-group flex my-px-10">
           <div class="title text-3xl flex-1 text">
             {{ article.title }}
@@ -62,7 +62,7 @@ export default {
   computed: {
     ...mapState(['appConfig']),
     tags() {
-      return this.article.tag ? this.article.tag.split('/') : [];
+      return this.article.tag ? this.article.tag.split('/') : ['无标签'];
     },
     time() {
       if (this.article.time) {
