@@ -13,7 +13,6 @@ import RightMenu from '@/components/content/rightMenu/RightMenu.vue';
 import StyleMenu from '@/components/content/styleMenu/StyleMenu.vue';
 
 import TOOL from '@/utils/index.js';
-
 import unloadImg from '@/assets/img/error/image-error.png';
 import loadImg from '@/assets/img/loading/3.gif';
 
@@ -231,35 +230,38 @@ function addresize(dom, fn) {
 }
 
 function handleBalance(el) {
-  // 排除不存在子节点的问题
-  if (el.childElementCount === 0) return;
+  // 父容器无宽度 || 没有子节点
+  let pWidth = el.clientWidth - 2;
+  if (el.childElementCount === 0 || pWidth <= 0) return;
   // 获取所有的子节点，并且转换成为数组
   let childs = [...el.childNodes];
-  // css计算像素存在小误差，设置10px的误差值
-  let pWidth = el.clientWidth - 5;
   // 找出子节点中最大的宽度
   let childMaxWidth = childs.reduce((pre, cur) => {
-    return pre > cur.clientWidth ? pre : cur.clientWidth;
+    let width = cur.getBoundingClientRect().width;
+    return pre > width ? pre : width;
   }, 0);
-  // 当父容器或子容器没有宽度时不操作
-  if (pWidth <= 0 || childMaxWidth <= 0) return;
+
   let rowCount = 0;
   // 进入无限循环
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    let totalWidth = childMaxWidth * rowCount; // 子的宽度之和
-    let residue = pWidth - totalWidth; // 相减后余下的宽度
-    if (residue > 0 && childMaxWidth <= residue) {
+    // 子的宽度之和
+    let totalWidth = childMaxWidth * rowCount;
+    // 相减后余下的宽度
+    let residue = pWidth - totalWidth;
+    if (residue > 0 && residue > childMaxWidth) {
       rowCount++;
     } else {
       // 没有剩余空间或者剩余空间不足塞入一个
       break;
     }
   }
-  // 当rowCount为零时，代表父容器宽度不足以容纳一个子元素，所以不需要调整间距
-  if (!rowCount) return;
+  // 父容器装不下子元素，不需要调整间距
+  if (rowCount === 0) return;
+  // 计算剩余间隙，用于计算 margin 值，保留两位小数，并且不四舍五入
   let space = pWidth - rowCount * childMaxWidth;
-  let margin = Number((space / rowCount / 2) | 0);
+  let margin = parseInt((space / rowCount / 2) * 100) / 100;
+
   childs.forEach(item => {
     item.style.marginLeft = `${margin}px`;
     item.style.marginRight = `${margin}px`;

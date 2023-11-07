@@ -35,9 +35,11 @@ let scaleDocument = debounce(e => {
 
 // 初始化
 function initScaleDocument() {
-  window.addEventListener('resize', scaleDocument);
-  let event = new Event('resize', { bubbles: true, cancelable: false });
-  document.dispatchEvent(event);
+  if ('ontouchstart' in document.documentElement) {
+    window.addEventListener('resize', scaleDocument);
+    let event = new Event('resize', { bubbles: true, cancelable: false });
+    document.dispatchEvent(event);
+  }
 }
 
 // 销毁

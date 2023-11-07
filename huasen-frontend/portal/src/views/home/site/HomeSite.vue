@@ -137,7 +137,7 @@ export default {
               color: var(--gray-600);
               border: 1px solid rgba(0, 0, 0, 0.03);
               box-shadow: 0px 0px 20px -5px rgba(158, 158, 158, 0.2);
-              transition: all 0.3s ease;
+              // transition: all 0.3s ease;
               .img-group {
                 position: absolute;
                 left: 10px;
@@ -170,7 +170,7 @@ export default {
                 }
               }
               &:hover {
-                transform: translateY(-2px);
+                // transform: translateY(-2px);
                 box-shadow: 0 26px 40px -24px var(--gray-800);
               }
             }
