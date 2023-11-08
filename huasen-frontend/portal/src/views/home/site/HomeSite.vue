@@ -16,7 +16,7 @@
         <main>
           <ul v-balance>
             <a class="relative site inherit-text" v-for="(site, i) in item.sites" :key="`${site.url}-${i}`" :href="site.url" :title="site.describe" target="_blank">
-              <div class="absolute -top-px-6 right-px-0 w-full h-px-16 flex justify-end">
+              <div class="pin-group absolute -top-px-6 right-px-0 w-full h-px-16 flex justify-end">
                 <div v-for="(pin, pinIndex) in handlePin(site)" :key="`${pin}-${pinIndex}`" :style="{ backgroundColor: LODASH.get(pinMap, pin + '.color') }" class="w-px-16 h-px-16 mr-px-2 text-12px text-gray-0 flex justify-center items-center rounded-full">
                   <template v-if="LODASH.get(pinMap, pin)">
                     {{ LODASH.get(pinMap, pin + '.label') }}
@@ -127,6 +127,9 @@ export default {
           flex-wrap: wrap;
           .site {
             margin-top: 10px;
+            .pin-group {
+              transition: transform 0.3s ease;
+            }
             .site-card {
               position: relative;
               height: 50px;
@@ -135,9 +138,10 @@ export default {
               align-items: center;
               border-radius: 3px;
               color: var(--gray-600);
-              border: 1px solid rgba(0, 0, 0, 0.03);
+              border: 1px solid rgba(0, 0, 0, 0.02);
               box-shadow: 0px 0px 20px -5px rgba(158, 158, 158, 0.2);
-              // transition: all 0.3s ease;
+              transition: box-shadow 0.3s ease;
+              transition: transform 0.3s ease;
               .img-group {
                 position: absolute;
                 left: 10px;
@@ -169,8 +173,13 @@ export default {
                   font-size: 12px;
                 }
               }
-              &:hover {
-                // transform: translateY(-2px);
+            }
+            &:hover {
+              .pin-group {
+                transform: translateY(-2px);
+              }
+              .site-card {
+                transform: translateY(-2px);
                 box-shadow: 0 26px 40px -24px var(--gray-800);
               }
             }
