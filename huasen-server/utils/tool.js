@@ -268,9 +268,9 @@ function getUid(len, radix) {
 function handleRate(nV, oV) {
   if (oV === 0) return '--%';
 
-  let rate = Math.abs((nV - oV) / oV).toFixed(2);
+  let rate = (Math.abs((nV - oV) / oV) * 100).toFixed(2);
   let flag = nV < oV ? '-' : '+';
-  return flag + rate * 100 + '%';
+  return flag + rate + '%';
 }
 
 async function downloadAndConvertToBase64(imageUrl) {
