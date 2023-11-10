@@ -17,7 +17,7 @@ global.huasen.createEpWorking(
           time: '19700101',
           log: {
             7233432065233333:
-              '{"uid":"7233432065233333","url":"/manage/diskOverview","method":"POST","originalUrl":"/manage/diskOverview","ip":"::ffff:127.0.0.1","host":"localhost","referer":"http://localhost:9000/","agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36","time":"1970-01-01 00:00:00"}',
+              '{"uid":"7233432065233333","url":"/manage/diskOverview","method":"POST","ip":"::ffff:127.0.0.1","host":"localhost","referer":"http://localhost:9000/","agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36","time":"1970-01-01 00:00:00"}',
           },
         },
       ],

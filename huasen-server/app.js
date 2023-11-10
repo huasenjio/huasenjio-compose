@@ -21,7 +21,7 @@ const schedule = require('./schedule/schedule.js');
 const initGlobal = require('./global/index.js');
 
 // 全局中间件
-const { handleAccessInformation, handleBlackList, handleRequestError, handleRequest, handleRequestParams } = require('./middleware/common.middleware.js');
+const { handleBlackList, handleRequestError, handleRequest, handleRequestParams } = require('./middleware/common.middleware.js');
 
 // 解决cors跨域问题
 const cors = require('cors'); // cors跨域插件
@@ -37,7 +37,7 @@ app.use('/public', express.static(path.join(__dirname, './public')));
 app.use('/huasen-store', express.static(path.join(__dirname, '../huasen-store')));
 
 // 全局拦截
-app.use(handleRequest, handleAccessInformation, handleBlackList, handleRequestParams);
+app.use(handleRequest, handleBlackList, handleRequestParams);
 
 // 引入用户路由
 const UserRouter = require('./router/user.router.js');

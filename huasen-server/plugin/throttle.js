@@ -25,14 +25,22 @@ class Throttle {
   }
 
   // 添加进入处理程序
-  addRequest(req, res, next) {
+  addRequest(req, res, next, options = {}) {
     // 生产唯一执行单元信息
     let unit = {
       uid: getUid(16, 8),
       req,
       res,
       next,
+      options,
     };
+
+    // 添加时间戳及回调
+    unit.addThrottleTime = new Date().getTime();
+    if (typeof unit.options.addRequestCallback === 'function') {
+      unit.options.addRequestCallback();
+    }
+
     if (this.executionMap.size <= this.maxCount) {
       // 开始处理请求
       this.handleRequest(unit);
@@ -46,6 +54,12 @@ class Throttle {
   }
 
   handleRequest(unit) {
+    // 处理时间戳及回调
+    unit.handleTime = new Date().getTime();
+    if (typeof unit.options.handleRequestCallback === 'function') {
+      unit.options.handleRequestCallback();
+    }
+
     let ep = EventProxy();
     ep.bind('error', err => {
       // 移除全部监听
@@ -78,7 +92,7 @@ class Throttle {
     unit.next();
   }
 
-  deleteRequest(unit) {
+  async deleteRequest(unit) {
     if (!unit) return;
     if (unit.res.writableEnded) {
       // 已经正常响应
@@ -96,6 +110,12 @@ class Throttle {
 
     // 处理队列第一个请求
     this.executionFirstRequest();
+
+    // 删除时间戳及回调
+    unit.deleteTime = new Date().getTime();
+    if (typeof unit.options.deleteRequestCallback === 'function') {
+      unit.options.deleteRequestCallback();
+    }
   }
 
   // 放行处理处于队列第一个的请求

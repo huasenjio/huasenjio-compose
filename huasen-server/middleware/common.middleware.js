@@ -12,9 +12,11 @@ const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const moment = require('moment');
+const _ = require('lodash');
 
 const { SESSION, POOL_BLACKLIST, POOL_ACCESS } = require('../config.js');
 const { getUid } = require('../utils/tool.js');
+const { handleRecord } = require('../utils/record-handle.js');
 const { rsaPrivateKey, privateDecrypt, rsaDecryptLong } = require('../utils/rsa.js');
 const JWT = require('../plugin/jwt.js');
 
@@ -30,40 +32,6 @@ const handleSession = session({
   resave: SESSION.resave,
   saveUninitialized: SESSION.saveUninitialized,
 });
-
-// 统计日志
-const handleAccessInformation = function (req, res, next) {
-  getObjectRedisItem(POOL_ACCESS)
-    .then(async pool => {
-      // 解析nginx反向代理后的真实ip
-      let ip = req.headers['x-forwarded-for'] || req.ip;
-      let payload = Object.assign(req.query, req.body);
-      // 生成标识
-      let uid = getUid(16, 8);
-      // 记录信息
-      let userAccess = {
-        uid,
-        ip,
-        payload,
-        url: req.url,
-        method: req.method,
-        originalUrl: req.originalUrl,
-        host: req.hostname,
-        referer: req.get('referer'),
-        agent: req.get['user-agent'],
-        dot: req.get('dot'),
-        time: moment().format('YYYY-MM-DD HH:mm:ss'),
-      };
-      let rawData = JSON.stringify(userAccess);
-      // 添加 "r"标识，纯数字使用eval函数会有问题
-      await setObjectFiledRedisItem(POOL_ACCESS, "r" + uid, rawData);
-    })
-    .catch(err => {
-      next(err);
-    });
-  // 无需等待redis响应存入，直接放行
-  next();
-};
 
 // 设置黑名单拦截
 const handleBlackList = function (req, res, next) {
@@ -139,7 +107,31 @@ function handleUselessParams(req, res, next) {
 
 // 阀门限流
 function handleRequest(req, res, next) {
-  throttle.addRequest(req, res, next);
+  // 解析保存原始数据
+  // 解析nginx反向代理后的真实ip
+  let ip = req.headers['x-forwarded-for'] || req.ip;
+  let { url, method, hostname } = req;
+  let origin = {
+    ip,
+    url: url.split('?')[0],
+    method,
+    host: hostname,
+    dot: req.get('dot'),
+    referer: req.get('referer'),
+    agent: req.get['user-agent'],
+  };
+
+  // 添加请求至并发处理模块
+  throttle.addRequest(req, res, next, {
+    // 添加请求前
+    addRequestCallback: () => {},
+    // 处理请求前
+    handleRequestCallback: () => {},
+    // 请求销毁后
+    deleteRequestCallback: () => {
+      handleRecord(origin, req);
+    },
+  });
 }
 
 // 错误处理中间件
@@ -152,7 +144,6 @@ const handleRequestError = function (err, req, res, next) {
 
 module.exports = {
   handleSession,
-  handleAccessInformation,
   handleBlackList,
   handleRequestParams,
   handleUselessParams,

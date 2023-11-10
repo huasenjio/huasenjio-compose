@@ -102,6 +102,7 @@ export default {
         {
           label: 'IP',
           key: 'ip',
+          width: '80',
         },
         {
           label: '逆链',
@@ -118,6 +119,17 @@ export default {
         {
           label: '时间',
           key: 'time',
+          width: '160',
+        },
+        {
+          label: '等待时间（ms）',
+          key: 'waitTime',
+          width: '135',
+        },
+        {
+          label: '响应时间（ms）',
+          key: 'responseTime',
+          width: '135',
         },
       ],
 
