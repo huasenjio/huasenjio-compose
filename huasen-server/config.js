@@ -71,21 +71,19 @@ const QQ_MAIL = {
 };
 
 // 实际邮箱配置
-const mail = _.get(setting, 'site.mail') || {};
-let { host, port, auth } = { ...mail };
 const MAIL = {
-  host: host || QQ_MAIL.host,
-  port: port || QQ_MAIL.port,
+  host: _.get(setting, 'mail.host') || QQ_MAIL.host,
+  port: _.get(setting, 'mail.port') || QQ_MAIL.port,
   secure: true,
   auth: {
-    user: _.get(auth, 'user') ? _.get(auth, 'user') : QQ_MAIL.auth.user,
-    pass: _.get(auth, 'pass') ? _.get(auth, 'pass') : QQ_MAIL.auth.pass,
+    user: _.get(setting, 'mail.user') || QQ_MAIL.auth.user,
+    pass: _.get(setting, 'mail.mtp') || QQ_MAIL.auth.pass,
   },
 };
 
 // 站点配置
 const SITE = {
-  redirectURL: _.get(setting, 'site.redirectURL') || 'http://huasen.cc/',
+  redirectURL: _.get(setting, 'site.redirectUrl') || 'http://huasen.cc/',
 };
 
 // 网易邮箱服务配置示例
@@ -105,7 +103,7 @@ const WY_MAIL = {
  */
 const JWT = {
   screat: _.get(setting, 'site.jwt') || 'Lyh9gVf9dQstDgtvD6fuhy9ygYgycrWs', // jwt加密密钥
-  expiresIn: 604800, // 7天失效时间
+  expiresIn: _.get(setting, 'site.jwtLiveTime') || 604800, // 7天失效时间
 };
 
 // 会话

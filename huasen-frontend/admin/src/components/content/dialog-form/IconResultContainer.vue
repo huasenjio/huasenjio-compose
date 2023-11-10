@@ -57,10 +57,10 @@ export default {
     padding: 2px;
     .text-group {
       line-height: 60px;
-      font-size: 14px;
-      font-weight: 400;
+      font-size: 16px;
       letter-spacing: 1.2px;
       color: var(--gray-50);
+      text-shadow: 0px 1.5px 1.5px #000;
     }
     .img-group {
     }
