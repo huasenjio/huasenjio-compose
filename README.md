@@ -98,6 +98,8 @@
 
 ✅ 配置管理页面，支持更换品牌名、LOGO、令牌、页脚、邮箱、壁纸等信息；
 
+✅ 路由页面标签化管理，支持页面缓存；
+
 ☑️ PDF 在线阅读；
 
 ☑️ 提交链接审核；
@@ -138,7 +140,7 @@
 
 ## ✨ 界面功能预览
 
-> 快照更新于 2023 年 11 月 4 日
+> 快照更新于 2023 年 11 月 11 日
 
 #### 1.响应式适配
 
@@ -166,31 +168,31 @@
 
 #### 7.文章阅读
 
-![5FKI13k7oyrfh6P](https://s2.loli.net/2023/11/04/5FKI13k7oyrfh6P.png)
+![jnPcSV6ApTkvZdx](https://s2.loli.net/2023/11/12/jnPcSV6ApTkvZdx.png)
 
 #### 8.数据仪表盘
 
-![8AtW3D51akLQSye](https://s2.loli.net/2023/11/04/8AtW3D51akLQSye.png)
+![or8l51b9wna7dpE](https://s2.loli.net/2023/11/12/or8l51b9wna7dpE.png)
 
 #### 9.文章发布
 
-![Jv2lAmTXwPRBtx6](https://s2.loli.net/2023/02/05/Jv2lAmTXwPRBtx6.png)
+![lk4BwPiAq7jUxgY](https://s2.loli.net/2023/11/12/lk4BwPiAq7jUxgY.png)
 
 #### 10.栏目管理
 
-![UcIVC6jiezDx4ga](https://s2.loli.net/2023/11/04/UcIVC6jiezDx4ga.png)
+![Kvn2Fp6ASDylX1P](https://s2.loli.net/2023/11/12/Kvn2Fp6ASDylX1P.png)
 
 #### 11.网链管理
 
-![Rzaui4Jd6xQstgK](https://s2.loli.net/2023/10/21/Rzaui4Jd6xQstgK.png)
+![JsEeUoIrNZKpXnb](https://s2.loli.net/2023/11/12/JsEeUoIrNZKpXnb.png)
 
 #### 12.文件管理
 
-![bTikANezYoShIdD](https://s2.loli.net/2023/11/04/bTikANezYoShIdD.png)
+![Z1kPSa5TzofYhes](https://s2.loli.net/2023/11/12/Z1kPSa5TzofYhes.png)
 
 #### 13.配置页面
 
-![X1agAJpCV5bhULB](https://s2.loli.net/2023/11/04/X1agAJpCV5bhULB.png)
+![wk5ji93VzFNSAlE](https://s2.loli.net/2023/11/12/wk5ji93VzFNSAlE.png)
 
 ## 🧩 技术架构
 
@@ -527,7 +529,7 @@ docker-compose up -d
 
 （16）显示部署成功之后，我访问网站，老是打开 up 的主页？
 
-遇到重定向到主页的情况，说明网站部署没问题，只是访问的地址不对，根据 `http://ip(域名):nginx端口/portal` 格式检查一下。截止2023年9月1日后台管理已支持动态配置重定向地址，打开配置文件面板，修改 redirectURL 选项，设置重定向链接。
+遇到重定向到主页的情况，说明网站部署没问题，只是访问的地址不对，根据 `http://ip(域名):nginx端口/portal` 格式检查一下。截止2023年9月1日后台管理已支持动态配置重定向地址，打开系统配置页面，设置重定向链接。
 
 ## 📽 视频教程
 
