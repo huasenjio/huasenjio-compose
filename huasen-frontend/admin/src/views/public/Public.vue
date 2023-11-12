@@ -121,7 +121,11 @@ export default {
     },
   },
 
-  mounted() {
+  // mounted() {
+  //   this.initSubmitForm();
+  // },
+
+  activated() {
     this.initSubmitForm();
   },
 
@@ -130,8 +134,8 @@ export default {
     initSubmitForm() {
       this.$nextTick(async () => {
         // 路由跳转携带参数
-        if (Object.keys(this.$route.params).length !== 0) {
-          let result = await this.API.findArticleById({ _id: this.$route.params['_id'] });
+        if (Object.keys(this.$route.query).length !== 0) {
+          let result = await this.API.findArticleById({ _id: this.$route.query['_id'] });
           let article = result.data.pop();
           if (article) {
             this.articleForm = article;

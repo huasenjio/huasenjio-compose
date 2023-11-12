@@ -93,7 +93,8 @@ Vue.prototype.$startLoading = function(text) {
     lock: true,
     text: text || '连接中',
     // spinner: 'el-icon-loading',
-    background: 'rgba(255, 255, 255, 1)',
+    background: 'rgba(255, 255, 255)',
+    customClass: 'request-loading',
   });
 };
 Vue.prototype.$stopLoading = function() {

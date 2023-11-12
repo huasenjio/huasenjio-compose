@@ -66,6 +66,10 @@ export default {
     this.queryDiskOverview();
   },
 
+  // activated() {
+  //   this.queryDiskOverview();
+  // },
+
   methods: {
     queryDiskOverview() {
       this.API.diskOverview({}, { notify: false }).then(res => {
@@ -292,7 +296,7 @@ export default {
 <style lang="scss" scoped>
 .home-system {
   width: 100%;
-  padding: 10px;
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;

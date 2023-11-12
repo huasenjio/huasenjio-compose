@@ -18,7 +18,7 @@ export default [
     iconClass: 'iconfont icon-pen-fill',
   },
   {
-    name: '新闻管理',
+    name: '文章管理',
     path: '/article-manage',
     iconClass: 'iconfont icon-md-stats',
   },

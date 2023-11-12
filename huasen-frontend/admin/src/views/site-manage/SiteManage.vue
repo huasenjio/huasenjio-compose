@@ -66,7 +66,7 @@ import DialogForm from '@/components/content/dialog-form/DialogForm.vue';
 import { getElementFormValidator } from '@/plugin/strategy.js';
 
 export default {
-  name: 'TakeManage',
+  name: 'SiteManage',
   components: { TableList, DialogForm },
   data() {
     return {

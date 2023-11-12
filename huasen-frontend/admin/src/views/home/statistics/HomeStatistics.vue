@@ -63,6 +63,10 @@ export default {
     this.queryOverview();
   },
 
+  // activated() {
+  //   this.queryOverview();
+  // },
+
   methods: {
     queryOverview() {
       this.API.overview(
@@ -88,7 +92,7 @@ export default {
   section {
     width: 24%;
     height: 110px;
-    margin-top: 10px;
+    margin-top: 8px;
     border-radius: 4px;
     .left {
       display: inline-block;

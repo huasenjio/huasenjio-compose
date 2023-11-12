@@ -12,7 +12,7 @@ const handleRecord = function (data, log = {}) {
       data.uid = 'r' + getUid(16, 8);
       data.time = moment().format('YYYY-MM-DD HH:mm:ss');
       // 解析参数
-      data.payload = Object.assign(log.query, log.body);
+      data.payload = _.get(log, 'huasenParams');
 
       let addThrottleTime = _.get(log, 'huasenUnit.addThrottleTime');
       let handleTime = _.get(log, 'huasenUnit.handleTime');

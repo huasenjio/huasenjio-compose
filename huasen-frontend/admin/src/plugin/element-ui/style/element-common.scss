@@ -26,6 +26,7 @@
   border-radius: 0;
 }
 
+// tooltip文字缩略
 .el-tooltip__popper {
   max-width: 200px;
   white-space: nowrap;
@@ -34,6 +35,7 @@
   word-break: break-all;
 }
 
+// 分页文字缩略
 .el-popconfirm {
   .el-popconfirm__main {
     white-space: nowrap;
@@ -54,6 +56,8 @@
 
 // 修改element原生的loading图标
 .request-loading {
+  opacity: 0;
+  animation: fadeIn 1.6s ease-in-out forwards;
   .el-loading-spinner {
     &::before {
       content: '';
@@ -70,10 +74,18 @@
     }
     .el-loading-text {
       display: none;
-      // margin-top: 54px;
     }
     .circular {
       display: none;
     }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

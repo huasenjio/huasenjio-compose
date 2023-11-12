@@ -38,7 +38,7 @@ yum -y install git
 # 查看 Git 版本
 git version
 
-echo '3.正在 docker 程序...'
+echo '3.安装 docker 程序...'
 # 卸载 docker 程序
 yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
 # 安装 docker 依赖项 lvm2 逻辑卷管理器
@@ -58,7 +58,7 @@ chmod a+rw /var/run/docker.sock
 # 查看 docker 版本
 docker version
 
-echo '4.正在 docker 镜像源...'
+echo '4.配置 docker 镜像源...'
 # 配置 docker 镜像源
 if [ ! -f "$daemon_file" ]; then
     echo '{"registry-mirrors":["'$mirror1'","'$mirror2'","'$mirror3'"],"ipv6":false}' > $daemon_file
@@ -76,7 +76,7 @@ fi
 systemctl daemon-reload
 systemctl restart docker
 
-echo '5.正在 docker-compose 程序...'
+echo '5.安装 docker-compose 程序...'
 # 安装 docker-compose 程序
 if [ -f "$docker_compose_path" ]; then
     echo "docker-compose is already downloaded."

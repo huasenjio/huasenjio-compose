@@ -7,6 +7,7 @@
 -->
 <template>
   <div class="home">
+    <el-alert title="温馨提示，数据表盘实时统计大量数据，常驻后台会消耗较多性能，可能导致接口请求变慢！" type="warning" show-icon> </el-alert>
     <HomeStatistics></HomeStatistics>
     <HomeVisitor :visitor="visitorStatus"></HomeVisitor>
     <HomeSystem :system="systemStatus"></HomeSystem>

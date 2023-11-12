@@ -8,6 +8,7 @@
     "name": "Home",
     "menuCode": "000",
     "component": "home/Home",
+    "keepAlive": true,
     "title": "数据表盘",
     "children": []
   },
@@ -32,14 +33,16 @@
     "name": "Public",
     "menuCode": "000",
     "component": "public/Public",
+    "keepAlive": true,
     "title": "发布文章",
     "children": []
   },
   {
     "path": "/article-manage",
-    "name": "NewsManage",
+    "name": "ArticleManage",
     "menuCode": "000",
     "component": "article-manage/ArticleManage",
+    "keepAlive": true,
     "title": "文章管理",
     "children": []
   },
@@ -48,6 +51,7 @@
     "name": "AccountManage",
     "menuCode": "000",
     "component": "account-manage/AccountManage",
+    "keepAlive": true,
     "title": "账号管理",
     "children": []
   },
@@ -56,6 +60,7 @@
     "name": "FileManage",
     "menuCode": "000",
     "component": "file-manage/FileManage",
+    "keepAlive": true,
     "title": "文件管理",
     "children": []
   },
@@ -64,6 +69,7 @@
     "name": "SiteManage",
     "menuCode": "000",
     "component": "site-manage/SiteManage",
+    "keepAlive": true,
     "title": "网链管理",
     "children": []
   },
@@ -72,6 +78,7 @@
     "name": "JournalManage",
     "menuCode": "000",
     "component": "journal-manage/JournalManage",
+    "keepAlive": true,
     "title": "订阅管理",
     "children": []
   },
@@ -80,6 +87,7 @@
     "name": "ColumnManage",
     "menuCode": "000",
     "component": "column-manage/ColumnManage",
+    "keepAlive": true,
     "title": "栏目管理",
     "children": []
   },
@@ -88,6 +96,7 @@
     "name": "RecordManage",
     "menuCode": "000",
     "component": "record-manage/RecordManage",
+    "keepAlive": true,
     "title": "日志管理",
     "children": []
   },
@@ -96,6 +105,7 @@
     "name": "Setting",
     "menuCode": "001",
     "component": "setting/Setting",
+    "keepAlive": true,
     "title": "系统配置",
     "children": []
   }

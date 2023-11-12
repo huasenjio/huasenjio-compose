@@ -48,7 +48,7 @@
             <!-- 图标 -->
             <template v-if="col.key === 'icon'">
               <div class="w-full h-px-30 flex items-center">
-                <img v-lazy class="max-w-full max-h-full" :src="scope.row[col.key]" alt="icon.png" />
+                <img v-lazy class="max-w-full max-h-full" :src="scope.row[col.key]" />
               </div>
             </template>
             <!-- 其它 -->

@@ -54,6 +54,7 @@ import Empty from 'element-ui/lib/empty';
 import Radio from 'element-ui/lib/radio';
 import RadioGroup from 'element-ui/lib/radio-group';
 import Popover from 'element-ui/lib/popover';
+import Alert from 'element-ui/lib/alert';
 import { InfiniteScroll } from 'element-ui';
 
 Vue.use(Button);
@@ -87,6 +88,7 @@ Vue.use(Dialog);
 Vue.use(Empty);
 Vue.use(Radio);
 Vue.use(RadioGroup);
+Vue.use(Alert);
 Vue.use(Loading.directive);
 Vue.use(InfiniteScroll);
 
@@ -102,7 +104,7 @@ Vue.prototype.$startLoading = function(text) {
     lock: true,
     text: text || '加载中',
     // spinner: 'el-icon-loading',
-    background: 'rgba(255, 255, 255, 0.8)',
+    background: 'rgba(255, 255, 255)',
     customClass: 'request-loading',
   });
 };

@@ -6,7 +6,7 @@
  * @Description: 
 -->
 <template>
-  <div class="site-manage">
+  <div class="journal-manage">
     <TableList
       :tableData="tableData"
       :tableMap="tableMap"
@@ -49,7 +49,7 @@ import ColumnSelector from './ColumnSelector.vue';
 import { getElementFormValidator } from '@/plugin/strategy.js';
 
 export default {
-  name: 'TakeManage',
+  name: 'JournalManage',
   components: { TableList, DialogForm, ColumnSelector },
   data() {
     return {
@@ -232,7 +232,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.site-manage {
+.journal-manage {
   width: 100%;
   height: calc(100% - 120px);
   padding: 10px 10px;

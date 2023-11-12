@@ -25,10 +25,10 @@ const createRoute = routes => {
 };
 
 // 传入对象作为参数，并且经过对象解构的方式获得变量。
-const processRouteObj = ({ menuCode, children, component, title, ...args }) => {
+const processRouteObj = ({ menuCode, children, component, title, keepAlive, ...args }) => {
   return Object.assign(
     {
-      meta: { menuCode, children, title },
+      meta: { menuCode, children, title, keepAlive },
       // 引入路由对应的组件
       component: () => import(/* webpackInclude: /\.(js|vue)$/ */ `@/views/${component}`),
       // 通过递归调用的方式进行都子路由的处理

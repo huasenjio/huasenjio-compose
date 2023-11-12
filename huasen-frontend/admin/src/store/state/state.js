@@ -25,4 +25,6 @@ export default {
       url: 'http://huasen.cc/',
     },
   },
+
+  caches: [],
 };

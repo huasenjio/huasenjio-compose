@@ -52,6 +52,11 @@ export default {
     this.queryVisitor();
   },
 
+  // activated() {
+  //   this.queryVisitorTotal();
+  //   this.queryVisitor();
+  // },
+
   methods: {
     queryVisitorTotal() {
       this.API.uvOverview(
@@ -373,7 +378,7 @@ export default {
 
 <style lang="scss" scoped>
 .home-visitor {
-  margin-top: 10px;
+  // margin-top: 10px;
   padding: 10px;
   display: flex;
   .left {

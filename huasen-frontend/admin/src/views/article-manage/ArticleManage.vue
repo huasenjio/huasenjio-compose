@@ -121,7 +121,7 @@ export default {
 
     // 编辑
     editArticle(index, row) {
-      this.$router.push({ name: 'Public', params: row });
+      this.$router.push({ name: 'Public', query: { _id: row._id } });
     },
 
     // 删除

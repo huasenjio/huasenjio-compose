@@ -46,4 +46,29 @@ export default {
       // that.$tips('error', '初始化配置失败', 'top-right', 1000, () => {});
     }
   },
+
+  // 添加缓存的路由组件
+  addCache({ state, dispatch }, componentName) {
+    const { caches } = state;
+    if (!componentName || caches.includes(componentName)) return;
+    caches.push(componentName);
+  },
+
+  // 移除缓存的路由组件
+  removeCache({ state, dispatch }, componentName) {
+    const { caches } = state;
+    const index = caches.indexOf(componentName);
+    if (index > -1) {
+      return caches.splice(index, 1)[0];
+    }
+  },
+
+  // 移除缓存的路由组件的实例
+  async removeCacheEntry({ dispatch }, componentName) {
+    const cacheRemoved = await dispatch('removeCache', componentName);
+    if (cacheRemoved) {
+      await Vue.nextTick();
+      dispatch('addCache', componentName);
+    }
+  },
 };
