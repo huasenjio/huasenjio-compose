@@ -16,4 +16,4 @@ docker-compose rm -f nginx server
 docker-compose build server
 
 # 重新启动容器
-docker-compose up -d
+docker-compose up nginx server -d
