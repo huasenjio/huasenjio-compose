@@ -6,7 +6,7 @@
  * @Description: 
 -->
 <template>
-  <div class="read" v-loading="loading">
+  <div class="read">
     <main>
       <header class="mb-px-40">
         <div class="title-group flex my-px-10">
