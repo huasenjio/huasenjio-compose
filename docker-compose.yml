@@ -65,11 +65,11 @@ services:
       - ./huasen-nginx/html:/usr/share/nginx/html
     # 端口暴露
     ports:
-      # - 80:80
-      - target: 80
-        published: 80
-        protocol: tcp
-        mode: host
+      - 80:80
+      # - target: 80
+      #   published: 80
+      #   protocol: tcp
+      #   mode: host
     environment:
       - TZ=Asia/Shanghai
     networks:
