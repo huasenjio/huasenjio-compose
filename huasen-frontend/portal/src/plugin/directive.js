@@ -231,7 +231,7 @@ function addresize(dom, fn) {
 
 function handleBalance(el) {
   // 父容器无宽度 || 没有子节点
-  let pWidth = el.clientWidth - 2;
+  let pWidth = el.getBoundingClientRect().width;
   if (el.childElementCount === 0 || pWidth <= 0) return;
   // 获取所有的子节点，并且转换成为数组
   let childs = [...el.childNodes];
@@ -240,21 +240,15 @@ function handleBalance(el) {
     let width = cur.getBoundingClientRect().width;
     return pre > width ? pre : width;
   }, 0);
-
   let rowCount = 0;
-  // 进入无限循环
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    // 子的宽度之和
-    let totalWidth = childMaxWidth * rowCount;
-    // 相减后余下的宽度
-    let residue = pWidth - totalWidth;
-    if (residue > 0 && residue > childMaxWidth) {
-      rowCount++;
-    } else {
-      // 没有剩余空间或者剩余空间不足塞入一个
-      break;
-    }
+  let count = 0;
+  count = pWidth / childMaxWidth;
+  if (Number.isInteger(count)) {
+    // 整除
+    rowCount = count;
+  } else {
+    // 向下取整
+    rowCount = Math.floor(count);
   }
   // 父容器装不下子元素，不需要调整间距
   if (rowCount === 0) return;

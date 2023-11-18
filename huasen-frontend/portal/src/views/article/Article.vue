@@ -93,6 +93,7 @@ export default {
   .article-group {
     width: calc(100% - 20px);
     height: calc(100% - 20px);
+    align-content: flex-start;
     margin: 10px;
     border-radius: 4px;
     background-color: var(--gray-0);
