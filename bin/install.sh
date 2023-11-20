@@ -39,24 +39,29 @@ yum -y install git
 git version
 
 echo '3.安装 docker 程序...'
-# 卸载 docker 程序
-yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
-# 安装 docker 依赖项 lvm2 逻辑卷管理器
-yum install -y device-mapper-persistent-data lvm2
-# 将阿里云的 Docker CE 仓库源添加到 yum 仓库列表
-yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-# 刷新 yum 缓存
-yum makecache fast
-# 安装 docker 核心程序
-yum install -y docker-ce
-# 启动 docker
-systemctl start docker.service
-# 设置开机自启动
-systemctl enable docker.service
-# 设置权限
-chmod a+rw /var/run/docker.sock
-# 查看 docker 版本
-docker version
+if command -v docker &> /dev/null
+then
+    echo 'docker 已存在，无需重复安装！'
+else
+    # 卸载 docker 程序
+    yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
+    # 安装 docker 依赖项 lvm2 逻辑卷管理器
+    yum install -y device-mapper-persistent-data lvm2
+    # 将阿里云的 Docker CE 仓库源添加到 yum 仓库列表
+    yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+    # 刷新 yum 缓存
+    yum makecache fast
+    # 安装 docker 核心程序
+    yum install -y docker-ce
+    # 启动 docker
+    systemctl start docker.service
+    # 设置开机自启动
+    systemctl enable docker.service
+    # 设置权限
+    chmod a+rw /var/run/docker.sock
+    # 查看 docker 版本
+    docker version
+fi
 
 echo '4.配置 docker 镜像源...'
 # 配置 docker 镜像源
