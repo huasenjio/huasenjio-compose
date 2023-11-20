@@ -10,10 +10,8 @@
     <header></header>
     <main v-rightMenu>
       <ul v-balance v-rightMenu>
-        <li class="record-item" v-for="(item, index) in categorySites" :key="index" @click="changeAnchorPosition(index)">
-          <div class="pointer text">
-            {{ item.typeName }}
-          </div>
+        <li class="record-item pointer text" v-for="(item, index) in categorySites" :key="index" @click="changeAnchorPosition(index)">
+          {{ item.typeName }}
         </li>
       </ul>
     </main>

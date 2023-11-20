@@ -20,6 +20,7 @@
             :allow-create="getSelectByAttr('selectConfig.allow-create', formTtem)"
             :filterable="getSelectByAttr('selectConfig.filterable', formTtem)"
             :multiple="getSelectByAttr('selectConfig.multiple', formTtem)"
+            :multiple-limit="getSelectByAttr('selectConfig.multiple-limit', formTtem, 8)"
             :popper-append-to-body="false"
           >
             <el-option v-for="(option, i) in formTtem.selectOptions" :key="i" :label="option.label" :value="option.value"> </el-option>
@@ -222,9 +223,9 @@ export default {
       this.closeLab();
     },
 
-    getSelectByAttr(attr, data) {
+    getSelectByAttr(attr, data, def) {
       let value = this.LODASH.get(data, attr);
-      return value || null;
+      return value || def || null;
     },
 
     handleRemoveIcon(path) {

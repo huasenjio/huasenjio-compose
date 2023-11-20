@@ -71,6 +71,11 @@
                 </el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="12">
+              <el-form-item prop="openLabelClassification">
+                <el-switch v-model="site.openLabelClassification" active-text="开启标签分类" inactive-text="关闭标签分类"> </el-switch>
+              </el-form-item>
+            </el-col>
           </el-row>
         </el-form>
       </el-collapse-item>
@@ -278,6 +283,7 @@ export default {
         guidePageName: '花森小窝',
         guidePageUrl: 'http://huasen.cc/',
         footerHtml: '',
+        openLabelClassification: false,
         jwt: '',
         jwtLiveTime: 604800,
         serviceQRCodeUrl: '',

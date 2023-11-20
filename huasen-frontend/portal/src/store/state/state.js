@@ -69,6 +69,7 @@ export default {
       guidePageUrl: 'http://huasen.cc/',
       footerHtml: '',
       serviceQRCodeUrl: require('@/assets/img/logo/weixin.png'),
+      openLabelClassification: false,
     },
   },
 };

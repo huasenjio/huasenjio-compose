@@ -20,6 +20,7 @@ import { judgeBgType } from './judgeBgType';
 import { debounce } from './debounce.js';
 import { handleSize } from './handleSize.js';
 import { getElementPath } from './getElementPath.js';
+import { parseJSON } from './parseJSON.js';
 
 export default {
   handleURL,
@@ -37,4 +38,5 @@ export default {
   debounce,
   handleSize,
   getElementPath,
+  parseJSON,
 };

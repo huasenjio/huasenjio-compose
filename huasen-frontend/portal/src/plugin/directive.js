@@ -231,7 +231,7 @@ function addresize(dom, fn) {
 
 function handleBalance(el) {
   // 父容器无宽度 || 没有子节点
-  let pWidth = el.getBoundingClientRect().width;
+  let pWidth = el.clientWidth - 2;
   if (el.childElementCount === 0 || pWidth <= 0) return;
   // 获取所有的子节点，并且转换成为数组
   let childs = [...el.childNodes];

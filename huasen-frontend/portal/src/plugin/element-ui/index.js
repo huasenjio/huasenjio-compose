@@ -50,6 +50,7 @@ import Loading from 'element-ui/lib/loading';
 import Switch from 'element-ui/lib/switch';
 import Dialog from 'element-ui/lib/dialog';
 import Empty from 'element-ui/lib/empty';
+import Popover from 'element-ui/lib/popover';
 import { InfiniteScroll } from 'element-ui';
 
 Vue.use(Button);
@@ -80,6 +81,7 @@ Vue.use(Drawer);
 Vue.use(Switch);
 Vue.use(Dialog);
 Vue.use(Empty);
+Vue.use(Popover);
 Vue.use(Loading.directive);
 Vue.use(InfiniteScroll);
 
