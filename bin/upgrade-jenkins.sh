@@ -8,9 +8,9 @@ sh_path=$(cd $(dirname "$0") && pwd)
 
 echo "1.定义地址变量..."
 # 根目录名称
-projectName=$sh_path"/../huasenjio-compose"
+projectName="huasenjio-compose"
 # 根目录的绝对路径
-projectPath=$sh_path"/../huasenjio-compose"
+projectPath=$sh_path"/.."
 # 升级源码路径
 upgradePath=$sh_path"/../huasen-jenkins-cache"
 
