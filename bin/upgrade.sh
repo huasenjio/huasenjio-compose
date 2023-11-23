@@ -12,10 +12,10 @@ set -e
 # CentOS 7 重新加载网络配置
 # systemctl restart NetworkManager.service
 
-# 项目文件夹的名称
-projectName="huasenjio-compose"
+sh_path=$(cd $(dirname "$0") && pwd)
+
 # 项目根目录的路径
-projectPath="/root/huasenjio-compose"
+projectPath=$sh_path"/.."
 
 # 远程仓库名称
 gitStorageName="huasenjio-compose"
@@ -23,7 +23,7 @@ gitStorageName="huasenjio-compose"
 gitStoragePath="https://gitee.com/HuaSenJioJio/huasenjio-compose.git"
 
 # 缓存目录
-tempPath="/root/huasen-temp"
+tempPath=$sh_path"/../../huasen-temp"
 
 echo '1.正在重置缓存...'
 # 若没有缓存目录，则创建缓存目录

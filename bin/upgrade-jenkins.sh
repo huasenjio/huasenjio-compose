@@ -1,15 +1,18 @@
 #!/bin/bash
 
+# 本脚本只能在使用 jenkins 容器实现持续化集成才能执行
 # 执行出错后终端
 set -e
 
+sh_path=$(cd $(dirname "$0") && pwd)
+
 echo "1.定义地址变量..."
 # 根目录名称
-projectName="huasenjio-compose"
+projectName=$sh_path"/../huasenjio-compose"
 # 根目录的绝对路径
-projectPath="/root/huasenjio-compose"
+projectPath=$sh_path"/../huasenjio-compose"
 # 升级源码路径
-upgradePath="/root/huasenjio-compose/huasen-jenkins-cache"
+upgradePath=$sh_path"/../huasen-jenkins-cache"
 
 echo "2.正在停止容器..."
 # 进入根目录
