@@ -6,13 +6,13 @@ set -e
 
 sh_path=$(cd $(dirname "$0") && pwd)
 
+echo "0.脚本绝对路径：$sh_path"
+
 echo "1.定义地址变量..."
-# 根目录名称
-projectName="huasenjio-compose"
 # 根目录的绝对路径
-projectPath=$sh_path"/.."
-# 升级源码路径
-upgradePath=$sh_path"/../huasen-jenkins-cache"
+projectPath=$sh_path"/../.."
+# 拉取的源码存储路径
+upgradePath=$sh_path"/.."
 
 echo "2.正在停止容器..."
 # 进入根目录
