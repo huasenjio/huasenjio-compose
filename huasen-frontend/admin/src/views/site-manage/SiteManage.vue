@@ -384,7 +384,6 @@ export default {
     },
 
     async save(form) {
-      console.log(form.sitePin);
       let params = { ...this.form };
       let needUnbind = [];
       let needBind = [];

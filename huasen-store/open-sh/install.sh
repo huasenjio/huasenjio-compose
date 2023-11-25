@@ -4,7 +4,7 @@
 set -e
 
 # 部署路径
-project_name="/root"
+project_path=$(cd $(dirname "$0") && pwd)
 # git 仓库定制
 git_path="https://gitee.com/HuaSenJioJio/huasenjio-compose.git"
 # git 仓库名称
@@ -91,7 +91,7 @@ fi
 docker-compose --version
 
 echo '6.正在拉取代码...'
-cd $project_name
+cd $project_path
 rm -rf $git_name
 git clone $git_path
 cd $git_name
