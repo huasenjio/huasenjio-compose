@@ -45,7 +45,9 @@ docker-compose down
 echo '4.正在备份数据文件...'
 # 开启报错继续执行
 set +e
-find "$projectPath" -mindepth 1 -depth ! -path "$projectPath/huasen-mongo/volume/*" ! -path "$projectPath/huasen-redis/data/*" ! -path "$projectPath/huasen-store/*" ! -path "$projectPath/huasen-jenkins/*" ! -path "$projectPath/huasen-server/setting.json" -delete
+find "$projectPath" -mindepth 1 -depth ! -path "$projectPath/huasen-mongo/volume/*" ! -path "$projectPath/huasen-redis/data/*" ! -path "$projectPath/huasen-store/*" ! -path "$projectPath/huasen-jenkins/*" ! -path "$projectPath/huasen-server/setting.json" ! -path "$projectPath/bin/*" -delete
+# 保留bin目录 && 删除bin目录下所有文件
+find "$projectPath/bin" -mindepth 1 -maxdepth 1 -delete
 # 开启报错中断执行
 set -e
 
