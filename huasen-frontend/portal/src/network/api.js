@@ -14,7 +14,6 @@ import { get, post } from './request.js';
 import UserAPI from './address/user.js';
 import MailAPI from './address/mail.js';
 import ArticleAPI from './address/article.js';
-import ManageAPI from './address/manage.js';
 import JournalAPI from './address/journal.js';
 import SiteAPI from './address/site.js';
 
@@ -45,7 +44,6 @@ export default {
   ...UserAPI,
   ...MailAPI,
   ...ArticleAPI,
-  ...ManageAPI,
   ...JournalAPI,
   ...SiteAPI,
 };
