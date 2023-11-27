@@ -18,4 +18,4 @@ docker-compose build server
 
 echo "正在重启容器..."
 # 重新启动容器
-docker-compose up nginx server -d
+docker-compose up -d nginx server
