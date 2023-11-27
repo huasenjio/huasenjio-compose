@@ -6,7 +6,7 @@
     "guidePageName": "花森小窝",
     "guidePageUrl": "http://huasen.cc/",
     "footerHtml": "<a href=\"https://beian.miit.gov.cn/\">桂ICP备20001761号</a>",
-    "openLabelClassification": false,
+    "openLabelClassification": true,
     "jwt": "",
     "jwtLiveTime": 604800,
     "serviceQRCodeUrl": ""
