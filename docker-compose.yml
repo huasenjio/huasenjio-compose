@@ -14,6 +14,7 @@ services:
     image: mongo:4.2.2
     # 容器名称
     container_name: mongo
+    restart: always
     volumes:
       # /data/db数据目录挂载到宿主机
       - ./huasen-mongo/volume:/data/db
@@ -39,6 +40,7 @@ services:
   redis:
     image: redis:6.0.10-alpine
     container_name: redis
+    restart: always
     privileged: true
     environment:
       - TZ=Asia/Shanghai
@@ -78,6 +80,7 @@ services:
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
+    restart: always
     privileged: true
     user: root
     volumes:
@@ -102,6 +105,7 @@ services:
       context: ./huasen-server
     # 定义容器名称
     container_name: server
+    restart: always
     privileged: true
     user: root
     # 代理日志文件
