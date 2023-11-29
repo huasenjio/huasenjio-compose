@@ -22,11 +22,15 @@ function requestIntercept(config) {
   config.headers.token = state.manage.token;
   // 公钥加密
   if (window.rsaPublicKey && config.method === 'post' && config._secret && config.data) {
-    let payload = {
-      secretMethod: 'rsa',
-      secretText: rsaEncryptLong('public', window.rsaPublicKey, JSON.stringify(config.data), 117),
-    };
-    config.data = payload;
+    try {
+      let payload = {
+        secretMethod: 'rsa',
+        secretText: rsaEncryptLong('public', window.rsaPublicKey, JSON.stringify(config.data), 117),
+      };
+      config.data = payload;
+    } catch (error) {
+      console.warn('加密失败：', error);
+    }
   }
   // 放行参数
   return config;
