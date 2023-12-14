@@ -4,8 +4,6 @@
 >
 > Github 仓库地址：https://github.com/huasenjio/huasenjio-compose
 
-
-
 ## 📌 关于
 
 花森系列网站增添新作品，（huasenjio-compose）[官方仓库](https://github.com/huasenjio/huasenjio-compose)，基于 vue.js、node.js、docker-compose、redis、mongodb、jenkins 组合构建的容器应用。如果我的项目给您带来帮助，请点一个 star（🌟）！您的鼓励和支持，对我真的很重要！
@@ -37,6 +35,8 @@
 花森门户由**浏览器主页网址导航**、**博客系统**、**后台管理系统**组成，浏览器主页收录资源网站，涵盖了日常生活、娱乐、学习、影视、考研、工作、科技、实用工具等领域。博客系统，定期分享实用教程、计算机知识、资源软件等文章，致力于提供高效上网冲浪环境的公益性平台！
 
 ## 📙 功能清单
+
+> 功能介绍系列视频：https://space.bilibili.com/241546158/video
 
 ### 官网
 
@@ -146,11 +146,11 @@
 
 #### 1.响应式适配
 
-![amP73Q5ctpU9sf4](https://s2.loli.net/2023/02/07/amP73Q5ctpU9sf4.png)
+![wHrIlMmhAToxq6R](https://s2.loli.net/2023/12/14/wHrIlMmhAToxq6R.png)
 
 #### 2.首页+搜索+右键换肤
 
-![bwT5saFxQz2RYon](https://s2.loli.net/2022/11/12/bwT5saFxQz2RYon.png)
+![AfIHEn3NWwuOcyz](https://s2.loli.net/2023/12/14/AfIHEn3NWwuOcyz.png)
 
 #### 3.极简模式
 
@@ -158,15 +158,15 @@
 
 #### 4.自定义收录
 
-![woaujxGCKnWt8PB](https://s2.loli.net/2023/02/05/woaujxGCKnWt8PB.png)
+![mn2I3qYGK7FOBbc](https://s2.loli.net/2023/12/14/mn2I3qYGK7FOBbc.png)
 
 #### 5.皮肤主题
 
-![Lj3gREk8dnxbIHZ](https://s2.loli.net/2023/02/05/Lj3gREk8dnxbIHZ.png)
+![IJDWC5mHFpoaiRq](https://s2.loli.net/2023/12/14/IJDWC5mHFpoaiRq.png)
 
 #### 6.文章展示
 
-![W5NyJahVl2pM1mi](https://s2.loli.net/2023/02/05/W5NyJahVl2pM1mi.png)
+![1atdnYRF6ef8PgO](https://s2.loli.net/2023/12/14/1atdnYRF6ef8PgO.png)
 
 #### 7.文章阅读
 
@@ -212,7 +212,7 @@
 >
 > 3.一键脚本部署（推荐）
 
-### 方式1：常规部署
+### 方式 1：常规部署
 
 > ⚠️ 打开弹幕和查看评论区
 >
@@ -408,7 +408,7 @@ docker-compose up -d
 默认管理员：admin@qq.com/12345
 ```
 
-### 方式2：宝塔部署
+### 方式 2：宝塔部署
 
 > ⚠️ 打开弹幕和查看评论区
 >
@@ -424,7 +424,7 @@ docker-compose up -d
 
 进入宝塔面板，安装 docker，拉取 git 源码，修改 docker-compose.yml 文件，添加 compose 模版，添加运行项目。如果宝塔面板已安装 nginx，需要修改 docker-compose.yml 配置文件的 nginx 的运行端口，否则端口冲突，无法启动容器。
 
-### 方式3：一键脚本部署
+### 方式 3：一键脚本部署
 
 > ⚠️ 打开弹幕和查看评论区
 >
@@ -461,7 +461,7 @@ docker-compose up -d
 
 （4-2）部署后配置（推荐）
 
-进入后台管理，点击状态栏的配置图标，修改 mail 选项，设置正确的 host、port、auth信息。
+进入后台管理，点击状态栏的配置图标，修改 mail 选项，设置正确的 host、port、auth 信息。
 
 （5）mongodb 数据库的存储位置？
 
@@ -531,7 +531,11 @@ docker-compose up -d
 
 （16）显示部署成功之后，我访问网站，老是打开 up 的主页？
 
-遇到重定向到主页的情况，说明网站部署没问题，只是访问的地址不对，根据 `http://ip(域名):nginx端口/portal` 格式检查一下。截止2023年9月1日后台管理已支持动态配置重定向地址，打开系统配置页面，设置重定向链接。
+遇到重定向到主页的情况，说明网站部署没问题，只是访问的地址不对，根据 `http://ip(域名):nginx端口/portal` 格式检查一下。截止 2023 年 9 月 1 日后台管理已支持动态配置重定向地址，打开系统配置页面，设置重定向链接。
+
+（17）我已经添加网链，为什么官网不显示链接呢？
+
+官网不显示添加网链的原因主要有两种：17.1.网链没有绑定栏目，栏目没有绑定订阅源；17.2.权限不足，网链、栏目、订阅源任意一项权限不满足，就无法显示网链；详细视频教程：https://www.bilibili.com/video/BV1ph411j7gP/，建议花点时间了解其他介绍视频。
 
 ## 📽 视频教程
 
@@ -675,9 +679,38 @@ npm run dev
 
 📺 bilibili：[花森酱](https://space.bilibili.com/241546158)
 
-## ❤️ 支持
+## ⚡️ 鸣谢榜单
 
-如果项目帮助到大家，可以为我的 bilibili 视频，送上免费的点赞和硬币。另外，阔绰的小伙伴可以请我喝一杯蜜雪冰城🥤～
+### 捐赠榜
+
+> 好事要留名，记得联系我，非常感谢您的爱心捐赠！
+
+| 捐赠人（自定义昵称） | 赞助价值 | 时间       | 留言                          | logo |
+| -------------------- | -------- | ---------- | ----------------------------- | ---- |
+| 一号实验             | 🥤\*3    | 2023/10/13 | 祝花森酱和花森导航越来越好 😊 | --   |
+| 瑶瑶                 | 🥤\*7    | 2023/11/08 | --                            | --   |
+| GM                   | 🥤\*3    | 2023/09/19 | --                            | --   |
+| 优乐美               | 🥤       | 2023/12/01 | --                            | --   |
+| Joel                 | 🥤       | 2023/12/06 | --                            | --   |
+| Wab                  | 🥤       | 2023/11/27 | --                            | --   |
+| 一鸣太一             | 🥤       | 2023/08/12 | --                            | --   |
+
+### 贡献榜
+
+> 好事要留名，记得联系我，非常感谢您的无私奉献！
+
+| 贡献人（自定义昵称） | 贡献内容 | 价值 | 时间 | logo |
+| -------------------- | -------- | ---- | ---- | ---- |
+| --                   | --       | --   | --   | --   |
+
+## ❤️ 爱心捐赠
+
+如果项目帮助到大家，可以为我的 bilibili 视频，送上免费的点赞和硬币。另外，阔绰的小伙伴可以请我喝一杯蜜雪冰城 🥤 ～
 
 ![vM5uLVcEabZeoJF](https://s2.loli.net/2023/07/30/vM5uLVcEabZeoJF.png)
 
+## 🧧 支付宝红包
+
+用支付宝扫码领红包，天天到店支付有优惠。无门槛减免，互利互惠，不花钱的爱心捐赠，一分钱也是爱～
+
+<img src="https://s2.loli.net/2023/12/13/1xpFTi5j72IYgeW.png" alt="1xpFTi5j72IYgeW" style="zoom:50%;" />
