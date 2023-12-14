@@ -53,10 +53,10 @@ export default {
           label: '标签',
           key: 'tag',
         },
-        {
-          label: '文章内容',
-          key: 'content',
-        },
+        // {
+        //   label: '文章内容',
+        //   key: 'content',
+        // },
         {
           label: '是否草稿',
           key: 'isDraft',
