@@ -11,8 +11,8 @@ const handleRecord = function (data, log = {}) {
       // 添加 "r"标识，纯数字使用eval函数会有问题
       data.uid = 'r' + getUid(16, 8);
       data.time = moment().format('YYYY-MM-DD HH:mm:ss');
-      // 解析参数
-      data.payload = _.get(log, 'huasenParams');
+      // 解析参数，排除管理登录接口参数
+      data.payload = data.url === '/manage/login' ? {} : _.get(log, 'huasenParams');
 
       let addThrottleTime = _.get(log, 'huasenUnit.addThrottleTime');
       let handleTime = _.get(log, 'huasenUnit.handleTime');
