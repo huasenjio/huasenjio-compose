@@ -279,9 +279,9 @@ export default {
       site: {
         brandName: '花森',
         brandUrl: '',
-        redirectUrl: 'http://huasen.cc/',
+        redirectUrl: 'http://huasenjio.top/',
         guidePageName: '花森小窝',
-        guidePageUrl: 'http://huasen.cc/',
+        guidePageUrl: 'http://huasenjio.top/',
         footerHtml: '',
         openLabelClassification: false,
         jwt: '',

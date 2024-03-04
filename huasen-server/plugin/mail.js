@@ -46,7 +46,7 @@ class Mailer {
         {
           from: `花森提示 <${MAIL.auth.user}>`, // 发送方信息
           to: mail, // 接受者QQ邮箱地址
-          subject: '花森主页：n.huasen.cc', // 标题
+          subject: '花森主页：n.huasenjio.top', // 标题
           text: `邮箱验证码：${code}`, // 文本信息或者html信息
         },
         (err, data) => {

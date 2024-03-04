@@ -29,17 +29,17 @@
  */
 function createPX(range = 400, tag) {
   let fullPxs = {};
-  new Array(range).fill(undefined).forEach((item, index) => {
-    if (index % 2 === 0 || index % 5 === 0) {
+  for (let i = 0; i <= range; i++) {
+    if (i % 2 === 0 || i % 5 === 0) {
       if (tag === 'negative') {
         // 负数
-        fullPxs[`-px-${index}`] = `-${index}px`;
+        fullPxs[`-px-${i}`] = `-${i}px`;
       } else {
         // 正数
-        fullPxs[`px-${index}`] = `${index}px`;
+        fullPxs[`px-${i}`] = `${i}px`;
       }
     }
-  });
+  }
   return fullPxs;
 }
 

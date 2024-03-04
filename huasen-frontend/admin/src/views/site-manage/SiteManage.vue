@@ -241,7 +241,7 @@ export default {
         expand: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isJSONObject::请输入JSON对象']), trigger: 'blur' }],
       },
       importRule: {
-        siteData: [{ validator: getElementFormValidator(['isSiteList::格式: [{"name":"名称","url":"http://huasen.cc/","description":"描述"}]']), trigger: 'blur' }],
+        siteData: [{ validator: getElementFormValidator(['isSiteList::格式: [{"name":"名称","url":"http://huasenjio.top/","description":"描述"}]']), trigger: 'blur' }],
       },
       form: {
         name: '',

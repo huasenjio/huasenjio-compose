@@ -285,7 +285,7 @@
           Object(c["e"])(
             "a",
             {
-              href: "http://huasen.cc/",
+              href: "http://huasenjio.top/",
               target: "_blank",
               style: {
                 color: "#666",

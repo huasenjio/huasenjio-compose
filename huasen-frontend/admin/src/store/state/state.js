@@ -19,10 +19,10 @@ export default {
   site: {
     name: '花森',
     logoURL: require('@/assets/img/logo/favicon.svg'),
-    redirectURL: 'http://huasen.cc/',
+    redirectURL: 'http://huasenjio.top/',
     home: {
       title: '花森小窝',
-      url: 'http://huasen.cc/',
+      url: 'http://huasenjio.top/',
     },
   },
 

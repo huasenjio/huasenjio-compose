@@ -74,7 +74,7 @@ module.exports = {
       72: '18rem',
       80: '20rem',
       96: '24rem',
-      ...createPX(800, 'positive'),
+      ...createPX(600, 'positive'),
       ...createPX(200, 'negative'),
     },
     // 默认动画

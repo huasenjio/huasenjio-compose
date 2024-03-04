@@ -37,6 +37,7 @@ import OptionGroup from 'element-ui/lib/option-group';
 import Tooltip from 'element-ui/lib/tooltip';
 import Notification from 'element-ui/lib/notification';
 import Message from 'element-ui/lib/message';
+import MessageBox from 'element-ui/lib/message-box';
 import Form from 'element-ui/lib/form';
 import FormItem from 'element-ui/lib/form-item';
 import Row from 'element-ui/lib/row';
@@ -88,6 +89,7 @@ Vue.use(InfiniteScroll);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
+Vue.prototype.$alert = MessageBox.alert;
 
 Vue.prototype.$startLoading = function(text) {
   HLoadingCount++;

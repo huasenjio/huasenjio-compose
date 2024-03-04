@@ -67,9 +67,9 @@ export default {
           site: {
             name: that.LODASH.get(res.data, 'site.brandName') || '花森',
             logoURL: that.LODASH.get(res.data, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
-            redirectURL: that.LODASH.get(res.data, 'site.redirectUrl') || 'http://huasen.cc/',
+            redirectURL: that.LODASH.get(res.data, 'site.redirectUrl') || 'http://huasenjio.top/',
             guidePageName: that.LODASH.get(res.data, 'site.guidePageName') || '花森小窝',
-            guidePageUrl: that.LODASH.get(res.data, 'site.guidePageUrl') || 'http://huasen.cc/',
+            guidePageUrl: that.LODASH.get(res.data, 'site.guidePageUrl') || 'http://huasenjio.top/',
             footerHtml: that.LODASH.get(res.data, 'site.footerHtml') || '',
             openLabelClassification: that.LODASH.get(res.data, 'site.openLabelClassification') || false,
             serviceQRCodeUrl: that.LODASH.get(res.data, 'site.serviceQRCodeUrl') || require('@/assets/img/logo/weixin.png'),

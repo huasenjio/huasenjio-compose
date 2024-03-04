@@ -9,15 +9,15 @@
  * h-px-50
  * @returns Array
  */
-function useFullPx() {
+function useFullPx(range = 400) {
   let fullPxs = {};
   let negativeFullSize = {};
-  new Array(800).fill(1).forEach((item, index) => {
+  for (let index = 0; index <= range; index++) {
     if (index % 2 === 0 || index % 5 === 0) {
       fullPxs[`px-${index}`] = `${index}px`;
       negativeFullSize[`-px-${index}`] = `-${index}px`;
     }
-  });
+  }
   return { fullPxs, negativeFullSize };
 }
 let sizePxs = useFullPx().fullPxs;

@@ -64,9 +64,9 @@ export default {
     site: {
       name: '花森',
       logoURL: require('@/assets/img/logo/favicon.svg'),
-      redirectURL: 'http://huasen.cc/',
+      redirectURL: 'http://huasenjio.top/',
       guidePageName: '花森小窝',
-      guidePageUrl: 'http://huasen.cc/',
+      guidePageUrl: 'http://huasenjio.top/',
       footerHtml: '',
       serviceQRCodeUrl: require('@/assets/img/logo/weixin.png'),
       openLabelClassification: false,
