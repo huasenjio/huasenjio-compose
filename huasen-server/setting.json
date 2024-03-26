@@ -5,7 +5,7 @@
     "redirectUrl": "http://huasenjio.top/",
     "guidePageName": "花森小窝",
     "guidePageUrl": "http://huasenjio.top/",
-    "footerHtml": "<a href=\"https://beian.miit.gov.cn/\">桂ICP备20001761号</a>",
+    "footerHtml": "",
     "openLabelClassification": true,
     "jwt": "",
     "jwtLiveTime": 604800,
@@ -46,6 +46,7 @@
   "article": {
     "changelog": "648c79d1cdf0f0076b134525",
     "about": "648c79d1cdf0f0076b134525",
-    "help": "648c79d1cdf0f0076b134525"
+    "help": "648c79d1cdf0f0076b134525",
+    "notice": ""
   }
 }

@@ -52,7 +52,7 @@ export default {
 
   // 系统配置
   appConfig: {
-    // 配别配置加载情况
+    // 是否已加载配置
     loaded: false,
 
     article: {
@@ -60,6 +60,7 @@ export default {
       course: '',
       about: '',
       help: '',
+      notice: '',
     },
     site: {
       name: '花森',

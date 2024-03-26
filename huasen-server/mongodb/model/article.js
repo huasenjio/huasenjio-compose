@@ -73,7 +73,7 @@ let ArticleSchema = new mongoose.Schema({
           return false;
         }
       },
-      message: '请输入YYYY-MM-DD时间格式',
+      message: '请输入YYYY-MM-DD HH:mm:ss时间格式',
     },
   },
 
@@ -94,6 +94,12 @@ let ArticleSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  // 是否公告
+  // isNotice: {
+  //   type: Boolean,
+  //   default: false,
+  // },
 });
 
 const Article = mongoose.model('articles', ArticleSchema);

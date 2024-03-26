@@ -18,21 +18,19 @@
             <i class="iconfont icon-tuichu text-xl"></i>
           </div>
         </div>
-        <div class="info-group">
-          <div class="text">{{ `${appConfig.site.name}原创 · 最后修改于${time}` }}</div>
-        </div>
-        <div class="tag-group text border border-gray-300 border-dashed">
-          <div v-for="item in tags" :key="item" v-randomColor class="text-white inline-block text-xs px-px-8 py-px-2 first:mx-px-0 mx-px-4 rounded-full">
-            {{ item }}
+        <div class="info-group border border-gray-300 border-dashed">
+          <div class="time">
+            <div class="text">{{ `${appConfig.site.name}原创 · 最后修改于${time}` }}</div>
+          </div>
+          <div class="tag">
+            <div v-for="item in tags" :key="item" v-randomColor class="text-white inline-block text-xs px-px-8 py-px-2 first:mx-px-0 mx-px-4 rounded-full">
+              {{ item }}
+            </div>
           </div>
         </div>
       </header>
       <div class="content">
         <HMarkdown :value="article.content || content"></HMarkdown>
-        <footer class="footer-group">
-          <div class="text">版权说明：MIT开源协议</div>
-          <div class="text">免责声明：文章仅供学习交流 禁止用于商业用途</div>
-        </footer>
       </div>
     </main>
   </div>
@@ -45,10 +43,10 @@ export default {
     return {
       loading: true,
       article: {
-        title: '文章标题',
-        time: '1979-01-01',
-        tag: '简洁/用心/愉悦',
-        content: '文章内容....',
+        title: '示例文章',
+        time: '1979-01-01 00:00:00',
+        tag: '用心/简洁/美观',
+        content: '文字文字文字文字文字文字文字文字文字文字文字文字....',
       },
     };
   },
@@ -66,10 +64,10 @@ export default {
     },
     time() {
       if (this.article.time) {
-        let temps = this.article.time.split('-');
-        return `${temps[0]}年${temps[1]}月${temps[2]}日`;
+        // let temps = this.article.time.split('-');
+        return this.article.time;
       } else {
-        return '1979年01月01日';
+        return '1979-01-01 00:00:00';
       }
     },
   },
@@ -90,7 +88,7 @@ export default {
       )
         .then(res => {
           if (!res.data[0]) {
-            this.$tips('error', '文章找不到了', 'top-right', 1200, () => {
+            this.$tips('error', '您查阅文章找不见了', 'top-right', 1200, () => {
               this.$router.push('/article');
             });
           } else {
@@ -147,47 +145,39 @@ export default {
         height: 42px;
         display: flex;
         align-items: center;
+        .title {
+          font-weight: 500;
+          color: var(--gray-600);
+          text-shadow: 1px 1px 2px var(--gray-200);
+        }
       }
-      .tag-group {
+      .info-group {
         width: 100%;
-        padding: 12px 4px;
+        padding: 12px 4px 4px 4px;
         border-radius: 4px;
         box-sizing: border-box;
         background-color: var(--gray-100);
         margin: 10px 0;
-      }
-      .info-group {
-        width: 100%;
-        height: 24px;
-        color: var(--gray-700);
+        .time {
+          width: 100%;
+          height: 24px;
+          margin-bottom: 4px;
+          color: var(--gray-600);
+          text-shadow: 1px 1px 2px var(--gray-200);
+        }
+        .tag {
+          width: 100%;
+          height: 24px;
+          padding-bottom: 4px;
+          white-space: nowrap;
+          overflow-x: auto;
+          overflow-y: hidden;
+        }
       }
     }
     .content {
       flex: 1;
-      .footer-group {
-        width: 100%;
-        height: 58px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        margin: 10px 0;
-        padding: 0 10px;
-        border-left: 5px solid var(--gray-300);
-        border-right: 5px solid var(--gray-300);
-        background-color: var(--gray-100);
-        box-sizing: border-box;
-      }
-    }
-  }
-  @media only screen and (min-width: 1024px) and (min-height: 640px) {
-    .tag-group {
-      width: calc(100% - 150px) !important;
-    }
-    .info-group {
-      width: calc(100% - 150px) !important;
-    }
-    .footer-group {
-      width: calc(100% - 150px) !important;
+      overflow: hidden;
     }
   }
 }

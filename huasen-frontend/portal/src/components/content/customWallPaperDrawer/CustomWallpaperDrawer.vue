@@ -286,8 +286,8 @@ export default {
           align-items: center;
           flex-wrap: wrap;
           li {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             margin-right: 8px;
             margin-top: 8px;
             opacity: 0.8;

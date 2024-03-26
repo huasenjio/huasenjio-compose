@@ -26,6 +26,8 @@ body {
   --info: #17a2b8;
   --warning: #ffc107;
   --danger: #dc3545;
+
+  --ui-theme: rgba(255, 0, 0, 0.8);
 }
 
 /* 明亮模式 */

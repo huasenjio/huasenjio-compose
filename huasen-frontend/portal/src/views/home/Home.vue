@@ -80,10 +80,6 @@ export default {
 
     handleHomeSearchFucos(event) {
       Bus.pubEv(BusType.HOME_FUCOS, event.key);
-
-      setTimeout(() => {
-        Bus.pubEv(BusType.HOME_SCROLL_TO, 0, true);
-      }, 200);
     },
 
     // 按下tab，切换搜索引擎
@@ -125,7 +121,7 @@ export default {
         this.homeContentScrollTo(y);
       });
 
-      // 初始化聚焦事件总线
+      // 初始化聚焦事件总线 slash
       Bus.subEv(BusType.HOME_CREATE_KEYUP_SLASH, () => {
         document.addEventListener('keyup', this.handleHomeSearchFucos);
       });

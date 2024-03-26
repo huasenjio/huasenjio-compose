@@ -162,7 +162,14 @@ export default {
     },
     handleSearchFucos(key) {
       if (key === '/' && this.$refs.searchInput) {
-        this.$refs.searchInput.focus();
+        Bus.pubEv(BusType.HOME_SCROLL_TO, 0, true);
+        // setTimeout作用：等待滚动完成及组件渲染完成
+        setTimeout(() => {
+          this.$refs.searchInput.focus();
+        }, 200);
+      } else if (this.isSearchInputFocus) {
+        // 因为输入框聚焦，按下任意按键，均会定位输入框，所以按下非“/”键，输入框聚焦状态，同样滚动到顶部
+        Bus.pubEv(BusType.HOME_SCROLL_TO, 0, true);
       }
     },
     handleNextTab(event) {

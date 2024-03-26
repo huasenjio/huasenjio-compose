@@ -7,6 +7,13 @@
  */
 class Storage {
   constructor() {}
+
+  /**
+   * 存储数据
+   * @param {string} key - 存储句柄
+   * @param {*} value - 数据
+   * @param {number} expireTime - 过期时间，，单位毫秒，不传永久存储
+   */
   setItem(key, value, expireTime) {
     localStorage.setItem(
       key,
@@ -16,6 +23,12 @@ class Storage {
       }),
     );
   }
+
+  /**
+   * 获取存储数据
+   * @param {string} key - 存储句柄
+   * @returns {(*|undefined)} 存储内容
+   */
   getItem(key) {
     if (!localStorage.getItem(key)) {
       return;
@@ -27,10 +40,19 @@ class Storage {
       localStorage.removeItem(key);
     }
   }
+
+  /**
+   * 删除存储数据
+   * @param {string} key - 存储句柄
+   */
   removeItemByKey(key) {
     if (key === undefined || key === null || key === '' || key === 0) return;
     localStorage.removeItem(key);
   }
+
+  /**
+   * 清理全部数据
+   */
   clear() {
     let flag = confirm('您确定清除本地所有存储吗？重置网站，解决一切问题！');
     if (flag) {

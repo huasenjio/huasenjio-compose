@@ -16,6 +16,7 @@
       <WrapSimple v-show="simpleMode"></WrapSimple>
     </div>
     <div v-if="showWrapFooter" v-html="appConfig.site.footerHtml" class="wrap-footer"></div>
+    <WrapNotice v-if="appConfig.loaded"></WrapNotice>
   </div>
 </template>
 <script>
@@ -29,15 +30,17 @@ import WrapSidebar from './sidebar/WrapSidebar.vue';
 import WrapSign from './sign/WrapSign.vue';
 import WrapPerson from './person/WrapPerson.vue';
 import WrapSimple from './simple/WrapSimple.vue';
+import WrapNotice from './notice/WrapNotice.vue';
 
 export default {
   name: 'HsWrap',
 
-  components: { WrapLeft, WrapRight, WrapSidebar, WrapSign, WrapPerson, WrapSimple },
+  components: { WrapLeft, WrapRight, WrapSidebar, WrapSign, WrapPerson, WrapSimple, WrapNotice },
 
   data() {
     return {
       navs,
+      showNotice: true,
     };
   },
 
@@ -49,6 +52,10 @@ export default {
     showWrapFooter() {
       return this.appConfig.site.footerHtml;
     },
+  },
+
+  methods: {
+    handleNotice() {},
   },
 };
 </script>

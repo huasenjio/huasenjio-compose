@@ -45,7 +45,7 @@
       </el-upload>
     </div>
     <div class="submit-group">
-      <div class="time">{{ getTime }}</div>
+      <div class="time">{{ `${this.articleForm._id ? '编辑' : '创建'}时间：${getTime}` }}</div>
       <div class="btn-group">
         <el-button type="primary" @click="cancel">取消发布</el-button>
         <el-button type="danger" @click="submit">
@@ -109,7 +109,7 @@ export default {
       };
     },
     getTime() {
-      return moment().format('YYYY-MM-DD');
+      return moment().format('YYYY-MM-DD HH:mm:ss');
     },
     action() {
       return this.TOOL.getUploadApi('/manage/upload');

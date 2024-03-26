@@ -184,6 +184,13 @@
                 </el-select>
               </el-form-item>
             </el-col>
+            <el-col :span="12">
+              <el-form-item prop="notice" label="网站公告">
+                <el-select v-model="article.notice" clearable filterable placeholder="请选择网站公告">
+                  <el-option v-for="item in articleOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
           </el-row>
         </el-form>
       </el-collapse-item>
@@ -306,6 +313,7 @@ export default {
         changelog: '',
         about: '',
         help: '',
+        notice: '',
       },
       theme: {
         pure: [
