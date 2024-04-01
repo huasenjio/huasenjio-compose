@@ -6,7 +6,7 @@
  * @Description: 
 -->
 <template>
-  <div v-rightMenu :style="style" class="empty">
+  <div id="js-empty" class="empty" v-discolor :style="style">
     <main>
       <img class="w-full" src="./img/empty.png" />
       <div class="w-full text">空空如也</div>

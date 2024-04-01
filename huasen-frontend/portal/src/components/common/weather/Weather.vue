@@ -48,7 +48,7 @@ export default {
           this.chartObserve = new ResizeObserver(([{ contentRect }]) => {
             if (contentRect.width === 0) return;
             // 避免过长，影响布局的情况
-            this.showWeather = contentRect.width > 180 ? false : true;
+            this.showWeather = contentRect.width > 200 ? false : true;
           });
           this.chartObserve.observe(dom);
           this.$once('hook:beforeDestroy', function() {
@@ -63,7 +63,7 @@ export default {
 
 <style lang="scss" scoped>
 #hs-weather {
-  max-width: 185px;
+  max-width: 200px;
   pointer-events: none;
 }
 </style>

@@ -1,5 +1,6 @@
 // 默认主题色变量
-$--color-primary: rgba(255, 0, 0, 0.8);
+// $--color-primary: rgba(255, 0, 0, 0.8);
+$--color-primary: #409eff;
 // 改变 icon 字体路径
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 // 引入单个组件的scss文件
@@ -33,5 +34,6 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 @import '~element-ui/packages/theme-chalk/src/popover';
 @import '~element-ui/packages/theme-chalk/src/message';
 @import '~element-ui/packages/theme-chalk/src/message-box';
+@import '~element-ui/packages/theme-chalk/src/scrollbar';
 
 @import './element-common.scss';

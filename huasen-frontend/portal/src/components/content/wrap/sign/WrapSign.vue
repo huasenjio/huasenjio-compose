@@ -29,10 +29,10 @@
             <section class="login">
               <el-form :model="submitForm" :rules="rules" ref="loginForm" status-icon>
                 <el-form-item prop="id">
-                  <el-input v-model="submitForm.id" placeholder="请输入邮箱"> </el-input>
+                  <el-input v-model="submitForm.id" placeholder="请输入邮箱地址"> </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="请输入密码：数字｜字母｜下划线"></el-input>
+                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="数字/字母/下划线"></el-input>
                 </el-form-item>
               </el-form>
               <div class="btn" @click="login">
@@ -45,10 +45,10 @@
             <section class="register">
               <el-form :model="submitForm" :rules="rules" ref="registerForm" status-icon>
                 <el-form-item prop="id">
-                  <el-input v-model="submitForm.id" placeholder="请输入邮箱"> </el-input>
+                  <el-input v-model="submitForm.id" :placeholder="activeIndex == 1 ? '请输入邮箱地址' : '请输入找回账号'"> </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="请输入密码：数字｜字母｜下划线"></el-input>
+                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="数字/字母/下划线"></el-input>
                 </el-form-item>
                 <el-form-item prop="mailCode">
                   <div class="mail-code-group">

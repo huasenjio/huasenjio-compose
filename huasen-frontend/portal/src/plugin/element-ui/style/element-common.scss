@@ -54,6 +54,17 @@
   }
 }
 
+// 颜色选择器的色值输入框
+.el-color-picker__panel {
+  .el-color-dropdown__value {
+    .el-input--mini {
+      .el-input__inner {
+        font-size: 10px;
+      }
+    }
+  }
+}
+
 // 修改element原生的loading图标
 .request-loading {
   opacity: 0;

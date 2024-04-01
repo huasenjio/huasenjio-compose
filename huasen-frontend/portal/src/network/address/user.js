@@ -13,7 +13,7 @@ const login = post('/user/login');
 const register = post('/user/register');
 const updatePassword = post('/user/updatePassword');
 const backup = post('/user/backup');
-const consistentFromCloud = post('/user/consistentFromCloud');
+const recovery = post('/user/recovery');
 const findAppConfig = post('/user/findAppConfig');
 
 export default {
@@ -21,6 +21,6 @@ export default {
   register,
   updatePassword,
   backup,
-  consistentFromCloud,
+  recovery,
   findAppConfig,
 };

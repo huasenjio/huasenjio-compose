@@ -6,8 +6,11 @@
  * @Description:
  */
 export default {
-  // 可以获得其他的getters
-  getUserName(state, getters) {
-    return state.user.name;
+  // 是否登录
+  isLogin(state, getters) {
+    return !!state.user.token;
+  },
+  isLoaded(state, getters) {
+    return !!state.appConfig.loaded;
   },
 };

@@ -7,19 +7,20 @@
 -->
 <template>
   <div
-    v-rightMenu
+    id="js-home-head"
     class="home-head"
     :class="{
       clear: !showGrossGlass && headBgConfig.clear,
       white: headBgConfig.white,
       'gross-glass': showGrossGlass || headBgConfig.grossGlass,
     }"
+    v-discolor
   >
-    <section class="fold" @click="hiddenWrapLeft">
-      <i class="iconfont icon-md-barcode"></i>
+    <section class="fold" @click="handleNavbar">
+      <i class="iconfont icon-a-unfoldcross-line"></i>
     </section>
-    <section class="menu" @click="hiddenMenu">
-      <i class="iconfont  icon-md-menu"></i>
+    <section class="menu" @click="handleMenu">
+      <i class="iconfont icon-md-menu"></i>
     </section>
     <section v-if="showMenu" class="collapse">
       <ul class="links">
@@ -58,7 +59,7 @@
       </el-dropdown>
     </section>
     <section v-if="showMenu" @click="sign" class="sign">
-      {{ signText || '暂无昵称' }}
+      {{ signText || '初级花酱' }}
     </section>
   </div>
 </template>
@@ -98,7 +99,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['showWrapLeft', 'user']),
+    ...mapState(['user']),
     showGrossGlass() {
       return this.showMenu && document.body.clientWidth <= 1024 ? true : false;
     },
@@ -165,7 +166,7 @@ export default {
     handleSelectJournal(_id) {
       let exist = this.journals.find(item => item._id === _id);
       if (!exist) return;
-      this.API.findJournalInformationById({ _id }).then(res => {
+      this.API.findJournalInformationById({ _id }, { notify: false }).then(res => {
         this.selectJournal(res.data);
       });
     },
@@ -177,11 +178,15 @@ export default {
       });
     },
 
-    // 隐藏右边栏
-    hiddenWrapLeft() {
+    handleNavbar() {
       this.commitAll({
-        showWrapLeft: !this.showWrapLeft,
+        user: {
+          config: {
+            showNavbar: !this.user.config.showNavbar,
+          },
+        },
       });
+      this.$store.dispatch('snapshoot');
     },
 
     // 登录用户
@@ -200,7 +205,7 @@ export default {
     },
 
     // 折叠菜单
-    hiddenMenu() {
+    handleMenu() {
       this.showMenu = !this.showMenu;
     },
 
@@ -306,7 +311,8 @@ export default {
     }
     .weather-group {
       order: 2;
-      max-width: 185px;
+      margin-left: 4px;
+      max-width: 200px;
       display: flex;
       align-items: center;
     }
@@ -386,10 +392,10 @@ export default {
       margin-left: 10px;
       margin-right: auto;
       .clock-group {
-        order: 2;
+        order: 1;
       }
       .weather-group {
-        order: 1;
+        order: 2;
       }
     }
     .take {

@@ -6,7 +6,7 @@
  * @Description: 
 -->
 <template>
-  <div class="wrap-simple animate__animated animate__fadeInDown">
+  <div class="wrap-simpleMode animate__animated animate__fadeInDown">
     <HomeWallpaper :fullscreen="true"></HomeWallpaper>
     <HomeSearch :top="'180px'"></HomeSearch>
     <!-- 关闭极简模式按钮 -->
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrap-simple {
+.wrap-simpleMode {
   position: absolute;
   width: 100%;
   height: 100%;

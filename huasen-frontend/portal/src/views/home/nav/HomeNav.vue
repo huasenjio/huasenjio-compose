@@ -6,10 +6,10 @@
  * @Description: 锚点导航组件
 -->
 <template>
-  <div v-rightMenu class="home-nav">
+  <div id="js-home-nav" class="home-nav" v-discolor>
     <header></header>
-    <main v-rightMenu>
-      <ul v-balance v-rightMenu>
+    <main id="js-home-nav__main" v-discolor>
+      <ul id="js-home-nav__main-ul" v-balance v-discolor>
         <li class="record-item pointer text" v-for="(item, index) in categorySites" :key="index" @click="changeAnchorPosition(index)">
           {{ item.typeName }}
         </li>

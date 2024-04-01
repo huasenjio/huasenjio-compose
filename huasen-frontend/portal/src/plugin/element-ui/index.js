@@ -52,6 +52,7 @@ import Switch from 'element-ui/lib/switch';
 import Dialog from 'element-ui/lib/dialog';
 import Empty from 'element-ui/lib/empty';
 import Popover from 'element-ui/lib/popover';
+import Scrollbar from 'element-ui/lib/scrollbar';
 import { InfiniteScroll } from 'element-ui';
 
 Vue.use(Button);
@@ -85,6 +86,7 @@ Vue.use(Empty);
 Vue.use(Popover);
 Vue.use(Loading.directive);
 Vue.use(InfiniteScroll);
+Vue.use(Scrollbar);
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$notify = Notification;

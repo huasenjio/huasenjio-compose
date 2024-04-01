@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2940247 */
-  src: url('iconfont.woff2?t=1682699956844') format('woff2'),
-       url('iconfont.woff?t=1682699956844') format('woff'),
-       url('iconfont.ttf?t=1682699956844') format('truetype');
+  src: url('iconfont.woff2?t=1711903975415') format('woff2'),
+       url('iconfont.woff?t=1711903975415') format('woff'),
+       url('iconfont.ttf?t=1711903975415') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,110 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-SEVENZ:before {
+  content: "\e613";
+}
+
+.icon-BAT:before {
+  content: "\e615";
+}
+
+.icon-CONF:before {
+  content: "\e61a";
+}
+
+.icon-EOT:before {
+  content: "\e61b";
+}
+
+.icon-DOCX:before {
+  content: "\e61e";
+}
+
+.icon-DOC:before {
+  content: "\e61f";
+}
+
+.icon-ICO:before {
+  content: "\e623";
+}
+
+.icon-JAR:before {
+  content: "\e624";
+}
+
+.icon-JAVA:before {
+  content: "\e625";
+}
+
+.icon-JPEG:before {
+  content: "\e626";
+}
+
+.icon-JPG:before {
+  content: "\e627";
+}
+
+.icon-JS:before {
+  content: "\e628";
+}
+
+.icon-MD:before {
+  content: "\e629";
+}
+
+.icon-MP3:before {
+  content: "\e62a";
+}
+
+.icon-MP4:before {
+  content: "\e62b";
+}
+
+.icon-PNG:before {
+  content: "\e62e";
+}
+
+.icon-PPT:before {
+  content: "\e630";
+}
+
+.icon-PSD:before {
+  content: "\e631";
+}
+
+.icon-RAR:before {
+  content: "\e633";
+}
+
+.icon-SH:before {
+  content: "\e634";
+}
+
+.icon-SVG:before {
+  content: "\e635";
+}
+
+.icon-TEXT:before {
+  content: "\e636";
+}
+
+.icon-XLSX:before {
+  content: "\e638";
+}
+
+.icon-XML:before {
+  content: "\e639";
+}
+
+.icon-ZIP:before {
+  content: "\e63a";
+}
+
+.icon-BIN:before {
+  content: "\e63b";
 }
 
 .icon-github:before {
@@ -65,14 +169,6 @@
   content: "\e632";
 }
 
-.icon-excel:before {
-  content: "\e6a5";
-}
-
-.icon-pdf:before {
-  content: "\e740";
-}
-
 .icon-CSS:before {
   content: "\e614";
 }
@@ -81,32 +177,16 @@
   content: "\e617";
 }
 
-.icon-js:before {
-  content: "\ec68";
-}
-
 .icon-qitawenjian:before {
   content: "\e683";
 }
 
-.icon-file-ppt:before {
-  content: "\e7b9";
-}
-
-.icon-file-word:before {
-  content: "\e7ba";
-}
-
-.icon-yasuobao:before {
-  content: "\e64d";
+.icon-PDF:before {
+  content: "\e61d";
 }
 
 .icon-tupian:before {
   content: "\e63d";
-}
-
-.icon-file-markdown:before {
-  content: "\e95e";
 }
 
 .icon-badge-fill:before {
@@ -129,7 +209,7 @@
   content: "\eb69";
 }
 
-.icon-a-Downloadto-fill:before {
+.icon-a-downloadto-fill:before {
   content: "\eb70";
 }
 

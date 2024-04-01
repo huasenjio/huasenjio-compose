@@ -9,9 +9,11 @@ import Vue from 'vue';
 // 引入组件
 import Toast from './toast/Toast';
 import Markdown from './markdown/Markdown.vue';
+import Scrollbar from './scrollbar/Scrollbar.vue';
 
 // 组件注册全局引入组件
 Vue.component('HMarkdown', Markdown);
+Vue.component('HScrollbar', Scrollbar);
 
 // 创建插件方式安装对象
 const huasen = {};

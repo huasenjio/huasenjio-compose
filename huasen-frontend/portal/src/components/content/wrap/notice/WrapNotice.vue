@@ -1,6 +1,6 @@
 <template>
   <HsDialog
-    :title="'网站公告'"
+    :title="'网站传声筒'"
     :visible.sync="showNotice"
     :width="width"
     :height="height"

@@ -53,10 +53,12 @@ class Storage {
   /**
    * 清理全部数据
    */
-  clear() {
-    let flag = confirm('您确定清除本地所有存储吗？重置网站，解决一切问题！');
+  clear(msg) {
+    msg = msg || '您确定清除本地所有存储数据吗？';
+    let flag = confirm(msg);
     if (flag) {
       localStorage.clear();
+      window.location.reload();
     }
   }
 }

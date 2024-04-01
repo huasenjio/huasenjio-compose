@@ -6,9 +6,9 @@
  * @Description: 
 -->
 <template>
-  <div v-rightMenu class="home-site">
+  <div id="js-home-site" class="home-site" v-discolor>
     <section :id="`site-anchor-${encodeURI(index)}`" v-for="(category, index) in categorySitesData" :key="`${category.typeName}-${index}`">
-      <div v-rightMenu class="site-item">
+      <div class="site-item" v-discolor>
         <header>
           <i class="category-icon relative left-px-2 iconfont icon-tag"></i>
           <a class="category-title" :name="category.typeName">{{ category.typeName }}</a>

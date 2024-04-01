@@ -1,7 +1,7 @@
 <template>
-  <div :style="{ top: top }" class="home-search xl:w-px-600 lg:w-px-400 sm:w-px-360 h-px-40">
+  <div :style="{ top: top, borderRadius: user.config.searchBorderRadius + 'px' }" class="home-search xl:w-px-600 lg:w-px-400 sm:w-px-360 h-px-40">
     <!-- 搜索引擎菜单 -->
-    <ul v-rightMenu class="menu">
+    <ul id="js-home-search" class="menu" v-discolor>
       <li v-for="(item, index) in this.searchs" :key="index" :data-url="item.url" :data-keyword="item.key" @click="selectEngine(index)" class="xl:text-base" :class="{ active: activeSearchIndex === index }">
         {{ item.name }}
       </li>
@@ -89,6 +89,13 @@ export default {
       isSearchInputFocus: false,
     };
   },
+  mounted() {
+    // 初始化事件总线
+    this.initEventBus();
+  },
+  destroyed() {
+    Bus.unSubEv(BusType.HOME_FUCOS);
+  },
   computed: {
     ...mapState(['user', 'sites']),
     // 显示建议面板
@@ -138,15 +145,13 @@ export default {
       },
       deep: true,
     },
-  },
-  mounted() {
-    // 初始化皮肤主题数据
-    this.$store.dispatch('initLocalStyleInfo');
-    // 初始化事件总线
-    this.initEventBus();
-  },
-  destroyed() {
-    Bus.unSubEv(BusType.HOME_FUCOS);
+    'user.config.searchEngineIndex': {
+      handler(nV, oV) {
+        this.activeSearchIndex = nV;
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   methods: {
     initEventBus() {
@@ -293,7 +298,7 @@ export default {
           wd: this.searchText,
           cb: 'handleSuggestion',
         }).then(res => {
-          this.ideas = res.s.slice(0, 6);
+          this.ideas = res.s.slice(0, this.user.config.searchAssociationCount);
         });
       }
     },
@@ -316,7 +321,6 @@ export default {
   top: 120px;
   left: 50%;
   transform: translateX(-50%);
-  border-radius: 24px;
   background-color: var(--gray-o7);
   form {
     position: relative;

@@ -12,6 +12,9 @@
         <i class="iconfont icon-md-rocket" @click="goTop"></i>
       </li>
       <li class="shadow">
+        <i class="iconfont icon-a-unfoldcross-line" @click="handleNavbar"> </i>
+      </li>
+      <li class="shadow">
         <i class="iconfont icon-github" @click="goStorage"> </i>
       </li>
       <li class="shadow">
@@ -38,10 +41,21 @@ export default {
     };
   },
   computed: {
-    ...mapState(['showWrapSidebarSocket', 'appConfig']),
+    ...mapState(['showWrapSidebarSocket', 'appConfig', 'user']),
   },
   methods: {
     ...mapMutations(['commitAll']),
+
+    handleNavbar() {
+      this.commitAll({
+        user: {
+          config: {
+            showNavbar: !this.user.config.showNavbar,
+          },
+        },
+      });
+      this.$store.dispatch('snapshoot');
+    },
 
     // 回到顶部
     goTop() {

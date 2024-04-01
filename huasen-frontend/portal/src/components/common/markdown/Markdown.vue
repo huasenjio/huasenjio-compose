@@ -11,7 +11,7 @@
     </div>
     <ul v-if="showAnchors && anchors.length" class="area-catalog">
       <li v-for="(item, index) in anchors" :key="index" :style="handleStyle(item)">
-        <i v-if="item.tagName === 'H1' || item.tagName === 'H2'" :class="{ h1Point: item.tagName === 'H1', h2Point: item.tagName === 'H2' }" class="point"> </i>
+        <i v-if="item.tagName === 'H1' || item.tagName === 'H2' || item.tagName === 'H3'" :class="{ h1Point: item.tagName === 'H1', h2Point: item.tagName === 'H2', h3Point: item.tagName === 'H3' }" class="point"> </i>
         <div class="text pointer" :title="item.value" @click="goAnchor(item.id)">
           {{ item.value }}
         </div>
@@ -144,6 +144,15 @@ export default {
       align-items: center;
       .h1Point {
         position: absolute;
+        left: -2px;
+        width: 0;
+        height: 0;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-left: 8px solid var(--red-500);
+      }
+      .h2Point {
+        position: absolute;
         left: -4px;
         width: 8px;
         height: 8px;
@@ -151,13 +160,13 @@ export default {
         background-color: var(--red-400);
         z-index: 1;
       }
-      .h2Point {
+      .h3Point {
         position: absolute;
-        left: -3px;
-        width: 6px;
-        height: 6px;
+        left: -2px;
+        width: 5px;
+        height: 5px;
         border-radius: 50%;
-        background-color: var(--yellow-500);
+        background-color: var(--yellow-400);
         z-index: 1;
       }
     }
@@ -348,7 +357,8 @@ export default {
 
       a {
         margin: 1em 5px !important;
-        color: var(--blue-200) !important;
+        text-decoration: underline;
+        color: var(--blue-400) !important;
       }
 
       table {

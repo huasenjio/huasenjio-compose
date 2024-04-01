@@ -6,7 +6,7 @@
  * @Description: 
 -->
 <template>
-  <div v-rightMenu class="home-record">
+  <div id="js-home-record" class="home-record" v-discolor>
     <header>
       <div class="title">
         自定义网站
@@ -25,17 +25,13 @@
           <i class="iconfont icon-md-trash"></i>
           <span class="sm:hidden">管理</span>
         </li>
-        <li @click="handleCopy">
-          <i class="iconfont icon-md-cut"></i>
-          <span class="sm:hidden">拷贝</span>
-        </li>
         <li @click="handleRecovery">
           <i class="iconfont icon-md-sync"></i>
-          <span class="sm:hidden">恢复</span>
+          <span class="sm:hidden">数据</span>
         </li>
         <li @click="openCustomWallpaper">
           <i class="iconfont icon-md-happy"></i>
-          <span class="sm:hidden">墙纸</span>
+          <span class="sm:hidden">个性</span>
         </li>
         <li @click="openSimpleMode">
           <i class="iconfont icon-md-qr-scanner"></i>
@@ -43,7 +39,7 @@
         </li>
       </ul>
     </header>
-    <main v-rightMenu>
+    <main id="js-home-record__main" v-discolor>
       <ul v-balance>
         <li class="record-item" v-for="(item, index) in user.records" :key="`${item}-${index}`">
           <a class="inherit-text text" v-if="!isEditMode" :title="item.remark" :href="item.url" target="_blank">
@@ -58,8 +54,9 @@
         </li>
       </ul>
     </main>
-    <DialogForm v-if="showForm" :visible.sync="showForm" ref="dialogForm" width="400" :buttons="{ comfirm: '确 认', cancel: '取 消' }" :title="title" :close-on-click-modal="false" :formData="formData" :formMap="formMap" :formRule="formRule" @comfirmForm="save" @cancelForm="cancel"></DialogForm>
-    <CustomWallpaperDrawer v-if="showCustom" title="个性墙纸" :visible.sync="showCustom" :direction="'rtl'" :size="435"></CustomWallpaperDrawer>
+    <FormDialog v-if="showForm" :visible.sync="showForm" ref="formDialog" width="400" :buttons="{ comfirm: '确 认', cancel: '取 消' }" :title="title" :close-on-click-modal="false" :formData="formData" :formMap="formMap" :formRule="formRule" @comfirmForm="save" @cancelForm="cancel"></FormDialog>
+    <CustomDrawer v-if="showCustom" :visible.sync="showCustom" :direction="'rtl'" :size="435" :wrapperClosable="false"></CustomDrawer>
+    <RecoveryDialog v-if="showRecovery" :visible.sync="showRecovery" :showMax="false"></RecoveryDialog>
   </div>
 </template>
 <script>
@@ -69,12 +66,13 @@ import { getElementFormValidator } from '@/plugin/strategy.js';
 import Bus from '@/plugin/event-bus.js';
 import * as BusType from '@/plugin/event-type.js';
 
-import DialogForm from '@/components/content/dialogForm/DialogForm.vue';
-import CustomWallpaperDrawer from '@/components/content/customWallPaperDrawer/CustomWallpaperDrawer.vue';
+import FormDialog from '@/components/content/formDialog/FormDialog.vue';
+import CustomDrawer from '@/components/content/customDrawer/CustomDrawer.vue';
+import RecoveryDialog from '@/components/content/recoveryDialog/RecoveryDialog.vue';
 
 export default {
   name: 'HomeRecord',
-  components: { DialogForm, CustomWallpaperDrawer },
+  components: { FormDialog, CustomDrawer, RecoveryDialog },
   data() {
     return {
       // 状态相关
@@ -82,6 +80,7 @@ export default {
       isDeleteMode: false,
       showForm: false,
       showCustom: false,
+      showRecovery: false,
 
       // 输入表单相关
       title: '',
@@ -218,8 +217,8 @@ export default {
 
     // 取消表单编辑
     cancel() {
-      if (this.$refs.dialogForm) {
-        this.$refs.dialogForm.resetFormFields();
+      if (this.$refs.formDialog) {
+        this.$refs.formDialog.resetFormFields();
       }
       this.showForm = false;
     },
@@ -231,52 +230,11 @@ export default {
       this.$store.dispatch('snapshoot');
     },
 
-    // 复制数据剪贴板
-    handleCopy() {
-      let { records, config } = this.$store.state.user;
-      // 备份的数据
-      let backupData = {
-        records,
-        config,
-      };
-      this.TOOL.copyTextToClip(JSON.stringify(backupData), '已复制到剪贴板，请立即粘贴保存！');
+    // 显示备份恢复面板
+    async handleRecovery() {
+      this.showRecovery = !this.showRecovery;
     },
 
-    // 恢复保存数据
-    async handleRecovery() {
-      Bus.pubEv(BusType.HOME_DESTROY_KEYUP_SLASH);
-      try {
-        let rawData;
-        if (navigator.clipboard && window.isSecureContext) {
-          // https、localhost、127.0.0.1 状态下可用
-          rawData = await navigator.clipboard.readText();
-        } else {
-          // 不安全状态下使用对话框形式
-          rawData = prompt('请粘贴之前拷贝保存的数据进行恢复');
-        }
-        // 排除不输入的情况下
-        if (!rawData) return;
-        let data = JSON.parse(rawData);
-        let { records, config } = data;
-        // 排除移除异常情况
-        if (!Array.isArray(records)) throw new Error();
-        if (Object.prototype.toString.call(config) !== '[object Object]') throw new Error();
-        // 覆盖到仓库
-        this.handleCommit({
-          user: {
-            records,
-            config,
-          },
-        });
-        this.$tips('success', '数据恢复成功', 'top-right', 2000, () => {
-          window.location.reload();
-        });
-      } catch (err) {
-        this.$tips('error', '恢复数据失败', 'top-right', 2000);
-      } finally {
-        Bus.pubEv(BusType.HOME_CREATE_KEYUP_SLASH);
-      }
-    },
     openCustomWallpaper() {
       this.showCustom = true;
     },

@@ -7,7 +7,7 @@
 -->
 
 <template>
-  <el-drawer class="drawer" ref="hsDrawer" v-bind="$attrs" v-on="$listeners" :style="drawerStyle">
+  <el-drawer class="drawer" ref="hsDrawer" :title="title" v-bind="$attrs" v-on="$listeners" :style="drawerStyle" @contextmenu.native.stop>
     <slot></slot>
   </el-drawer>
 </template>
@@ -15,6 +15,12 @@
 <script>
 export default {
   name: 'HsDrawer',
+  props: {
+    title: {
+      type: String,
+      default: '抽屉标题',
+    },
+  },
   computed: {
     drawerStyle() {
       let size = typeof this.$attrs.size === 'string' && /^\d+%$/.test(this.$attrs.size) ? this.$attrs.size : `${this.$attrs.size}px`;

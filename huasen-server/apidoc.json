@@ -1,0 +1,11 @@
+{
+  "name": "花森酱导航",
+  "version": "1.0.0",
+  "description": "API 接口文档",
+  "title": "花森酱导航 API 接口文档",
+  "forceLanguage": "zh-cn",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

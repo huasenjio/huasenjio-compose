@@ -7,7 +7,7 @@
 -->
 
 <template>
-  <div class="wrap-right" :class="{ full: !showWrapLeft }">
+  <div class="wrap-right" :class="{ full: !user.config.showNavbar }">
     <router-view></router-view>
   </div>
 </template>
@@ -16,7 +16,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'WrapRight',
   computed: {
-    ...mapState(['showWrapLeft']),
+    ...mapState(['user']),
   },
 };
 </script>

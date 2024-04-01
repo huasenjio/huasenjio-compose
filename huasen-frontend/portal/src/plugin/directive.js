@@ -47,13 +47,13 @@ function handleLazy(el, binding) {
 }
 
 // 右键菜单
-Vue.directive('rightMenu', {
+Vue.directive('discolor', {
   inserted: function(el, binding) {
     // 处理默认参数
     let { menuId = 'styleMenuId9527', focusClassName = 'hs-right-menu-shadow', cpn = StyleMenu } = binding.value || {};
     // dom生成xpan作为id
     let xpath = TOOL.getElementPath(el);
-    el.id = xpath;
+    el.id = el.id || xpath;
 
     // 注册右键菜单事件
     el.addEventListener('contextmenu', e => {
@@ -80,8 +80,8 @@ Vue.directive('rightMenu', {
         template: `<RightMenu :menuId="menuId" :clientX="clientX" :clientY="clientY"><cpn :xpath="xpath"></cpn></RightMenu>`,
         data: function() {
           return {
-            xpath,
             menuId,
+            xpath: el.id,
             clientX: e.clientX,
             clientY: e.clientY,
           };
@@ -203,29 +203,34 @@ Vue.directive('drag', {
 
 // 指令辅助函数
 function addresize(dom, fn) {
-  var w = dom.offsetWidth,
-    h = dom.offsetHeight,
-    oldfn = window.onresize;
+  // 冗余备份，兼容缩放策略
+  let w = dom.offsetWidth;
+  let h = dom.offsetHeight;
+  let oldfn = window.onresize;
   if (oldfn) {
     window.onresize = function() {
       // 若resize回调存在，则调用绑定window上下午，直接执行一遍
       oldfn.call(window);
       if (dom.offsetWidth != w || dom.offsetHeight != h) {
+        console.log(dom.offsetWidth);
         w = dom.offsetWidth;
         h = dom.offsetHeight;
         // 执行回调方法
         fn.call(dom, dom);
       }
     };
-  } else {
-    window.onresize = function() {
-      if (dom.offsetWidth != w || dom.offsetHeight != h) {
-        w = dom.offsetWidth;
-        h = dom.offsetHeight;
-        // 执行回调方法
-        fn.call(dom, dom);
+  }
+  // 较优解决方案
+  if (!dom._resizeObserver) {
+    dom._resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        fn.call(dom, dom, width, height);
       }
-    };
+    });
+    dom._resizeObserver.observe(dom);
+    // 当不再监听时，断开观察
+    // resizeObserver.disconnect();
   }
 }
 

@@ -94,23 +94,23 @@ function updatePassword(req, res, next) {
 
 function backup(req, res, next) {
   let { proof } = req.huasenJWT;
-  let { records, config, name, headImg } = req.huasenParams;
+  let { records, config } = req.huasenParams;
   // 发起更新服务
   req.epWorking(
     [
       {
         schemaName: 'User',
         methodName: 'updateOne',
-        payloads: [{ id: proof.key }, { $set: { records, config, name, headImg } }, { runValidators: true }],
+        payloads: [{ id: proof.key }, { $set: { records, config } }, { runValidators: true }],
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '更新成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '数据已存储到云端', false);
     },
   );
 }
 
-function consistentFromCloud(req, res, next) {
+function recovery(req, res, next) {
   let { proof } = req.huasenJWT;
   req.epWorking(
     [
@@ -130,8 +130,8 @@ function consistentFromCloud(req, res, next) {
         global.huasen.responseData(res, {}, 'ERROR', '用户不存在', false);
       } else {
         // 剔除密码
-        delete user.password;
-        global.huasen.responseData(res, user, 'SUCCESS', '同步云端数据成功', false);
+        let { records, config } = user;
+        global.huasen.responseData(res, { records, config }, 'SUCCESS', '应用云端数据成功', true);
       }
     },
   );
@@ -251,7 +251,7 @@ module.exports = {
   register,
   updatePassword,
   backup,
-  consistentFromCloud,
+  recovery,
 
   add,
   findAllByPage,

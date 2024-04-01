@@ -13,7 +13,7 @@
         <ul>
           <li v-for="(item, index) in backgroundColors" :key="index" @click="changeStyle(item, 'backgroundColor')" :style="{ backgroundColor: item }"></li>
         </ul>
-        <el-color-picker class="picker" v-model="backgroundColor" @change="changeStyle($event, 'backgroundColor')" size="mini" show-alpha></el-color-picker>
+        <el-color-picker class="picker" v-model="backgroundColor" @change="changeStyle($event, 'backgroundColor')" size="mini" :predefineColors="predefineColors" show-alpha></el-color-picker>
       </div>
     </section>
     <section class="menu-item">
@@ -55,6 +55,8 @@ export default {
       // 色值
       backgroundColors: ['#9CA3AF', '#F87171', '#FBBF24', '#34D399', '#60A5FA', '#A78BFA', '#F472B6'],
       colors: ['#F9FAFB', '#F3F4F6', '#9CA3AF', '#6B7280', '#4B5563', '#1F2937', '#111827'],
+      // 选择器预设颜色
+      predefineColors: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.5', 'rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 1)'],
     };
   },
   mounted() {

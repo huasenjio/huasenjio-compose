@@ -11,7 +11,7 @@
     "pm2:pro": "pm2 start app.js --watch --  MODE=pro",
     "pm2-runtime:dev": "pm2-runtime start app.js --watch --  MODE=dev",
     "pm2-runtime:pro": "pm2-runtime start app.js --watch --  MODE=pro",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "api-doc": "apidoc -i router/ -o public/apidoc/"
   },
   "author": "huasen",
   "license": "ISC",

@@ -6,7 +6,7 @@
  * @Description: 二次封装el-dialog
 -->
 <template>
-  <el-dialog ref="hsDialog" :title="title" :fullscreen="full" v-bind="$attrs" v-on="$listeners" :width="dialogWidth" :style="dialogStyle" @scroll.capture.native="handleScroll">
+  <el-dialog ref="hsDialog" :title="title" :fullscreen="full" v-bind="$attrs" v-on="$listeners" :width="dialogWidth" :style="dialogStyle" @scroll.capture.native="handleScroll" @contextmenu.native.stop>
     <!-- 标题插槽 -->
     <div class="w-full" slot="title">
       <div class="hs-dialog__title w-full flex">
@@ -37,7 +37,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '标题标题',
+      default: '弹窗标题',
     },
     // 设置width属性，所以不会透传width属性，进行二次处理，默认435px
     width: {
@@ -173,6 +173,7 @@ export default {
     }
   }
   .el-dialog__body {
+    padding: 20px;
     height: var(--dialogBodyHeight) !important;
     max-height: var(--dialogBodyMaxHeight) !important;
     overflow-x: hidden;

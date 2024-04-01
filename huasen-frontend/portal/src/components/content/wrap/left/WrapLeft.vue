@@ -6,7 +6,7 @@
  * @Description: 
 -->
 <template>
-  <div v-rightMenu class="wrap-left">
+  <div id="js-wrap-left" class="wrap-left" v-discolor>
     <div class="logo">
       <img :src="logoURL" />
     </div>

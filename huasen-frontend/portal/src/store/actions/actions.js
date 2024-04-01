@@ -34,9 +34,7 @@ export default {
         });
       }
     } catch (err) {
-      that.$tips('error', '初始化失败', 'top-right', 2000, () => {
-        that.STORAGE.clear();
-      });
+      that.STORAGE.clear('数据异常，重置网站所有数据和功能，修复一切疑难杂症，您继续吗？');
     }
   },
 
@@ -120,10 +118,10 @@ export default {
   snapshoot(context, payload) {
     let { user } = context.state;
 
-    // 过滤无用的theme配置
     Object.keys(user.config.theme).map(key => {
       let node = document.getElementById(key);
       if (!node) {
+        // 过滤无用的theme配置
         delete user.config.theme[key];
       }
     });

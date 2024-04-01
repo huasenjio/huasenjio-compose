@@ -30,7 +30,7 @@ let UserSchema = new mongoose.Schema({
   // 昵称
   name: {
     type: String,
-    default: '花酱',
+    default: '初级花酱',
   },
 
   // 头像
@@ -66,7 +66,7 @@ let UserSchema = new mongoose.Schema({
   // 注册时间
   time: {
     type: String,
-    default: '1970-01-01',
+    default: '1970-01-01 00:00:00',
     validate: {
       validator: function (desc) {
         try {
@@ -76,7 +76,7 @@ let UserSchema = new mongoose.Schema({
           return false;
         }
       },
-      message: '请输入YYYY-MM-DD时间格式',
+      message: '请输入YYYY-MM-DD HH:mm:ss时间格式',
     },
   },
 

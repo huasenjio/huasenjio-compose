@@ -38,10 +38,10 @@
     }
   },
   "mail": {
-    "host": "smtp.qq.com",
+    "host": "smtp.163.com",
     "port": 465,
-    "user": "932397243@qq.com",
-    "mtp": ""
+    "user": "huasenjio@163.com",
+    "mtp": "HWIDIXVBPESBFBCM"
   },
   "article": {
     "changelog": "648c79d1cdf0f0076b134525",

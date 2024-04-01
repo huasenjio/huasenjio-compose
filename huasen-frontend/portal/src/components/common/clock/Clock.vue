@@ -58,12 +58,17 @@ export default {
     align-items: center;
     overflow: hidden;
     span {
+      display: inline-block;
+      width: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-size: 20px;
-      font-weight: bold;
+      font-weight: 500;
     }
     .text {
       font-size: 14px;
-      margin: 0 3px;
+      margin: 0 4px;
     }
   }
 }

@@ -8,7 +8,7 @@
 <template>
   <div class="hs-wrap">
     <div class="wrap-body">
-      <WrapLeft v-show="showWrapLeft && !simpleMode"></WrapLeft>
+      <WrapLeft v-show="user.config.showNavbar && !simpleMode"></WrapLeft>
       <WrapRight v-show="!simpleMode"></WrapRight>
       <WrapSidebar v-show="showWrapSidebar && !simpleMode"></WrapSidebar>
       <WrapSign></WrapSign>
@@ -45,7 +45,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['showWrapLeft', 'showWrapConnect', 'showWrapSidebar', 'user', 'appConfig']),
+    ...mapState(['showWrapConnect', 'showWrapSidebar', 'user', 'appConfig']),
     simpleMode() {
       return this.user.config.simpleMode;
     },

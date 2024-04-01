@@ -13,38 +13,29 @@
           <img v-lazy="{ unload: require('@/assets/img/error/slogan.png') }" class="w-full h-full" :src="this.user.headImg" />
         </div>
         <div class="name text">
-          <div>{{ user.name || '暂无昵称' }}</div>
+          <div>{{ user.name || '初级花酱' }}</div>
           <div class="text text-sm text-gray-400">{{ user.id || 'localspace@qq.com' }}</div>
         </div>
-        <i class="iconfont icon-tuichu" @click="exit"></i>
+        <i title="退出账号" class="iconfont icon-tuichu" @click="exit"></i>
       </header>
       <main>
         <ul>
           <li>
             <div class="left">
-              <div class="title">备份本地数据</div>
-              <div class="detail">推送数据到云端服务器</div>
+              <div class="title">自动备份</div>
+              <div class="detail">数据更新之后自动备份（开发中）</div>
             </div>
             <div class="right">
-              <i class="iconfont icon-md-clipboard" @click="backup"></i>
+              <el-switch v-model="autoBackup" active-text="开启" inactive-text="关闭"> </el-switch>
             </div>
           </li>
           <li>
             <div class="left">
-              <div class="title">应用云端主题</div>
-              <div class="detail">使用上次备份的皮肤主题</div>
+              <div class="title">注销账号</div>
+              <div class="detail">您所有数据将会被销毁（开发中）</div>
             </div>
             <div class="right">
-              <i class="iconfont icon-interactive-fill" @click="consistentFromCloud('theme')"></i>
-            </div>
-          </li>
-          <li>
-            <div class="left">
-              <div class="title">同步收录网站</div>
-              <div class="detail">拉取已收录的自定义网站数据</div>
-            </div>
-            <div class="right">
-              <i class="iconfont icon-md-sync" @click="consistentFromCloud('record')"></i>
+              <i title="注销账号" class="el-icon-remove text-red-500"></i>
             </div>
           </li>
         </ul>
@@ -54,12 +45,22 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
+import searchs from '@/config/search.config.js';
 import HsDrawer from '@/components/content/drawer/Drawer.vue';
 export default {
   name: 'WrapPerson',
+
   components: { HsDrawer },
+
+  data() {
+    return {
+      autoBackup: false,
+    };
+  },
+
   computed: {
     ...mapState(['user']),
+
     headImgStyle() {
       let style = {};
       // 图片资源
@@ -68,6 +69,7 @@ export default {
       style.backgroundImage = `url(${img})`;
       return style;
     },
+
     showWrapPerson: {
       get() {
         return this.$store.state.showWrapPerson;
@@ -79,54 +81,28 @@ export default {
       },
     },
   },
+
+  watch: {
+    associationCount: {
+      handler(nV) {},
+    },
+  },
+
   methods: {
     ...mapMutations(['commitAll']),
 
+    // 退出账号
     exit() {
-      this.$tips('success', '退出成功', 'top-right', 2000, () => {
+      this.$tips('success', '账号已退出，即将刷新页面！', 'top-right', 2000, () => {
         this.STORAGE.removeItemByKey(this.CONSTANT.localUser);
         window.location.reload();
       });
     },
 
+    // 关闭个人面板
     closePersonPanel() {
       this.commitAll({
         showWrapPerson: false,
-      });
-    },
-
-    // 备份数据
-    backup() {
-      let { name, headImg, config, records } = this.STORAGE.getItem(this.CONSTANT.localUser);
-      let params = {
-        config,
-        records,
-        name,
-        headImg,
-      };
-      this.API.backup(params, {
-        secret: true,
-      });
-    },
-
-    // 同步云端数据
-    consistentFromCloud(tag) {
-      this.API.consistentFromCloud().then(result => {
-        let user = this.STORAGE.getItem(this.CONSTANT.localUser);
-        if (tag === 'record') {
-          // 收录站点
-          user.records = result.data.records;
-        } else if (tag === 'theme') {
-          // 主题皮肤数据
-          user.config = result.data.config;
-        }
-
-        this.STORAGE.setItem(this.CONSTANT.localUser, user);
-        this.$store.dispatch('initLocalUserInfo');
-
-        this.$tips('success', '刷新数据', 'top-right', 2000, () => {
-          window.location.reload();
-        });
       });
     },
   },
@@ -168,12 +144,13 @@ export default {
     width: 90%;
     max-height: 320px;
     margin: 10px auto;
+    overflow-x: hidden;
     overflow-y: auto;
     ul {
       li {
-        margin-top: 10px;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        margin-top: 10px;
         .left {
           flex: 1;
           .title {
@@ -189,6 +166,12 @@ export default {
             font-size: 20px;
             cursor: pointer;
           }
+        }
+      }
+      .vertical {
+        flex-wrap: wrap;
+        .right {
+          width: 100%;
         }
       }
     }
