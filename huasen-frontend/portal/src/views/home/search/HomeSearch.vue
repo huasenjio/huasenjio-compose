@@ -1,7 +1,7 @@
 <template>
   <div :style="{ top: top, borderRadius: user.config.searchBorderRadius + 'px' }" class="home-search xl:w-px-600 lg:w-px-400 sm:w-px-360 h-px-40">
     <!-- 搜索引擎菜单 -->
-    <ul id="js-home-search" class="menu" v-discolor>
+    <ul class="menu" v-discolor>
       <li v-for="(item, index) in this.searchs" :key="index" :data-url="item.url" :data-keyword="item.key" @click="selectEngine(index)" class="xl:text-base" :class="{ active: activeSearchIndex === index }">
         {{ item.name }}
       </li>

@@ -1,6 +1,6 @@
 <template>
-  <HsDialog :title="'数据管理面板'" :width="width" :height="height" :close-on-click-modal="false" v-bind="$attrs" v-on="$listeners">
-    <el-tabs type="border-card" v-model="active">
+  <HsDialog class="recovery-dialog" :title="'数据管理面板'" :width="width" :height="height" :close-on-click-modal="false" v-bind="$attrs" v-on="$listeners">
+    <el-tabs class="recovery-dialog__tabs" type="border-card" v-model="active">
       <el-tab-pane name="backup" label="数据备份">
         <el-button icon="el-icon-document-copy" type="info" size="mini" @click="handleCopy">拷贝数据</el-button>
         <el-button icon="el-icon-upload" type="success" size="mini" @click="handleSaveToCloud">数据上云</el-button>
@@ -9,10 +9,8 @@
         <el-button icon="el-icon-document-copy" type="info" size="mini" @click="handleRecoveryByPaste">粘贴数据恢复</el-button>
         <el-button icon="el-icon-download" type="success" size="mini" @click="handleRecoveryByCloud">应用云端数据</el-button>
       </el-tab-pane>
-      <div class="w-full h-px-320 mt-px-20">
-        <HScrollbar>
-          <el-input :disabled="active === 'backup'" type="textarea" placeholder="请粘贴离线数据" v-model="displayData" :autosize="{ minRows: 14 }" resize="none"></el-input>
-        </HScrollbar>
+      <div class="tabs__textarea w-full h-px-320 mt-px-20">
+        <el-input :disabled="active === 'backup'" type="textarea" placeholder="请粘贴离线数据" v-model="displayData" :autosize="{ minRows: 14, maxRows: 14 }" resize="none"></el-input>
       </div>
     </el-tabs>
   </HsDialog>
@@ -170,4 +168,15 @@ export default {
   },
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+.recovery-dialog {
+  .recovery-dialog__tabs {
+    .tabs__textarea {
+      ::v-deep .el-textarea__inner {
+        padding: 10px;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+</style>
