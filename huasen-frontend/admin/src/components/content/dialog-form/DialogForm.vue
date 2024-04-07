@@ -36,7 +36,12 @@
                 <IconColorSelect :color.sync="iconColor"></IconColorSelect>
                 <div>图标文字</div>
                 <el-input placeholder="请输入文字" prefix-icon="el-icon-edit" v-model="iconText"> </el-input>
-                <div>图标效果</div>
+                <div>
+                  图标效果
+                  <el-tooltip slot="append" effect="dark" content="生成并存储图标后才会生效" placement="right">
+                    <i class="el-icon-warning-outline"></i>
+                  </el-tooltip>
+                </div>
                 <div class="result-view-container"><IconResultContainer id="icon-text-target-container" :isTextMode="true" :color.sync="iconColor" :text="iconText"></IconResultContainer></div>
               </el-tab-pane>
               <el-tab-pane label="上传图标" name="upload">
@@ -61,13 +66,20 @@
                     <img class="w-full h-full" v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" :id="index" :src="item" alt="image" />
                   </li>
                 </ul>
-                <div>图标效果</div>
+                <div>
+                  图标效果
+                  <el-tooltip slot="append" effect="dark" content="生成并存储图标后才会生效" placement="right">
+                    <i class="el-icon-warning-outline"></i>
+                  </el-tooltip>
+                </div>
                 <div v-if="faviconIconURL" class="result-view-container">
                   <IconResultContainer id="icon-img-target-container" :isTextMode="false" :color.sync="iconImgModeColor" :url="faviconIconURL"></IconResultContainer>
                 </div>
               </el-tab-pane>
               <el-input class="mt-px-10" placeholder="图标地址" :disabled="!showUpload" v-model="formData[formTtem.key]">
-                <el-button class="create" title="生成图标" slot="append" :icon="showUpload ? 'el-icon-files' : 'el-icon-document-add'" @click="handleCreateIconUrl"></el-button>
+                <el-tooltip slot="append" effect="dark" :content="showUpload ? '从图标库中选择' : '生成并存储图标'" placement="top">
+                  <el-button class="create" :icon="showUpload ? 'el-icon-files' : 'el-icon-document-add'" @click="handleCreateIconUrl"></el-button>
+                </el-tooltip>
               </el-input>
             </el-tabs>
           </div>

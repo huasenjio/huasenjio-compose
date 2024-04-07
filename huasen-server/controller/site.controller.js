@@ -9,7 +9,7 @@
 const { Site } = require('../service/index.js');
 
 function findAllByPage(req, res, next) {
-  let { pageNo, pageSize, name, code } = req.huasenParams;
+  let { pageNo, pageSize, name, code, tag } = req.huasenParams;
   // 模糊查询参数
   let params = { name: { $regex: new RegExp(name, 'i') } };
   // 处理权限码模糊查询
@@ -32,6 +32,18 @@ function findAllByPage(req, res, next) {
       },
     ],
     result => {
+      if (tag) {
+        result.list = result.list.filter(el => {
+          let expand = JSON.parse(el.expand || '{}');
+          if (Array.isArray(expand.tag)) {
+            return expand.tag.some(tagName => {
+              let reg = new RegExp(tag, 'i');
+              return reg.test(tagName);
+            });
+          }
+        });
+        result.total = result.list.length;
+      }
       global.huasen.responseData(res, result, 'SUCCESS', '分页查询站点成功', false);
     },
   );

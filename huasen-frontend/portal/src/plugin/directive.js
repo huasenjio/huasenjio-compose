@@ -212,7 +212,6 @@ function addresize(dom, fn) {
       // 若resize回调存在，则调用绑定window上下午，直接执行一遍
       oldfn.call(window);
       if (dom.offsetWidth != w || dom.offsetHeight != h) {
-        console.log(dom.offsetWidth);
         w = dom.offsetWidth;
         h = dom.offsetHeight;
         // 执行回调方法

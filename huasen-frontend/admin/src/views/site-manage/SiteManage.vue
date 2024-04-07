@@ -91,10 +91,10 @@ export default {
           key: 'icon',
           width: 100,
         },
-        {
-          label: '备注',
-          key: 'remarks',
-        },
+        // {
+        //   label: '备注',
+        //   key: 'remarks',
+        // },
         // {
         //   label: '拓展字段',
         //   key: 'expand',
@@ -113,12 +113,18 @@ export default {
       searchForm: {
         name: '',
         code: '',
+        tag: '',
       },
       searchFormMap: [
         {
           label: '名称',
           type: 'input',
           key: 'name',
+        },
+        {
+          label: '标签',
+          type: 'input',
+          key: 'tag',
         },
         {
           label: '权限码',
@@ -438,14 +444,17 @@ export default {
         let siteResult = await this.API.addSite(params);
         siteIds.push(siteResult.data[0]._id);
       }
+
       let columnIds = needBind.concat(needCreatedId);
-      // 选择性绑定/解绑
+      // 绑定网站链接到栏目
       if (columnIds.length) {
         await this.API.bindSiteToColumn({ columnIds, siteIds }, { notify: false });
       }
+      // 从栏目解绑链接
       if (needUnbind.length) {
         await this.API.unbindSiteToColumn({ columnIds: needUnbind, siteIds }, { notify: false });
       }
+      // 从新请求网址链接和栏目数据
       this.queryColumnData();
       this.queryData();
     },
