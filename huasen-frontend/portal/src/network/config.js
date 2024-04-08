@@ -23,7 +23,7 @@ export default {
   // 是否全局开启mock
   globalMock: isDev ? true : false,
   // 是否开启加密传输
-  globalSecret: isDev ? false : true,
+  globalSecret: isDev ? false : false,
   // 全局开启请求通知
   globalNotify: true,
   // 全局错误通知
