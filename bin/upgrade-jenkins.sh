@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 本脚本只能在使用 jenkins 容器实现持续化集成才能执行
-# 执行出错后终端
+# 执行出错退出终端
 set -e
 
 sh_path=$(cd $(dirname "$0") && pwd)

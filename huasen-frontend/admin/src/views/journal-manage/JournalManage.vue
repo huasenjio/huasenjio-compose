@@ -61,14 +61,14 @@ export default {
           label: '订阅源名称',
           key: 'name',
         },
-        {
-          label: '栏目',
-          key: 'columnStore',
-        },
-        {
-          label: '拓展字段',
-          key: 'expand',
-        },
+        // {
+        //   label: '栏目',
+        //   key: 'columnStore',
+        // },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        // },
         {
           label: '权限码',
           key: 'code',
@@ -108,16 +108,16 @@ export default {
           key: 'name',
           type: 'input',
         },
-        {
-          label: '栏目仓库',
-          key: 'columnStore',
-          type: 'input',
-        },
-        {
-          label: '拓展字段',
-          key: 'expand',
-          type: 'input',
-        },
+        // {
+        //   label: '栏目仓库',
+        //   key: 'columnStore',
+        //   type: 'input',
+        // },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        //   type: 'input',
+        // },
         {
           label: '权限码',
           key: 'code',

@@ -67,11 +67,14 @@ services:
       - ./huasen-nginx/html:/usr/share/nginx/html
     # 端口暴露
     ports:
-      # - 80:80
-      - target: 80
-        published: 80
-        protocol: tcp
-        mode: host
+      # 宿主机:容器
+      - 80:80
+
+      # 详细语法
+      # - target: 80 # 容器内
+      #   published: 80 # 容器外
+      #   protocol: tcp
+      #   mode: host
     environment:
       - TZ=Asia/Shanghai
     networks:

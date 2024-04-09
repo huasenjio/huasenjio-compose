@@ -44,3 +44,6 @@
 
 配合`upgrade-jenkins-init.sh`脚本，仅在jenkins在线持续集成方案中使用，非专业，请勿修改！
 
+### preload-docker-image.sh
+
+如果您无法拉去docker镜像老是失败，可以尝试，执行`preload-docker-image.sh`脚本，通过Docker Proxy（多平台容器镜像代理服务）预加载docker所需镜像，下载速度较快，如果执行失败，那么再次执行，直到没有报错为止。
