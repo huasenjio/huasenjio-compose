@@ -50,6 +50,7 @@ const RecordRouter = require('./router/record.router.js');
 const SiteRouter = require('./router/site.router.js');
 const ColumnRouter = require('./router/column.router.js');
 const JournalRouter = require('./router/journal.router.js');
+const WeatherRouter = require('./router/weather.router.js');
 
 app.use('/user', UserRouter);
 app.use('/manage', ManageRouter);
@@ -61,6 +62,7 @@ app.use('/record', RecordRouter);
 app.use('/site', SiteRouter);
 app.use('/column', ColumnRouter);
 app.use('/journal', JournalRouter);
+app.use('/weather', WeatherRouter);
 
 // 404页面重定向
 app.get('*', function (req, res) {

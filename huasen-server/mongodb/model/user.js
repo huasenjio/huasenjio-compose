@@ -13,7 +13,7 @@ let UserSchema = new mongoose.Schema({
     type: String,
     required: [true, '必需项'],
     minlength: [5, '账号长度不小于5'],
-    maxlength: [20, '账号长度不大于50'],
+    maxlength: [50, '账号长度不大于50'],
     trim: [true, '剔除前后空格'],
     unique: [true, '唯一'],
   },
