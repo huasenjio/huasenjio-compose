@@ -1,0 +1,76 @@
+
+preloader.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+almaz
+  rotate: false
+  xy: 1085, 382
+  size: 236, 301
+  orig: 236, 301
+  offset: 0, 0
+  index: -1
+back
+  rotate: false
+  xy: 4, 195
+  size: 539, 535
+  orig: 539, 535
+  offset: 0, 0
+  index: -1
+caution
+  rotate: false
+  xy: 4, 738
+  size: 1091, 218
+  orig: 1091, 218
+  offset: 0, 0
+  index: -1
+click
+  rotate: false
+  xy: 1103, 861
+  size: 821, 95
+  orig: 821, 95
+  offset: 0, 0
+  index: -1
+light
+  rotate: false
+  xy: 551, 250
+  size: 526, 480
+  orig: 526, 480
+  offset: 0, 0
+  index: -1
+loading
+  rotate: false
+  xy: 1329, 587
+  size: 370, 96
+  orig: 370, 96
+  offset: 0, 0
+  index: -1
+progress
+  rotate: false
+  xy: 1103, 691
+  size: 545, 58
+  orig: 545, 58
+  offset: 0, 0
+  index: -1
+progress_bg
+  rotate: false
+  xy: 4, 80
+  size: 594, 107
+  orig: 594, 107
+  offset: 0, 0
+  index: -1
+progress_top
+  rotate: false
+  xy: 4, 4
+  size: 555, 68
+  orig: 555, 68
+  offset: 0, 0
+  index: -1
+tap
+  rotate: false
+  xy: 1103, 757
+  size: 742, 96
+  orig: 742, 96
+  offset: 0, 0
+  index: -1
