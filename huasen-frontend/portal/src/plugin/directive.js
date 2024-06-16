@@ -101,8 +101,7 @@ Vue.directive('discolor', {
       document.body.appendChild(Menu.$el);
     });
 
-    // 菜单外任意位置隐藏菜单
-    document.addEventListener('click', event => {
+    document.onmousedown = event => {
       // 兼容safari和火狐浏览器不存在path情况
       let domPath = event.path || (event.composedPath && event.composedPath()) || [];
       // 一真则真
@@ -116,7 +115,7 @@ Vue.directive('discolor', {
         // 移除菜单面板
         document.body.removeChild(menuDOM);
       }
-    });
+    };
   },
 });
 

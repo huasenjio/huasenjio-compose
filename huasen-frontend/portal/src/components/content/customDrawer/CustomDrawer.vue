@@ -54,6 +54,17 @@
                   <el-switch v-model="showLeftNavbar" active-text="显示" inactive-text="隐藏" @change="handleNavbar"> </el-switch>
                 </div>
               </div>
+              <div class="row">
+                <div class="left">
+                  <div class="left__title">天气信息</div>
+                  <div class="detail">选择显示天气信息的城市</div>
+                </div>
+                <div class="right">
+                  <el-select v-model="cityCode" @change="handleCityCodeChange" placeholder="选择城市" filterable>
+                    <el-option v-for="city in CONSTANT.cityData" :key="city.areaid" :label="`${city.countyname}`" :value="city.areaid"> </el-option>
+                  </el-select>
+                </div>
+              </div>
             </section>
           </div>
         </el-collapse-item>
@@ -160,6 +171,10 @@ export default {
       searchEngineIndex: 0,
       // 隐藏左侧
       showLeftNavbar: true,
+      // 天气码
+      cityCode: 101210101,
+      // 城市
+      cityName: '杭州市',
       // 封面颜色可选纯色系
       pures: [
         {
@@ -225,6 +240,8 @@ export default {
     this.searchBorderRadius = this.user.config.searchBorderRadius;
     this.searchEngineIndex = this.user.config.searchEngineIndex;
     this.showLeftNavbar = this.user.config.showNavbar;
+    this.cityCode = this.user.config.cityCode;
+    this.cityName = this.user.config.cityName;
   },
 
   computed: {
@@ -254,6 +271,24 @@ export default {
 
   methods: {
     ...mapMutations(['commitAll']),
+
+    handleCityCodeChange(code) {
+      let exist;
+      this.CONSTANT.cityData.some(item => {
+        if (item.areaid === code) {
+          exist = item;
+          return true;
+        }
+      });
+      this.initCustomStyle({
+        user: {
+          config: {
+            cityCode: code,
+            cityName: exist.countyname,
+          },
+        },
+      });
+    },
 
     handleSearchBorderRadiusChange(val) {
       this.initCustomStyle({

@@ -9,6 +9,7 @@
     "menuCode": "000",
     "component": "home/Home",
     "title": "主页",
+    "keepAlive": true,
     "children": []
   },
   {
@@ -33,6 +34,7 @@
     "menuCode": "000",
     "component": "article/Article",
     "title": "文章",
+    "keepAlive": true,
     "children": []
   },
   {

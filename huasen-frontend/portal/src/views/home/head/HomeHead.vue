@@ -311,8 +311,8 @@ export default {
     }
     .weather-group {
       order: 2;
-      margin-left: 4px;
-      max-width: 200px;
+      margin-left: 14px;
+      max-width: 228px;
       display: flex;
       align-items: center;
     }
@@ -396,6 +396,7 @@ export default {
       }
       .weather-group {
         order: 2;
+        margin-left: 4px;
       }
     }
     .take {

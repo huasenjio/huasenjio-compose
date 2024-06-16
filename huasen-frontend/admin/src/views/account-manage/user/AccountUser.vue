@@ -160,7 +160,7 @@ export default {
         },
       ],
       rule: {
-        id: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:20::长度大于20', 'isEmail::请输入邮箱']), trigger: 'blur' }],
+        id: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50', 'isEmail::请输入邮箱']), trigger: 'blur' }],
         password: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5']), trigger: 'blur' }],
         name: [{ validator: getElementFormValidator(['minLength:2::长度小于2', 'maxLength:20::长度大于20']), trigger: 'blur' }],
       },

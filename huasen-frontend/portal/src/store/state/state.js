@@ -37,6 +37,10 @@ export default {
       searchEngineIndex: 2,
       // 显示左侧切换栏
       showNavbar: true,
+      // 城市码
+      cityCode: 101210101,
+      // 城市名
+      cityName: '杭州'
     },
   },
   // 全部站点

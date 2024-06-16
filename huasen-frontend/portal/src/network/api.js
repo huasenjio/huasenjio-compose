@@ -11,11 +11,12 @@ import Mock from 'mockjs2';
 // 封装的请求方法
 import { get, post } from './request.js';
 
-import UserAPI from './address/user.js';
-import MailAPI from './address/mail.js';
-import ArticleAPI from './address/article.js';
-import JournalAPI from './address/journal.js';
-import SiteAPI from './address/site.js';
+import User from './address/user.js';
+import Mail from './address/mail.js';
+import Article from './address/article.js';
+import Journal from './address/journal.js';
+import Site from './address/site.js';
+import Weather from './address/weather.js';
 
 // mock功能
 const mock = get('/mock/test', {
@@ -41,9 +42,10 @@ const mock = get('/mock/test', {
 });
 
 export default {
-  ...UserAPI,
-  ...MailAPI,
-  ...ArticleAPI,
-  ...JournalAPI,
-  ...SiteAPI,
+  ...User,
+  ...Mail,
+  ...Article,
+  ...Journal,
+  ...Site,
+  ...Weather
 };

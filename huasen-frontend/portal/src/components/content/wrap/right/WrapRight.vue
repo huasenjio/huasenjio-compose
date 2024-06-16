@@ -8,15 +8,28 @@
 
 <template>
   <div class="wrap-right" :class="{ full: !user.config.showNavbar }">
-    <router-view></router-view>
+    <keep-alive :max="2" :include="caches">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import routes from '@/config/router.config.json';
+
 export default {
   name: 'WrapRight',
   computed: {
     ...mapState(['user']),
+    caches() {
+      let list = [];
+      routes.forEach(item => {
+        if (item.name && item.keepAlive) {
+          list.push(item.name);
+        }
+      });
+      return list;
+    },
   },
 };
 </script>
