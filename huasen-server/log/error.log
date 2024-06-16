@@ -1,0 +1,197 @@
+[2023-11-18T15:46:21.071] [ERROR] error - [全局错误处理中间件发现错误] Error: Message failed: 550 The recipient may contain a non-existent account, please check the recipient address.
+    at SMTPConnection._formatError (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:774:19)
+    at SMTPConnection._actionSMTPStream (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:1651:34)
+    at SMTPConnection.<anonymous> (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:1136:22)
+    at SMTPConnection._processResponse (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:932:20)
+    at SMTPConnection._onData (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:739:14)
+    at TLSSocket.SMTPConnection._onSocketData (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:189:44)
+    at TLSSocket.emit (node:events:526:28)
+    at addChunk (node:internal/streams/readable:315:12)
+    at readableAddChunk (node:internal/streams/readable:289:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:228:10)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:190:23) {
+  code: 'EMESSAGE',
+  response: '550 The recipient may contain a non-existent account, please check the recipient address.',
+  responseCode: 550,
+  command: 'DATA'
+}
+[2023-11-18T15:48:15.434] [ERROR] error - [全局错误处理中间件发现错误] Error: Message failed: 550 The recipient may contain a non-existent account, please check the recipient address.
+    at SMTPConnection._formatError (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:774:19)
+    at SMTPConnection._actionSMTPStream (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:1651:34)
+    at SMTPConnection.<anonymous> (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:1136:22)
+    at SMTPConnection._processResponse (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:932:20)
+    at SMTPConnection._onData (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:739:14)
+    at TLSSocket.SMTPConnection._onSocketData (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:189:44)
+    at TLSSocket.emit (node:events:526:28)
+    at addChunk (node:internal/streams/readable:315:12)
+    at readableAddChunk (node:internal/streams/readable:289:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:228:10)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:190:23) {
+  code: 'EMESSAGE',
+  response: '550 The recipient may contain a non-existent account, please check the recipient address.',
+  responseCode: 550,
+  command: 'DATA'
+}
+[2024-03-23T10:51:25.983] [ERROR] error - [全局错误处理中间件发现错误] CastError: Cast to ObjectId failed for value "" at path "_id" for model "articles"
+    at model.Query.exec (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:4358:21)
+    at model.Query.Query.then (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:4452:15)
+    at IncomingMessage.epWorking (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/service/index.js:72:10)
+    at findById (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/article.controller.js:65:7)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:93:7
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  messageFormat: undefined,
+  stringValue: '""',
+  kind: 'ObjectId',
+  value: '',
+  path: '_id',
+  reason: Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
+      at new ObjectID (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/bson/lib/bson/objectid.js:59:11)
+      at castObjectId (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/cast/objectid.js:25:12)
+      at ObjectId.cast (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schema/objectid.js:279:12)
+      at ObjectId.SchemaType.applySetters (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1090:12)
+      at ObjectId.SchemaType._castForQuery (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1525:15)
+      at ObjectId.SchemaType.castForQuery (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1515:15)
+      at ObjectId.SchemaType.castForQueryWrapper (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1492:20)
+      at cast (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/cast.js:331:32)
+      at model.Query.Query.cast (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:4763:12)
+      at model.Query.Query._castConditions (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:1841:10)
+      at model.Query.<anonymous> (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:1868:8)
+      at model.Query._wrappedThunk [as _find] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/helpers/query/wrapThunk.js:16:8)
+      at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/kareem/index.js:370:33
+      at processTicksAndRejections (node:internal/process/task_queues:78:11)
+}
+[2024-03-23T10:51:26.107] [ERROR] error - [全局错误处理中间件发现错误] CastError: Cast to ObjectId failed for value "" at path "_id" for model "articles"
+    at model.Query.exec (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:4358:21)
+    at model.Query.Query.then (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:4452:15)
+    at IncomingMessage.epWorking (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/service/index.js:72:10)
+    at findById (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/article.controller.js:65:7)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:93:7
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  messageFormat: undefined,
+  stringValue: '""',
+  kind: 'ObjectId',
+  value: '',
+  path: '_id',
+  reason: Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
+      at new ObjectID (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/bson/lib/bson/objectid.js:59:11)
+      at castObjectId (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/cast/objectid.js:25:12)
+      at ObjectId.cast (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schema/objectid.js:279:12)
+      at ObjectId.SchemaType.applySetters (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1090:12)
+      at ObjectId.SchemaType._castForQuery (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1525:15)
+      at ObjectId.SchemaType.castForQuery (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1515:15)
+      at ObjectId.SchemaType.castForQueryWrapper (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/schematype.js:1492:20)
+      at cast (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/cast.js:331:32)
+      at model.Query.Query.cast (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:4763:12)
+      at model.Query.Query._castConditions (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:1841:10)
+      at model.Query.<anonymous> (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/query.js:1868:8)
+      at model.Query._wrappedThunk [as _find] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/mongoose/lib/helpers/query/wrapThunk.js:16:8)
+      at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/kareem/index.js:370:33
+      at processTicksAndRejections (node:internal/process/task_queues:78:11)
+}
+[2024-03-30T13:41:47.783] [ERROR] error - [全局错误处理中间件发现错误] ReferenceError: huasenParams is not defined
+    at backup (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/user.controller.js:98:15)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at handleUselessParams (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:105:3)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:83:7
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2024-03-30T14:21:04.438] [ERROR] error - [全局错误处理中间件发现错误] SyntaxError: Unexpected token u in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at backup (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/user.controller.js:99:44)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at handleUselessParams (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:105:3)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:93:7
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2024-03-30T14:32:47.378] [ERROR] error - [全局错误处理中间件发现错误] SyntaxError: Unexpected token u in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at backup (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/user.controller.js:99:44)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at handleUselessParams (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:105:3)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/common.middleware.js:93:7
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2024-04-01T01:19:21.633] [ERROR] error - [全局错误处理中间件发现错误] Error: Invalid login: 535 Login Fail. Please enter your authorization code to login. More information in http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256
+    at SMTPConnection._formatError (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:774:19)
+    at SMTPConnection._actionAUTHComplete (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:1513:34)
+    at SMTPConnection.<anonymous> (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:540:26)
+    at SMTPConnection._processResponse (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:932:20)
+    at SMTPConnection._onData (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:739:14)
+    at TLSSocket.SMTPConnection._onSocketData (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/nodemailer/lib/smtp-connection/index.js:189:44)
+    at TLSSocket.emit (node:events:526:28)
+    at addChunk (node:internal/streams/readable:315:12)
+    at readableAddChunk (node:internal/streams/readable:289:9)
+    at TLSSocket.Readable.push (node:internal/streams/readable:228:10)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:190:23) {
+  code: 'EAUTH',
+  response: '535 Login Fail. Please enter your authorization code to login. More information in http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256',
+  responseCode: 535,
+  command: 'AUTH PLAIN'
+}
+[2024-04-07T22:08:12.261] [ERROR] error - [全局错误处理中间件发现错误] TypeError: result.filter is not a function
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/site.controller.js:36:25
+    at EventProxy._all (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/eventproxy/lib/eventproxy.js:299:16)
+    at EventProxy.trigger (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/eventproxy/lib/eventproxy.js:182:22)
+    at Object.findAllByPage (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/service/template.js:21:8)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2024-04-07T22:08:58.439] [ERROR] error - [全局错误处理中间件发现错误] TypeError: result.filter is not a function
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/site.controller.js:37:25
+    at EventProxy._all (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/eventproxy/lib/eventproxy.js:299:16)
+    at EventProxy.trigger (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/eventproxy/lib/eventproxy.js:182:22)
+    at Object.findAllByPage (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/service/template.js:21:8)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2024-04-07T23:50:20.648] [ERROR] error - [全局错误处理中间件发现错误] Error
+    at unbindSite (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/controller/column.controller.js:172:9)
+    at Layer.handle [as handle_request] (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/express/lib/router/route.js:137:13)
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/middleware/manage.middleware.js:79:9
+    at EventProxy._all (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/eventproxy/lib/eventproxy.js:299:16)
+    at EventProxy.trigger (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/eventproxy/lib/eventproxy.js:182:22)
+    at /Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/service/index.js:73:14
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2024-06-11T23:14:41.280] [ERROR] error - [未捕获的全局错误] TypeError [ERR_UNKNOWN_ENCODING]: Unknown encoding: json
+    at new NodeError (node:internal/errors:371:5)
+    at normalizeEncoding (node:string_decoder:66:13)
+    at new StringDecoder (node:string_decoder:84:19)
+    at IncomingMessage.Readable.setEncoding (node:internal/streams/readable:337:19)
+    at Request.onRequestResponse (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/request/request.js:1049:25)
+    at ClientRequest.emit (node:events:526:28)
+    at HTTPParser.parserOnIncomingClient [as onIncoming] (node:_http_client:618:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
+    at Socket.socketOnData (node:_http_client:482:22)
+    at Socket.emit (node:events:526:28)
+    at addChunk (node:internal/streams/readable:315:12)
+    at readableAddChunk (node:internal/streams/readable:289:9)
+    at Socket.Readable.push (node:internal/streams/readable:228:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23) {
+  code: 'ERR_UNKNOWN_ENCODING'
+}
+[2024-06-11T23:14:45.243] [ERROR] error - [未捕获的全局错误] TypeError [ERR_UNKNOWN_ENCODING]: Unknown encoding: json
+    at new NodeError (node:internal/errors:371:5)
+    at normalizeEncoding (node:string_decoder:66:13)
+    at new StringDecoder (node:string_decoder:84:19)
+    at IncomingMessage.Readable.setEncoding (node:internal/streams/readable:337:19)
+    at Request.onRequestResponse (/Users/huasenjio/Documents/iCollections/编程环境/github/huasen-compose/huasen-server/node_modules/request/request.js:1049:25)
+    at ClientRequest.emit (node:events:526:28)
+    at HTTPParser.parserOnIncomingClient [as onIncoming] (node:_http_client:618:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:128:17)
+    at Socket.socketOnData (node:_http_client:482:22)
+    at Socket.emit (node:events:526:28)
+    at addChunk (node:internal/streams/readable:315:12)
+    at readableAddChunk (node:internal/streams/readable:289:9)
+    at Socket.Readable.push (node:internal/streams/readable:228:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23) {
+  code: 'ERR_UNKNOWN_ENCODING'
+}
