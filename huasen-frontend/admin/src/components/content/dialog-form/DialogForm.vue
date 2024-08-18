@@ -76,9 +76,9 @@
                   <IconResultContainer id="icon-img-target-container" :isTextMode="false" :color.sync="iconImgModeColor" :url="faviconIconURL"></IconResultContainer>
                 </div>
               </el-tab-pane>
-              <el-input class="mt-px-10" placeholder="图标地址" :disabled="!showUpload" v-model="formData[formTtem.key]">
+              <el-input class="mt-px-10" style="font-size: 12px" placeholder="图标地址" :disabled="!showUpload" v-model="formData[formTtem.key]">
                 <el-tooltip slot="append" effect="dark" :content="showUpload ? '从图标库中选择' : '生成并存储图标'" placement="top">
-                  <el-button class="create" :icon="showUpload ? 'el-icon-files' : 'el-icon-document-add'" @click="handleCreateIconUrl"></el-button>
+                  <el-button class="create" :icon="showUpload ? 'el-icon-files' : 'el-icon-document-add'" @click="handleCreateIconUrl">{{ showUpload ? '从图标库中选择' : '生成并存储图标' }}</el-button>
                 </el-tooltip>
               </el-input>
             </el-tabs>

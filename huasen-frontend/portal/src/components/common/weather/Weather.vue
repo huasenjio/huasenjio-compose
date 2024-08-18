@@ -28,6 +28,7 @@ const imgDaytimeMap = {
   '4': require('@/assets/img/weather/tianqiicon_leidian.png'), // 雷阵雨
   '7': require('@/assets/img/weather/tianqiicon_xiaoyu.png'), // 小雨
   '8': require('@/assets/img/weather/tianqiicon_zhongyu.png'), // 中雨
+  '9': require('@/assets/img/weather/tianqiicon_zhongyu.png'), // 中雨
   '10': require('@/assets/img/weather/tianqiicon_dayu.png'), // 大雨
   '18': require('@/assets/img/weather/tianqiicon_wu.png'), // 雾霾
 };
@@ -39,6 +40,7 @@ const imgNightMap = {
   '4': require('@/assets/img/weather/tianqiicon_leidian.png'), // 雷阵雨
   '7': require('@/assets/img/weather/tianqiicon_xiaoyu.png'), // 小雨
   '8': require('@/assets/img/weather/tianqiicon_zhongyu.png'), // 中雨
+  '9': require('@/assets/img/weather/tianqiicon_zhongyu.png'), // 中雨
   '10': require('@/assets/img/weather/tianqiicon_dayu.png'), // 大雨
   '18': require('@/assets/img/weather/tianqiicon_wu.png'), // 雾霾
 };
