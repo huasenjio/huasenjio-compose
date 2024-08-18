@@ -1,6 +1,6 @@
-# 安装 Node 精简版
-FROM node:16-alpine3.17 
-# FROM node:14.20-alpine
+# 安装 Node V18 精简版
+FROM node:18-alpine
+# FROM node:16-alpine3.17 
 # 设置维护者信息 
 LABEL maintainer="huasen<huasenjio@163.com>"
 # 防止中文打印信息显示乱码

@@ -11,12 +11,13 @@ git_path="https://gitee.com/HuaSenJioJio/huasenjio-compose.git"
 git_name="huasenjio-compose"
 # docker 镜像文件
 daemon_file="/etc/docker/daemon.json"
-# docker 镜像源
-mirror1="http://hub-mirror.c.163.com"
-mirror2="https://docker.mirrors.ustc.edu.cn"
+# docker 镜像源配置，按需要自行添加可用镜像源。
+mirror1="https://docker.m.daocloud.io"
+mirror2="https://dockerproxy.com"
 mirror3="https://registry.docker-cn.com"
+echo '-1.脚本已初始化完成，如安装出现问题，请添加微信：huasencc，然后进群寻求帮助...'
 
-echo '0.正在初始化...'
+echo '0.正在安装基础工具...'
 # 安装 vim 工具
 yum -y install vim*
 # 拓展 yum 功能
@@ -60,7 +61,7 @@ else
     docker version
 fi
 
-echo '4.正在 docker 镜像源...'
+echo '4.正在配置 docker 镜像源...'
 # 配置 docker 镜像源
 if [ ! -f "$daemon_file" ]; then
     echo '{"registry-mirrors":["'$mirror1'","'$mirror2'","'$mirror3'"],"ipv6":false}' > $daemon_file
