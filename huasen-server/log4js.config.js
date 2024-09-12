@@ -5,6 +5,7 @@
  * @LastEditTime: 2022-08-27 16:26:07
  * @Description:
  */
+const path = require('path');
 module.exports = {
   // 输出配置
   appenders: {
@@ -20,7 +21,7 @@ module.exports = {
     // },
     errorFileOut: {
       type: 'file',
-      filename: 'log/error.log',
+      filename: path.resolve(__dirname, 'log/error.log'),
       encoding: 'utf-8',
       maxLogSize: 1024 * 1024 * 8, //最大文件大小，按字节计算 1024 * 1024 * 8 = 8M
       backups: 10, //文件保留数量
@@ -29,7 +30,7 @@ module.exports = {
     },
     warnFileOut: {
       type: 'file',
-      filename: 'log/warn.log',
+      filename: path.resolve(__dirname, 'log/warn.log'),
       encoding: 'utf-8',
       maxLogSize: 1024 * 1024 * 8, //最大文件大小，按字节计算 1024 * 1024 * 8 = 8M
       backups: 10, //文件保留数量

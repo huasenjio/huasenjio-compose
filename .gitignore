@@ -1,7 +1,6 @@
 # 系统和软件标识
 .DS_Store
 .idea
-.vscode
 
 # 项目文件
 node_modules

@@ -113,6 +113,7 @@ function findByCode(req, res, next) {
 }
 
 function findAll(req, res, next) {
+  const code = req.huasenJWT?.proof?.code || 0;
   req.epWorking(
     [
       {
@@ -120,6 +121,8 @@ function findAll(req, res, next) {
         methodName: 'find',
         payloads: [
           {
+            // 筛选出小于等于用户权限的订阅源
+            code: { $lte: code },
             enabled: true,
           },
         ],
@@ -147,6 +150,8 @@ function findJournalInformationById(req, res, next) {
         payloads: [
           {
             _id,
+            code: { $lte: proof.code },
+            enabled: true,
           },
         ],
       },
