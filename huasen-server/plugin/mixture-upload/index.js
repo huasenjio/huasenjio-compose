@@ -56,8 +56,7 @@ class MixtureUpload {
     form.on('file', (name, file) => {
       try {
         let fileEx = file.path.split('.').pop();
-        let filesFilter = this.config.handleFilter;
-        let pass = filesFilter ? filesFilter(file) : true;
+        let pass = typeof this.config.handleFilter === 'function' ? this.config.handleFilter(file) : true;
         if (pass) {
           // 判断文件类型
           let fileMINE = file.headers['content-type'];
@@ -66,9 +65,9 @@ class MixtureUpload {
             throw new Error(`${fileMINE}文件类型不允许`);
           } else {
             // 文件重命名
-            let newFileName = this.config.handleFileName ? this.config.handleFileName(file) : `${Date.now()}`;
+            let newFileName = typeof this.config.handleFileName === 'function' ? this.config.handleFileName(file) : `${Date.now()}`;
             let newFilePath = path.resolve(this.config.uploadPath, `${newFileName}.${fileEx}`);
-            // 移动文件，本地持久化
+            // 从临时路径移动文件，完成本地持久化
             // fix：修复docker-compose中跨区写入文件的错误
             let readStream = fs.createReadStream(file.path);
             let writeStream = fs.createWriteStream(newFilePath);
@@ -82,7 +81,7 @@ class MixtureUpload {
             this.handleFormData(name, file, this.files);
           }
         } else {
-          throw new Error('文件被过滤拦截');
+          throw new Error('文件被过滤拦截：', file);
         }
       } catch (err) {
         fs.unlinkSync(file.path);
@@ -113,7 +112,7 @@ class MixtureUpload {
     });
     // 监听表单处理完成自动关闭
     form.on('close', () => {
-      if (this.finishCount < form.totalFieldCount) return false;
+      if (this.finishCount < form.totalFieldCount) return;
       // 必需的回调
       if (this.config.onSuccess) this.config.onSuccess(this.data, this.files);
     });

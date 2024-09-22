@@ -31,7 +31,7 @@ export function get(url, mock, FSW = true) {
       }
     }
   }
-  return function(params, option = {}) {
+  return function (params, option = {}) {
     // 可取消标识
     if (option._cancelable) option.cancelToken = Config.cancelToken;
     // 是否是Mock请求
@@ -69,7 +69,7 @@ export function post(url, mock, FSW = true) {
       }
     }
   }
-  return function(data, option = {}) {
+  return function (data, option = {}) {
     // 可取消标识
     if (option._cancelable) option.cancelToken = Config.cancelToken;
     // 是否是Mock请求
@@ -94,7 +94,7 @@ export function post(url, mock, FSW = true) {
  * @param {String}  url  接口地址 必填
  */
 export function upload(url) {
-  return function(data, option = {}) {
+  return function (data, option = {}) {
     return http({
       url,
       data,
@@ -130,10 +130,11 @@ export function downloadFileByUrl(url, filename) {
  * @param {String}      MIME        MINE类型
  * @param {Function}    callback    回调函数
  */
-export function downloadFileByBlob(url, fileName, MIME, callback) {
+export function downloadFileByBlob(url, data, fileName, MIME, callback) {
   return http({
     url,
-    method: 'get',
+    data,
+    method: 'post',
     responseType: 'blob',
     timeout: 360000, // 调整超时时间为60秒，防止文件过大，导致请求取消
   })
@@ -142,7 +143,7 @@ export function downloadFileByBlob(url, fileName, MIME, callback) {
       if (callback) callback(result);
       let a = document.createElement('a');
       // result必须是二进制流对象
-      let blobData = result.data;
+      let blobData = result;
       // 设置类型
       let blob = new Blob([blobData], { type: MIME });
       const url = window.URL.createObjectURL(blob);

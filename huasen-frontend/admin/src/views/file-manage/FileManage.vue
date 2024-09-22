@@ -11,14 +11,17 @@
     <FileUpLoad class="relative z-10" @upload="upload"></FileUpLoad>
     <main class="px-px-24 relative z-0">
       <div class="head bg-gray-0 flex items-center -mt-px-10 py-px-14">
-        <div class="text-lg flex items-center text-gray-800">
-          <!-- <i class="el-icon-receiving text-gray-700 text-22px mr-px-4"></i> -->
-          文件列表
-        </div>
-        <el-popconfirm @confirm="remove('multiple')" class="ml-auto" popper-class="delete-popcomfirm" title="确定删除吗？">
-          <el-button slot="reference" size="small" type="danger">批量删除</el-button>
+        <div class="text-lg flex items-center text-gray-800">文件列表</div>
+        <el-popconfirm @confirm="remove('multiple')" class="ml-px-10" popper-class="delete-popcomfirm" title="确定删除吗？">
+          <el-button slot="reference" size="mini" icon="el-icon-delete" type="danger">批量删除</el-button>
         </el-popconfirm>
-        <!-- <el-button size="small" type="info" @click="downloadStore">下载全部</el-button> -->
+        <el-button style="margin-left: 6px" size="mini" icon="el-icon-download" type="info" @click="downloadStore">下载全部</el-button>
+        <el-input v-model="filterText" style="width: 300px" class="ml-auto" placeholder="文件关键词" size="mini" clearable>
+          <el-select style="width: 95px" v-model="filterType" slot="prepend" placeholder="文件类型">
+            <el-option label="全部" value=""></el-option>
+            <el-option v-for="item in filterTypes" :label="item.label" :value="item.value" :key="item.value"></el-option>
+          </el-select>
+        </el-input>
       </div>
       <el-table ref="fileTable" :data="displayFiles" border style="width: 100%">
         <el-table-column type="selection" width="45"> </el-table-column>
@@ -68,28 +71,18 @@
 import FileUpLoad from '@/components/common/file-upload/FileUpload.vue';
 export default {
   name: 'FileManage',
-  computed: {
-    total() {
-      return this.files.length;
-    },
-    displayFiles() {
-      let startIndex = (this.currentPage - 1) * this.pageSize;
-      let endIndex = this.currentPage * this.pageSize;
-      return this.files.slice(startIndex, endIndex);
-    },
-  },
+  components: { FileUpLoad },
   data() {
     return {
       files: [],
-
       fileTypeName: {
         icon: '图标',
         article: '文章附件',
-        default: '其它',
         pdf: 'PDF',
         zip: '压缩包',
         banner: '封面',
         img: '图库',
+        default: '其它',
         'open-sh': '开放脚本',
       },
       type2icon: {
@@ -120,20 +113,63 @@ export default {
       // 前端分页相关
       pageSize: 10,
       currentPage: 1,
-    };
-  },
 
-  components: {
-    FileUpLoad,
+      filterType: '',
+      filterText: '',
+    };
   },
 
   mounted() {
     this.queryFile();
   },
 
+  computed: {
+    total() {
+      return this.filterFiles.length;
+    },
+    filterFiles() {
+      let files = [...this.files];
+      // 类型筛选
+      if (this.filterType) {
+        files = files.filter(item => {
+          return item.url.includes(`huasen-store/${this.filterType}`);
+        });
+      }
+      // 关键词筛选
+      if (this.filterText !== '') {
+        files = files.filter(item => {
+          return item.url.includes(this.filterText);
+        });
+      }
+      return files;
+    },
+    displayFiles() {
+      let startIndex = (this.currentPage - 1) * this.pageSize;
+      let endIndex = this.currentPage * this.pageSize;
+      return this.filterFiles.slice(startIndex, endIndex);
+    },
+    filterTypes() {
+      let temp = [];
+      Object.keys(this.fileTypeName).forEach(key => {
+        temp.push({
+          label: this.fileTypeName[key],
+          value: key,
+        });
+      });
+      return temp;
+    },
+  },
+
+  watch: {
+    filterFiles(val) {
+      this.currentPage = 1;
+      this.pageSize = 10;
+    },
+  },
+
   methods: {
     downloadStore() {
-      this.API.downloadStoreByZip();
+      this.$notify.warning('功能正在开发中...');
     },
 
     async upload(file, index, callback) {
@@ -151,19 +187,13 @@ export default {
 
     // 图片类型则显示图片
     judgeImgFile(filePath) {
-      let ext = filePath
-        .split('.')
-        .slice(-1)
-        .join('');
+      let ext = filePath.split('.').slice(-1).join('');
       return ['png', 'jpg', 'jpeg', 'svg', 'gif'].includes(ext);
     },
 
     // 获取文件图标
     getFileIcon(filePath) {
-      let ext = filePath
-        .split('.')
-        .slice(-1)
-        .join('');
+      let ext = filePath.split('.').slice(-1).join('');
       return this.type2icon[ext];
     },
 
@@ -185,7 +215,6 @@ export default {
           needRemoveUrls.push(url);
           break;
       }
-      debugger;
       if (needRemoveUrls.length === 0) return;
 
       this.API.removeFile(

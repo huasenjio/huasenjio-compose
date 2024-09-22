@@ -8,15 +8,15 @@
 const express = require('express');
 const router = express.Router();
 
-const { login, add, findAllByPage, update, remove, overview, visitor, diskOverview, uvOverview, config, executeRuntimeCode, findAppConfig, saveAppConfig, findAppFavicon } = require('../controller/manage.controller.js');
+const { login, add, findAllByPage, update, remove, overview, visitor, diskOverview, uvOverview, config, executeRuntimeCode, findAppConfig, saveAppConfig, findAppFavicon, uploadFileToStore } = require('../controller/manage.controller.js');
 
-const { upload, checkManagePower, checkManageAccountUnique, checkManageHighestPower } = require('../middleware/manage.middleware.js');
+const { checkManagePower, checkManageAccountUnique, checkManageHighestPower } = require('../middleware/manage.middleware.js');
 const { handleUselessParams } = require('../middleware/common.middleware.js');
 const { handleJWT } = require('../middleware/common.middleware.js');
 
 router.post('/login', login);
-router.post('/upload', handleJWT, checkManagePower, upload);
-router.post('/uploadIcon', handleJWT, checkManagePower, upload);
+router.post('/upload', handleJWT, checkManagePower, uploadFileToStore);
+router.post('/uploadIcon', handleJWT, checkManagePower, uploadFileToStore);
 router.post('/add', handleJWT, checkManagePower, checkManageHighestPower, checkManageAccountUnique, handleUselessParams, add);
 router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);
 router.post('/remove', handleJWT, checkManagePower, checkManageHighestPower, remove);

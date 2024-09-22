@@ -33,3 +33,19 @@ global.huasenStatus = {
   articleCount: 0,
   visitorCount: 0,
 };
+
+global.hsUtil = {}
+global.hsDic = {
+  pin2code: {
+    '热': 1,
+    '墙': 2,
+    '优': 3,
+    '免': 4,
+  },
+  code2pin: {
+    1: '热',
+    2: '墙',
+    3: '优',
+    4: '免',
+  },
+}

@@ -13,8 +13,9 @@ const fileType = ['png', 'jpg', 'jpeg', 'zip', 'rar', 'pdf', 'md', 'doc', 'docx'
 
 function findAll(req, res, next) {
   let files = readDirectory(path.resolve(process.cwd(), '../huasen-store'));
+  files = files.filter(path => !path.includes('/huasen-store/webapp'))
   files = files.map(item => {
-    return item.split(/\/|\\/).slice(-3).join('/');
+    return item.slice(item.indexOf('huasen-store'));
   });
   files = files.filter(filePath => {
     let fileName = filePath.split(/\/|\\/).slice(-1).join('');

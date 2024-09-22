@@ -136,7 +136,7 @@ export default {
     },
 
     initMemoryChart() {
-      let option = (option = {
+      let option = {
         title: {
           text: 'CPU/内存占用率',
           textStyle: {
@@ -267,7 +267,7 @@ export default {
             data: this.system.memory,
           },
         ],
-      });
+      };
       if (!this.memoryChart) {
         let dom = document.getElementById('memory-chart');
         this.memoryChart = this.$echarts.init(dom);
@@ -275,7 +275,7 @@ export default {
           this.memoryChart.resize();
         });
         this.memoryChartObserve.observe(dom);
-        this.$once('hook:beforeDestroy', function() {
+        this.$once('hook:beforeDestroy', function () {
           this.memoryChartObserve.unobserve(dom);
         });
       }

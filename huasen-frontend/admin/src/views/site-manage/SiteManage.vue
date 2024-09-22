@@ -46,14 +46,13 @@
       ref="dialogImportForm"
       width="420"
       maxHeight="480"
-      title="导入站点"
+      title="链接导入/出"
       :visible.sync="showImport"
       :formMap="importFormMap"
       :formData.sync="importForm"
       :formRule="importRule"
       :close-on-click-modal="false"
       :mode="importMode"
-      :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       @comfirmForm="saveImportSite"
       @cancelForm="cancelImportSite"
     ></DialogForm>
@@ -91,14 +90,14 @@ export default {
           key: 'icon',
           width: 100,
         },
-        // {
-        //   label: '备注',
-        //   key: 'remarks',
-        // },
-        // {
-        //   label: '拓展字段',
-        //   key: 'expand',
-        // },
+        {
+          label: '备注',
+          key: 'remarks',
+        },
+        {
+          label: '拓展字段',
+          key: 'expand',
+        },
         {
           label: '权限码',
           key: 'code',
@@ -215,17 +214,6 @@ export default {
       ],
       importFormMap: [
         {
-          label: '网站标签',
-          key: 'siteTag',
-          type: 'select',
-          selectOptions: [],
-          selectConfig: {
-            'allow-create': true,
-            filterable: true,
-            multiple: true,
-          },
-        },
-        {
           label: '所属栏目',
           key: 'columnId',
           type: 'select',
@@ -236,9 +224,9 @@ export default {
           },
         },
         {
-          label: '网站数据',
-          key: 'siteData',
-          type: 'textarea',
+          label: '操作类型',
+          key: 'siteInOut',
+          type: 'siteInOut',
         },
       ],
       rule: {

@@ -107,6 +107,8 @@ if (isMainThread) {
       '/site/remove': '删除网链',
       '/site/removeMany': '批量删除网链',
       '/site/update': '更新网链',
+      '/site/exportSite': '导出网链',
+      '/site/importSite': '导入网链',
       // '/site/list': '查询网链列表',
       // '/site/siteTagList': '查询全部网链标签',
       // '/site/siteColumnList': '查询网链所属栏目',

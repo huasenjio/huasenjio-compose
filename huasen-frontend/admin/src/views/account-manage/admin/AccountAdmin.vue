@@ -148,6 +148,10 @@ export default {
     },
 
     removeManage(index, row, pageNo, pageSize) {
+      if (row.id === 'admin@qq.com') {
+        this.$tips('warning', 'admin@qq.com 管理员，不允许被删除！', 'top-right', 1200);
+        return;
+      }
       this.API.removeManage({ _id: row._id }).then(res => {
         this.queryManage();
       });

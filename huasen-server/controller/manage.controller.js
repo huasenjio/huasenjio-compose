@@ -6,17 +6,39 @@
  * @Description: 管理控制器
  */
 
-const JWT = require('../plugin/jwt.js');
 const path = require('path');
-const { readDirectory, writeToFile, bytesToSize } = require('../utils/tool.js');
 const checkDiskSpace = require('check-disk-space').default;
+const { fetchFavicon, fetchFavicons } = require('@meltwater/fetch-favicon');
 const { POOL_ACCESS } = require('../config.js');
+const JWT = require('../plugin/jwt.js');
+const { readDirectory, writeToFile, bytesToSize } = require('../utils/tool.js');
 const { handleRate } = require('../utils/tool.js');
 const { encrypt, decrypt } = require('../utils/aes.js');
+const { downloadAndConvertToBase64 } = require('../utils/tool.js');
 const { Manage } = require('../service/index.js');
 const { getObjectRedisItem } = require('../plugin/ioredis/map.js');
-const { fetchFavicon, fetchFavicons } = require('@meltwater/fetch-favicon');
-const { downloadAndConvertToBase64 } = require('../utils/tool.js');
+const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
+const uploadConfigMap = {
+  icon: {
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
+    uploadPath: path.resolve(process.cwd(), '../huasen-store/icon'),
+  },
+  banner: {
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
+    uploadPath: path.resolve(process.cwd(), '../huasen-store/banner'),
+  },
+  article: {
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
+    uploadPath: path.resolve(process.cwd(), '../huasen-store/article'),
+  },
+  img: {
+    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
+    uploadPath: path.resolve(process.cwd(), '../huasen-store/img'),
+  },
+  default: {
+    uploadPath: path.resolve(process.cwd(), '../huasen-store/default'),
+  },
+};
 
 function login(req, res, next) {
   let { id, password } = req.huasenParams;
@@ -347,6 +369,40 @@ function findAppFavicon(req, res, next) {
     });
 }
 
+function uploadFileToStore(req, res, next) {
+  let type = req.huasenParams.type;
+  let option = uploadConfigMap[type] || uploadConfigMap['default'];
+  const mixtureUpload = new MixtureUpload({
+    ...option,
+    handleFilter: file => {
+      return true;
+    },
+    handleFileName: file => {
+      return `${Date.now()}`;
+    },
+    onSuccess: (data, files) => {
+      let resultFiles = [];
+      Object.values(files).forEach(item => {
+        if (Array.isArray(item)) {
+          resultFiles = resultFiles.concat(item);
+        } else {
+          resultFiles.push(item);
+        }
+      });
+      for (let i = 0; i < resultFiles.length; i++) {
+        resultFiles[i].path = resultFiles[i].path.split(/\/|\\/).slice(-3).join('/');
+      }
+      global.huasen.responseData(res, resultFiles, 'SUCCESS', '上传成功', false);
+    },
+    onError: err => {
+      global.huasen.responseData(res, {}, 'ERROR', err.msg);
+    },
+  });
+  mixtureUpload.uploader(req, res, next);
+}
+
+
+
 module.exports = {
   login,
   add,
@@ -367,4 +423,6 @@ module.exports = {
   saveAppConfig,
 
   findAppFavicon,
+
+  uploadFileToStore
 };

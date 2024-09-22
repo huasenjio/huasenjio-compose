@@ -112,7 +112,7 @@ export default {
       return moment().format('YYYY-MM-DD HH:mm:ss');
     },
     action() {
-      return this.TOOL.getUploadApi('/manage/upload');
+      return this.TOOL.getServerApi('/manage/upload');
     },
     uploadStyle() {
       return {

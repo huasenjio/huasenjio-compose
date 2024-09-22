@@ -124,9 +124,9 @@ function handleRequest(req, res, next) {
   // 添加请求至并发处理模块
   throttle.addRequest(req, res, next, {
     // 添加请求前
-    addRequestCallback: () => {},
+    addRequestCallback: () => { },
     // 处理请求前
-    handleRequestCallback: () => {},
+    handleRequestCallback: () => { },
     // 请求销毁后
     deleteRequestCallback: () => {
       handleRecord(origin, req);

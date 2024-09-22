@@ -8,7 +8,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { add, addMany, findAllByPage, remove, removeMany, update, findByCode, findByList, findSiteTagByList, findSiteColumnByList, bindColumn, unbindColumn } = require('../controller/site.controller.js');
+const { add, addMany, findAllByPage, remove, removeMany, update, findByCode, findByList, findSiteTagByList, findSiteColumnByList, bindColumn, unbindColumn, importSite, exportSite } = require('../controller/site.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower } = require('../middleware/manage.middleware.js');
 
@@ -34,7 +34,29 @@ router.post('/siteColumnList', handleJWT, checkManagePower, findSiteColumnByList
 router.post('/bindColumn', handleJWT, checkManagePower, bindColumn);
 router.post('/unbindColumn', handleJWT, checkManagePower, unbindColumn);
 
-// 用户调用
+/**
+ * @api {post} /site/importSite 通过xlsx文件导入网站链接
+ * @apiVersion 1.0.0
+ * @apiGroup Site
+ * @apiParam {string[]} [columns] 绑定栏目_id的数组 -> ["_id1", "_id2"]
+ * @apiParam {file} file 文件句柄
+ */
+router.post('/importSite', handleJWT, checkManagePower, importSite);
+
+/**
+ * @api {get} /site/exportSite 导出网站链接
+ * @apiVersion 1.0.0
+ * @apiGroup Site
+ * @apiParam {string[]} [columns] 绑定栏目_id的数组 -> ["_id1", "_id2"]
+ */
+router.post('/exportSite', handleJWT, checkManagePower, exportSite);
+
+/**
+ * @api {post} /site/findByCode 通过code查询网站链接
+ * @apiVersion 1.0.0
+ * @apiGroup Site
+ * @apiParam {number} code 权限码
+ */
 router.post('/findByCode', handleJWT, findByCode);
 
 module.exports = router;

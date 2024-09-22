@@ -26,7 +26,7 @@
             <el-form-item>
               <el-button size="small" type="primary" @click="search">查询</el-button>
               <el-button size="small" v-if="showAdd" type="success" @click="add">添加</el-button>
-              <el-button size="small" v-if="showAddMany" type="info" @click="addMany">导入</el-button>
+              <el-button size="small" v-if="showAddMany" type="info" @click="addMany">导入/出</el-button>
               <el-popconfirm v-if="showRemoveMany" @confirm="removeMany" class="ml-px-10" popper-class="delete-popcomfirm" title="确定删除吗？">
                 <el-button slot="reference" size="small" type="danger">批量删除</el-button>
               </el-popconfirm>

@@ -1,4 +1,11 @@
 /**
+ * 注意：
+ * 1.['x1', 'x2']结构，左右两边需要有空格，否则字段解析失败；
+ * 2.(group) {type}定义字段分组；
+ * 3.字段描述文字使用 -> 后接示例格式；
+ */
+
+/**
  * @api {post} /user/backup 接口名称
  * @apiGroup 分组名
  * @apiHeader {type} token 票据

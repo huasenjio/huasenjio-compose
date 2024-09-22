@@ -6,61 +6,6 @@
  * @Description: 管理员中间件
  */
 const path = require('path');
-const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
-const uploadConfigMap = {
-  icon: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
-    uploadPath: path.resolve(process.cwd(), '../huasen-store/icon'),
-  },
-  banner: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
-    uploadPath: path.resolve(process.cwd(), '../huasen-store/banner'),
-  },
-  article: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
-    uploadPath: path.resolve(process.cwd(), '../huasen-store/article'),
-  },
-  img: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
-    uploadPath: path.resolve(process.cwd(), '../huasen-store/img'),
-  },
-  default: {
-    uploadPath: path.resolve(process.cwd(), '../huasen-store/default'),
-  },
-};
-
-// 上传中间件
-function upload(req, res, next) {
-  let type = req.huasenParams.type;
-  let option = uploadConfigMap[type] || uploadConfigMap['default'];
-  const mixtureUpload = new MixtureUpload({
-    ...option,
-    handleFilter: file => {
-      return true;
-    },
-    handleFileName: file => {
-      return `${Date.now()}`;
-    },
-    onSuccess: (data, files) => {
-      let resultFiles = [];
-      Object.values(files).forEach(item => {
-        if (Array.isArray(item)) {
-          resultFiles = resultFiles.concat(item);
-        } else {
-          resultFiles.push(item);
-        }
-      });
-      for (let i = 0; i < resultFiles.length; i++) {
-        resultFiles[i].path = resultFiles[i].path.split(/\/|\\/).slice(-3).join('/');
-      }
-      global.huasen.responseData(res, resultFiles, 'SUCCESS', '上传成功', false);
-    },
-    onError: err => {
-      global.huasen.responseData(res, {}, 'ERROR', err.msg);
-    },
-  });
-  mixtureUpload.uploader(req, res, next);
-}
 
 // 检验管理员权限
 function checkManagePower(req, res, next) {
@@ -136,7 +81,6 @@ function checkManageAccountUnique(req, res, next) {
 }
 
 module.exports = {
-  upload,
   checkManagePower,
   checkManageAccountUnique,
   checkManageHighestPower,

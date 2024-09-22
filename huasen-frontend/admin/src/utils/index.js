@@ -12,7 +12,7 @@ import { exchangeArrayItem } from './exchangeArrayItem';
 import { getBase64 } from './getBase64';
 import { getCDN } from './getCDN';
 import { debounce } from './debounce';
-import { getUploadApi } from './getUploadApi';
+import { getServerApi } from './getServerApi.js';
 import { getUid } from './getUid';
 import { handleSize } from './handleSize.js';
 import { judgeIE } from './judgeIE';
@@ -29,7 +29,7 @@ export default {
   getBase64,
   getCDN,
   debounce,
-  getUploadApi,
+  getServerApi,
   getUid,
   handleSize,
   judgeIE,

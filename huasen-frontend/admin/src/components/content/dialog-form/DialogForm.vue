@@ -98,6 +98,35 @@
             </el-upload>
             <el-input class="mt-px-10" v-model="formData[formTtem.key]"></el-input>
           </div>
+          <!-- 导入/出 -->
+          <div v-if="formTtem.type === 'siteInOut'">
+            <el-tabs type="border-card">
+              <el-tab-pane label="导入">
+                <span slot="label"><i class="el-icon-top"></i> 导入</span>
+                <el-upload
+                  ref="siteImportUpload"
+                  accept=".xlsx"
+                  :limit="1"
+                  :action="importSiteAction"
+                  :headers="headers"
+                  :data="importSiteData"
+                  :on-exceed="handleSiteImportExceed"
+                  :on-error="handleSiteImportError"
+                  :on-success="handleSiteImportSuccess"
+                >
+                  <div class="w-px-348 h-px-80 flex justify-center items-center border-dashed border border-gray-500 rounded">
+                    <i class="el-icon-plus text-24px"></i>
+                  </div>
+                  <div class="text-gray-500" @click.stop>仅支持 .xlsx 文件，大小不超过 1MB，点击<font class="text-blue-500 pointer" @click="downloadSiteTemplate">下载模版</font>！</div>
+                </el-upload>
+              </el-tab-pane>
+              <el-tab-pane label="导出">
+                <span slot="label"><i class="el-icon-download"></i> 导出</span>
+                <el-button type="primary" size="mini" icon="el-icon-plus" @click="exportSite">导出为 Excel 文件</el-button>
+                <p class="text-gray-500 leading-loose">tips：若选择栏目，则仅导出已选栏目下链接；若没有选择栏目，导出全部链接！</p>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
         </el-form-item>
       </el-form>
     </HsDialog>
@@ -120,6 +149,7 @@
 <script>
 import html2canvas from 'html2canvas';
 import HsDialog from '@/components/common/dialog/Dialog.vue';
+import { downloadFileByUrl, downloadFileByBlob } from '@/network/request.js';
 import IconColorSelect from './IconColorSelect.vue';
 import IconResultContainer from './IconResultContainer.vue';
 
@@ -227,9 +257,26 @@ export default {
     showFindFaviconTab() {
       return this.formData['url'];
     },
+    importSiteAction() {
+      return this.TOOL.getServerApi('/site/importSite');
+    },
+    importSiteData() {
+      return {
+        columns: JSON.stringify(this.formData.columnId),
+      };
+    },
   },
 
   methods: {
+    // 下载预置网站导入模版：/admin/file/site-template.xlsx
+    downloadSiteTemplate() {
+      downloadFileByUrl(window.location.origin + window.location.pathname + 'file/site-template.xlsx', '链接导入模版');
+    },
+
+    handleBeforeUpload(file, formItem) {
+      formItem.files.push(file);
+    },
+
     handleSelectIcon(url) {
       this.formData.icon = url;
       this.closeLab();
@@ -317,7 +364,7 @@ export default {
 
     // 获取el-upload的上传地址
     getUploadAction(type) {
-      return this.TOOL.getUploadApi('/manage/uploadIcon?type=' + type);
+      return this.TOOL.getServerApi('/manage/uploadIcon?type=' + type);
     },
 
     // 显示图片到el-upload中
@@ -356,13 +403,18 @@ export default {
       }
     },
 
-    // 上传成功
+    // 上传成功，赋值图标地址到表单的icon字段中
     handleSuccess(result, file, fileList, type) {
       if (result.data.length !== 0) {
         this.formData[type] = result.data[0].path;
       } else {
         this.$tips('error', '上传文件的链接已丢失', 'top-right', 1200);
       }
+    },
+
+    // 模版导入成功之后，关闭面板
+    handleSiteImportSuccess(result, file, fileList, type) {
+      this.$tips('success', '链接导入成功', 'top-right', 1200);
     },
 
     // 请求图片地址
@@ -379,6 +431,27 @@ export default {
     // 上传失败
     handleError() {
       this.$tips('error', '上传失败', 'top-right', 1200);
+    },
+
+    // 链接导入失败
+    handleSiteImportError() {
+      this.$tips('error', '链接导入失败', 'top-right', 1200, () => {
+        this.$refs.siteImportUpload[0]?.clearFiles();
+      });
+    },
+
+    // 链接导入文件超过限制，并且清空已选文件
+    handleSiteImportExceed() {
+      this.$tips('error', '您上传文件数量已超过限制，每次导入仅可选择一份模版。', 'top-right', 2000, () => {
+        this.$refs.siteImportUpload[0]?.clearFiles();
+      });
+    },
+
+    // 按栏目导出链接
+    exportSite() {
+      downloadFileByBlob('/site/exportSite', { columns: JSON.stringify(this.formData.columnId) }, 'sites', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', () => {
+        this.$tips('success', '链接导出成功', 'top-right', 2000);
+      });
     },
   },
 };

@@ -5,8 +5,10 @@
  * @LastEditTime: 2023-04-25 00:21:58
  * @Description: 站点表控制器
  */
-
-const { Site } = require('../service/index.js');
+const fs = require('fs');
+const ExcelJS = require('exceljs');
+const { Site, Column, epWorking } = require('../service/index.js');
+const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
 
 function findAllByPage(req, res, next) {
   let { pageNo, pageSize, name, code, tag } = req.huasenParams;
@@ -36,18 +38,6 @@ function findAllByPage(req, res, next) {
       },
     ],
     result => {
-      // if (tag) {
-      //   result.list = result.list.filter(el => {
-      //     let expand = JSON.parse(el.expand || '{}');
-      //     if (Array.isArray(expand.tag)) {
-      //       return expand.tag.some(tagName => {
-      //         let reg = new RegExp(tag, 'i');
-      //         return reg.test(tagName);
-      //       });
-      //     }
-      //   });
-      //   result.total = result.list.length;
-      // }
       global.huasen.responseData(res, result, 'SUCCESS', '分页查询站点成功', false);
     },
   );
@@ -273,7 +263,7 @@ function bindColumn(req, res, next) {
           let updateResult = await Site.bulkWrite(bulkUpdates);
           global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
         }
-      } catch (err) {}
+      } catch (err) { }
     },
   );
 }
@@ -311,9 +301,175 @@ function unbindColumn(req, res, next) {
           let updateResult = await Site.bulkWrite(bulkUpdates);
           global.huasen.responseData(res, updateResult, 'SUCCESS', '解绑成功', false);
         }
-      } catch (err) {}
+      } catch (err) { }
     },
   );
+}
+
+function importSite(req, res, next) {
+  const mixtureUpload = new MixtureUpload({
+    onSuccess: (data, fileMap) => {
+      const columns = JSON.parse(data.columns)
+      const { file } = fileMap
+      // 查询绑定的栏目
+      req.epWorking(
+        [
+          {
+            schemaName: 'Column',
+            methodName: 'find',
+            payloads: [{ _id: { $in: columns } }],
+          },
+        ],
+        columns => {
+          // 获取全部栏目id，用于绑定站点
+          let columnsIds = columns.map(el => el._id)
+          // 即将解析excel文件的站点数据
+          const workbook = new ExcelJS.Workbook();
+          workbook.xlsx.readFile(file.path)
+            .then(() => {
+              const sites = []
+              // 获取第一个工作表
+              const worksheet = workbook.getWorksheet(1);
+              // 解析xlsx文件的内容
+              worksheet.eachRow((row, rowNumber) => {
+                if (rowNumber > 1) {
+                  let rowData = row.values
+                  let site = {
+                    name: rowData[1] || '花森小窝',
+                    url: rowData[2] || 'huasenjio.top',
+                    code: Number(rowData[3]) || 0,
+                    enabled: rowData[4] === '是',
+                    icon: rowData[5] || 'http://n.huasenjio.top/huasen-store/icon/logo.png',
+                    description: rowData[6] || '',
+                    remarks: rowData[9] || '',
+                  }
+                  let tags = [];
+                  let pins = [];
+                  let columnStore = [];
+                  let tagStr = rowData[7]
+                  let pinStr = rowData[8]
+                  // 解析tag
+                  if (tagStr && tagStr.trim() !== '') {
+                    tags = tagStr.split('&')
+                  }
+                  // 解析pin
+                  if (pinStr && pinStr.trim() !== '') {
+                    pinStr.split('&').forEach(el => {
+                      if (global.hsDic.pin2code[el]) {
+                        pins.push(global.hsDic.pin2code[el])
+                      }
+                    })
+                  }
+                  // 添加绑定的栏目
+                  if (columnsIds.length) {
+                    columnStore = [...columnsIds]
+                  }
+                  let expand = {
+                    tag: tags,
+                    pin: pins,
+                    columnStore
+                  }
+                  site.expand = JSON.stringify(expand)
+                  sites.push(site)
+                }
+              });
+              // 批量插入站点，获取全部站点id，用于绑定栏目
+              req.epWorking(
+                [
+                  {
+                    schemaName: 'Site',
+                    methodName: 'insertMany',
+                    payloads: [sites],
+                  },
+                ],
+                async siteList => {
+                  let siteIds = siteList.map(el => el._id)
+                  let bulkUpdates = [];
+                  columns.forEach(column => {
+                    let siteStore = JSON.parse(column.siteStore)
+                    siteStore = Array.from(new Set([...siteStore, ...siteIds]))
+                    bulkUpdates.push({
+                      updateOne: {
+                        filter: { _id: column._id },
+                        update: { $set: { siteStore: JSON.stringify(siteStore) } },
+                      },
+                    });
+                  })
+                  let updateResult = await Column.bulkWrite(bulkUpdates);
+                  global.huasen.responseData(res, siteList, 'SUCCESS', '导入站点成功');
+                },
+              );
+            })
+            .catch(err => {
+              global.huasen.responseData(res, {}, 'ERROR', 'excel解析异常：' + err.toString());
+            }).finally(() => {
+              // 删除临时文件
+              fs.unlinkSync(file.path)
+            });
+        },
+      );
+    },
+    onError: err => {
+      global.huasen.responseData(res, {}, 'ERROR', err.msg);
+    },
+  });
+  mixtureUpload.uploader(req, res, next);
+}
+
+async function exportSite(req, res, next) {
+  const columns = JSON.parse(req.huasenParams.columns || '[]')
+  let sites = [];
+  if (Array.isArray(columns) && columns.length) {
+    let siteIds = [];
+    let columnList = await Column.find({ _id: { $in: columns } })
+    columnList.map(el => {
+      siteIds = siteIds.concat(JSON.parse(el.siteStore))
+    })
+    siteIds = Array.from(new Set(siteIds))
+    sites = await Site.find({ _id: { $in: siteIds } })
+  } else {
+    sites = await Site.find()
+  }
+  // 创建一个工作簿
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Sheet 1');
+  // 添加列和行
+  worksheet.columns = [
+    { header: '网站名称', key: 'name', width: 20 },
+    { header: '网站链接', key: 'url', width: 60 },
+    { header: '权限码', key: 'code' },
+    { header: '是否启用', key: 'enabledStr' },
+    { header: '图标链接', key: 'icon', width: 60 },
+    { header: '描述', key: 'description', width: 20 },
+    { header: '网站标签', key: 'tagStr', width: 20 },
+    { header: '置顶标记', key: 'pinStr' },
+    { header: '备注', key: 'remarks' },
+  ];
+  // 处理网站字段，映射xlsx字段
+  sites.forEach(site => {
+    let expand = JSON.parse(site.expand || "{}")
+    let pinStr = (expand.pin || []).filter(code => global.hsDic.code2pin[code]).join('&')
+    let tagStr = (expand.tag || []).join('&')
+    site.enabledStr = site.enabled ? '是' : '否'
+    site.pinStr = pinStr
+    site.tagStr = tagStr
+    worksheet.addRow(site);
+  })
+  worksheet.eachRow((row, rowNumber) => {
+    row.eachCell((cell, colNumber) => {
+      cell.alignment = { wrapText: true, vertical: 'middle' }; // 设置自动换行
+    });
+  });
+  res.setHeader(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  );
+  res.setHeader(
+    'Content-Disposition',
+    'attachment; filename=' + 'sites.xlsx'
+  );
+  const buffer = await workbook.xlsx.writeBuffer();
+  res.send(buffer)
 }
 
 module.exports = {
@@ -329,4 +485,6 @@ module.exports = {
   findSiteColumnByList,
   bindColumn,
   unbindColumn,
+  importSite,
+  exportSite
 };
