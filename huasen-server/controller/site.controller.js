@@ -448,7 +448,9 @@ async function exportSite(req, res, next) {
   // 处理网站字段，映射xlsx字段
   sites.forEach(site => {
     let expand = JSON.parse(site.expand || "{}")
-    let pinStr = (expand.pin || []).filter(code => global.hsDic.code2pin[code]).join('&')
+    // 真实有效的标记
+    let realPins = (expand.pin || []).filter(code => global.hsDic.code2pin[code])
+    let pinStr = (realPins.map(code => global.hsDic.code2pin[code])).join('&')
     let tagStr = (expand.tag || []).join('&')
     site.enabledStr = site.enabled ? '是' : '否'
     site.pinStr = pinStr

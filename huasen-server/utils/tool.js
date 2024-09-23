@@ -2,6 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
 const crypto = require('crypto');
+const moment = require('moment');
 const Validator = require('../utils/strategy.js');
 const request = require('request');
 
@@ -298,6 +299,10 @@ function bytesToSize(bytes) {
   return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
 }
 
+function getTime(simple) {
+  return simple ? moment().format('YYYYMMDDHHmmss') : moment().format('YYYY-MM-DD HH:mm:ss');
+}
+
 module.exports = {
   debounce,
   copyObject,
@@ -316,4 +321,5 @@ module.exports = {
   handleRate,
   downloadAndConvertToBase64,
   bytesToSize,
+  getTime
 };

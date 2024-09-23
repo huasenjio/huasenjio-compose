@@ -12,7 +12,7 @@ const { fetchFavicon, fetchFavicons } = require('@meltwater/fetch-favicon');
 const { POOL_ACCESS } = require('../config.js');
 const JWT = require('../plugin/jwt.js');
 const { readDirectory, writeToFile, bytesToSize } = require('../utils/tool.js');
-const { handleRate } = require('../utils/tool.js');
+const { handleRate, getTime } = require('../utils/tool.js');
 const { encrypt, decrypt } = require('../utils/aes.js');
 const { downloadAndConvertToBase64 } = require('../utils/tool.js');
 const { Manage } = require('../service/index.js');
@@ -378,7 +378,10 @@ function uploadFileToStore(req, res, next) {
       return true;
     },
     handleFileName: file => {
-      return `${Date.now()}`;
+      let names = file.originalFilename.split('.');
+      names.pop(); // 弹出后缀名
+      // 把空格替换成下划线
+      return `${names.join('').replaceAll(' ', '_')}-${getTime(true)}`;
     },
     onSuccess: (data, files) => {
       let resultFiles = [];

@@ -116,7 +116,47 @@ const SESSION = {
 
 // 文件上传配置
 const STORE = {
-  acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'svg+xml', 'application/pdf', 'application/json'], // 文件默认允许的类型
+  // 文件默认允许的类型，仅支持MIME
+  acceptTypes: [
+    'image/jpg',
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/vnd.microsoft.icon',
+    'svg+xml',
+
+    'text/html',
+    'text/css',
+    'text/javascript',
+
+    'audio/mpeg',
+    'audio/aac',
+    'video/mp4',
+    'video/mpeg',
+
+    'audio/webm',
+    'video/webm',
+    'image/webp',
+
+    'application/json',
+    'application/pdf',
+    'application/vnd.rar',
+    'application/x-tar',
+    'application/zip',
+    'application/x-7z-compressed',
+    'application/x-bzip',
+
+    'application/x-sh',
+    'application/octet-stream',
+
+    'text/csv',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  ],
   fileSize: 1024 * 1024 * 10, // 限制10m大小
   target: 'file', // 获取前端上传文件的key值
   encoding: 'utf-8', // 传输的编码格式
