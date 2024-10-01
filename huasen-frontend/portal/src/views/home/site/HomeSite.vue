@@ -45,7 +45,7 @@
 
               <div class="site-card inherit-text text w-px-180 sm:w-px-150">
                 <div class="img-group">
-                  <img v-lazy :src="imgUrl(site)" />
+                  <img v-lazy="{ siteUrl: site.url }" :src="imgUrl(site)" />
                 </div>
                 <div class="text-group">
                   <div class="name text">{{ site.name }}</div>
@@ -107,7 +107,8 @@ export default {
     },
     // 处理图标链接
     imgUrl(site) {
-      return site.icon ? site.icon : require('@/assets/img/error/image-error.png');
+      // return site.icon ? site.icon : require('@/assets/img/error/image-error.png');
+      return site.icon;
     },
 
     // 选择标签

@@ -129,6 +129,21 @@ export default {
         },
       ];
     },
+    // 默认选择的订阅源id，链接上携带的参数优先级最高
+    defaultJournalId() {
+      const { journal } = this.$route.query;
+      if (journal) {
+        return journal;
+      } else {
+        return this.STORAGE.getItem(this.CONSTANT.appJournal);
+      }
+    },
+  },
+
+  updated() {
+    if (this.defaultJournalId) {
+      this.handleHash(this.defaultJournalId);
+    }
   },
 
   mounted() {
@@ -139,6 +154,11 @@ export default {
 
   methods: {
     ...mapMutations(['commitAll']),
+
+    handleHash(_id) {
+      let hash = location.hash.split('?')[0];
+      location.hash = `${hash}?journal=${_id}`;
+    },
 
     querySites() {
       this.API.findSiteByCode({}, { notify: false }).then(res => {
@@ -158,7 +178,7 @@ export default {
       ).then(res => {
         if (res.data.length !== 0) {
           this.journals = res.data || [];
-          this.handleSelectJournal(this.journals[0]._id);
+          this.handleSelectJournal(this.defaultJournalId || this.journals[0]._id);
         }
       });
     },
@@ -168,6 +188,9 @@ export default {
       if (!exist) return;
       this.API.findJournalInformationById({ _id }, { notify: false }).then(res => {
         this.selectJournal(res.data);
+        // 保存当前选择的订阅源id
+        this.STORAGE.setItem(this.CONSTANT.appJournal, _id);
+        this.handleHash(_id);
       });
     },
 

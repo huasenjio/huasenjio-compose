@@ -19,27 +19,52 @@ import loadImg from '@/assets/img/loading/3.gif';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/default.css';
 
+/**
+ * 获取网站域名
+ * @param {String} urlString - 网站链接地址
+ * @returns domain - 域名
+ */
+function getDomainFromURL(urlString) {
+  try {
+    // 创建URL对象
+    const url = new URL(urlString);
+    // 获取域名
+    return url.hostname;
+  } catch (error) {
+    // 如果URL格式不正确，则返回错误信息
+    console.error('Invalid URL:', error);
+    return null;
+  }
+}
+
 // 图片标签懒加载
 Vue.directive('lazy', {
   inserted: handleLazy,
   componentUpdated: handleLazy,
 });
 function handleLazy(el, binding) {
-  let url = el.src;
-  // 清空加载资源
-  el.src = loadImg;
-  let { unload = unloadImg } = binding.value || {};
-  // 元素进入离开可视区域触发回调
+  const url = el.src; // 保存原始图标地址
+  el.src = loadImg; // 替换图标为加载图标
+  el.iowen = false // 一为图标加载标记
+  const { unload = unloadImg, siteUrl } = binding.value || {};
   let observe = new IntersectionObserver(([{ isIntersecting }]) => {
     if (isIntersecting) {
+      // 元素进入可视区域触发回调
       el.src = url;
-      el.onload = function() {
+      el.onload = function () {
         observe.unobserve(el);
       };
-      el.onerror = function() {
-        // 加载失败时
-        el.src = unload;
-        observe.unobserve(el);
+      el.onerror = function () {
+        if (!el.iowen && siteUrl) {
+          // 加载一为图标
+          let domain = getDomainFromURL(siteUrl)
+          el.src = `https://api.iowen.cn/favicon/${domain}.png`;
+          el.iowen = true
+        } else {
+          // 加载失败时
+          el.src = unload;
+          observe.unobserve(el);
+        }
       };
     }
   });
@@ -48,7 +73,7 @@ function handleLazy(el, binding) {
 
 // 右键菜单
 Vue.directive('discolor', {
-  inserted: function(el, binding) {
+  inserted: function (el, binding) {
     // 处理默认参数
     let { menuId = 'styleMenuId9527', focusClassName = 'hs-right-menu-shadow', cpn = StyleMenu } = binding.value || {};
     // dom生成xpan作为id
@@ -78,7 +103,7 @@ Vue.directive('discolor', {
       let MenuCreate = Vue.extend({
         // 解析模版
         template: `<RightMenu :menuId="menuId" :clientX="clientX" :clientY="clientY"><cpn :xpath="xpath"></cpn></RightMenu>`,
-        data: function() {
+        data: function () {
           return {
             menuId,
             xpath: el.id,
@@ -128,7 +153,7 @@ function handleRightMenuShadow(focusClassName) {
 }
 
 // markdown代码高亮
-Vue.directive('highlight', function(el) {
+Vue.directive('highlight', function (el) {
   let blocks = el.querySelectorAll('pre code');
   blocks.forEach(block => {
     hljs.highlightBlock(block);
@@ -138,14 +163,14 @@ Vue.directive('highlight', function(el) {
 // 自动获取焦点指令
 Vue.directive('focus', {
   // 当被绑定的元素插入到 DOM 中会获得焦点
-  inserted: function(el) {
+  inserted: function (el) {
     // 聚焦元素
     el.focus();
   },
 });
 
 // 生成随机背景指令
-Vue.directive('randomColor', function(el) {
+Vue.directive('randomColor', function (el) {
   let colors = ['#fd7e14', '#ffc107', '#33b86c', '#007bff', '#17a2b8', '#e83e8c'];
   let tempIndex = Math.floor(Math.random() * colors.length);
   el.style.backgroundColor = colors[tempIndex];
@@ -153,7 +178,7 @@ Vue.directive('randomColor', function(el) {
 
 // 子元素间隔相等
 Vue.directive('balance', {
-  inserted: function(el) {
+  inserted: function (el) {
     el.style.display = 'flex';
     el.style.flexWrap = 'wrap';
     if (el.childElementCount != 0) {
@@ -168,7 +193,7 @@ Vue.directive('balance', {
 
 // 根据可视窗口缩放大小指令
 Vue.directive('autoScale', {
-  inserted: function(el) {
+  inserted: function (el) {
     el.style.transformOrigin = 'left top';
     // 执行立即缩放
     handleScale(el);
@@ -183,15 +208,15 @@ Vue.directive('autoScale', {
 
 // 拖拽指令
 Vue.directive('drag', {
-  inserted: function(el) {
-    el.onmousedown = function(e) {
+  inserted: function (el) {
+    el.onmousedown = function (e) {
       const disx = e.pageX - el.offsetLeft;
       const disy = e.pageY - el.offsetTop;
-      document.onmousemove = function(event) {
+      document.onmousemove = function (event) {
         el.style.left = event.pageX - disx + 'px';
         el.style.top = event.pageY - disy + 'px';
       };
-      document.onmouseup = function() {
+      document.onmouseup = function () {
         document.onmousemove = document.onmouseup = null;
         const resizeEvent = new Event('resize');
         window.dispatchEvent(resizeEvent);
@@ -207,7 +232,7 @@ function addresize(dom, fn) {
   let h = dom.offsetHeight;
   let oldfn = window.onresize;
   if (oldfn) {
-    window.onresize = function() {
+    window.onresize = function () {
       // 若resize回调存在，则调用绑定window上下午，直接执行一遍
       oldfn.call(window);
       if (dom.offsetWidth != w || dom.offsetHeight != h) {

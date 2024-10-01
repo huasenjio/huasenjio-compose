@@ -13,6 +13,8 @@ export default {
   localUser: '_localUser',
   // 公告本地缓存句柄
   appNotice: '_appNotice',
+  // 当前订阅源本地缓存句柄
+  appJournal: '_appJournal',
   // 根节点最小宽度
   appMinWidth: 435,
   // 根节点最小高度
