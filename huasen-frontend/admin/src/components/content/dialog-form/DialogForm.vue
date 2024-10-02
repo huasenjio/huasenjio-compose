@@ -62,6 +62,10 @@
                 <IconColorSelect :color.sync="iconImgModeColor"></IconColorSelect>
                 <div>推荐图标</div>
                 <ul class="favicon-group">
+                  <!-- hs-todo：一为图标 -->
+                  <!-- <li class="rounded" :class="{ select: selectFaviconIndex === index }" @click="selectFavicon()">
+                    <img class="w-full h-full" v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" src="" alt="" />
+                  </li> -->
                   <li class="rounded" :class="{ select: selectFaviconIndex === index }" v-for="(item, index) in favicons" :key="index" @click="selectFavicon(index)">
                     <img class="w-full h-full" v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" :id="index" :src="item" alt="image" />
                   </li>

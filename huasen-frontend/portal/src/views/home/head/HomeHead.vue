@@ -44,9 +44,9 @@
           {{ currentJournal.name || '无订阅源' }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu class="journal-dropdown-menu" slot="dropdown">
           <template v-if="journals.length">
-            <el-dropdown-item v-for="item in journals" :key="item._id" :command="item._id">
+            <el-dropdown-item v-for="item in journals" :key="item._id" style="max-width: 124px" class="text" :title="item.name" :command="item._id">
               {{ item.name }}
             </el-dropdown-item>
           </template>
@@ -185,13 +185,16 @@ export default {
 
     handleSelectJournal(_id) {
       let exist = this.journals.find(item => item._id === _id);
-      if (!exist) return;
-      this.API.findJournalInformationById({ _id }, { notify: false }).then(res => {
-        this.selectJournal(res.data);
-        // 保存当前选择的订阅源id
-        this.STORAGE.setItem(this.CONSTANT.appJournal, _id);
-        this.handleHash(_id);
-      });
+      if (!exist) {
+        this.$notify.warning('订阅源不存在，请您重新选择！');
+      } else {
+        this.API.findJournalInformationById({ _id }, { notify: false }).then(res => {
+          this.selectJournal(res.data);
+          // 保存当前选择的订阅源id
+          this.STORAGE.setItem(this.CONSTANT.appJournal, _id);
+          this.handleHash(_id);
+        });
+      }
     },
 
     selectJournal(journal) {
