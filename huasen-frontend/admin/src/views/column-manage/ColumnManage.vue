@@ -37,7 +37,14 @@
       :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       @comfirmForm="save"
       @cancelForm="cancel"
-    ></DialogForm>
+    >
+      <template v-slot:tips>
+        <div class="text text-gray-500">
+          <i class="el-icon-warning-outline text-orange-400 mr-px-4"></i>
+          温馨提示：添加的<font class="text-red-400">栏目</font>需要绑定到<font class="text-red-400">订阅源</font>后才会被加载显示
+        </div>
+      </template>
+    </DialogForm>
     <SiteSelector v-if="showSiteSelector" title="配置栏目" size="500" :visible.sync="showSiteSelector" :wrapperClosable="false" :currentColumn="currentColumn" @save="handleColumnSave"></SiteSelector>
   </div>
 </template>

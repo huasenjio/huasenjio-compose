@@ -349,6 +349,33 @@ function saveAppConfig(req, res, next) {
     });
 }
 
+/**
+     * 获取网站域名
+     * @param {String} urlString - 网站链接地址
+     * @returns domain - 域名
+     */
+function getDomainFromURL(urlString) {
+  try {
+    // 创建URL对象
+    const url = new URL(urlString);
+    // 获取域名
+    return url.hostname;
+  } catch (error) {
+    // 如果URL格式不正确，则返回错误信息
+    console.error('Invalid URL:', error);
+    return null;
+  }
+}
+
+/**
+ * 获取一为图标
+ */
+function getImageByIOWEN(siteUrl) {
+  let domain = getDomainFromURL(siteUrl);
+  if (!domain) return;
+  return `https://api.iowen.cn/favicon/${domain}.png`;
+}
+
 function findAppFavicon(req, res, next) {
   let { url } = req.huasenParams;
   fetchFavicons(url)
@@ -359,7 +386,16 @@ function findAppFavicon(req, res, next) {
           let base64 = await downloadAndConvertToBase64(icons[i].href);
           faviconBase64.push(base64);
         } catch (err) {
-          console.log('下载图片捕获到错误');
+          console.error('下载图片捕获到错误', err);
+        }
+      }
+      const iowenUrl = getImageByIOWEN(url)
+      if (iowenUrl) {
+        try {
+          let iowenBase64 = await downloadAndConvertToBase64(iowenUrl);
+          faviconBase64.unshift(iowenBase64)
+        } catch (err) {
+          console.error('下载一为图片捕获到错误', err);
         }
       }
       global.huasen.responseData(res, faviconBase64, 'SUCCESS', '查询图标成功', false);

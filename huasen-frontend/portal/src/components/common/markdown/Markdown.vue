@@ -234,7 +234,7 @@ export default {
       p {
         margin: 0 5px 1.5em 5px !important;
         img {
-          width: 100%;
+          max-width: 100%;
           margin: 10px auto;
           border-radius: 6px;
           border: 1px dashed var(--gray-300);

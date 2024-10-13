@@ -72,8 +72,19 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
+              <el-form-item prop="autoIOWenIcon">
+                <div class="flex items-center">
+                  网链图标使用“一为API”补全策略：
+                  <el-switch v-model="site.autoIOWenIcon" active-text="开启" inactive-text="关闭"> </el-switch>
+                </div>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item prop="openLabelClassification">
-                <el-switch v-model="site.openLabelClassification" active-text="开启标签分类" inactive-text="关闭标签分类"> </el-switch>
+                <div class="flex items-center">
+                  网链标签分类栏显示：
+                  <el-switch v-model="site.openLabelClassification" active-text="显示" inactive-text="隐藏"> </el-switch>
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -291,6 +302,7 @@ export default {
         guidePageUrl: 'http://huasenjio.top/',
         footerHtml: '',
         openLabelClassification: false,
+        autoIOWenIcon: false,
         jwt: '',
         jwtLiveTime: 604800,
         serviceQRCodeUrl: '',

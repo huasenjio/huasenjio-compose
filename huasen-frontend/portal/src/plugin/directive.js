@@ -46,7 +46,7 @@ function handleLazy(el, binding) {
   const url = el.src; // 保存原始图标地址
   el.src = loadImg; // 替换图标为加载图标
   el.iowen = false // 一为图标加载标记
-  const { unload = unloadImg, siteUrl } = binding.value || {};
+  const { unload = unloadImg, siteUrl, autoIOWenIcon } = binding.value || {};
   let observe = new IntersectionObserver(([{ isIntersecting }]) => {
     if (isIntersecting) {
       // 元素进入可视区域触发回调
@@ -55,7 +55,7 @@ function handleLazy(el, binding) {
         observe.unobserve(el);
       };
       el.onerror = function () {
-        if (!el.iowen && siteUrl) {
+        if (autoIOWenIcon && !el.iowen && siteUrl) {
           // 加载一为图标
           let domain = getDomainFromURL(siteUrl)
           el.src = `https://api.iowen.cn/favicon/${domain}.png`;

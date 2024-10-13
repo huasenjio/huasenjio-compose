@@ -83,6 +83,7 @@ export default {
       footerHtml: '',
       serviceQRCodeUrl: require('@/assets/img/logo/weixin.png'),
       openLabelClassification: false,
+      autoIOWenIcon: false
     },
   },
 };

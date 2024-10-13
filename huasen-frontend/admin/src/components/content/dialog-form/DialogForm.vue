@@ -10,6 +10,9 @@
   <div>
     <HsDialog class="dialog-form" v-bind="$attrs" v-on="$listeners" :title="title" @comfirmDialog="comfirmDialog" @closeDialog="closeDialog" @close="close">
       <el-form ref="form" class="form-group" :model="formData" :rules="formRule" label-position="top">
+        <div class="dialog-form__tips">
+          <slot name="tips"></slot>
+        </div>
         <el-form-item v-for="(formTtem, index) in formMap" :key="index" :label="formTtem.label" :prop="formTtem.key">
           <!-- 输入框 -->
           <el-input v-if="formTtem.type === 'input'" :disabled="handleDisabled(formTtem)" v-model="formData[formTtem.key]"></el-input>
@@ -62,12 +65,8 @@
                 <IconColorSelect :color.sync="iconImgModeColor"></IconColorSelect>
                 <div>推荐图标</div>
                 <ul class="favicon-group">
-                  <!-- hs-todo：一为图标 -->
-                  <!-- <li class="rounded" :class="{ select: selectFaviconIndex === index }" @click="selectFavicon()">
-                    <img class="w-full h-full" v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" src="" alt="" />
-                  </li> -->
                   <li class="rounded" :class="{ select: selectFaviconIndex === index }" v-for="(item, index) in favicons" :key="index" @click="selectFavicon(index)">
-                    <img class="w-full h-full" v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" :id="index" :src="item" alt="image" />
+                    <img class="w-full h-full" v-lazy="{ unload: unload }" :id="index" :src="item" alt="image" />
                   </li>
                 </ul>
                 <div>
@@ -77,7 +76,7 @@
                   </el-tooltip>
                 </div>
                 <div v-if="faviconIconURL" class="result-view-container">
-                  <IconResultContainer id="icon-img-target-container" :isTextMode="false" :color.sync="iconImgModeColor" :url="faviconIconURL"></IconResultContainer>
+                  <IconResultContainer id="js-icon-img-target-container" :isTextMode="false" :color.sync="iconImgModeColor" :url="faviconIconURL"></IconResultContainer>
                 </div>
               </el-tab-pane>
               <el-input class="mt-px-10" style="font-size: 12px" placeholder="图标地址" :disabled="!showUpload" v-model="formData[formTtem.key]">
@@ -156,6 +155,7 @@ import HsDialog from '@/components/common/dialog/Dialog.vue';
 import { downloadFileByUrl, downloadFileByBlob } from '@/network/request.js';
 import IconColorSelect from './IconColorSelect.vue';
 import IconResultContainer from './IconResultContainer.vue';
+import unload from '@/assets/img/error/image-error.png';
 
 export default {
   name: 'DialogForm',
@@ -173,6 +173,8 @@ export default {
 
       showLab: false, // 图标库显隐
       icons: [],
+
+      unload,
     };
   },
 
@@ -250,7 +252,7 @@ export default {
       };
     },
     faviconIconURL() {
-      return this.favicons[this.selectFaviconIndex] || '';
+      return this.favicons[this.selectFaviconIndex];
     },
     showCreateUrl() {
       return this.activeName === 'text' || this.activeName === 'query';
@@ -324,7 +326,7 @@ export default {
         if (!this.faviconIconURL) {
           this.$tips('error', '未选择图标', 'top-right', 1200);
         } else {
-          node = document.getElementById('icon-img-target-container');
+          node = document.getElementById('js-icon-img-target-container');
         }
       } else if (this.activeName === 'upload') {
         this.showLab = true;
