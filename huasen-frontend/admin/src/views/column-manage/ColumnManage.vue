@@ -41,7 +41,7 @@
       <template v-slot:tips>
         <div class="text text-gray-500">
           <i class="el-icon-warning-outline text-orange-400 mr-px-4"></i>
-          温馨提示：添加的<font class="text-red-400">栏目</font>需要绑定到<font class="text-red-400">订阅源</font>后才会被加载显示
+          温馨提示：添加的<font class="text-red-400">栏目</font>需要配置绑定到<font class="text-red-400">订阅源</font>后才会被加载显示
         </div>
       </template>
     </DialogForm>
@@ -89,14 +89,14 @@ export default {
           label: '备注',
           key: 'remarks',
         },
-        // {
-        //   label: '网址仓库',
-        //   key: 'siteStore',
-        // },
-        // {
-        //   label: '拓展字段',
-        //   key: 'expand',
-        // },
+        {
+          label: '网址仓库',
+          key: 'siteStore',
+        },
+        {
+          label: '拓展字段',
+          key: 'expand',
+        },
       ],
 
       // 搜索表单
@@ -123,14 +123,9 @@ export default {
       mode: 'add',
       formMap: [
         {
-          label: '栏目名称',
+          label: '名称',
           key: 'name',
           type: 'input',
-        },
-        {
-          label: '封面',
-          key: 'banner',
-          type: 'banner',
         },
         {
           label: '描述',
@@ -147,6 +142,11 @@ export default {
           label: '备注',
           key: 'remarks',
           type: 'input',
+        },
+        {
+          label: '封面',
+          key: 'banner',
+          type: 'banner',
         },
         {
           label: '是否可用',

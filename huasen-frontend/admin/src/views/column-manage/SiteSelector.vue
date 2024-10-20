@@ -203,16 +203,26 @@ export default {
       });
       // 选择性绑定/解绑
       if (needBindSite.length) {
-        await this.API.bindColumnToSite({
-          columnId: this.currentColumn._id,
-          sites: needBindSite,
-        });
+        await this.API.bindColumnToSite(
+          {
+            columnId: this.currentColumn._id,
+            sites: needBindSite,
+          },
+          {
+            notify: false,
+          },
+        );
       }
       if (needUnbindSite.length) {
-        await this.API.unbindColumnToSite({
-          columnId: this.currentColumn._id,
-          sites: needUnbindSite,
-        });
+        await this.API.unbindColumnToSite(
+          {
+            columnId: this.currentColumn._id,
+            sites: needUnbindSite,
+          },
+          {
+            notify: false,
+          },
+        );
       }
       this.$emit('save');
     },

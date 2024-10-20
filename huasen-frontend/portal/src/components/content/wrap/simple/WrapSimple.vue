@@ -55,11 +55,14 @@ export default {
   height: 100%;
   .exit {
     position: absolute;
+    padding: 2px;
     bottom: 18px;
     right: 28px;
     font-size: 24px;
-    filter: invert(100%);
+    // filter: invert(100%);
     cursor: pointer;
+    border-radius: 6px;
+    background-color: var(--gray-o5);
   }
 }
 </style>

@@ -44,7 +44,7 @@
       <template v-slot:tips>
         <div class="text text-gray-500">
           <i class="el-icon-warning-outline text-orange-400 mr-px-4"></i>
-          温馨提示：添加的<font class="text-red-400">网链</font>需要绑定到<font class="text-red-400">栏目</font>后才会被加载显示
+          温馨提示：添加的<font class="text-red-400">网链</font>需要配置绑定到<font class="text-red-400">栏目</font>后才会被加载显示
         </div>
       </template>
     </DialogForm>
@@ -60,8 +60,6 @@
       :formRule="importRule"
       :close-on-click-modal="false"
       :mode="importMode"
-      @comfirmForm="saveImportSite"
-      @cancelForm="cancelImportSite"
     ></DialogForm>
   </div>
 </template>
@@ -292,7 +290,6 @@ export default {
         this.tableData = res.data.list;
         this.total = res.data.total;
         this.cancel();
-        this.cancelImportSite();
       });
       // 请求站点的所有标签
       this.API.findSiteTagByList({}, { notify: false }).then(res => {
@@ -490,13 +487,6 @@ export default {
       } catch (err) {
         this.$tips('error', '导入失败', 'top-right', 2000);
       }
-    },
-
-    cancelImportSite() {
-      if (this.$refs.dialogImportForm) {
-        this.$refs.dialogImportForm.close();
-      }
-      this.showImport = false;
     },
 
     cancel() {
