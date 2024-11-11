@@ -22,6 +22,8 @@ docker_compose_path="/usr/local/bin/docker-compose"
 echo '-1.脚本已初始化完成，如安装出现问题，请添加微信：huasencc，然后进群寻求帮助...'
 
 echo '0.正在安装基础工具...'
+# 替换阿里云 yum 源（可自行配置可用的源）
+curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 # 安装 vim 工具
 yum -y install vim*
 # 拓展 yum 功能

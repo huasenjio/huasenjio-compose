@@ -32,7 +32,7 @@
                   <el-input v-model="submitForm.id" placeholder="请输入邮箱地址"> </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="密码仅支持数字/字母/下划线"></el-input>
+                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="密码仅支持数字/字母/下划线" @keyup.enter.native="login"></el-input>
                 </el-form-item>
               </el-form>
               <div class="btn" @click="login">
@@ -53,7 +53,7 @@
                 <el-form-item prop="mailCode">
                   <div class="mail-code-group">
                     <div class="code">
-                      <el-input v-model="submitForm.mailCode" placeholder="请输入邮箱验证码"> </el-input>
+                      <el-input v-model="submitForm.mailCode" placeholder="请输入邮箱验证码" @keyup.enter.native="register"> </el-input>
                     </div>
                     <div class="send" ref="codeButtom" @click="sendMailCode">点击发送</div>
                   </div>
