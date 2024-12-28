@@ -4,11 +4,11 @@
  * @LastEditors: huasenjio
  * @LastEditTime: 2022-10-20 01:11:14
  * @Description:
- */
+*/
 export default {
   // 管理员信息
   manage: {
-    id: 'admin@qq.com',
+    id: 'localhost@qq.com',
     token: '',
     code: 1,
   },

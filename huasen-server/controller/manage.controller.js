@@ -7,32 +7,29 @@
  */
 
 const path = require('path');
+const moment = require('moment');
 const checkDiskSpace = require('check-disk-space').default;
-const { fetchFavicon, fetchFavicons } = require('@meltwater/fetch-favicon');
-const { POOL_ACCESS } = require('../config.js');
+const { fetchFavicons } = require('@meltwater/fetch-favicon');
+const { encrypt, decrypt } = require('huasen-lib');
+const { SECRET_AES, POOL_ACCESS } = require('../config.js');
 const JWT = require('../plugin/jwt.js');
-const { readDirectory, writeToFile, bytesToSize } = require('../utils/tool.js');
-const { handleRate, getTime } = require('../utils/tool.js');
-const { encrypt, decrypt } = require('../utils/aes.js');
-const { downloadAndConvertToBase64 } = require('../utils/tool.js');
+const { readDirectory, writeToFile, bytesToSize, handleRate, getTime, downloadAndConvertToBase64 } = require('../utils/tool.js');
 const { Manage } = require('../service/index.js');
 const { getObjectRedisItem } = require('../plugin/ioredis/map.js');
 const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
+const { onlineByKey } = require('./common.controller.js')
+
 const uploadConfigMap = {
   icon: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
     uploadPath: path.resolve(process.cwd(), '../huasen-store/icon'),
   },
   banner: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
     uploadPath: path.resolve(process.cwd(), '../huasen-store/banner'),
   },
   article: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
     uploadPath: path.resolve(process.cwd(), '../huasen-store/article'),
   },
   img: {
-    acceptTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
     uploadPath: path.resolve(process.cwd(), '../huasen-store/img'),
   },
   default: {
@@ -56,8 +53,8 @@ function login(req, res, next) {
     ],
     async function (result) {
       if (result.length === 0) {
-        global.huasen.responseData(res, {}, 'ERROR', '账户不存在', false);
-      } else if (decrypt(result[0].password) === password) {
+        global.huasen.responseData(res, {}, 'ERROR', '账户不存在');
+      } else if (decrypt(result[0].password, SECRET_AES) === password) {
         let token = await JWT.createToken(id, { key: id, code: result[0].code });
         global.huasen.responseData(
           res,
@@ -67,20 +64,37 @@ function login(req, res, next) {
             code: result[0].code,
           },
           'SUCCESS',
-          '登录成功',
-          false,
+          '已登录',
         );
       } else {
-        global.huasen.responseData(res, {}, 'ERROR', '账户密码不匹配', false);
+        global.huasen.responseData(res, {}, 'ERROR', '账户密码不匹配');
       }
     },
   );
 }
 
+async function exist(req, res, next) {
+  let count = await Manage.find().countDocuments();
+  if (count > 0) {
+    global.huasen.responseData(res, true, 'SUCCESS', '请登录管理员账号');
+  } else {
+    global.huasen.responseData(res, false, 'SUCCESS', '请添加管理员账号');
+  }
+}
+
+async function init(req, res, next) {
+  let count = await Manage.find().countDocuments();
+  if (count === 0) {
+    add(req, res, next)
+  } else {
+    global.huasen.responseData(res, {}, 'ERROR', '管理员账号已存在');
+  }
+}
+
 function add(req, res, next) {
   let { password } = req.huasenParams;
   // 密码加密存入数据库
-  let encryptPassword = encrypt(password);
+  let encryptPassword = encrypt(password, SECRET_AES);
   req.huasenParams.password = encryptPassword;
   req.epWorking(
     [
@@ -91,12 +105,12 @@ function add(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加管理员成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '添加管理员');
     },
   );
 }
 
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo, pageSize, id, code } = req.huasenParams;
   // 模糊查询参数
   let params = { id: { $regex: new RegExp(id, 'i') } };
@@ -107,7 +121,7 @@ function findAllByPage(req, res, next) {
     [
       {
         schemaName: 'Manage',
-        methodName: 'findAllByPage',
+        methodName: 'findByPage',
         payloads: [
           {
             $and: [params],
@@ -119,7 +133,7 @@ function findAllByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询管理员成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询管理员');
     },
   );
 }
@@ -139,7 +153,7 @@ function remove(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除管理员成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '删除管理员');
     },
   );
 }
@@ -149,12 +163,12 @@ async function update(req, res, next) {
   let manageTemp = await Manage.find({ id });
   let manage = manageTemp.shift();
   if (!manage) {
-    global.huasen.responseData(res, {}, 'ERROR', '更新账户不存在', false);
+    global.huasen.responseData(res, {}, 'ERROR', '更新账户不存在');
     return;
   }
   // 密码改动
   if (password !== manage.password) {
-    req.huasenParams.password = encrypt(password);
+    req.huasenParams.password = encrypt(password, SECRET_AES);
   }
 
   let { proof } = req.huasenJWT;
@@ -170,7 +184,7 @@ async function update(req, res, next) {
         },
       ],
       result => {
-        global.huasen.responseData(res, result, 'SUCCESS', '更新管理员成功', false);
+        global.huasen.responseData(res, result, 'SUCCESS', '更新管理员');
       },
     );
   } else if (proof.key === id) {
@@ -186,15 +200,15 @@ async function update(req, res, next) {
           },
         ],
         result => {
-          global.huasen.responseData(res, result, 'SUCCESS', '更新管理员成功', false);
+          global.huasen.responseData(res, result, 'SUCCESS', '更新管理员');
         },
       );
     } else {
-      global.huasen.responseData(res, {}, 'ERROR', '禁止修改权限码', false);
+      global.huasen.responseData(res, {}, 'ERROR', '禁止修改权限码');
     }
   } else {
     // 非法
-    global.huasen.responseData(res, {}, 'ERROR', '禁止更新其他管理员信息', false);
+    global.huasen.responseData(res, {}, 'ERROR', '你无权更新该管理员信息');
   }
 }
 
@@ -232,8 +246,7 @@ function overview(req, res, next) {
           fileRate: handleRate(fileCount, global.huasenStatus.fileCount),
         },
         'SUCCESS',
-        '查询数据报表成功',
-        false,
+        '查询总览数据',
       );
     },
   );
@@ -252,7 +265,7 @@ function diskOverview(req, res, next) {
         useValue: bytesToSize(diskSpace.size - diskSpace.free),
         useUsage: Number(((diskSpace.size - diskSpace.free) / diskSpace.size).toFixed(2)),
       };
-      global.huasen.responseData(res, disk, 'SUCCESS', '查询磁盘报表成功', false);
+      global.huasen.responseData(res, disk, 'SUCCESS', '查询磁盘数据');
     })
     .catch(err => {
       next(err);
@@ -265,7 +278,7 @@ function uvOverview(req, res, next) {
       {
         schemaName: 'Record',
         methodName: 'limit',
-        payloads: [{ time: -1 }, 5],
+        payloads: [{ time: -1 }, 5, {}, { __v: 0 }],
         self: true,
       },
     ],
@@ -276,11 +289,11 @@ function uvOverview(req, res, next) {
         return {
           _id: item._id,
           id: item.id,
-          time: item.time,
+          time: moment(item.time).format('YYYY/MM/DD'),
           count,
         };
       });
-      global.huasen.responseData(res, list, 'SUCCESS', '查询日志报表成功', false);
+      global.huasen.responseData(res, list, 'SUCCESS', '查询日志数据');
     },
   );
 }
@@ -295,8 +308,7 @@ function visitor(req, res, next) {
           visitorRate: handleRate(Object.values(pool).length, global.huasenStatus.visitorCount),
         },
         'SUCCESS',
-        '查询用户报表成功',
-        false,
+        '查询访客数据',
       );
     })
     .catch(err => {
@@ -315,9 +327,9 @@ function config(req, res, next) {
     manages => {
       let manage = manages.shift();
       if (manage) {
-        global.huasen.responseData(res, manage.config, 'SUCCESS', '查询配置成功', false);
+        global.huasen.responseData(res, manage.config, 'SUCCESS', '查询配置');
       } else {
-        global.huasen.responseData(res, {}, 'ERROR', '无任何配置', false);
+        global.huasen.responseData(res, {}, 'ERROR', '无任何配置');
       }
     },
   );
@@ -328,13 +340,13 @@ function executeRuntimeCode(req, res, next) {
   try {
     eval(runtimeScript);
   } catch (err) {
-    global.huasen.responseData(res, err.toString(), 'ERROR', '执行错误', false);
+    global.huasen.responseData(res, err.toString(), 'ERROR', '代码执行错误');
   }
 }
 
 function findAppConfig(req, res, next) {
   let systemConfig = require('../setting.json');
-  global.huasen.responseData(res, systemConfig, 'SUCCESS', '查询配置成功', true);
+  global.huasen.responseData(res, systemConfig, 'SUCCESS', '查询配置', 'aes');
 }
 
 function saveAppConfig(req, res, next) {
@@ -342,18 +354,18 @@ function saveAppConfig(req, res, next) {
   let setPath = path.resolve(__dirname, '../setting.json');
   writeToFile(setPath, systemConfig)
     .then(result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '保存配置成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '保存配置');
     })
     .catch(err => {
-      global.huasen.responseData(res, {}, 'ERROR', '保存配置失败', false);
+      global.huasen.responseData(res, {}, 'ERROR', '保存配置异常');
     });
 }
 
 /**
-     * 获取网站域名
-     * @param {String} urlString - 网站链接地址
-     * @returns domain - 域名
-     */
+ * 获取网站域名
+ * @param {String} urlString - 网站链接地址
+ * @returns domain - 域名
+ */
 function getDomainFromURL(urlString) {
   try {
     // 创建URL对象
@@ -368,41 +380,41 @@ function getDomainFromURL(urlString) {
 }
 
 /**
- * 获取一为图标
+ * 获取favicon.im图标
  */
-function getImageByIOWEN(siteUrl) {
+function getFaviconByUrl(siteUrl) {
   let domain = getDomainFromURL(siteUrl);
   if (!domain) return;
-  return `https://api.iowen.cn/favicon/${domain}.png`;
+  return `https://favicon.im/${domain}?larger=true`;
 }
 
-function findAppFavicon(req, res, next) {
+async function findAppFavicon(req, res, next) {
   let { url } = req.huasenParams;
-  fetchFavicons(url)
-    .then(async icons => {
-      let faviconBase64 = [];
-      for (let i = 0; i < icons.length; i++) {
-        try {
-          let base64 = await downloadAndConvertToBase64(icons[i].href);
-          faviconBase64.push(base64);
-        } catch (err) {
-          console.error('下载图片捕获到错误', err);
-        }
+  const faviconBase64s = []
+  try {
+    const icons = await fetchFavicons(url);
+    console.log('嗅探的图标icons：', icons);
+    for (let i = 0; i < icons.length; i++) {
+      try {
+        let base64 = await downloadAndConvertToBase64(icons[i].href);
+        faviconBase64s.push(base64);
+      } catch (err) {
+        console.error('下载图片捕获到错误', err);
       }
-      const iowenUrl = getImageByIOWEN(url)
-      if (iowenUrl) {
-        try {
-          let iowenBase64 = await downloadAndConvertToBase64(iowenUrl);
-          faviconBase64.unshift(iowenBase64)
-        } catch (err) {
-          console.error('下载一为图片捕获到错误', err);
-        }
+    }
+    const iconUrl = getFaviconByUrl(url)
+    if (iconUrl) {
+      try {
+        let iconUrlBase64 = await downloadAndConvertToBase64(iconUrl);
+        faviconBase64s.unshift(iconUrlBase64)
+      } catch (err) {
+        console.error('下载favicon.im图片捕获到错误', err);
       }
-      global.huasen.responseData(res, faviconBase64, 'SUCCESS', '查询图标成功', false);
-    })
-    .catch(err => {
-      global.huasen.responseData(res, [], 'ERROR', '查询图标失败', false);
-    });
+    }
+    global.huasen.responseData(res, faviconBase64s, 'SUCCESS', '推荐图标');
+  } catch (err) {
+    global.huasen.responseData(res, [], 'ERROR', '推荐图标异常');
+  }
 }
 
 function uploadFileToStore(req, res, next) {
@@ -431,7 +443,7 @@ function uploadFileToStore(req, res, next) {
       for (let i = 0; i < resultFiles.length; i++) {
         resultFiles[i].path = resultFiles[i].path.split(/\/|\\/).slice(-3).join('/');
       }
-      global.huasen.responseData(res, resultFiles, 'SUCCESS', '上传成功', false);
+      global.huasen.responseData(res, resultFiles, 'SUCCESS', '已上传');
     },
     onError: err => {
       global.huasen.responseData(res, {}, 'ERROR', err.msg);
@@ -440,14 +452,27 @@ function uploadFileToStore(req, res, next) {
   mixtureUpload.uploader(req, res, next);
 }
 
+async function quit(req, res, next) {
+  const { proof } = req.huasenJWT;
+  onlineByKey(res, proof.key);
+}
+
+async function offline(req, res, next) {
+  const { id } = req.huasenParams;
+  onlineByKey(res, id);
+}
+
 
 
 module.exports = {
   login,
+  exist,
+  init,
   add,
-  findAllByPage,
+  findByPage,
   remove,
   update,
+  quit,
 
   overview,
   visitor,
@@ -463,5 +488,6 @@ module.exports = {
 
   findAppFavicon,
 
-  uploadFileToStore
+  uploadFileToStore,
+  offline
 };

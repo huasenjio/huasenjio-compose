@@ -43,8 +43,9 @@
 <script>
 import TableList from '@/components/content/table-list/TableList.vue';
 import DialogForm from '@/components/content/dialog-form/DialogForm.vue';
-
-import { getElementFormValidator } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 export default {
   name: 'AccountUser',
   components: { TableList, DialogForm },
@@ -160,9 +161,9 @@ export default {
         },
       ],
       rule: {
-        id: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50', 'isEmail::请输入邮箱']), trigger: 'blur' }],
-        password: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5']), trigger: 'blur' }],
-        name: [{ validator: getElementFormValidator(['minLength:2::长度小于2', 'maxLength:20::长度大于20']), trigger: 'blur' }],
+        id: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50', 'isEmail::请输入邮箱']) }],
+        password: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5']) }],
+        name: [{ validator: getElementFormValidator(['minLength:2::长度小于2', 'maxLength:20::长度大于20']) }],
       },
       form: {
         id: '',
@@ -190,20 +191,22 @@ export default {
         },
         this.searchForm,
       );
-      this.API.findUserByPage(params, {
-        notify: false,
-      }).then(res => {
-        this.users = res.data.list;
-        this.total = res.data.total;
-        this.cancel();
-      });
+      this.API.user
+        .findUserByPage(params, {
+          notify: false,
+        })
+        .then(res => {
+          this.users = res.data.list;
+          this.total = res.data.total;
+          this.cancel();
+        });
     },
     updatePagination(pageNo, pageSize) {
       this.pageNo = pageNo;
       this.pageSize = pageSize;
     },
     removeUser(index, row, pageNo, pageSize) {
-      this.API.removeUser({ _id: row._id }).then(res => {
+      this.API.user.removeUser({ _id: row._id }).then(res => {
         this.queryUser();
       });
     },
@@ -225,7 +228,7 @@ export default {
     save() {
       if (this.mode === 'edit') {
         // 编辑
-        this.API.updateUser(this.form).then(res => {
+        this.API.user.updateUser(this.form).then(res => {
           this.queryUser();
         });
       } else if (this.mode === 'add') {
@@ -233,7 +236,7 @@ export default {
         delete this.form._id;
         delete this.form._v;
         // 添加
-        this.API.addUser(this.form).then(res => {
+        this.API.user.addUser(this.form).then(res => {
           this.queryUser();
         });
       }

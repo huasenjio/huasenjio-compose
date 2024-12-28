@@ -21,6 +21,7 @@
       @remove="removeRecord"
       @removeMany="handleRemoveMany"
       @search="queryRecord"
+      @copy="handleCopy"
       @paginationChange="paginationChange"
       @updatePagination="updatePagination"
     >
@@ -47,10 +48,10 @@ export default {
           label: '记录时间',
           key: 'time',
         },
-        {
-          label: '日志内容',
-          key: 'log',
-        },
+        // {
+        //   label: '日志内容',
+        //   key: 'log',
+        // },
       ],
       total: 0,
 
@@ -80,6 +81,13 @@ export default {
     this.queryRecord();
   },
   methods: {
+    handleCopy(index, row) {
+      const { _id } = row;
+      this.API.record.copyRecord({ _id }).then(res => {
+        this.TOOL.copyTextToClip(JSON.stringify(res.data), null, true);
+      });
+    },
+
     queryRecord() {
       let params = Object.assign(
         {
@@ -88,12 +96,14 @@ export default {
         },
         this.searchForm,
       );
-      this.API.findRecordByPage(params, {
-        notify: false,
-      }).then(res => {
-        this.records = res.data.list.sort((a, b) => b.time - a.time);
-        this.total = res.data.total;
-      });
+      this.API.record
+        .findRecordByPage(params, {
+          notify: false,
+        })
+        .then(res => {
+          this.records = res.data.list.sort((a, b) => b.time - a.time);
+          this.total = res.data.total;
+        });
     },
 
     updatePagination(pageNo, pageSize) {
@@ -102,14 +112,14 @@ export default {
     },
 
     removeRecord(index, row, pageNo, pageSize) {
-      this.API.removeRecord({ _id: row._id }).then(res => {
+      this.API.record.removeRecord({ _id: row._id }).then(res => {
         this.queryRecord();
       });
     },
 
     handleRemoveMany(list) {
       let _ids = list.map(item => item._id);
-      this.API.removeManyRecord({ _ids }).then(res => {
+      this.API.record.removeManyRecord({ _ids }).then(res => {
         this.queryRecord();
       });
     },

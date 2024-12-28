@@ -6,7 +6,7 @@
  * @Description:
  */
 class Storage {
-  constructor() {}
+  constructor() { }
 
   /**
    * 存储数据
@@ -53,12 +53,18 @@ class Storage {
   /**
    * 清理全部数据
    */
-  clear(msg) {
-    msg = msg || '您确定清除本地所有存储数据吗？';
-    let flag = confirm(msg);
+  clear(tips = '您确定清除本地所有存储吗？', payload = {}) {
+    const { onConfirm, onCancel } = payload;
+    const flag = confirm(tips);
     if (flag) {
       localStorage.clear();
-      window.location.reload();
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      }
+    } else {
+      if (typeof onCancel === 'function') {
+        onCancel();
+      }
     }
   }
 }

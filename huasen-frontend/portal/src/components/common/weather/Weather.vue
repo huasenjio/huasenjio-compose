@@ -135,7 +135,7 @@ export default {
     queryWeather() {
       this.loaded = false;
       if (this.user.config.cityCode) {
-        this.API.getWeatherByCityCode(
+        this.API.Weather.getWeatherByCityCode(
           { cityId: this.user.config.cityCode },
           {
             notify: false,

@@ -106,7 +106,7 @@ export default {
 
   methods: {
     queryColumn() {
-      this.API.findColumnByList({}, { notify: false }).then(res => {
+      this.API.column.findColumnByList({}, { notify: false }).then(res => {
         this.columns = res.data;
       });
     },
@@ -147,12 +147,14 @@ export default {
 
     save() {
       let columnStore = this.selectColumns.map(item => item._id);
-      this.API.updateJournal({
-        _id: this.currentJournal._id,
-        columnStore: JSON.stringify(columnStore),
-      }).then(res => {
-        this.$emit('save');
-      });
+      this.API.journal
+        .updateJournal({
+          _id: this.currentJournal._id,
+          columnStore: JSON.stringify(columnStore),
+        })
+        .then(res => {
+          this.$emit('save');
+        });
     },
 
     cancel() {

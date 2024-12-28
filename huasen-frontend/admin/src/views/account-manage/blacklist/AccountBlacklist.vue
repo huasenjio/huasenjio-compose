@@ -44,7 +44,9 @@
 <script>
 import TableList from '@/components/content/table-list/TableList.vue';
 import DialogForm from '@/components/content/dialog-form/DialogForm.vue';
-import { getElementFormValidator } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 export default {
   name: 'AccountBlacklist',
   components: { TableList, DialogForm },
@@ -87,7 +89,7 @@ export default {
       ],
 
       rule: {
-        ip: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isIp::请输入正确IP地址']), trigger: 'blur' }],
+        ip: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isIp::请输入正确IP地址']) }],
       },
 
       form: {
@@ -110,13 +112,15 @@ export default {
         },
         this.searchForm,
       );
-      this.API.findBlacklistByPage(params, {
-        notify: false,
-      }).then(res => {
-        this.blacklist = res.data.list;
-        this.total = res.data.total;
-        this.cancel();
-      });
+      this.API.blacklist
+        .findBlacklistByPage(params, {
+          notify: false,
+        })
+        .then(res => {
+          this.blacklist = res.data.list;
+          this.total = res.data.total;
+          this.cancel();
+        });
     },
 
     updatePagination(pageNo, pageSize) {
@@ -125,7 +129,7 @@ export default {
     },
 
     removeBlacklist(index, row, pageNo, pageSize) {
-      this.API.removeBlacklist({ ip: row.ip }).then(res => {
+      this.API.blacklist.removeBlacklist({ ip: row.ip }).then(res => {
         this.queryBlacklist();
       });
     },
@@ -147,7 +151,7 @@ export default {
     save() {
       if (this.mode === 'edit') {
       } else if (this.mode === 'add') {
-        this.API.addBlacklist(this.form).then(res => {
+        this.API.blacklist.addBlacklist(this.form).then(res => {
           this.queryBlacklist();
         });
       }

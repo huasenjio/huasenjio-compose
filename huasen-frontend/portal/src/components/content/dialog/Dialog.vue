@@ -102,7 +102,7 @@ export default {
     dialogStyle() {
       let headHeight = 55;
       let footerHeight = Object.keys(this.buttons).length ? 62 : 0;
-      let bodyMaxHeight = `calc(100% - ${headHeight}px - ${footerHeight}px - 62px)`;
+      let bodyMaxHeight = `calc(100vh - ${headHeight}px - ${footerHeight}px - 40px)`;
       // 如果不是全屏状态下，使用用户传入的width属性作为最小宽度
       let dialogMinWidth = this.full ? `${this.CONSTANT.appMinWidth}px` : this.TOOL.handleSize(this.width);
       let dialogBodyMaxHeight = this.full ? bodyMaxHeight : this.TOOL.handleSize(this.maxHeight);

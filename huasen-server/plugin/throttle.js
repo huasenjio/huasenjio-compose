@@ -34,13 +34,9 @@ class Throttle {
       next,
       options,
     };
-
-    // 添加时间戳及回调
-    unit.addThrottleTime = new Date().getTime();
-    if (typeof unit.options.addRequestCallback === 'function') {
-      unit.options.addRequestCallback();
+    if (typeof unit.options.addRequestHook === 'function') {
+      unit.options.addRequestHook();
     }
-
     if (this.executionMap.size <= this.maxCount) {
       // 开始处理请求
       this.handleRequest(unit);
@@ -49,17 +45,14 @@ class Throttle {
       this.queue.push(unit);
     } else {
       // 达到最大等待数，拒绝访问
-      global.huasen.responseData(res, {}, 'ERROR', '请重新试一试', false);
+      global.huasen.responseData(res, {}, 'ERROR', '等待人数过多，请重新试一试！');
     }
   }
 
   handleRequest(unit) {
-    // 处理时间戳及回调
-    unit.handleTime = new Date().getTime();
-    if (typeof unit.options.handleRequestCallback === 'function') {
-      unit.options.handleRequestCallback();
+    if (typeof unit.options.handleRequestHook === 'function') {
+      unit.options.handleRequestHook();
     }
-
     let ep = EventProxy();
     ep.bind('error', err => {
       // 移除全部监听
@@ -67,61 +60,53 @@ class Throttle {
       // 调入全局的错误处理函数
       unit.next(err);
     });
-
     // 挂载事件分发器，任务执行器，单元信息到请求对象
     unit['ep'] = ep;
     unit.req['epWorking'] = unit.res['epWorking'] = epWorking;
     unit.req['huasenUnit'] = unit.res['huasenUnit'] = ep['huasenUnit'] = unit;
-
     // 开始倒计时
     let unitTimer = setTimeout(() => {
       this.deleteRequest(unit);
     }, this.sleepTime);
     // 存入集合
     this.executionMap.set(unit.uid, unitTimer);
-
-    // 因为网站目前只通过send响应数据，所以重写send方法，销毁请求，释放资源
     const originalSend = unit.res.send;
     const that = this;
+    // 网站send响应数据，因此重写send方法，释放资源，但是send方法会被执行两次，所以需要判断是否已响应
     unit.res.send = function (data) {
       originalSend.call(this, data);
       that.deleteRequest(unit);
     };
-
     // 放行请求
     unit.next();
   }
 
   async deleteRequest(unit) {
-    if (!unit) return;
-    if (unit.res.writableEnded) {
-      // 已经正常响应
-    } else {
-      // 超时的请求手动响应
-      global.huasen.responseData(unit.res, {}, 'ERROR', '处理超时', false);
+    if (unit.ended) return;
+    const unitTimer = this.executionMap.get(unit.uid);
+    clearTimeout(unitTimer);
+    // 检查是否已响应
+    if (!unit.res.writableEnded) {
+      global.huasen.responseData(unit.res, {}, 'ERROR', '已超时，稍后重试！');
+      return;
     }
-
-    clearTimeout(this.executionMap[unit.uid]);
-    this.executionMap.delete(unit.uid);
-
     // 建议删除引用，避免内存泄漏
+    this.executionMap.delete(unit.uid);
     delete unit.req['epWorking'];
     delete unit.res['epWorking'];
-
+    if (typeof unit.options.deleteRequestHook === 'function') {
+      unit.options.deleteRequestHook();
+    }
+    // 请求已结束
+    unit.ended = true
     // 处理队列第一个请求
     this.executionFirstRequest();
-
-    // 删除时间戳及回调
-    unit.deleteTime = new Date().getTime();
-    if (typeof unit.options.deleteRequestCallback === 'function') {
-      unit.options.deleteRequestCallback();
-    }
   }
 
   // 放行处理处于队列第一个的请求
   executionFirstRequest() {
     // 排除等待的请求为零
-    if (this.queue.length === 0) return false;
+    if (this.queue.length === 0) return;
     // 取到队列里的第一个请求
     let unit = this.queue.shift();
     // 存入执行集合内容

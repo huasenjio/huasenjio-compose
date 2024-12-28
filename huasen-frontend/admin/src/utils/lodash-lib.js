@@ -26,12 +26,16 @@ export function getPath(data, path = []) {
   return lodashPaths;
 }
 
-// 只合并已拥有的属性
-export function mergeByOwnKey(data, srcData) {
+
+export function overrideKeys(data, srcData, ignoreInvalidValue = false) {
   let paths = getPath(data);
   paths.forEach(path => {
-    let value = _.get(srcData, path);
-    if (value !== undefined) {
+    const value = _.get(srcData, path);
+    if (ignoreInvalidValue) {
+      if (value !== undefined) {
+        _.set(data, path, value);
+      }
+    } else {
       _.set(data, path, value);
     }
   });

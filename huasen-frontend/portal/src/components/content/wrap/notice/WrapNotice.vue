@@ -50,7 +50,7 @@ export default {
     queryNotice() {
       let _id = this.appConfig.article.notice;
       if (_id) {
-        this.API.getArtcileById(
+        this.API.Article.getArtcileById(
           { _id },
           {
             notify: false,

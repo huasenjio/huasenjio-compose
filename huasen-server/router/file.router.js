@@ -12,9 +12,9 @@ const { findAll, findAllIcon, remove, downloadStoreByZip } = require('../control
 const { checkManagePower } = require('../middleware/manage.middleware.js');
 const { handleJWT } = require('../middleware/common.middleware.js');
 
-router.get('/findAll', handleJWT, checkManagePower, findAll);
-router.get('/findAllIcon', handleJWT, checkManagePower, findAllIcon);
-router.post('/remove', handleJWT, checkManagePower, remove);
-router.post('/downloadStoreByZip', handleJWT, checkManagePower, downloadStoreByZip);
+router.post('/remove', handleJWT(), checkManagePower, remove);
+router.get('/findAll', handleJWT(), checkManagePower, findAll);
+router.get('/findAllIcon', handleJWT(), checkManagePower, findAllIcon);
+// router.post('/downloadStoreByZip', handleJWT(), checkManagePower, downloadStoreByZip);
 
 module.exports = router;

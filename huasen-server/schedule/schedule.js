@@ -39,7 +39,7 @@ let accessRecordJob = schedule.scheduleJob('0 0 3 * * *', async () => {
     // 组合数据，存入数据库
     let logObject = {
       id: String(getUid(16, 8)),
-      time: moment().format('YYYYMMDD'),
+      time: moment().format('YYYY-MM-DD HH:mm:ss'),
       log: JSON.parse(JSON.stringify(log)),
     };
     await Record.insertMany(logObject);

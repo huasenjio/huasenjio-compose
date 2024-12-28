@@ -72,10 +72,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item prop="autoIOWenIcon">
+              <el-form-item prop="autoIconPatch">
                 <div class="flex items-center">
-                  网链图标使用“一为API”补全策略：
-                  <el-switch v-model="site.autoIOWenIcon" active-text="开启" inactive-text="关闭"> </el-switch>
+                  开启网链图标自动补全策略：
+                  <el-switch v-model="site.autoIconPatch" active-text="开启" inactive-text="关闭"> </el-switch>
                 </div>
               </el-form-item>
             </el-col>
@@ -98,14 +98,14 @@
           <el-row :gutter="10">
             <el-col :span="12">
               <el-form-item prop="default.bg">
-                <el-input placeholder="< 图片链接 | 颜色代码 >" v-model="theme.default.bg">
+                <el-input placeholder="<图片链接 | 颜色代码>" v-model="theme.default.bg">
                   <template slot="prepend">默认背景</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="default.color">
-                <el-input placeholder="< 颜色代码 >" v-model="theme.default.color">
+                <el-input placeholder="<颜色代码>" v-model="theme.default.color">
                   <template slot="prepend">背景字体颜色</template>
                 </el-input>
               </el-form-item>
@@ -171,7 +171,7 @@
 
       <!-- 文章配置 -->
       <el-collapse-item name="3">
-        <template slot="title"> <i class="el-icon-document mr-px-4"></i>文章配置</template>
+        <template slot="title"> <i class="el-icon-document mr-px-4"></i>关键文章配置</template>
         <el-form :model="article" ref="articleForm" class="article-form" label-position="top">
           <el-row :gutter="10">
             <el-col :span="12">
@@ -213,28 +213,28 @@
           <el-row :gutter="10">
             <el-col :span="12">
               <el-form-item prop="host">
-                <el-input placeholder="< 主机 >" v-model="mail.host">
+                <el-input placeholder="<主机>" v-model="mail.host">
                   <template slot="prepend">host</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="port">
-                <el-input placeholder="< 端口 >" @input="value => (mail.port = Number(value.replace(/[^0-9.]/g, '')) || 465)" v-model="mail.port">
+                <el-input placeholder="<端口>" @input="value => (mail.port = Number(value.replace(/[^0-9.]/g, '')) || 465)" v-model="mail.port">
                   <template slot="prepend">port</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="user">
-                <el-input placeholder="< 用户 >" v-model="mail.user">
+                <el-input placeholder="<用户>" v-model="mail.user">
                   <template slot="prepend">user</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="mtp">
-                <el-input placeholder="< 通行码 >" v-model="mail.mtp">
+                <el-input placeholder="<通行码>" v-model="mail.mtp">
                   <template slot="prepend">mtp</template>
                 </el-input>
               </el-form-item>
@@ -245,11 +245,11 @@
 
       <!-- 配置总览 -->
       <el-collapse-item name="5">
-        <template slot="title"> <i class="el-icon-table-lamp mr-px-4"></i>配置总览</template>
+        <template slot="title"> <i class="el-icon-table-lamp mr-px-4"></i>配置代码总览</template>
         <el-row :gutter="10">
           <el-col :span="24">
             <div class="result">
-              <VueJsonEditor class="json-edit" v-model="setting" :show-btns="false" :expandedOnStart="true" mode="form"></VueJsonEditor>
+              <VueJsonEditor class="json-edit" v-model="setting" :show-btns="true" :expandedOnStart="true" mode="view" :modes="['code', 'view']" @json-save="handleJSONSave"></VueJsonEditor>
             </div>
           </el-col>
         </el-row>
@@ -269,24 +269,16 @@
 
 <script>
 import VueJsonEditor from 'vue-json-editor';
-import { getElementFormValidator, checkParamsByRules } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const checkParamsByRules = validator.verify.bind(validator);
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 export default {
   name: 'Setting',
 
   props: {},
 
   components: { VueJsonEditor },
-
-  computed: {
-    setting: {
-      get() {
-        let { site, theme, mail, article } = this;
-        let data = { site, theme, mail, article };
-        return data;
-      },
-      set(value) {},
-    },
-  },
 
   data() {
     return {
@@ -302,23 +294,30 @@ export default {
         guidePageUrl: 'http://huasenjio.top/',
         footerHtml: '',
         openLabelClassification: false,
-        autoIOWenIcon: false,
+        autoIconPatch: false,
         jwt: '',
         jwtLiveTime: 604800,
         serviceQRCodeUrl: '',
       },
       siteRule: {
-        redirectUrl: [{ validator: getElementFormValidator(['isUrl::链接格式不正确']), trigger: 'change' }],
-        guidePageUrl: [{ validator: getElementFormValidator(['isUrl::链接格式不正确']), trigger: 'change' }],
-        brandUrl: [{ validator: getElementFormValidator(['isImgUrl::链接格式不正确']), trigger: 'change' }],
-        serviceQRCodeUrl: [{ validator: getElementFormValidator(['isImgUrl::链接格式不正确']), trigger: 'change' }],
-        jwt: [{ validator: getElementFormValidator(['minLength:32::请输入32个字符', 'maxLength:32::请输入32个字符', 'isEnglish::请输入数字/字母']), trigger: 'change' }],
+        redirectUrl: [{ validator: getElementFormValidator(['isUrl::链接格式不正确']) }],
+        guidePageUrl: [{ validator: getElementFormValidator(['isUrl::链接格式不正确']) }],
+        jwt: [
+          { validator: getElementFormValidator(['minLength:32::请输入32个字符', 'maxLength:32::请输入32个字符']) },
+          {
+            validator: (rule, value, callback) => {
+              if (value !== '' && !/^[0-9a-zA-Z]+$/.test(value)) {
+                callback(new Error('仅支持字母/数字组合'));
+              }
+              callback();
+            },
+          },
+        ],
       },
-
       mail: {
         host: 'smtp.qq.com',
         port: 465,
-        user: '932397243@qq.com',
+        user: 'test@qq.com',
         mtp: '',
       },
       article: {
@@ -354,8 +353,7 @@ export default {
         },
       },
       themeRule: {
-        'default.bg': [{ validator: getElementFormValidator(['isBg::内容不正确']), trigger: 'change' }],
-        'default.color': [{ validator: getElementFormValidator(['isColorCode::内容不正确']), trigger: 'change' }],
+        'default.color': [{ validator: getElementFormValidator(['isColor::内容不正确']) }],
       },
       // 配置项
       articleOptions: [],
@@ -364,10 +362,11 @@ export default {
         form: null,
         key: '',
       },
-
       // 原始主题数据
       originPure: [],
       originWallpaper: [],
+
+      settingKeys: [],
     };
   },
 
@@ -376,48 +375,66 @@ export default {
     this.queryArticle();
   },
 
-  watch: {
-    settingJSON: {
-      handler(value) {
-        this.setting = value;
+  computed: {
+    setting: {
+      get() {
+        let keys = this.settingKeys || [];
+        let json = {};
+        for (let key of keys) {
+          json[key] = this[key];
+        }
+        return json;
       },
-      immediate: true,
+      set() {},
     },
   },
 
   methods: {
+    handleJSONSave(json) {
+      this.$confirm('该操作将忽略所有表单输入项，并且保存编辑器中的代码作为最新配置，您确定吗？', '保存配置代码', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          let that = this;
+          this.settingKeys = Object.keys(json);
+          for (let key of this.settingKeys) {
+            if (['site', 'mail', 'theme', 'article'].includes(key)) {
+              // 对于表单输入项，采取同名覆盖策略
+              this.TOOL.overrideKeys(that[key], json[key], true);
+            } else {
+              that[key] = json[key];
+            }
+          }
+          this.$nextTick(() => {
+            this.saveConfig();
+          });
+        })
+        .catch(() => {});
+    },
     // 重置配置
     reset() {
       this.$refs.siteForm.resetFields();
       this.$refs.mailForm.resetFields();
       this.$refs.themeForm.resetFields();
       this.$refs.articleForm.resetFields();
-
       this.theme.pure = this.LODASH.cloneDeep(this.originPure);
       this.theme.wallpaper = this.LODASH.cloneDeep(this.originWallpaper);
-
       this.$tips('success', '重置配置表单成功', null, 2000);
     },
     // 查询配置
     queryConfig() {
-      this.API.findAppConfig({}, { notify: false }).then(res => {
+      this.API.manage.findAppConfig({}, { notify: false }).then(res => {
         // 移除表单等待赋值后默认数据更新
         this.loaded = false;
-
-        const { site, mail, theme, article } = res.data;
-        // 赋值表单数据
-        this.TOOL.mergeByOwnKey(this.site, site);
-        this.TOOL.mergeByOwnKey(this.mail, mail);
-        this.TOOL.mergeByOwnKey(this.article, article);
-
-        if (this.LODASH.get(theme, 'pure')) this.theme.pure = this.LODASH.get(theme, 'pure');
-        if (this.LODASH.get(theme, 'wallpaper')) this.theme.wallpaper = this.LODASH.get(theme, 'wallpaper');
-
-        this.TOOL.mergeByOwnKey(this.theme.default, this.LODASH.get(theme, 'default'));
-
+        // 遍历请求的配置项，例如：site、mail、theme、article
+        this.settingKeys = Object.keys(res.data);
+        for (let key of this.settingKeys) {
+          this[key] = res.data[key];
+        }
         this.originPure = this.LODASH.cloneDeep(this.theme.pure);
         this.originWallpaper = this.LODASH.cloneDeep(this.theme.wallpaper);
-
         // 优先赋值，表单重置方法才能生效
         this.loaded = true;
       });
@@ -428,27 +445,28 @@ export default {
       list.push(this.checkForm('siteForm'), this.checkForm('mailForm'), this.checkForm('themeForm'), this.checkForm('articleForm'));
       Promise.all(list)
         .then(() => {
-          this.API.saveAppConfig(
-            {
-              systemConfig: JSON.stringify(this.setting, null, 2),
-            },
-            {
-              secret: true,
-            },
-          ).then(res => {
-            this.loaded = false;
-            this.originPure = this.LODASH.cloneDeep(this.theme.pure);
-            this.originWallpaper = this.LODASH.cloneDeep(this.theme.wallpaper);
-            this.$nextTick(() => {
-              this.loaded = true;
+          this.API.manage
+            .saveAppConfig(
+              {
+                systemConfig: JSON.stringify(this.setting, null, 2),
+              },
+              {
+                secret: 'rsa',
+              },
+            )
+            .then(res => {
+              this.loaded = false;
+              this.originPure = this.LODASH.cloneDeep(this.theme.pure);
+              this.originWallpaper = this.LODASH.cloneDeep(this.theme.wallpaper);
+              this.$nextTick(() => {
+                this.loaded = true;
+              });
             });
-          });
         })
         .catch(() => {
           this.$tips('error', '校验失败，请检查配置输入项！', null, 2000);
         });
     },
-
     // 校验转为Promise
     checkForm(formName) {
       return new Promise((resolve, reject) => {
@@ -459,10 +477,9 @@ export default {
         });
       });
     },
-
     // 查询文章
     queryArticle() {
-      this.API.findArticleByList({}, { notify: false }).then(res => {
+      this.API.article.findArticleByList({}, { notify: false, secret: 'rsa' }).then(res => {
         this.articleOptions = res.data.map(item => {
           return {
             label: item.title,
@@ -478,12 +495,8 @@ export default {
           value,
           rules: [
             {
-              strategy: 'isNoEmpty',
+              strategy: 'isNonEmpty',
               errMsg: '必填项',
-            },
-            {
-              strategy: 'isImgUrl',
-              errMsg: '内容格式不正确',
             },
           ],
         },
@@ -497,11 +510,11 @@ export default {
           value,
           rules: [
             {
-              strategy: 'isNoEmpty',
+              strategy: 'isNonEmpty',
               errMsg: '必填项',
             },
             {
-              strategy: 'isColorCode',
+              strategy: 'isColor',
               errMsg: '内容格式不正确',
             },
           ],
@@ -544,7 +557,7 @@ export default {
       const file = e.target.files[0];
       let formdata = new FormData();
       formdata.append('file', file);
-      this.API.uploadFile(formdata, { url: '/manage/upload?type=' + 'img' }).then(res => {
+      this.API.manage.uploadFile(formdata, { url: '/manage/upload?type=' + 'img' }).then(res => {
         this.currentUploading.form[this.currentUploading.key] = this.LODASH.get(res.data, '0.path');
         e.target.value = null;
       });
@@ -609,7 +622,24 @@ export default {
       height: 100%;
       .jsoneditor-menu {
         .jsoneditor-modes {
-          display: none;
+          // display: none;
+        }
+      }
+    }
+    .jsoneditor-btns {
+      .json-save-btn {
+        position: absolute;
+        height: 26px;
+        top: 5px;
+        left: 146px;
+        padding: 2px 10px;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        background-color: transparent;
+        opacity: 0.8;
+        &:hover {
+          border: 1px solid #8db8fd;
+          background-color: #5a98fb;
         }
       }
     }

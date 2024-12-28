@@ -3,7 +3,6 @@ const readline = require('readline');
 const path = require('path');
 const crypto = require('crypto');
 const moment = require('moment');
-const Validator = require('../utils/strategy.js');
 const request = require('request');
 
 /**
@@ -54,29 +53,13 @@ function exchangeArrayItem(array, before, to) {
 }
 
 /**
- * md5简单加密
- * @param {String} text 脱敏的字符串
+ * md5签名
+ * @param {String} text 签名内容
  * @returns String
  */
 function stringToMD5(text) {
   const md5 = crypto.createHash('md5');
   return md5.update(text).digest('hex');
-}
-
-/**
- * 配合策略模式校验多项数据合法性
- * @param {Array} arr 需要校验项数组 [{value: value, rules: []}]
- * @returns String
- */
-function checkParamsByRules(arr) {
-  for (let item of arr) {
-    let v = new Validator();
-    v.add(item.value, item.rules);
-    let errText = v.start(); // 返回最新
-    if (errText) {
-      return errText;
-    }
-  }
 }
 
 /**
@@ -103,25 +86,6 @@ const createDirSync = pathName => {
 const writeToFile = (path, content) => {
   return fs.promises.writeFile(path, content); // promise的方式写入文件
 };
-
-/**
- * 数组扁平化
- * @param {Array} arr 传入被扁平化的数组
- * @returns Array
- */
-function flatten(arr) {
-  let res = [];
-  arr.map(item => {
-    if (item.children && item.children.length != 0) {
-      // 有子路由
-      res.push(item);
-      res = res.concat(flatten(item.children));
-    } else {
-      res.push(item);
-    }
-  });
-  return res;
-}
 
 /**
  * 删除文件夹以及子文件夹的文件
@@ -303,15 +267,24 @@ function getTime(simple) {
   return simple ? moment().format('YYYYMMDDHHmmss') : moment().format('YYYY-MM-DD HH:mm:ss');
 }
 
+function getClientIP(req) {
+  // 按优先级获取客户端IP
+  return (
+    req.headers['x-forwarded-for']?.split(',')[0] || // 获取代理前的真实IP
+    req.headers['x-real-ip'] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.ip
+  );
+}
+
 module.exports = {
   debounce,
   copyObject,
   exchangeArrayItem,
   deleteDir,
   stringToMD5,
-  checkParamsByRules,
   streamPipe,
-  flatten,
   unlinkFile,
   readFileByLine,
   readDirectory,
@@ -321,5 +294,6 @@ module.exports = {
   handleRate,
   downloadAndConvertToBase64,
   bytesToSize,
-  getTime
+  getTime,
+  getClientIP
 };

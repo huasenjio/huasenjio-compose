@@ -30,13 +30,19 @@ let UserSchema = new mongoose.Schema({
   // 昵称
   name: {
     type: String,
-    default: '初级花酱',
+    default: '',
   },
 
   // 头像
   headImg: {
     type: String,
     default: '',
+  },
+
+  // 是否是管理员
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
 
   // 权限码(0-3)

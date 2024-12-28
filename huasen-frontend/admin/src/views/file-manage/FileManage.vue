@@ -169,20 +169,22 @@ export default {
 
   methods: {
     downloadStore() {
-      this.$notify.warning('功能正在开发中...');
+      this.$tips('info', '功能正在开发中...', null, 2000);
     },
 
     async upload(file, index, callback) {
       let formdata = new FormData();
       formdata.append('file', file);
-      this.API.uploadFile(formdata, {
-        notify: true,
-      }).then(res => {
-        // 刷新列表
-        this.queryFile();
-        // 执行回调
-        callback();
-      });
+      this.API.manage
+        .uploadFile(formdata, {
+          notify: true,
+        })
+        .then(res => {
+          // 刷新列表
+          this.queryFile();
+          // 执行回调
+          callback();
+        });
     },
 
     // 图片类型则显示图片
@@ -194,7 +196,7 @@ export default {
     // 获取文件图标
     getFileIcon(filePath) {
       let ext = filePath.split('.').slice(-1).join('');
-      return this.type2icon[ext];
+      return this.type2icon[ext] || 'icon-qitawenjian';
     },
 
     // 拷贝链接
@@ -217,14 +219,16 @@ export default {
       }
       if (needRemoveUrls.length === 0) return;
 
-      this.API.removeFile(
-        { filePaths: needRemoveUrls, isMultiple: true },
-        {
-          notify: true,
-        },
-      ).then(res => {
-        this.queryFile();
-      });
+      this.API.file
+        .removeFile(
+          { filePaths: needRemoveUrls, isMultiple: true },
+          {
+            notify: true,
+          },
+        )
+        .then(res => {
+          this.queryFile();
+        });
     },
 
     // 预览并下载
@@ -240,27 +244,29 @@ export default {
     },
 
     queryFile() {
-      this.API.findAllFile(
-        {},
-        {
-          notify: false,
-        },
-      ).then(res => {
-        this.files = res.data.map(url => {
-          let params = url.split('/');
-          let type = params[1];
-          let ext = params[params.length - 1].split('.')[1];
-          let iconClass = this.getFileIcon(url);
-          let isImg = ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'svg', 'SVG', 'gif', 'GIF'].includes(ext);
-          return {
-            url,
-            type,
-            ext,
-            iconClass,
-            isImg,
-          };
+      this.API.file
+        .findAllFile(
+          {},
+          {
+            notify: false,
+          },
+        )
+        .then(res => {
+          this.files = res.data.map(url => {
+            let params = url.split('/');
+            let type = params[1];
+            let ext = params[params.length - 1].split('.')[1];
+            let iconClass = this.getFileIcon(url);
+            let isImg = ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'svg', 'SVG', 'gif', 'GIF'].includes(ext);
+            return {
+              url,
+              type,
+              ext,
+              iconClass,
+              isImg,
+            };
+          });
         });
-      });
     },
   },
 };

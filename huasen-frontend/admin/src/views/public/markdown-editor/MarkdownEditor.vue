@@ -57,7 +57,7 @@ export default {
         trash: true, // 清空
         autofocus: false,
         save: true, // 保存（触发events中的save事件）
-        navigation: false, // 导航目录
+        navigation: true, // 导航目录
       },
       prop: {
         subfield: true, // 单双栏模式
@@ -115,9 +115,37 @@ export default {
   position: relative;
   z-index: 10;
   box-sizing: content-box;
-  .markdown-editor {
+  ::v-deep .markdown-editor {
     width: 100%;
-    min-height: 500px;
+    min-height: 400px;
+    max-height: calc(100vh - 160px);
+    &.fullscreen {
+      max-height: 100% !important;
+    }
+    .v-note-show {
+      .v-show-content {
+        ol {
+          li {
+            list-style-type: auto;
+            ol {
+              li {
+                list-style-type: inherit;
+              }
+            }
+          }
+        }
+        ul {
+          li {
+            list-style-type: disc;
+            ul {
+              li {
+                list-style-type: circle;
+              }
+            }
+          }
+        }
+      }
+    }
     /*滚动条宽度*/
     ::-webkit-scrollbar {
       display: none;

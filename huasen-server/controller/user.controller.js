@@ -6,8 +6,11 @@
  * @Description: 用户表控制器
  */
 const _ = require('lodash');
+const { encrypt, decrypt } = require('huasen-lib');
 const JWT = require('../plugin/jwt.js');
-const { encrypt, decrypt } = require('../utils/aes.js');
+const { SECRET_AES } = require('../config.js');
+const { onlineByKey } = require('./common.controller.js')
+
 
 function login(req, res, next) {
   let { id, password } = req.huasenParams;
@@ -25,9 +28,9 @@ function login(req, res, next) {
     ],
     async function (users) {
       let user = users[0];
-      let userPassword = user ? decrypt(user.password) : '';
+      let userPassword = user ? decrypt(user.password, SECRET_AES) : '';
       if (!user) {
-        global.huasen.responseData(res, {}, 'ERROR', '用户不存在', false);
+        global.huasen.responseData(res, {}, 'ERROR', '用户不存在');
       } else if (userPassword == password) {
         if (user.enabled) {
           // 生成token
@@ -44,14 +47,14 @@ function login(req, res, next) {
               config: user.config,
             },
             'SUCCESS',
-            '登录成功',
-            false,
+            '已登录',
+            'rsa',
           );
         } else {
-          global.huasen.responseData(res, {}, 'ERROR', '账号已被冻结', false);
+          global.huasen.responseData(res, {}, 'ERROR', '账号已被冻结');
         }
       } else {
-        global.huasen.responseData(res, {}, 'ERROR', '账户密码不匹配', false);
+        global.huasen.responseData(res, {}, 'ERROR', '账户密码不匹配');
       }
     },
   );
@@ -60,7 +63,7 @@ function login(req, res, next) {
 function register(req, res, next) {
   let { id, password } = req.huasenParams;
   // 密码加密存入数据库
-  let encryptPassword = encrypt(password);
+  let encryptPassword = encrypt(password, SECRET_AES);
   req.epWorking(
     [
       {
@@ -70,14 +73,14 @@ function register(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, {}, 'SUCCESS', '注册用户成功', false);
+      global.huasen.responseData(res, {}, 'SUCCESS', '注册用户');
     },
   );
 }
 
 function updatePassword(req, res, next) {
   let { id, password } = req.huasenParams;
-  let encryptPassword = encrypt(password);
+  let encryptPassword = encrypt(password, SECRET_AES);
   req.epWorking(
     [
       {
@@ -87,7 +90,7 @@ function updatePassword(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, {}, 'SUCCESS', '更新用户密码成功', false);
+      global.huasen.responseData(res, {}, 'SUCCESS', '已重置用户密码');
     },
   );
 }
@@ -105,7 +108,7 @@ function backup(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '数据已存储到云端', false);
+      global.huasen.responseData(res, {}, 'SUCCESS', '数据已存储到云端');
     },
   );
 }
@@ -127,11 +130,11 @@ function recovery(req, res, next) {
     async function (users) {
       let user = users[0];
       if (!user) {
-        global.huasen.responseData(res, {}, 'ERROR', '用户不存在', false);
+        global.huasen.responseData(res, {}, 'ERROR', '用户不存在');
       } else {
         // 剔除密码
         let { records, config } = user;
-        global.huasen.responseData(res, { records, config }, 'SUCCESS', '应用云端数据成功', true);
+        global.huasen.responseData(res, { records, config }, 'SUCCESS', '应用云端数据', 'aes');
       }
     },
   );
@@ -139,7 +142,7 @@ function recovery(req, res, next) {
 
 function add(req, res, next) {
   // 密码对称加密存储
-  req.huasenParams.password = encrypt(req.huasenParams.password);
+  req.huasenParams.password = encrypt(req.huasenParams.password, SECRET_AES);
   req.epWorking(
     [
       {
@@ -149,12 +152,12 @@ function add(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加用户成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '添加用户');
     },
   );
 }
 
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo, pageSize, id, code, name } = req.huasenParams;
   // 模糊查询参数
   let params = { id: { $regex: new RegExp(id, 'i') }, name: { $regex: new RegExp(name, 'i') } };
@@ -165,7 +168,7 @@ function findAllByPage(req, res, next) {
     [
       {
         schemaName: 'User',
-        methodName: 'findAllByPage',
+        methodName: 'findByPage',
         payloads: [
           {
             $and: [params],
@@ -177,7 +180,7 @@ function findAllByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询用户成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询用户');
     },
   );
 }
@@ -197,7 +200,7 @@ function remove(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除用户成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '删除用户');
     },
   );
 }
@@ -217,10 +220,10 @@ function update(req, res, next) {
     users => {
       let user = users[0];
       if (!user) {
-        global.huasen.responseData(res, result, 'ERROR', '用户不存在', false);
+        global.huasen.responseData(res, result, 'ERROR', '用户不存在');
       } else {
         if (user.password != password) {
-          req.huasenParams.password = encrypt(password);
+          req.huasenParams.password = encrypt(password, SECRET_AES);
         }
         // 发起更新服务
         req.epWorking(
@@ -232,7 +235,7 @@ function update(req, res, next) {
             },
           ],
           result => {
-            global.huasen.responseData(res, result, 'SUCCESS', '更新用户成功', false);
+            global.huasen.responseData(res, result, 'SUCCESS', '更新用户');
           },
         );
       }
@@ -243,7 +246,12 @@ function update(req, res, next) {
 function findAppConfig(req, res, next) {
   let systemConfig = require('../setting.json');
   let result = _.omit(systemConfig, ['mail', 'site.jwt', 'site.jwtLiveTime', 'a.jwtLiveTime']);
-  global.huasen.responseData(res, result, 'SUCCESS', '查询配置成功', true);
+  global.huasen.responseData(res, result, 'SUCCESS', '查询配置');
+}
+
+async function quit(req, res, next) {
+  const { proof } = req.huasenJWT;
+  onlineByKey(res, proof.key);
 }
 
 module.exports = {
@@ -254,9 +262,10 @@ module.exports = {
   recovery,
 
   add,
-  findAllByPage,
+  findByPage,
   remove,
   update,
 
   findAppConfig,
+  quit
 };

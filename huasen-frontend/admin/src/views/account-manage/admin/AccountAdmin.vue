@@ -43,7 +43,9 @@
 <script>
 import TableList from '@/components/content/table-list/TableList.vue';
 import DialogForm from '@/components/content/dialog-form/DialogForm.vue';
-import { getElementFormValidator } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 export default {
   name: 'AccountAdmin',
   components: { TableList, DialogForm },
@@ -109,8 +111,8 @@ export default {
         },
       ],
       rule: {
-        id: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:20::长度大于20', 'isEmail::请输入邮箱']), trigger: 'blur' }],
-        password: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50']), trigger: 'blur' }],
+        id: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:20::长度大于20', 'isEmail::请输入邮箱']) }],
+        password: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50']) }],
       },
       form: {
         id: '',
@@ -133,26 +135,32 @@ export default {
         },
         this.searchForm,
       );
-      this.API.findManageByPage(params, {
-        notify: false,
-      }).then(res => {
-        this.manages = res.data.list;
-        this.total = res.data.total;
-        this.cancel();
-      });
+      this.API.manage
+        .findManageByPage(params, {
+          notify: false,
+        })
+        .then(res => {
+          this.manages = res.data.list;
+          this.total = res.data.total;
+          this.cancel();
+        });
     },
-
     updatePagination(pageNo, pageSize) {
       this.pageNo = pageNo;
       this.pageSize = pageSize;
     },
-
     removeManage(index, row, pageNo, pageSize) {
-      if (row.id === 'admin@qq.com') {
-        this.$tips('warning', 'admin@qq.com 管理员，不允许被删除！', 'top-right', 1200);
+      if (this.$store.state.manage.id === row.id) {
+        this.$tips('error', '当前登录账号，不允许被删除！', 'top-right', 1200);
         return;
       }
-      this.API.removeManage({ _id: row._id }).then(res => {
+      if (row.code >= 3) {
+        if (this.manages.filter(item => item.code >= 3).length <= 1) {
+          this.$tips('error', '至少保留一个权限码 >= 3 的管理员', 'top-right', 1200);
+          return;
+        }
+      }
+      this.API.manage.removeManage({ _id: row._id }).then(res => {
         this.queryManage();
       });
     },
@@ -173,13 +181,13 @@ export default {
     },
     save() {
       if (this.mode === 'edit') {
-        this.API.updateManage(this.form).then(res => {
+        this.API.manage.updateManage(this.form).then(res => {
           this.queryManage();
         });
       } else if (this.mode === 'add') {
         delete this.form._id;
         delete this.form._v;
-        this.API.addManage(this.form).then(res => {
+        this.API.manage.addManage(this.form).then(res => {
           this.queryManage();
         });
       }

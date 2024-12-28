@@ -62,6 +62,9 @@ export default {
     defaultWallpaper: {},
   },
 
+  // 搜索引擎
+  searchConfig: [],
+
   // 系统配置
   appConfig: {
     // 是否已加载配置
@@ -83,7 +86,7 @@ export default {
       footerHtml: '',
       serviceQRCodeUrl: require('@/assets/img/logo/weixin.png'),
       openLabelClassification: false,
-      autoIOWenIcon: false
+      autoIconPatch: false
     },
   },
 };

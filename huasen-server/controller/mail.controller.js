@@ -13,11 +13,11 @@ async function getCode(req, res, next) {
     let { mail } = req.huasenParams;
     let mailCode = await MAILER.findCodeByMail(mail);
     if (mailCode) {
-      global.huasen.responseData(res, {}, 'SUCCESS', '邮箱验证码已发送', false);
+      global.huasen.responseData(res, {}, 'SUCCESS', '验证码已发送，请检查邮箱！');
     } else {
       let code = Math.floor(Math.random() * (10000 - 1)) + 1;
       let data = await MAILER.sendCode(mail, code);
-      global.huasen.responseData(res, data, 'SUCCESS', '邮箱验证码发送成功', false);
+      global.huasen.responseData(res, {}, 'SUCCESS', '邮箱验证码已发送，有效期5分钟！');
     }
   } catch (err) {
     next(err);

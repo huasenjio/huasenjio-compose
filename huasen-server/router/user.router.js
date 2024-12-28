@@ -7,7 +7,7 @@
  */
 const express = require('express');
 const router = express.Router();
-const { login, register, updatePassword, recovery, backup, add, findAllByPage, remove, update, findAppConfig } = require('../controller/user.controller.js');
+const { login, register, updatePassword, recovery, backup, quit, add, findByPage, remove, update, findAppConfig } = require('../controller/user.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower, checkManageHighestPower } = require('../middleware/manage.middleware.js');
 const { checkUserAccountUnique } = require('../middleware/user.middleware.js');
@@ -31,7 +31,14 @@ router.post('/updatePassword', checkMailCode, handleUselessParams, updatePasswor
  * @apiParam {string=json数组} records="[]" 收录列表
  * @apiParam {string=json对象} config="{}" 用户配置
  */
-router.post('/backup', handleJWT, handleUselessParams, backup);
+router.post('/backup', handleJWT(), handleUselessParams, backup);
+
+/**
+ * @api {post} /user/quit 退出登录
+ * @apiVersion 1.0.0
+ * @apiGroup User
+ */
+router.post('/quit', handleJWT(), quit);
 
 /**
  * @api {post} /user/recovery
@@ -43,12 +50,14 @@ router.post('/backup', handleJWT, handleUselessParams, backup);
  *    "config": {}
  * }
  */
-router.post('/recovery', handleJWT, recovery);
-router.post('/findAppConfig', handleJWT, findAppConfig);
+router.post('/recovery', handleJWT(), recovery);
+router.post('/findAppConfig', findAppConfig);
 
-router.post('/add', handleJWT, checkManagePower, checkUserAccountUnique, handleUselessParams, add);
-router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);
-router.post('/remove', handleJWT, checkManagePower, checkManageHighestPower, remove);
-router.post('/update', handleJWT, checkManagePower, checkManageHighestPower, update);
+
+// 管理员调用
+router.post('/add', handleJWT(), checkManagePower, checkUserAccountUnique, handleUselessParams, add);
+router.post('/remove', handleJWT(), checkManagePower, checkManageHighestPower, remove);
+router.post('/update', handleJWT(), checkManagePower, checkManageHighestPower, update);
+router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
 
 module.exports = router;

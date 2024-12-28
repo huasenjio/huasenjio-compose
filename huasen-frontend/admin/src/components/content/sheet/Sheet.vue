@@ -17,6 +17,11 @@
           <div class="text">{{ scope.row[col.key] | emptyTip }}</div>
         </template>
       </el-table-column>
+      <el-table-column v-if="showOffline" label="操作" :width="240">
+        <template slot-scope="scope">
+          <el-button v-if="showOffline" size="mini" type="danger" @click="$emit('offline', scope.$index, scope.row)">强制下线</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       class="w-full flex mt-px-20"
@@ -55,6 +60,10 @@ export default {
           date: '1979-01-01',
         },
       ],
+    },
+    showOffline: {
+      type: Boolean,
+      default: false,
     },
   },
 

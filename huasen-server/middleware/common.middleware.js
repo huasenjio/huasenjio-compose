@@ -6,24 +6,20 @@
  * @Description: 共用中间件
  */
 
-const fs = require('fs');
-const path = require('path');
-
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const moment = require('moment');
 const _ = require('lodash');
+const session = require('express-session');
 
-const { SESSION, POOL_BLACKLIST, POOL_ACCESS } = require('../config.js');
-const { getUid } = require('../utils/tool.js');
+const { SESSION, POOL_BLACKLIST, SECRET_RSA_PRIVATE } = require('../config.js');
 const { handleRecord } = require('../utils/record-handle.js');
-const { rsaPrivateKey, privateDecrypt, rsaDecryptLong } = require('../utils/rsa.js');
+const { rsaDecryptLong } = require('huasen-lib');
+const { decrypt } = require('huasen-lib');
 const JWT = require('../plugin/jwt.js');
+const { getClientIP } = require('../utils/tool.js')
 
 // 导入流量控制模块
 const { throttle } = require('../plugin/throttle.js');
 // reids对象封装
-const { setObjectRedisItem, getObjectRedisItem, setObjectFiledRedisItem, isExistObjectFiledRedisItem } = require('../plugin/ioredis/map.js');
+const { getObjectRedisItem } = require('../plugin/ioredis/map.js');
 
 // 处理cookie和session中间件，直接通过app.use(handleSession)
 const handleSession = session({
@@ -36,14 +32,14 @@ const handleSession = session({
 // 设置黑名单拦截
 const handleBlackList = function (req, res, next) {
   // 以ip为key存储
-  let ip = req.headers['x-forwarded-for'] || req.ip;
+  let ip = getClientIP(req);
   getObjectRedisItem(POOL_BLACKLIST)
     .then(blacklistObj => {
       let exist = Object.keys(blacklistObj).some(item => {
         return !!ip.includes(item);
       });
       if (exist) {
-        global.huasen.responseData(res, {}, 'ERROR', '黑名单拦截', false);
+        global.huasen.responseData(res, {}, 'ERROR', '你在拉黑单中，已禁止访问，劝你善良！');
       } else {
         next();
       }
@@ -53,48 +49,75 @@ const handleBlackList = function (req, res, next) {
     });
 };
 
-// 预处理传递的参数
+// 预处理请求参数，包括：解密数据、合并参数
 function handleRequestParams(req, res, next) {
   let { query, body } = req;
-  // post请求使用非对称加密，需要使用私钥解密
-  if (req.method === 'POST' && body.secretMethod === 'rsa') {
+
+  // 查看请求头是否携带私钥
+  const secretMethod = req.get('Secret-Method');
+  const secretKey = req.get('Secret-Key');
+  const secretText = req.body['_secret_text'];
+  // 私钥解密对称密钥
+  let aesSecret;
+  if (secretKey) {
+    const aseRaw = rsaDecryptLong('private', SECRET_RSA_PRIVATE, secretKey, 64);
+    aesSecret = JSON.parse(aseRaw)
+  }
+  // 仅支持POST请求加密传输
+  if (req.method === 'POST' && secretMethod && secretText) {
     try {
-      let raw = rsaDecryptLong('private', body.secretText, 117);
+      let raw;
+      if (secretMethod === 'rsa') {
+        // 非对称解密
+        raw = rsaDecryptLong('private', SECRET_RSA_PRIVATE, secretText, 64);
+      } else if (secretMethod === 'aesinrsa' && aesSecret) {
+        // 私钥解析aes密钥，然后使用aes解密数据
+        raw = decrypt(secretText, aesSecret)
+      }
       body = JSON.parse(raw);
     } catch (err) {
       next(err);
     }
   }
-  // 合并参数，用于后期业务
-  req.huasenParams = Object.assign(query, body);
+  // 合并参数，方便后期业务
+  const params = Object.assign(query, body, { _aes_secret: aesSecret });
+  res.huasenParams = params;
+  req.huasenParams = params;
   next();
 }
 
-// 预处理请求携带的凭证信息
-function handleJWT(req, res, next) {
-  let token = req.get('token');
-  JWT.verifyToken(token)
-    .then(({ data }) => {
-      // 注入到请求对象
-      req.huasenJWT = {
-        token: token,
-        proof: data,
-      };
-      next();
-    })
-    .catch(err => {
-      req.huasenJWT = {
-        token: token,
-        proof: {
-          key: '',
-          code: 0,
-        },
-      };
-      next();
-    });
+/**
+ * 预处理请求携带的凭证信息
+ * @param {string} type - 处理类型，如果是为auth，那么当token无效时，直接响应错误信息；若为parse，则充当身份解析，token无效时，直接放行
+ * @returns 
+ */
+function handleJWT(type = 'auth') {
+  return function authentication(req, res, next) {
+    const token = req.get('token');
+    JWT.verifyToken(token)
+      .then(({ data }) => {
+        // 注入到请求对象
+        req.huasenJWT = {
+          token,
+          proof: data,
+        };
+        next();
+      })
+      .catch(err => {
+        let msg = _.get(err, 'msg');
+        let tag = _.get(err, 'tag');
+        if (type === 'auth') {
+          global.huasen.responseData(res, {}, 'FORBIDDEN', msg);
+        } else {
+          next();
+        }
+      });
+  }
 }
 
-// 移除异常参数
+/**
+ * 移除异常参数，不支持key为null、undefined、""、"null"、"undefined"的参数，建议只在写入逻辑中使用
+ */
 function handleUselessParams(req, res, next) {
   Object.keys(req.huasenParams).forEach(key => {
     let value = req.huasenParams[key];
@@ -107,9 +130,18 @@ function handleUselessParams(req, res, next) {
 
 // 阀门限流
 function handleRequest(req, res, next) {
-  // 解析保存原始数据
+  // 默认配置
+  req.huasenJWT = {
+    token: req.get('token'),
+    proof: {
+      key: '',
+      code: 0,
+    },
+  };
+  req.huasenParams = {};
+
   // 解析nginx反向代理后的真实ip
-  let ip = req.headers['x-forwarded-for'] || req.ip;
+  let ip = getClientIP(req);
   let { url, method, hostname } = req;
   let origin = {
     ip,
@@ -119,17 +151,30 @@ function handleRequest(req, res, next) {
     dot: req.get('dot'),
     referer: req.get('referer'),
     agent: req.get['user-agent'],
+    waitTime: 0,
+    responseTime: 0,
   };
-
+  let addThrottleTime = 0, handleTime = 0, deleteTime = 0;
   // 添加请求至并发处理模块
   throttle.addRequest(req, res, next, {
     // 添加请求前
-    addRequestCallback: () => { },
+    addRequestHook: () => {
+      addThrottleTime = new Date().getTime();
+    },
     // 处理请求前
-    handleRequestCallback: () => { },
+    handleRequestHook: () => {
+      handleTime = new Date().getTime();
+    },
     // 请求销毁后
-    deleteRequestCallback: () => {
-      handleRecord(origin, req);
+    deleteRequestHook: () => {
+      deleteTime = new Date().getTime();
+      // 获取请求参数
+      origin.payload = _.get(req, 'huasenParams') || {};
+      // 计算等待时间和响应时间
+      origin.waitTime = handleTime - addThrottleTime;
+      origin.responseTime = deleteTime - handleTime;
+      // 用户记录存入缓存
+      handleRecord(origin);
     },
   });
 }
@@ -137,7 +182,7 @@ function handleRequest(req, res, next) {
 // 错误处理中间件
 const handleRequestError = function (err, req, res, next) {
   // 返回到客户端
-  global.huasen.responseData(res, {}, 'ERROR', '发生未知错误', false);
+  global.huasen.responseData(res, {}, 'ERROR', '发生未知错误');
   // 记录错误日志
   global.huasen.formatError(err, '全局错误处理中间件发现错误');
 };

@@ -69,14 +69,16 @@ export default {
 
   methods: {
     queryOverview() {
-      this.API.overview(
-        {},
-        {
-          notify: false,
-        },
-      ).then(res => {
-        this.statisticsData = res.data;
-      });
+      this.API.manage
+        .overview(
+          {},
+          {
+            notify: false,
+          },
+        )
+        .then(res => {
+          this.statisticsData = res.data;
+        });
     },
   },
 };

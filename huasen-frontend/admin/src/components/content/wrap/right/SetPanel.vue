@@ -16,8 +16,11 @@
 </template>
 
 <script>
-import { checkParamsByRules } from '@/plugin/strategy.js';
 import HsDialog from '@/components/common/dialog/Dialog.vue';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const checkParamsByRules = validator.verify.bind(validator);
+
 export default {
   name: 'SetPanel',
 
@@ -44,7 +47,7 @@ export default {
 
   methods: {
     queryConfig() {
-      this.API.findAppConfig().then(res => {
+      this.API.manage.findAppConfig().then(res => {
         this.systemConfig = JSON.stringify(res.data, null, 2);
       });
     },
@@ -55,7 +58,7 @@ export default {
           value: this.systemConfig,
           rules: [
             {
-              strategy: 'isNoEmpty',
+              strategy: 'isNonEmpty',
               errMsg: '必填项',
             },
             {
@@ -69,9 +72,11 @@ export default {
         this.$tips('error', errText, 'top-right', 1000);
         return;
       }
-      this.API.saveAppConfig({
-        systemConfig: this.systemConfig,
-      }).then(res => {});
+      this.API.manage
+        .saveAppConfig({
+          systemConfig: this.systemConfig,
+        })
+        .then(res => {});
     },
 
     closeDialog() {

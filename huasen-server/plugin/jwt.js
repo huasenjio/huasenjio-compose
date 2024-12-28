@@ -9,7 +9,7 @@
 // 引入JWT模块
 const jwt = require('jsonwebtoken');
 const { JWT, POOL_TOKEN } = require('../config.js');
-const { setRedisItem, getRedisItem } = require('../plugin/ioredis/common.js');
+const { setRedisItem, getRedisItem, delRedisItem, getRedisKeys, getRedisKeyTTL, getRedisValuesByKeys } = require('../plugin/ioredis/common.js');
 
 class Jwter {
   constructor() {
@@ -18,9 +18,9 @@ class Jwter {
 
   /**
    * 注册token，重复生成仅仅会覆盖token，不会延长token的生存时间
-   * @param   {String}  key     存入redis的键
-   * @param   {Object}  payload 包含id的参数
-   * @returns {String}  token   生成的token
+   * @param   {String}  key - 存入redis的键，此处为用户、管理员账号，即：邮箱地址
+   * @param   {Object}  payload - 必须包含id属性，载荷信息存入token
+   * @returns {String}  token - 生成的token
    */
   createToken(key, payload = {}) {
     return new Promise((resolve, reject) => {
@@ -30,14 +30,14 @@ class Jwter {
           resolve(token);
         })
         .catch(err => {
-          reject(this.handleError('error'));
+          reject(this.handle('error'));
         });
     });
   }
 
   /**
    * 校验token合法性
-   * @param {Sting} token
+   * @param {Sting} token - 待校验的token
    * @returns
    */
   verifyToken(token) {
@@ -54,50 +54,97 @@ class Jwter {
             .then(token => {
               if (token) {
                 // 正常
-                resolve(this.handleError('success', data));
+                resolve(this.handleMsg('pass', data));
               } else {
                 // 过期
-                reject(this.handleError('timeout'));
+                reject(this.handleMsg('timeout'));
               }
             })
             .catch(err => {
               // 错误
-              reject(this.handleError('error'));
+              reject(this.handleMsg('error'));
             });
         } else {
           // 不合法，校验不通过
-          reject(this.handleError('illegal'));
+          reject(this.handleMsg('illegal'));
         }
       });
     });
   }
 
   /**
+   * 获取所有活跃token
+   * @returns 
+   */
+  async getActiveToken() {
+    try {
+      let onlines = []
+      const keys = await getRedisKeys(`${POOL_TOKEN}_*`)
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const token = await getRedisItem(key)
+        const ttl = await getRedisKeyTTL(key)
+        onlines.push({
+          id: this.getKey(key),
+          token: token,
+          ttl
+        })
+      }
+      return onlines
+    } catch (err) {
+      return
+    }
+  }
+
+  /**
+   * 销毁token
+   * @param {string} key - 存入redis的键，此处为用户、管理员账号，即：邮箱地址
+   * @returns
+   */
+  async destroyTokenByKey(key) {
+    try {
+      const redisKey = this.getTokenRedisKey(key);
+      const token = await getRedisItem(redisKey);
+      if (token) {
+        await delRedisItem(redisKey)
+        return this.handleMsg('finish', null)
+      }
+      return this.handleMsg('notfound', null)
+    } catch (err) {
+      this.handleMsg('error', null)
+    }
+  }
+
+
+  /**
    * 统一处理通知
-   * @param {Object} tag  通知标志
-   * @param {Object} data 解析的数据
+   * @param {Object} tag - 标志
+   * @param {Object} data - 解析的数据
    * @returns Object
    */
-  handleError(tag, data) {
+  handleMsg(tag, data) {
     let notify = {};
     switch (tag) {
-      case 'success':
+      case 'pass':
         notify.msg = '身份校验通过';
         break;
       case 'timeout':
-        notify.msg = '身份已过期';
+        notify.msg = '身份已过期，请重新登录！';
         break;
       case 'illegal':
-        notify.msg = '身份非法';
-        break;
-      case 'error':
-        notify.msg = '身份校验容器异常';
+        notify.msg = '身份非法，劝您善良！';
         break;
       case 'lack':
-        notify.msg = '身份参数缺失';
+        notify.msg = '身份参数缺失，请您登录账号！';
+        break;
+      case 'notfound':
+        notify.msg = '身份未知，劝您善良！';
+        break;
+      case 'finish':
+        notify.msg = '操作完成';
         break;
       default:
-        notify.msg = '身份校验错误';
+        notify.msg = '未知异常';
         break;
     }
     notify.tag = tag;
@@ -105,9 +152,22 @@ class Jwter {
     return notify;
   }
 
-  // 获取邮箱存储于redis里面的key值
+  /**
+   * 获取jwt存储于redis的key值
+   * @param {string} key - 存入redis的键，此处为用户、管理员账号，即：邮箱地址
+   * @returns 
+   */
   getTokenRedisKey(key) {
     return `${POOL_TOKEN}_${key}`;
+  }
+
+  /**
+   * 获取key
+   * @param {string} redisKey - redis的key值
+   * @returns 
+   */
+  getKey(redisKey) {
+    return redisKey.split(`${POOL_TOKEN}_`)[1]
   }
 }
 

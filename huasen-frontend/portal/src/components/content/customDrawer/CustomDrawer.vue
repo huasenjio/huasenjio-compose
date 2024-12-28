@@ -146,7 +146,6 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import HsDrawer from '@/components/content/drawer/Drawer.vue';
-import searchs from '@/config/search.config.js';
 
 export default {
   name: 'CustomDrawer',
@@ -245,7 +244,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'themeConfig']),
+    ...mapState(['user', 'themeConfig', 'searchConfig']),
 
     displayPure() {
       let pureTemp = this.themeConfig.pure ? this.themeConfig.pure : [];
@@ -260,7 +259,7 @@ export default {
     },
 
     searchOptions() {
-      return searchs.map((item, index) => {
+      return this.searchConfig.map((item, index) => {
         return {
           value: index,
           label: item.name,

@@ -52,6 +52,16 @@
           <HomeSheet :tableData="traces" :tableMap="tracesMap"></HomeSheet>
         </div>
       </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label">
+          <i class="el-icon-view"></i>
+          在线人数
+          {{ onlines.length }}
+        </span>
+        <div class="w-full h-px-400">
+          <HomeSheet :tableData="onlines" :tableMap="onlinesMap" :showOffline="true" @offline="handleOffline"></HomeSheet>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -133,13 +143,28 @@ export default {
           width: '135',
         },
       ],
+      onlines: [],
+      onlinesMap: [
+        {
+          label: '账号',
+          key: 'id',
+        },
+        {
+          label: '票据',
+          key: 'token',
+        },
+        {
+          label: '有效期',
+          key: 'ttl',
+        },
+      ],
 
       // 访问数据
       visitorStatus: {
-        time: [''],
-        user: [],
-        admin: [],
-        other: [],
+        time: ['00:00:00'],
+        user: [0],
+        admin: [0],
+        other: [0],
       },
       statusCount: 0,
       maxStatusCount: 240,
@@ -165,6 +190,23 @@ export default {
   },
 
   methods: {
+    handleOffline(index, row) {
+      this.$confirm('您确定强制下线该账号吗？', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(async () => {
+          if (this.manage.id === row.id) {
+            this.$tips('error', '您无法下线自己，请手动退出账号！', 'top-right', 1200);
+            return;
+          }
+          await this.API.manage.offline({ id: row.id });
+          this.onlines = this.onlines.filter(el => el.id !== row.id);
+        })
+        .catch(() => {});
+    },
+
     // 初始化ws
     initWebsocket() {
       this.ws = new WebSocket(`${this.CONSTANT.baseWebsocketURL}?token=${this.manage.token}`);
@@ -229,7 +271,7 @@ export default {
         other,
       };
 
-      let { ipMap, referers, hosts, traces } = data;
+      let { ipMap = {}, referers = [], hosts = [], traces = [], onlines = [] } = data;
       // 处理ip集合
       Object.keys(ipMap).map(key => {
         let exit, exitIndex;
@@ -289,6 +331,22 @@ export default {
           });
         }
       });
+      // 处理在线用户
+      this.onlines = onlines.map(el => {
+        let { id, token, ttl } = el;
+        if (ttl === -1) {
+          ttl = '永久';
+        } else if (ttl > 0) {
+          ttl = (ttl / 60 / 60 / 24).toFixed(2) + '天';
+        } else {
+          ttl = '已失效';
+        }
+        return {
+          id,
+          token,
+          ttl,
+        };
+      });
     },
 
     // 心跳
@@ -299,7 +357,7 @@ export default {
             this.ws.send(JSON.stringify(['system', 'visitor']));
           }
         },
-        10000,
+        1000 * 15,
         true,
       );
     },

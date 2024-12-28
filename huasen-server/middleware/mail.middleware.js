@@ -16,7 +16,7 @@ function checkMailCode(req, res, next) {
       if (code == mailCode) {
         next();
       } else {
-        global.huasen.responseData(res, {}, 'ERROR', '邮箱验证码不正确', false);
+        global.huasen.responseData(res, {}, 'ERROR', '邮箱验证码不正确');
       }
     })
     .catch(err => {

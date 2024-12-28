@@ -53,8 +53,9 @@
 import TableList from '@/components/content/table-list/TableList.vue';
 import DialogForm from '@/components/content/dialog-form/DialogForm.vue';
 import SiteSelector from './SiteSelector.vue';
-
-import { getElementFormValidator } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 
 export default {
   name: 'ColumnManage',
@@ -165,10 +166,10 @@ export default {
         // },
       ],
       rule: {
-        name: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']), trigger: 'blur' }],
-        url: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isUrl::请输入正确的网址']), trigger: 'blur' }],
-        siteStore: [{ validator: getElementFormValidator(['isJSONArray::请输入JSON数组']), trigger: 'blur' }],
-        expand: [{ validator: getElementFormValidator(['isJSONObject::请输入JSON对象']), trigger: 'blur' }],
+        name: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']) }],
+        url: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isUrl::请输入正确的网址']) }],
+        siteStore: [{ validator: getElementFormValidator(['isJSONArray::请输入JSON数组']) }],
+        expand: [{ validator: getElementFormValidator(['isJSONObject::请输入JSON对象']) }],
       },
       form: {
         name: '',
@@ -197,13 +198,15 @@ export default {
         },
         this.searchForm,
       );
-      this.API.findColumnByPage(params, {
-        notify: false,
-      }).then(res => {
-        this.tableData = res.data.list;
-        this.total = res.data.total;
-        this.cancel();
-      });
+      this.API.column
+        .findColumnByPage(params, {
+          notify: false,
+        })
+        .then(res => {
+          this.tableData = res.data.list;
+          this.total = res.data.total;
+          this.cancel();
+        });
     },
 
     updatePagination(pageNo, pageSize) {
@@ -212,7 +215,7 @@ export default {
     },
 
     handleRemove(index, row, pageNo, pageSize) {
-      this.API.removeColumn({ _id: row._id }).then(res => {
+      this.API.column.removeColumn({ _id: row._id }).then(res => {
         this.queryData();
       });
     },
@@ -242,13 +245,13 @@ export default {
 
     save() {
       if (this.mode === 'edit') {
-        this.API.updateColumn(this.form).then(res => {
+        this.API.column.updateColumn(this.form).then(res => {
           this.queryData();
         });
       } else if (this.mode === 'add') {
         delete this.form._id;
         delete this.form._v;
-        this.API.addColumn({ data: this.form }).then(res => {
+        this.API.column.addColumn({ data: this.form }).then(res => {
           this.queryData();
         });
       }

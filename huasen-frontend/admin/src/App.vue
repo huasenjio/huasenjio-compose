@@ -6,7 +6,7 @@
  * @Description: 根组件
 -->
 <template>
-  <div id="app">
+  <div id="app" v-if="loaded">
     <BrowserTips v-if="!isSupport"></BrowserTips>
     <Wrap v-else> </Wrap>
   </div>
@@ -23,6 +23,12 @@ export default {
 
   components: { Wrap, BrowserTips },
 
+  data() {
+    return {
+      loaded: false,
+    };
+  },
+
   computed: {
     ...mapState(['manage']),
     // 判断浏览器支持
@@ -37,23 +43,26 @@ export default {
     },
   },
 
-  created() {
+  async created() {
+    // 请求版权信息
+    await this.API.app.getCopyright({}, { notify: false });
+
     // 移除开屏动画
     let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');
     if (loadingDOM) {
       document.body.removeChild(loadingDOM);
     }
-
     // 初始化本地数据
-    this.$store.dispatch('initManage');
-    // 请求应用配置
-    this.$store.dispatch('initAppConfig');
-  },
-
-  mounted() {
-    watermark({
-      watermark_txt: this.manage.id,
+    await this.$store.dispatch('initManage', {
+      onload: () => {
+        watermark({
+          watermark_txt: this.manage.id,
+        });
+      },
     });
+    // 请求应用配置
+    await this.$store.dispatch('initAppConfig');
+    this.loaded = true;
   },
 };
 </script>

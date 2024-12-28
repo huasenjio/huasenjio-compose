@@ -13,8 +13,8 @@ import { handleParamsToURL } from './utils.js'
 
 /**
  * ajax请求实例
- * @param {Object} option axios配置对象
- * @returns Object Promise对象
+ * @param {object} option - axios配置
+ * @returns {object} Promise
  */
 export function http(option) {
   // 创建axios配置实例
@@ -42,9 +42,9 @@ export function http(option) {
 
 /**
  * JSONP方式进行get网络请求
- * @param {String} url   请求链接
- * @param {Object} data  参数键值对
- * @returns Object Promise对象
+ * @param {string} url - 请求链接
+ * @param {object} data - 参数键值对
+ * @returns {object} Promise
  */
 export function jsonp(url, data) {
   // 返回一个Promise

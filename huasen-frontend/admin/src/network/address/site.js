@@ -11,7 +11,6 @@ import { get, post } from '../request.js';
 
 const findSiteByPage = post('/site/findByPage');
 const addSite = post('/site/add');
-const addManySite = post('/site/addMany');
 const removeSite = post('/site/remove');
 const removeManySite = post('/site/removeMany');
 const updateSite = post('/site/update');
@@ -21,4 +20,4 @@ const findSiteColmunByList = post('/site/siteColumnList');
 const bindColumnToSite = post('/site/bindColumn');
 const unbindColumnToSite = post('/site/unbindColumn');
 
-export { findSiteByPage, addSite, addManySite, removeSite, removeManySite, updateSite, findSiteByList, findSiteTagByList, findSiteColmunByList, bindColumnToSite, unbindColumnToSite };
+export { findSiteByPage, addSite, removeSite, removeManySite, updateSite, findSiteByList, findSiteTagByList, findSiteColmunByList, bindColumnToSite, unbindColumnToSite };

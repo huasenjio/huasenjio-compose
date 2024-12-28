@@ -10,7 +10,7 @@ const ExcelJS = require('exceljs');
 const { Site, Column, epWorking } = require('../service/index.js');
 const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
 
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo, pageSize, name, code, tag } = req.huasenParams;
   // 模糊查询参数
   let params = { name: { $regex: new RegExp(name, 'i') } };
@@ -26,7 +26,7 @@ function findAllByPage(req, res, next) {
     [
       {
         schemaName: 'Site',
-        methodName: 'findAllByPage',
+        methodName: 'findByPage',
         payloads: [
           {
             $and: [params],
@@ -38,7 +38,7 @@ function findAllByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询站点成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询站点成');
     },
   );
 }
@@ -53,7 +53,7 @@ function add(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加站点成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '添加站点');
     },
   );
 }
@@ -61,7 +61,7 @@ function add(req, res, next) {
 function addMany(req, res, next) {
   let { sites } = req.huasenParams;
   if (!Array.isArray(sites)) {
-    global.huasen.responseData(res, {}, 'ERROR', '导入数据异常', false);
+    global.huasen.responseData(res, {}, 'ERROR', '导入数据异常');
   } else {
     req.epWorking(
       [
@@ -72,7 +72,7 @@ function addMany(req, res, next) {
         },
       ],
       result => {
-        global.huasen.responseData(res, result, 'SUCCESS', '导入站点成功', false);
+        global.huasen.responseData(res, result, 'SUCCESS', '导入站点');
       },
     );
   }
@@ -93,7 +93,7 @@ function remove(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除站点成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '删除站点');
     },
   );
 }
@@ -101,7 +101,7 @@ function remove(req, res, next) {
 function removeMany(req, res, next) {
   let { _ids } = req.huasenParams;
   if (!Array.isArray(_ids)) {
-    global.huasen.responseData(res, {}, 'ERROR', '参数异常', false);
+    global.huasen.responseData(res, {}, 'ERROR', '参数异常');
   } else {
     req.epWorking(
       [
@@ -112,7 +112,7 @@ function removeMany(req, res, next) {
         },
       ],
       result => {
-        global.huasen.responseData(res, result, 'SUCCESS', '删除站点成功', false);
+        global.huasen.responseData(res, result, 'SUCCESS', '删除站点');
       },
     );
   }
@@ -129,7 +129,7 @@ function update(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '更新站点成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '更新站点');
     },
   );
 }
@@ -156,7 +156,7 @@ function findByCode(req, res, next) {
       },
     ],
     sites => {
-      global.huasen.responseData(res, sites, 'SUCCESS', '查询站点成功', false);
+      global.huasen.responseData(res, sites, 'SUCCESS', '查询站点');
     },
   );
 }
@@ -171,7 +171,7 @@ function findByList(req, res, next) {
       },
     ],
     sites => {
-      global.huasen.responseData(res, sites, 'SUCCESS', '查询站点成功', false);
+      global.huasen.responseData(res, sites, 'SUCCESS', '查询站点');
     },
   );
 }
@@ -195,12 +195,12 @@ function findSiteTagByList(req, res, next) {
             tags = tags.concat(expandObj.tag);
           }
         } catch (err) {
-          global.huasen.responseData(res, {}, 'ERROR', '数据异常', false);
+          global.huasen.responseData(res, {}, 'ERROR', '数据异常');
         }
       });
       // 数据去重
       tags = Array.from(new Set(tags));
-      global.huasen.responseData(res, tags, 'SUCCESS', '查询站点成功', false);
+      global.huasen.responseData(res, tags, 'SUCCESS', '查询站点');
     },
   );
 }
@@ -222,7 +222,7 @@ function findSiteColumnByList(req, res, next) {
           columnIdList.push(item._id);
         }
       });
-      global.huasen.responseData(res, columnIdList, 'SUCCESS', '查询链接所属栏目成功', false);
+      global.huasen.responseData(res, columnIdList, 'SUCCESS', '查询链接所属栏目');
     },
   );
 }
@@ -257,11 +257,11 @@ function bindColumn(req, res, next) {
                 },
               });
             } catch (err) {
-              global.huasen.responseData(res, {}, 'ERROR', '数据异常', false);
+              global.huasen.responseData(res, {}, 'ERROR', '数据异常');
             }
           });
           let updateResult = await Site.bulkWrite(bulkUpdates);
-          global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
+          global.huasen.responseData(res, updateResult, 'SUCCESS', '链接已绑定栏目');
         }
       } catch (err) { }
     },
@@ -295,11 +295,11 @@ function unbindColumn(req, res, next) {
                 },
               });
             } catch (err) {
-              global.huasen.responseData(res, {}, 'ERROR', '数据异常', false);
+              global.huasen.responseData(res, {}, 'ERROR', '数据异常');
             }
           });
           let updateResult = await Site.bulkWrite(bulkUpdates);
-          global.huasen.responseData(res, updateResult, 'SUCCESS', '解绑成功', false);
+          global.huasen.responseData(res, updateResult, 'SUCCESS', '链接已解绑栏目');
         }
       } catch (err) { }
     },
@@ -396,7 +396,7 @@ function importSite(req, res, next) {
                     });
                   })
                   let updateResult = await Column.bulkWrite(bulkUpdates);
-                  global.huasen.responseData(res, siteList, 'SUCCESS', '导入站点成功');
+                  global.huasen.responseData(res, siteList, 'SUCCESS', '导入站点');
                 },
               );
             })
@@ -475,7 +475,7 @@ async function exportSite(req, res, next) {
 }
 
 module.exports = {
-  findAllByPage,
+  findByPage,
   add,
   update,
   remove,

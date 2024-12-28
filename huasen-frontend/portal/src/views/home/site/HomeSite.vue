@@ -45,7 +45,7 @@
 
               <div class="site-card inherit-text text w-px-180 sm:w-px-150">
                 <div class="img-group">
-                  <img v-lazy="{ siteUrl: site.url, autoIOWenIcon: appConfig.site.autoIOWenIcon }" :src="imgUrl(site)" />
+                  <img v-lazy="{ siteUrl: site.url, iconPatch: appConfig.site.autoIconPatch }" :src="imgUrl(site)" />
                 </div>
                 <div class="text-group">
                   <div class="name text">{{ site.name }}</div>

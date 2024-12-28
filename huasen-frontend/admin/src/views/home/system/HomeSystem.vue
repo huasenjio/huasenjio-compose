@@ -14,7 +14,7 @@
       <div class="disk-text text">
         <div class="text-item text">磁盘名：{{ disk.diskName }}</div>
         <div class="text-item text">空闲容量：{{ disk.freeValue }}</div>
-        <div class="text-item text">使用占比：{{ disk.useUsage * 100 + '%' }}</div>
+        <div class="text-item text">使用占比：{{ (disk.useUsage * 100).toFixed(2) + '%' }}</div>
         <div class="text-item text">已用容量：{{ disk.useValue }}</div>
         <div class="text-item text">总磁盘容量：{{ disk.totalValue }}</div>
       </div>
@@ -72,7 +72,7 @@ export default {
 
   methods: {
     queryDiskOverview() {
-      this.API.diskOverview({}, { notify: false }).then(res => {
+      this.API.manage.diskOverview({}, { notify: false }).then(res => {
         this.disk = res.data;
         this.initStoreChart();
       });
@@ -102,7 +102,7 @@ export default {
             center: ['70%', '50%'],
             label: {
               normal: {
-                formatter: this.disk.useUsage * 100 + '%',
+                formatter: (this.disk.useUsage * 100).toFixed(2) + '%',
                 fontSize: 18,
                 fontWeight: 400,
                 color: '#555',

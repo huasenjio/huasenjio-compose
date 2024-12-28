@@ -8,20 +8,21 @@
 const express = require('express');
 const router = express.Router();
 
-const { add, findAllByPage, findAllByList, remove, findById, update, findByCode } = require('../controller/article.controller.js');
+const { add, findByPage, findAllByList, remove, findById, update, findByCode } = require('../controller/article.controller.js');
 
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower } = require('../middleware/manage.middleware.js');
 
-router.post('/add', handleJWT, checkManagePower, handleUselessParams, add);
-router.get('/findByPage', handleJWT, checkManagePower, findAllByPage);
-router.get('/findByList', handleJWT, checkManagePower, findAllByList);
-router.get('/remove', handleJWT, checkManagePower, remove);
-router.post('/update', handleJWT, checkManagePower, update);
+router.post('/add', handleJWT(), checkManagePower, handleUselessParams, add);
+router.post('/update', handleJWT(), checkManagePower, update);
+router.get('/remove', handleJWT(), checkManagePower, remove);
+router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
+router.get('/findByList', handleJWT(), checkManagePower, findAllByList);
 
-router.get('/findById', handleJWT, findById);
+// 用户调用&管理员
+router.get('/findById', handleJWT('parse'), findById);
 
 // 用户调用
-router.post('/findByCode', handleJWT, findByCode);
+router.post('/findByCode', handleJWT('parse'), findByCode);
 
 module.exports = router;

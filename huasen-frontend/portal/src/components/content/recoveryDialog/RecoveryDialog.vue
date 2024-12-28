@@ -2,11 +2,11 @@
   <HsDialog class="recovery-dialog" :title="'数据管理面板'" :width="width" :height="height" :close-on-click-modal="false" v-bind="$attrs" v-on="$listeners">
     <el-tabs class="recovery-dialog__tabs" type="border-card" v-model="active">
       <el-tab-pane name="backup" label="数据备份">
-        <el-button icon="el-icon-document-copy" type="info" size="mini" @click="handleCopy">拷贝数据</el-button>
-        <el-button icon="el-icon-upload" type="success" size="mini" @click="handleSaveToCloud">数据上云</el-button>
+        <el-button icon="el-icon-document-copy" type="info" size="mini" @click="handleCopy">拷贝离线数据</el-button>
+        <el-button icon="el-icon-upload" type="success" size="mini" @click="handleSaveToCloud">离线数据上云</el-button>
       </el-tab-pane>
       <el-tab-pane name="recovery" label="恢复数据">
-        <el-button icon="el-icon-document-copy" type="info" size="mini" @click="handleRecoveryByPaste">粘贴数据恢复</el-button>
+        <el-button icon="el-icon-document" type="info" size="mini" @click="handleRecoveryByPaste">离线数据恢复</el-button>
         <el-button icon="el-icon-download" type="success" size="mini" @click="handleRecoveryByCloud">应用云端数据</el-button>
       </el-tab-pane>
       <div class="tabs__textarea w-full h-px-320 mt-px-20">
@@ -99,8 +99,8 @@ export default {
             config,
             records,
           };
-          this.API.backup(params, {
-            secret: true,
+          this.API.User.backup(params, {
+            secret: 'aesinrsa',
           });
         }, 200);
       } else {
@@ -132,11 +132,11 @@ export default {
             config,
           },
         });
-        this.$tips('success', '恢复成功，即将刷新页面！', 'top-right', 2000, () => {
+        this.$tips('success', '即将刷新页面', 'top-right', 2000, () => {
           window.location.reload();
         });
       } catch (err) {
-        this.$tips('error', '恢复失败，请检查数据格式！', 'top-right', 2000);
+        this.$tips('error', '请检查离线数据格式', 'top-right', 2000);
       }
     },
 
@@ -146,7 +146,7 @@ export default {
     handleRecoveryByCloud() {
       if (this.isLogin) {
         // 已登录
-        this.API.recovery(
+        this.API.User.recovery(
           {},
           {
             notify: false,

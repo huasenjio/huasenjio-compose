@@ -11,6 +11,8 @@ import cityData from '@/config/city.json';
 export default {
   // 用户本地缓存句柄
   localUser: '_localUser',
+  // 用户本地缓存的对称密钥
+  localAESSecret: '_localAESSecret',
   // 公告本地缓存句柄
   appNotice: '_appNotice',
   // 当前订阅源本地缓存句柄

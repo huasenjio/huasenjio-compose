@@ -43,10 +43,10 @@ export default {
     return {
       loading: true,
       article: {
-        title: '示例文章',
+        title: '演示文稿',
         time: '1979-01-01 00:00:00',
-        tag: '用心/简洁/美观',
-        content: '文字文字文字文字文字文字文字文字文字文字文字文字....',
+        tag: '简洁/美观/实用',
+        content: '文字文字文字....',
       },
     };
   },
@@ -80,7 +80,7 @@ export default {
       }
     },
     queryArticleById(_id) {
-      this.API.getArtcileById(
+      this.API.Article.getArtcileById(
         { _id },
         {
           notify: false,
@@ -88,7 +88,7 @@ export default {
       )
         .then(res => {
           if (!res.data[0]) {
-            this.$tips('error', '您查阅文章找不见了', 'top-right', 1200, () => {
+            this.$tips('error', '未查询到文章', 'top-right', 2000, () => {
               this.$router.push('/article');
             });
           } else {

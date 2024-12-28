@@ -13,6 +13,8 @@ const readline = require('readline');
 const { getSystemInformation } = require('./system.js');
 const { getVisitorInformation } = require('./visitor.js');
 const { isExistObjectFiledRedisItem } = require('../ioredis/map.js');
+const { getClientIP } = require('../../utils/tool.js')
+
 
 class WSServer {
   constructor() {
@@ -31,7 +33,7 @@ class WSServer {
       // 监听连接事件
       this.wsClient.on('connection', (server, req) => {
         this.wsServer = server;
-        let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        let ip = getClientIP(req)
         let token = req.url.split('?')[1].split('=')[1];
         // 认证通过
         JWT.verifyToken(token)

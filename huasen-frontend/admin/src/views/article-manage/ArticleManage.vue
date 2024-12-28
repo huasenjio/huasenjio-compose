@@ -103,7 +103,7 @@ export default {
         },
         this.searchForm,
       );
-      this.API.findArticleByPage(params, { notify: false }).then(res => {
+      this.API.article.findArticleByPage(params, { notify: false }).then(res => {
         this.articles = res.data.list;
         this.total = res.data.total;
       });
@@ -126,11 +126,13 @@ export default {
 
     // 删除
     removeArticle(index, row, pageNo, pageSize) {
-      this.API.removeArticle({
-        _id: row._id,
-      }).then(res => {
-        this.queryArticle();
-      });
+      this.API.article
+        .removeArticle({
+          _id: row._id,
+        })
+        .then(res => {
+          this.queryArticle();
+        });
     },
   },
 };

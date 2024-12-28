@@ -14,7 +14,7 @@ const {
 
 const { POOL_BLACKLIST } = require('../config.js');
 
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo = 1, pageSize = 10, ip = '' } = req.huasenParams;
   getObjectRedisItem(POOL_BLACKLIST).then(pool => {
     let temp = Object.keys(pool).map(key => {
@@ -38,8 +38,7 @@ function findAllByPage(req, res, next) {
         total: filterList.length,
       },
       'SUCCESS',
-      '黑名单查询成功',
-      false,
+      '查询黑名单',
     );
   });
 }
@@ -47,7 +46,7 @@ function findAllByPage(req, res, next) {
 function remove(req, res, next) {
   let { ip } = req.huasenParams;
   delObjectFiledRedisItem(POOL_BLACKLIST, [ip]).then(result => {
-    global.huasen.responseData(res, result, 'SUCCESS', '黑名单移除成功', false);
+    global.huasen.responseData(res, result, 'SUCCESS', '移除黑名单');
   });
 }
 
@@ -55,12 +54,12 @@ function remove(req, res, next) {
 function add(req, res, next) {
   let { ip } = req.huasenParams;
   setObjectFiledRedisItem(POOL_BLACKLIST, ip, ip).then(result => {
-    global.huasen.responseData(res, result, 'SUCCESS', '黑名单添加成功', false);
+    global.huasen.responseData(res, result, 'SUCCESS', '添加黑名单');
   });
 }
 
 module.exports = {
-  findAllByPage,
+  findByPage,
   remove,
   add,
 };

@@ -2,14 +2,15 @@
   <div :style="{ top: top, borderRadius: user.config.searchBorderRadius + 'px' }" class="home-search xl:w-px-600 lg:w-px-400 sm:w-px-360 h-px-40">
     <!-- 搜索引擎菜单 -->
     <ul class="menu" v-discolor>
-      <li v-for="(item, index) in this.searchs" :key="index" :data-url="item.url" :data-keyword="item.key" @click="selectEngine(index)" class="xl:text-base" :class="{ active: activeSearchIndex === index }">
+      <li v-for="(item, index) in this.searchConfig" :key="index" :data-url="item.url" :data-keyword="item.key" @click="selectEngine(index)" class="xl:text-base" :class="{ active: activeSearchIndex === index }">
         {{ item.name }}
       </li>
     </ul>
     <form @submit.prevent="doSearch">
       <!-- 搜索引擎下拉菜单 -->
       <div class="left">
-        <i :class="currentSearch.iconClass"></i>
+        <img v-if="currentSearch.iconImg" v-lazy class="w-px-24 h-px-24" :src="currentSearch.iconImg" />
+        <i v-else :class="['iconfont icon-sousuoyinqing', currentSearch.iconClass]"></i>
         <!-- placeholder -->
         <div v-if="showPlaceholder" class="left-placeholder">
           <div class="left-placeholder-unfocus" key="unfocus">
@@ -64,8 +65,6 @@ import { mapState } from 'vuex';
 import Bus from '@/plugin/event-bus.js';
 import * as BusType from '@/plugin/event-type.js';
 
-import searchs from '@/config/search.config.js';
-
 export default {
   name: 'HomeSearch',
   props: {
@@ -76,8 +75,6 @@ export default {
   },
   data() {
     return {
-      // 配置的搜索引擎
-      searchs,
       // 防抖
       af: new AF(this, 200),
       // 搜索相关
@@ -97,7 +94,7 @@ export default {
     Bus.unSubEv(BusType.HOME_FUCOS);
   },
   computed: {
-    ...mapState(['user', 'sites']),
+    ...mapState(['user', 'sites', 'searchConfig']),
     // 显示建议面板
     showIdeas() {
       return this.searchText && this.ideas.length !== 0 ? true : false;
@@ -124,7 +121,7 @@ export default {
     // 选中的建议索引
     activeSearchIndex: {
       handler(newV, oldV) {
-        this.currentSearch = this.searchs[newV];
+        this.currentSearch = this.searchConfig[newV];
       },
       deep: true,
       immediate: true,
@@ -147,7 +144,8 @@ export default {
     },
     'user.config.searchEngineIndex': {
       handler(nV, oV) {
-        this.activeSearchIndex = nV;
+        let target = this.searchConfig[nV];
+        this.activeSearchIndex = target ? nV : 0;
       },
       deep: true,
       immediate: true,
@@ -178,12 +176,12 @@ export default {
       }
     },
     handleNextTab(event) {
-      let index = this.activeSearchIndex < this.searchs.length - 1 ? this.activeSearchIndex + 1 : 0;
+      let index = this.activeSearchIndex < this.searchConfig.length - 1 ? this.activeSearchIndex + 1 : 0;
       this.selectEngine(index);
       this.handleIdea();
     },
     handlePrevTab(event) {
-      let index = this.activeSearchIndex > 0 ? this.activeSearchIndex - 1 : this.searchs.length - 1;
+      let index = this.activeSearchIndex > 0 ? this.activeSearchIndex - 1 : this.searchConfig.length - 1;
       this.selectEngine(index);
       this.handleIdea();
     },
@@ -443,23 +441,31 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    flex-wrap: wrap;
+    flex-flow: row nowrap;
     color: var(--gray-50);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
     li {
+      scroll-snap-align: center;
+      flex: none;
       position: relative;
       height: 32px;
-      margin-top: 5px;
+      padding: 5px 4px 0 4px;
       cursor: pointer;
 
       &:first-child {
-        margin-left: 0;
+        padding-left: 0;
+      }
+      &:last-child {
+        padding-right: 0;
       }
     }
     .active {
       &::after {
         content: '';
         position: absolute;
-        bottom: 0px;
+        bottom: 2px;
         left: 50%;
         transform: translateX(-50%);
         display: block;

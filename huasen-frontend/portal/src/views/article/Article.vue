@@ -72,7 +72,7 @@ export default {
 
     // 查询所有的新闻文章
     queryArticles() {
-      this.API.findArticleByCode({}, { notify: false }).then(res => {
+      this.API.Article.findArticleByCode({}, { notify: false }).then(res => {
         this.articles = res.data;
       });
     },

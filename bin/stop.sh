@@ -1,4 +1,6 @@
 #!/bin/bash
-project_path=$(cd $(dirname "$0") && pwd)
-cd $project_path"/../"
+set -e
+sh_path=$(cd $(dirname "$0") && pwd)
+cd $sh_path"/../"
 docker-compose stop
+echo "[Huasen Log]：停止程序成功..."

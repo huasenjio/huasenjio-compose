@@ -16,30 +16,34 @@ function add(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加记录成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '添加记录');
     },
   );
 }
 
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo, pageSize, id, time } = req.huasenParams;
   req.epWorking(
     [
       {
         schemaName: 'Record',
-        methodName: 'findAllByPage',
+        methodName: 'findByPage',
         payloads: [
           {
             $and: [{ id: { $regex: new RegExp(id, 'i') } }, { time: { $regex: new RegExp(time, 'i') } }],
           },
           pageNo,
           pageSize,
+          {
+            log: 0,
+            __v: 0,
+          },
         ],
         self: true,
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询记录成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询记录');
     },
   );
 }
@@ -59,7 +63,7 @@ function remove(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除记录成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '删除记录');
     },
   );
 }
@@ -75,7 +79,23 @@ function removeMany(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除站点成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '批量删除记录');
+    },
+  );
+}
+
+function copy(req, res, next) {
+  let { _id } = req.huasenParams;
+  req.epWorking(
+    [
+      {
+        schemaName: 'Record',
+        methodName: 'find',
+        payloads: [{ _id }, { _id: 0, __v: 0 }],
+      },
+    ],
+    result => {
+      global.huasen.responseData(res, result, 'SUCCESS', '复制记录');
     },
   );
 }
@@ -83,6 +103,7 @@ function removeMany(req, res, next) {
 module.exports = {
   add,
   remove,
-  findAllByPage,
+  findByPage,
   removeMany,
+  copy
 };

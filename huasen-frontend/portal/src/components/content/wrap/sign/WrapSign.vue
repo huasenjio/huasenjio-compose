@@ -13,25 +13,26 @@
       </div>
       <div class="tab">
         <ul>
-          <li :class="{ active: activeIndex == 0 }" @click="activeIndex = 0">
+          <li :class="{ active: activeIndex == 0 }" @click="handleSelectTab(0)">
             登录
           </li>
-          <li :class="{ active: activeIndex == 1 }" @click="activeIndex = 1">
-            注册
-          </li>
-          <li :class="{ active: activeIndex == 2 }" @click="activeIndex = 2">
-            找回
+          <li :class="{ active: activeIndex == 1 }" @click="handleSelectTab(1)">
+            {{ isGetBackPassword ? '重置密码' : '注 册' }}
           </li>
         </ul>
         <div class="content">
           <!-- 登录 -->
           <span class="panel" v-show="0 == activeIndex">
             <section class="login">
-              <el-form :model="submitForm" :rules="rules" ref="loginForm" status-icon>
-                <el-form-item prop="id">
-                  <el-input v-model="submitForm.id" placeholder="请输入邮箱地址"> </el-input>
+              <el-form :model="submitForm" :rules="rules" ref="loginForm">
+                <el-form-item class="form__id" prop="id">
+                  <el-input v-model="submitForm.mail" @input="setId" placeholder="请输入邮箱地址">
+                    <el-select v-model="submitForm.mailServer" @change="setId" slot="append">
+                      <el-option v-for="(item, index) in mailOptions" :key="index" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
+                <el-form-item class="form__password" prop="password">
                   <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="密码仅支持数字/字母/下划线" @keyup.enter.native="login"></el-input>
                 </el-form-item>
               </el-form>
@@ -41,16 +42,20 @@
             </section>
           </span>
           <!-- 注册 -->
-          <span class="panel" v-show="1 == activeIndex || 2 == activeIndex">
+          <span class="panel" v-show="1 == activeIndex">
             <section class="register">
-              <el-form :model="submitForm" :rules="rules" ref="registerForm" status-icon>
-                <el-form-item prop="id">
-                  <el-input v-model="submitForm.id" :placeholder="activeIndex == 1 ? '请输入邮箱地址' : '请输入找回账号'"> </el-input>
+              <el-form :model="submitForm" :rules="rules" ref="registerForm">
+                <el-form-item class="form__id" prop="id">
+                  <el-input v-model="submitForm.mail" @input="setId" placeholder="请输入邮箱地址">
+                    <el-select v-model="submitForm.mailServer" @change="setId" slot="append">
+                      <el-option v-for="(item, index) in mailOptions" :key="index" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
+                <el-form-item class="form__password" prop="password">
                   <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="密码仅支持数字/字母/下划线"></el-input>
                 </el-form-item>
-                <el-form-item prop="mailCode">
+                <el-form-item class="form__mail-code" prop="mailCode">
                   <div class="mail-code-group">
                     <div class="code">
                       <el-input v-model="submitForm.mailCode" placeholder="请输入邮箱验证码" @keyup.enter.native="register"> </el-input>
@@ -60,10 +65,19 @@
                 </el-form-item>
               </el-form>
               <div class="btn" @click="register">
-                {{ activeIndex == 1 ? '注 册' : '找回密码' }}
+                {{ isGetBackPassword ? '确定' : '注 册' }}
               </div>
             </section>
           </span>
+          <!-- 忘记密码 -->
+          <div class="relative -top-px-28 text-right mt-px-8 px-px-4 flex justify-between">
+            <el-tooltip effect="dark" content="暂无协议（最终解释权归网站所有）" placement="top">
+              <el-checkbox v-model="submitForm.agree" label="is">
+                同意用户协议
+              </el-checkbox>
+            </el-tooltip>
+            <span class="text-gray-400 pointer" @click="handleGetBack">忘记密码？</span>
+          </div>
         </div>
       </div>
     </div>
@@ -71,7 +85,10 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { getElementFormValidator } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
+
 import HsDialog from '@/components/content/dialog/Dialog.vue';
 export default {
   name: 'WrapSign',
@@ -83,13 +100,16 @@ export default {
         id: '',
         password: '',
         mailCode: '',
+        mail: '',
+        mailServer: '@qq.com',
+        agree: '',
       },
 
       // 校验的规则
       rules: {
-        id: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50', 'isEmail::请输入邮箱']), trigger: 'blur' }],
-        password: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:20::长度大于20', 'isPassword::密码仅支持数字/字母/下划线']), trigger: 'blur' }],
-        mailCode: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isNumber::请输入数字']), trigger: 'blur' }],
+        id: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50', 'isEmail::请输入邮箱']) }],
+        password: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:20::长度大于20', 'isPassword::密码仅支持数字/字母/下划线']) }],
+        mailCode: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isInteger::请输入数字']) }],
       },
 
       // 状态变量
@@ -97,6 +117,38 @@ export default {
       count: 60, // 倒计时秒数
       timer: null, // 定时器
       timerSwitch: true, // 可用开关
+      isGetBackPassword: false, // 是否是找回密码
+      // 邮箱选项
+      mailOptions: [
+        {
+          label: '@qq.com',
+          value: '@qq.com',
+        },
+        {
+          label: '@163.com',
+          value: '@163.com',
+        },
+        {
+          label: '@gmail.com',
+          value: '@gmail.com',
+        },
+        {
+          label: '@139.com',
+          value: '@139.com',
+        },
+        {
+          label: '@126.com',
+          value: '@126.com',
+        },
+        {
+          label: '@outlook.com',
+          value: '@outlook.com',
+        },
+        {
+          label: '自定义邮箱',
+          value: '',
+        },
+      ],
     };
   },
   computed: {
@@ -114,6 +166,30 @@ export default {
   methods: {
     ...mapMutations(['commitAll']),
 
+    /**
+     * 切换tab
+     */
+    handleSelectTab(index) {
+      if (index === 1 && this.isGetBackPassword) return;
+      this.isGetBackPassword = false;
+      this.activeIndex = index;
+    },
+
+    /**
+     * 找回密码
+     */
+    handleGetBack() {
+      this.isGetBackPassword = true;
+      this.activeIndex = 1;
+    },
+
+    /**
+     * 设置邮箱地址
+     */
+    setId() {
+      this.submitForm.id = this.submitForm.mail + this.submitForm.mailServer;
+    },
+
     // 关闭登录面板
     closeSignPanel() {
       this.commitAll({
@@ -123,6 +199,10 @@ export default {
 
     // 发送邮箱验证码
     sendMailCode() {
+      if (!this.submitForm.agree) {
+        this.$tips('warning', '请先同意用户协议', 'top-right', 2000);
+        return;
+      }
       this.$refs.registerForm.validateField('id', valid => {
         if (!valid) {
           if (!this.timerSwitch == true) {
@@ -130,7 +210,7 @@ export default {
             return;
           }
           // 发送邮箱验证码
-          this.API.getMailCode(
+          this.API.Mail.getMailCode(
             {
               mail: this.submitForm.id,
             },
@@ -158,15 +238,19 @@ export default {
 
     // 登录处理
     login() {
+      if (!this.submitForm.agree) {
+        this.$tips('warning', '请先同意用户协议', 'top-right', 2000);
+        return;
+      }
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           let params = {
             id: this.submitForm.id,
             password: this.submitForm.password,
           };
-          this.API.login(params, {
+          this.API.User.login(params, {
             notify: true,
-            secret: true,
+            secret: 'aesinrsa',
           }).then(res => {
             // 用户数据本地持久化
             this.STORAGE.setItem(this.CONSTANT.localUser, res.data);
@@ -176,8 +260,12 @@ export default {
       });
     },
 
-    // 注册 & 找回密码
+    // 注册和重置
     register() {
+      if (!this.submitForm.agree) {
+        this.$tips('warning', '请先同意用户协议', 'top-right', 2000);
+        return;
+      }
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           let params = {
@@ -185,16 +273,16 @@ export default {
             password: this.submitForm.password,
             mailCode: this.submitForm.mailCode,
           };
-          if (this.activeIndex == 1) {
+          if (!this.isGetBackPassword) {
             // 注册
-            this.API.register(params, {
-              secret: true,
+            this.API.User.register(params, {
+              secret: 'aesinrsa',
             }).then(res => {
               this.activeIndex = 0;
             });
           } else {
-            // 修改密码
-            this.API.updatePassword(params, { secret: true }).then(res => {
+            // 重置密码
+            this.API.User.updatePassword(params, { secret: 'aesinrsa' }).then(res => {
               this.activeIndex = 0;
             });
           }
@@ -269,15 +357,26 @@ export default {
         box-sizing: border-box;
         cursor: pointer;
       }
-      ::v-deep .el-form {
-        .el-form-item__content {
-          input {
-            border-radius: 0;
-            border: none;
-            padding: 0;
-            border-bottom: 1px solid var(--gray-400);
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.sign {
+  .el-form {
+    .el-form-item {
+      &.form__id {
+        .el-input {
+          width: 100%;
+          .el-input-group__append {
+            .el-select {
+              width: 148px;
+            }
           }
         }
+      }
+      &.form__password {
       }
     }
   }

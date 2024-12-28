@@ -41,7 +41,7 @@
     <section v-if="showMenu" class="take">
       <el-dropdown class="dropdown" trigger="click" @command="handleSelectJournal">
         <span class="el-dropdown-link pointer">
-          {{ currentJournal.name || '无订阅源' }}
+          {{ currentJournal.name || '无订阅' }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu class="journal-dropdown-menu" slot="dropdown">
@@ -58,8 +58,8 @@
         </el-dropdown-menu>
       </el-dropdown>
     </section>
-    <section v-if="showMenu" @click="sign" class="sign">
-      {{ signText || '初级花酱' }}
+    <section v-if="showMenu" class="sign" :title="user.id" @click="sign">
+      {{ signText || `${user.id.slice(0, 4)}...` }}
     </section>
   </div>
 </template>
@@ -161,7 +161,7 @@ export default {
     },
 
     querySites() {
-      this.API.findSiteByCode({}, { notify: false }).then(res => {
+      this.API.Site.findSiteByCode({}, { notify: false }).then(res => {
         this.commitAll({
           sites: res.data,
         });
@@ -170,7 +170,7 @@ export default {
 
     // 请求订阅源
     queryJournals() {
-      this.API.findJournal(
+      this.API.Journal.findJournal(
         {},
         {
           notify: false,
@@ -188,7 +188,7 @@ export default {
       if (!exist) {
         this.$notify.warning('订阅源不存在，请您重新选择！');
       } else {
-        this.API.findJournalInformationById({ _id }, { notify: false }).then(res => {
+        this.API.Journal.findJournalInformationById({ _id }, { notify: false }).then(res => {
           this.selectJournal(res.data);
           // 保存当前选择的订阅源id
           this.STORAGE.setItem(this.CONSTANT.appJournal, _id);

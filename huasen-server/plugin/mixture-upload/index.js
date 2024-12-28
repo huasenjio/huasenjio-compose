@@ -60,7 +60,7 @@ class MixtureUpload {
         if (pass) {
           // 判断文件类型
           let fileMINE = file.headers['content-type'];
-          let isAcceptIndex = this.config.acceptTypes.indexOf(fileMINE);
+          let isAcceptIndex = Object.values(this.config.acceptTypes).indexOf(fileMINE);
           if (isAcceptIndex < 0) {
             throw new Error(`${fileMINE}文件类型不允许`);
           } else {

@@ -9,18 +9,17 @@
 const express = require('express');
 const router = express.Router();
 
-const { add, findAllByPage, remove, update, findByCode, findByList, bindSite, unbindSite } = require('../controller/column.controller.js');
+const { add, findByPage, remove, update, findByCode, findByList, bindSite, unbindSite } = require('../controller/column.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower } = require('../middleware/manage.middleware.js');
 
-router.post('/add', handleUselessParams, add);
-router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);
-router.post('/remove', handleJWT, checkManagePower, remove);
-router.post('/update', handleJWT, checkManagePower, update);
-router.post('/findByCode', handleJWT, findByCode);
-router.post('/list', handleJWT, checkManagePower, findByList);
-
-router.post('/bindSite', handleJWT, checkManagePower, bindSite);
-router.post('/unbindSite', handleJWT, checkManagePower, unbindSite);
+router.post('/add', handleJWT(), checkManagePower, handleUselessParams, add);
+router.post('/remove', handleJWT(), checkManagePower, remove);
+router.post('/update', handleJWT(), checkManagePower, update);
+router.post('/list', handleJWT(), checkManagePower, findByList);
+router.post('/findByCode', handleJWT(), checkManagePower, findByCode);
+router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
+router.post('/bindSite', handleJWT(), checkManagePower, bindSite);
+router.post('/unbindSite', handleJWT(), checkManagePower, unbindSite);
 
 module.exports = router;

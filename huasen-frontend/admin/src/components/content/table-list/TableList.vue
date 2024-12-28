@@ -59,11 +59,11 @@
         <el-table-column label="操作" :width="240">
           <template slot-scope="scope">
             <el-popconfirm v-if="showRemove" @confirm="remove(scope.$index, scope.row)" class="mr-px-10" popper-class="delete-popcomfirm" title="确定删除吗？">
-              <el-button slot="reference" size="mini" type="danger">删 除</el-button>
+              <el-button slot="reference" size="mini" type="danger">删除</el-button>
             </el-popconfirm>
-            <el-button v-if="showCopy" size="mini" type="warning" @click="copy(scope.$index, scope.row)">复 制</el-button>
-            <el-button v-if="showEdit" size="mini" type="primary" @click="edit(scope.$index, scope.row)">编 辑</el-button>
-            <el-button v-if="showOperate" size="mini" type="info" @click="operate(scope.$index, scope.row)">操 作</el-button>
+            <el-button v-if="showCopy" size="mini" type="warning" @click="copy(scope.$index, scope.row)">复制</el-button>
+            <el-button v-if="showEdit" size="mini" type="primary" @click="edit(scope.$index, scope.row)">编辑</el-button>
+            <el-button v-if="showOperate" size="mini" type="info" @click="operate(scope.$index, scope.row)">操作</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -242,7 +242,7 @@ export default {
     },
 
     copy(index, row) {
-      this.TOOL.copyTextToClip(JSON.stringify(row), '已复制到剪贴板');
+      this.$emit('copy', index, row);
     },
 
     search() {

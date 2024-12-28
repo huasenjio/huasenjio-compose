@@ -9,14 +9,7 @@ import Mock from 'mockjs2';
 import { get, post } from '../request.js';
 
 // 获取邮箱验证码
-const getMailCode = get(
-  '/mail/getCode',
-  {
-    key: 'huasenjio@163.com',
-    code: 6789,
-  },
-  false,
-);
+const getMailCode = get('/mail/getCode');
 
 export default {
   getMailCode,

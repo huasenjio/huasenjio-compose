@@ -20,6 +20,7 @@ module.exports = {
   productionSourceMap: false,
   runtimeCompiler: true, // 运行时编译
   configureWebpack: config => {
+    config.devtool = process.env.NODE_ENV === 'development' ? 'cheap-module-eval-source-map' : 'nosources-source-map'
     // 配置雪碧图
     const Plugins = [
       new SpritesmithPlugin({

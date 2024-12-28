@@ -11,5 +11,6 @@ import { get, post } from '../request.js';
 const findRecordByPage = post('/record/findByPage');
 const removeRecord = post('/record/remove');
 const removeManyRecord = post('/record/removeMany');
+const copyRecord = post('/record/copy');
 
-export { findRecordByPage, removeRecord, removeManyRecord };
+export { findRecordByPage, removeRecord, removeManyRecord, copyRecord };

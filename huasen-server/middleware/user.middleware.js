@@ -24,7 +24,7 @@ function checkUserAccountUnique(req, res, next) {
       if (users.length === 0) {
         next();
       } else {
-        global.huasen.responseData(res, {}, 'ERROR', '用户已存在', false);
+        global.huasen.responseData(res, {}, 'ERROR', '用户已存在');
       }
     },
   );

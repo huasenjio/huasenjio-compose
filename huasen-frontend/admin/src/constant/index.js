@@ -6,11 +6,12 @@
  * @Description:
  */
 
+const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 export default {
-  baseURL: process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:3000/' : '/server/',
-  baseWebsocketURL: process.env.NODE_ENV === 'development' ? 'ws://localhost:8181/ws/connection' : `ws://${location.host}/ws/connection`,
+  baseWebsocketURL: `${protocol}//${process.env.NODE_ENV === 'development' ? 'localhost:8181' : location.host}/ws/connection`,
   appMinWidth: 1280,
-  localManage: 'localManage',
+  localManage: '_localManage',
+  localAESSecret: '_localAESSecret',
   dictionary: {
     // 权限码
     code: [

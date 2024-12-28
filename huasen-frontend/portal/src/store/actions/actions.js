@@ -7,6 +7,7 @@
  */
 
 import Vue from 'vue';
+import searchs from '@/config/search.config.js';
 const that = Vue.prototype;
 
 export default {
@@ -34,7 +35,13 @@ export default {
         });
       }
     } catch (err) {
-      that.STORAGE.clear('数据异常，重置网站所有数据和功能，修复一切疑难杂症，您继续吗？');
+      that.STORAGE.clear('本地数据异常，点击“确定”，重置网站所有数据和功能，解决疑难杂症，您继续吗？', {
+        onConfirm: () => {
+          // 刷新页面
+          location.reload();
+        },
+        onCancel: () => { },
+      });
     }
   },
 
@@ -56,33 +63,37 @@ export default {
   // 初始化配置
   async initAppConfigInfo(context, payload) {
     let { callback } = { ...payload };
-    let res = await that.API.findAppConfig({}, { notify: false });
+    let res = await that.API.User.findAppConfig({}, { notify: false });
+    const config = res.data
     try {
+      const autoIconPatch = that.LODASH.get(config, 'site.autoIconPatch')
+      const searchConfig = that.LODASH.get(config, 'search')
       let state = {
         appConfig: {
           loaded: true,
-          article: that.LODASH.get(res.data, 'article'),
+          article: that.LODASH.get(config, 'article'),
           site: {
-            name: that.LODASH.get(res.data, 'site.brandName') || '花森',
-            logoURL: that.LODASH.get(res.data, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
-            redirectURL: that.LODASH.get(res.data, 'site.redirectUrl') || 'http://huasenjio.top/',
-            guidePageName: that.LODASH.get(res.data, 'site.guidePageName') || '花森小窝',
-            guidePageUrl: that.LODASH.get(res.data, 'site.guidePageUrl') || 'http://huasenjio.top/',
-            footerHtml: that.LODASH.get(res.data, 'site.footerHtml') || '',
-            openLabelClassification: !!that.LODASH.get(res.data, 'site.openLabelClassification'),
-            serviceQRCodeUrl: that.LODASH.get(res.data, 'site.serviceQRCodeUrl') || require('@/assets/img/logo/weixin.png'),
-            autoIOWenIcon: !!that.LODASH.get(res.data, 'site.autoIOWenIcon'),
+            name: that.LODASH.get(config, 'site.brandName') || '花森',
+            logoURL: that.LODASH.get(config, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
+            redirectURL: that.LODASH.get(config, 'site.redirectUrl') || 'http://huasenjio.top/',
+            guidePageName: that.LODASH.get(config, 'site.guidePageName') || '花森小窝',
+            guidePageUrl: that.LODASH.get(config, 'site.guidePageUrl') || 'http://huasenjio.top/',
+            footerHtml: that.LODASH.get(config, 'site.footerHtml') || '',
+            openLabelClassification: !!that.LODASH.get(config, 'site.openLabelClassification'),
+            serviceQRCodeUrl: that.LODASH.get(config, 'site.serviceQRCodeUrl') || require('@/assets/img/logo/weixin.png'),
+            autoIconPatch: autoIconPatch === undefined ? true : !!autoIconPatch,
           },
         },
-        themeConfig: that.LODASH.get(res.data, 'theme'),
+        searchConfig: (searchConfig !== undefined && (Array.isArray(searchConfig) && searchConfig.length)) ? searchConfig : searchs,
+        themeConfig: that.LODASH.get(config, 'theme'),
       };
 
       // 默认配置合并
       context.commit('commitAll', state);
 
       // 设置默认壁纸
-      let bg = that.LODASH.get(res.data, 'theme.default.bg');
-      let headerFontColor = that.LODASH.get(res.data, 'theme.default.color');
+      let bg = that.LODASH.get(config, 'theme.default.bg');
+      let headerFontColor = that.LODASH.get(config, 'theme.default.color');
 
       if (bg) {
         context.commit('commitAll', {

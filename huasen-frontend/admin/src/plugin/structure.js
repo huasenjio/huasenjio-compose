@@ -5,7 +5,7 @@
  * @param {*} initial
  * @returns
  */
-Array.matrix = function(numrows, numcols, initial) {
+Array.matrix = function (numrows, numcols, initial) {
     var arr = []
     for (var i = 0; i < numrows; ++i) {
         var columns = []
@@ -64,7 +64,6 @@ function Queue() {
     this.back = function back() {
         return this.dataStore[this.dataStore.length - 1]
     }
-    //
     this.toString = function toString() {
         let retStr = ''
         for (let i = 0; i < this.dataStore.length; ++i) {

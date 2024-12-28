@@ -55,13 +55,16 @@
       </ul>
     </main>
     <FormDialog v-if="showForm" :visible.sync="showForm" ref="formDialog" width="400" :buttons="{ comfirm: '确 认', cancel: '取 消' }" :title="title" :close-on-click-modal="false" :formData="formData" :formMap="formMap" :formRule="formRule" @comfirmForm="save" @cancelForm="cancel"></FormDialog>
-    <CustomDrawer v-if="showCustom" :visible.sync="showCustom" :direction="'rtl'" :size="435" :wrapperClosable="false"></CustomDrawer>
+    <CustomDrawer :visible.sync="showCustom" :direction="'rtl'" :size="435" :wrapperClosable="false"></CustomDrawer>
     <RecoveryDialog v-if="showRecovery" :visible.sync="showRecovery" :showMax="false"></RecoveryDialog>
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { getElementFormValidator } from '@/plugin/strategy.js';
+
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 
 import Bus from '@/plugin/event-bus.js';
 import * as BusType from '@/plugin/event-type.js';
@@ -109,8 +112,8 @@ export default {
         },
       ],
       formRule: {
-        name: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isChinese::请输入汉字/英文/数字']), trigger: 'blur' }],
-        url: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isUrl::请输入正确的网址']), trigger: 'blur' }],
+        name: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isName::请输入汉字/英文/数字']) }],
+        url: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isUrl::请输入正确的网址']) }],
       },
     };
   },

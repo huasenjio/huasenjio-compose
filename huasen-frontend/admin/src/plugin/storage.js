@@ -6,7 +6,7 @@
  * @Description:
  */
 class Storage {
-  constructor() {}
+  constructor() { }
   setItem(key, value, expireTime) {
     localStorage.setItem(
       key,
@@ -27,14 +27,29 @@ class Storage {
       localStorage.removeItem(key);
     }
   }
-  clear() {
-    let flag = confirm('您确定清除本地所有存储吗？重置网站，解决一切问题！');
-    if (flag) {
+  clear(tips = '您确定清除本地所有存储吗？', payload = {}) {
+    const { onConfirm, onCancel } = payload;
+    if (tips === '') {
+      // 静默清除
       localStorage.clear();
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      }
+    } else {
+      // 二次确认
+      const flag = confirm(tips);
+      if (flag) {
+        localStorage.clear();
+        if (typeof onConfirm === 'function') {
+          onConfirm();
+        }
+      } else {
+        if (typeof onCancel === 'function') {
+          onCancel();
+        }
+      }
     }
-  }
-  silentClear() {
-    localStorage.clear();
+
   }
 }
 

@@ -6,7 +6,7 @@
  * @Description: 入口文件
 -->
 <template>
-  <div id="app" :style="appStyle">
+  <div v-if="loaded" id="app" :style="appStyle">
     <BrowserTips v-if="!isSupport"></BrowserTips>
     <Wrap v-else> </Wrap>
   </div>
@@ -23,13 +23,15 @@ export default {
   name: 'App',
 
   data() {
-    return {};
+    return {
+      loaded: false,
+    };
   },
 
   components: { Wrap, BrowserTips },
 
   computed: {
-    ...mapState(['user', 'appConfig']),
+    ...mapState(['appConfig']),
 
     // 判断浏览器支持
     isSupport() {
@@ -49,13 +51,18 @@ export default {
     },
   },
 
-  created() {
+  async created() {
+    await this.API.App.getCopyright(
+      {},
+      {
+        notify: false,
+      },
+    );
     // 移除开屏动画
     let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');
     if (loadingDOM) {
       document.body.removeChild(loadingDOM);
     }
-
     // 调整文档大小，避免网站在移动端网页中，无法适应屏幕的问题
     initScaleDocument();
   },
@@ -70,11 +77,10 @@ export default {
         }
       },
     });
-
     // 加载处理用户信息
     await this.initLocalUserInfo();
     await this.initLocalStyleInfo();
-
+    this.loaded = true;
     console.log('页面已挂载成功');
   },
 

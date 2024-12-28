@@ -1,11 +1,4 @@
-// 去除下拉菜单弹出层的小箭头
-.el-popper[x-placement^='bottom-end'] {
-  .popper__arrow {
-    display: none;
-  }
-}
-
-// 去除select弹出层的箭头
+// 去除弹出层的箭头，例如：select
 .el-popper {
   .popper__arrow {
     display: none;
@@ -26,13 +19,13 @@
   border-radius: 0;
 }
 
-// tooltip文字缩略
+// 因为tooltip文字缩略，导致小箭头不显示
 .el-tooltip__popper {
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
+  // max-width: 200px;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // word-break: break-all;
 }
 
 // 分页文字缩略

@@ -2,11 +2,11 @@
   <div class="h-markdown-container">
     <div ref="areaContent" class="area-content" :style="{ paddingRight: showAnchors ? '10px' : 0 }">
       <div class="content__body">
-        <div v-html="content"></div>
+        <div v-html="content" v-highlight></div>
       </div>
       <div class="content__footer">
         <div class="text">版权说明：MIT开源协议</div>
-        <div class="text">免责声明：内容仅供学习交流 禁止用于商业用途</div>
+        <div class="text">免责声明：内容仅供学习交流，禁止用于商业用途！</div>
       </div>
     </div>
     <ul v-if="showAnchors && anchors.length" class="area-catalog">

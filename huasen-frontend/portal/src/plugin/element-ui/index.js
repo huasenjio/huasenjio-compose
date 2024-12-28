@@ -53,6 +53,8 @@ import Dialog from 'element-ui/lib/dialog';
 import Empty from 'element-ui/lib/empty';
 import Popover from 'element-ui/lib/popover';
 import Scrollbar from 'element-ui/lib/scrollbar';
+import Radio from 'element-ui/lib/radio';
+import Checkbox from 'element-ui/lib/checkbox';
 import { InfiniteScroll } from 'element-ui';
 
 Vue.use(Button);
@@ -87,13 +89,16 @@ Vue.use(Popover);
 Vue.use(Loading.directive);
 Vue.use(InfiniteScroll);
 Vue.use(Scrollbar);
+Vue.use(Radio);
+Vue.use(Checkbox);
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
 
-Vue.prototype.$startLoading = function(text) {
+Vue.prototype.$startLoading = function (text) {
   HLoadingCount++;
   HLoading = Loading.service({
     lock: true,
@@ -103,18 +108,18 @@ Vue.prototype.$startLoading = function(text) {
     customClass: 'request-loading',
   });
 };
-Vue.prototype.$stopLoading = function() {
+Vue.prototype.$stopLoading = function () {
   HLoadingCount--;
   if (HLoadingCount <= 0) {
     HLoading.close();
   }
 };
-Vue.prototype.$resetLoading = function() {
+Vue.prototype.$resetLoading = function () {
   HLoadingCount = 0;
   HLoading && HLoading.close();
 };
 
-Vue.prototype.$tips = function(type, msg, position, time, callback) {
+Vue.prototype.$tips = function (type, msg, position, time, callback) {
   // 初始化参数
   let title = '';
   type = type || 'info';

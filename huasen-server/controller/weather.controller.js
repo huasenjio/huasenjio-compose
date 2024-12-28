@@ -28,7 +28,7 @@ async function getWeatherByCityCode(req, res, next) {
     const { cityId } = req.huasenParams
     request.get({ url: `http://aider.meizu.com/app/weather/listWeather?cityIds=${cityId}`, timeout: 6000, encoding: 'utf-8' }, (error, response, body) => {
       if (error || response.statusCode !== 200) {
-        global.huasen.responseData(res, defaultData, 'ERROR', '获取天气信息失败', false);
+        global.huasen.responseData(res, defaultData, 'ERROR', '获取天气信息');
       } else {
         const weather = JSON.parse(body).value[0]
         if (weather) {
@@ -47,12 +47,10 @@ async function getWeatherByCityCode(req, res, next) {
             fengXiang: _.get(weather, 'realtime.wD') || defaultData.fengXiang,
             shiDu: _.get(weather, 'realtime.sD') || defaultData.shiDu,
           }
-          global.huasen.responseData(res, data, 'SUCCESS', '获取天气信息成功', false);
+          global.huasen.responseData(res, data, 'SUCCESS', '获取天气信息');
         } else {
-          global.huasen.responseData(res, defaultData, 'ERROR', '该地区暂不支持查询天气', false);
+          global.huasen.responseData(res, defaultData, 'ERROR', '该地区暂不支持查询天气');
         }
-
-
       }
     });
   } catch (err) {

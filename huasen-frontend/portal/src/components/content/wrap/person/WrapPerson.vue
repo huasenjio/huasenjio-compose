@@ -13,7 +13,7 @@
           <img v-lazy="{ unload: require('@/assets/img/error/slogan.png') }" class="w-full h-full" :src="this.user.headImg" />
         </div>
         <div class="name text">
-          <div>{{ user.name || '初级花酱' }}</div>
+          <div>{{ user.name || '默认名字' }}</div>
           <div class="text text-sm text-gray-400">{{ user.id || 'localspace@qq.com' }}</div>
         </div>
         <i title="退出账号" class="iconfont icon-tuichu" @click="exit"></i>
@@ -93,10 +93,23 @@ export default {
 
     // 退出账号
     exit() {
-      this.$tips('success', '账号已退出，即将刷新页面！', 'top-right', 2000, () => {
-        this.STORAGE.removeItemByKey(this.CONSTANT.localUser);
-        window.location.reload();
-      });
+      this.$confirm('下线登录账号，清理身份数据，即将刷新页面！', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          this.API.User.quit()
+            .then(() => {})
+            .catch(() => {})
+            .finally(() => {
+              setTimeout(() => {
+                this.STORAGE.removeItemByKey(this.CONSTANT.localUser);
+                window.location.reload();
+              }, 2000);
+            });
+        })
+        .catch(() => {});
     },
 
     // 关闭个人面板

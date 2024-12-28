@@ -8,12 +8,12 @@
 
 const express = require('express');
 const router = express.Router();
-const { findAllByPage, remove, add } = require('../controller/blacklist.controller.js');
+const { findByPage, remove, add } = require('../controller/blacklist.controller.js');
 const { checkManagePower } = require('../middleware/manage.middleware.js');
 const { handleJWT } = require('../middleware/common.middleware.js');
 
-router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);
-router.post('/remove', handleJWT, checkManagePower, remove);
-router.post('/add', handleJWT, checkManagePower, add);
+router.post('/add', handleJWT(), checkManagePower, add);
+router.post('/remove', handleJWT(), checkManagePower, remove);
+router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
 
 module.exports = router;

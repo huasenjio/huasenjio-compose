@@ -294,14 +294,16 @@ export default {
     },
 
     handleRemoveIcon(path) {
-      this.API.removeFile(
-        { filePath: path },
-        {
-          notify: true,
-        },
-      ).then(res => {
-        this.queryIcon();
-      });
+      this.API.file
+        .removeFile(
+          { filePath: path },
+          {
+            notify: true,
+          },
+        )
+        .then(res => {
+          this.queryIcon();
+        });
     },
 
     closeLab() {
@@ -309,7 +311,7 @@ export default {
     },
 
     queryIcon() {
-      this.API.findAllIcon({}, { notify: false }).then(
+      this.API.file.findAllIcon({}, { notify: false }).then(
         res => {
           this.icons = res.data;
         },
@@ -343,12 +345,14 @@ export default {
               let file = new File([blob], 'favicon.png', { type: blob.type });
               let formdata = new FormData();
               formdata.append('file', file);
-              this.API.uploadFile(formdata, {
-                url: '/manage/uploadIcon?type=icon',
-              }).then(res => {
-                this.formData['icon'] = res.data[0].path;
-                this.$tips('success', '图标上传成功', 'top-right', 1200);
-              });
+              this.API.manage
+                .uploadFile(formdata, {
+                  url: '/manage/uploadIcon?type=icon',
+                })
+                .then(res => {
+                  this.formData['icon'] = res.data[0].path;
+                  this.$tips('success', '图标上传成功', 'top-right', 1200);
+                });
             });
           });
         });
@@ -429,7 +433,7 @@ export default {
         this.$tips('error', '请输入网站地址', 'top-right', 1200);
         return;
       }
-      this.API.findAppFavicon({ url: this.formData['url'] }, { notify: false }).then(res => {
+      this.API.manage.findAppFavicon({ url: this.formData['url'] }, { notify: false }).then(res => {
         this.favicons = res.data;
       });
     },

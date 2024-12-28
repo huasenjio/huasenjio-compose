@@ -5,7 +5,7 @@
  * @LastEditTime: 2023-03-24 20:14:28
  * @Description: 订阅表控制器
  */
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo, pageSize, name, code } = req.huasenParams;
   // 模糊查询参数
   let params = { name: { $regex: new RegExp(name, 'i') } };
@@ -17,7 +17,7 @@ function findAllByPage(req, res, next) {
     [
       {
         schemaName: 'Journal',
-        methodName: 'findAllByPage',
+        methodName: 'findByPage',
         payloads: [
           {
             $and: [params],
@@ -29,7 +29,7 @@ function findAllByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询');
     },
   );
 }
@@ -44,7 +44,7 @@ function add(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加订阅源成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '添加订阅源');
     },
   );
 }
@@ -64,7 +64,7 @@ function remove(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除订阅源成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '删除订阅源');
     },
   );
 }
@@ -80,7 +80,7 @@ function update(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '更新订阅源成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '更新订阅源');
     },
   );
 }
@@ -107,7 +107,7 @@ function findByCode(req, res, next) {
       },
     ],
     takes => {
-      global.huasen.responseData(res, takes, 'SUCCESS', '查询订阅源成功', false);
+      global.huasen.responseData(res, takes, 'SUCCESS', '查询订阅源');
     },
   );
 }
@@ -133,7 +133,7 @@ function findAll(req, res, next) {
         let { _id, name, expand, code } = item;
         return { _id, name, expand, code };
       });
-      global.huasen.responseData(res, temp, 'SUCCESS', '查询站点成功', false);
+      global.huasen.responseData(res, temp, 'SUCCESS', '查询站点');
     },
   );
 }
@@ -229,18 +229,17 @@ function findJournalInformationById(req, res, next) {
             series: displayColumns,
           },
           'SUCCESS',
-          '查询订阅成功',
-          false,
+          '查询订阅',
         );
       } else {
-        global.huasen.responseData(res, {}, 'ERROR', '订阅源已废弃', false);
+        global.huasen.responseData(res, {}, 'ERROR', '订阅源已废弃');
       }
     },
   );
 }
 
 module.exports = {
-  findAllByPage,
+  findByPage,
   add,
   update,
   remove,

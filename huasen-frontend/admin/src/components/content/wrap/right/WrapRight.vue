@@ -14,8 +14,15 @@
         <i title="JSON编辑器" class="iconfont icon-json tool" @click="openJsonToolPanel"></i>
         <i title="动态代码执行器" class="iconfont icon-daima tool" @click="openRumtimePanel"></i>
       </div>
-      <div class="right" title="退出登录">
-        <i class="iconfont icon-exit-line relative left-px-2" @click="exit"></i>
+      <div class="right">
+        <el-dropdown>
+          <i class="el-icon-more-outline"></i>
+          <el-dropdown-menu class="wrap-right__dropdown" slot="dropdown">
+            <el-dropdown-item title="登录账号" icon="el-icon-user">{{ manage.id }}</el-dropdown-item>
+            <!-- <el-dropdown-item title="预览前台" icon="el-icon-view" @click.native="viewFrontend">预览前台</el-dropdown-item> -->
+            <el-dropdown-item title="退出登录" icon="el-icon-switch-button" @click.native="exit">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </header>
     <main>
@@ -69,12 +76,12 @@ export default {
       isRenderTab: true,
 
       pageNo: 1,
-      pageSize: 0,
+      pageSize: 1,
     };
   },
 
   computed: {
-    ...mapState(['site', 'showWrapLeft', 'caches']),
+    ...mapState(['manage', 'site', 'showWrapLeft', 'caches']),
 
     canPre() {
       return this.pageNo <= 1 ? false : true;
@@ -97,10 +104,10 @@ export default {
 
   watch: {
     '$route.path': {
-      handler() {
-        this.collectCaches();
-        this.changeCurrentTab();
+      handler(val) {
+        this.collectTab();
       },
+      deep: true,
       immediate: true,
     },
 
@@ -115,6 +122,12 @@ export default {
 
   methods: {
     ...mapActions(['addCache', 'removeCache', 'removeCacheEntry']),
+
+    collectTab() {
+      this.collectCaches();
+      this.changeCurrentTab();
+      this.initTabPaging();
+    },
 
     handlePre() {
       if (!this.canPre) return;
@@ -191,7 +204,7 @@ export default {
 
       if (tab) {
         // 存在的标签处于的页码
-        let pageNo = (existIndex + 1) / this.pageSize;
+        let pageNo = this.pageSize ? (existIndex + 1) / this.pageSize : 1;
         if (Number.isInteger(pageNo)) {
           // 整除
           this.pageNo = pageNo;
@@ -289,6 +302,12 @@ export default {
       });
     },
 
+    viewFrontend() {
+      const url = `${location.origin}/portal`;
+      console.warn('默认前台地址：', url);
+      window.open(url, '_blank');
+    },
+
     exit() {
       this.$confirm('下线登录账号，清理身份数据，即将安全退出。', '提示', {
         confirmButtonText: '确定',
@@ -296,10 +315,22 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          // 清理本地数据
-          this.STORAGE.clear();
-          // 刷新页面
-          location.reload();
+          this.API.manage
+            .quitManage()
+            .then(() => {})
+            .catch(() => {})
+            .finally(() => {
+              setTimeout(() => {
+                // 清理本地数据
+                this.STORAGE.clear('', {
+                  onConfirm: () => {
+                    // 刷新页面
+                    location.reload();
+                  },
+                  onCancel: () => {},
+                });
+              }, 2000);
+            });
         })
         .catch(() => {});
     },
@@ -319,7 +350,14 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.wrap-right__dropdown {
+  .el-dropdown-menu__item {
+    display: flex;
+    align-items: center;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .wrap-right {

@@ -151,7 +151,7 @@ export default {
 
   methods: {
     querySite() {
-      this.API.findSiteByList({}, { notify: false }).then(res => {
+      this.API.site.findSiteByList({}, { notify: false }).then(res => {
         this.sites = res.data;
       });
     },
@@ -197,13 +197,13 @@ export default {
       needBindSite = this.selectSiteIndex.filter(el => this.preSelectSiteIndex.indexOf(el) === -1);
       // 更改栏目
       let siteStore = this.selectSites.map(item => item._id);
-      await this.API.updateColumn({
+      await this.API.column.updateColumn({
         _id: this.currentColumn._id,
         siteStore: JSON.stringify(siteStore),
       });
       // 选择性绑定/解绑
       if (needBindSite.length) {
-        await this.API.bindColumnToSite(
+        await this.API.site.bindColumnToSite(
           {
             columnId: this.currentColumn._id,
             sites: needBindSite,
@@ -214,7 +214,7 @@ export default {
         );
       }
       if (needUnbindSite.length) {
-        await this.API.unbindColumnToSite(
+        await this.API.site.unbindColumnToSite(
           {
             columnId: this.currentColumn._id,
             sites: needUnbindSite,

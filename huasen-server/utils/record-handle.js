@@ -1,29 +1,20 @@
-const _ = require('lodash');
+const moment = require('moment');
 const { getUid } = require('../utils/tool.js');
 const { POOL_ACCESS } = require('../config.js');
-const moment = require('moment');
 const { getObjectRedisItem, setObjectFiledRedisItem } = require('../plugin/ioredis/map.js');
 
 // 统计日志
-const handleRecord = function (data, log = {}) {
+const handleRecord = function (data) {
   getObjectRedisItem(POOL_ACCESS)
     .then(async () => {
       // 添加 "r"标识，纯数字使用eval函数会有问题
       data.uid = 'r' + getUid(16, 8);
       data.time = moment().format('YYYY-MM-DD HH:mm:ss');
-      // 解析参数，排除管理登录接口参数
-      data.payload = data.url === '/manage/login' ? {} : _.get(log, 'huasenParams');
-
-      let addThrottleTime = _.get(log, 'huasenUnit.addThrottleTime');
-      let handleTime = _.get(log, 'huasenUnit.handleTime');
-      let deleteTime = _.get(log, 'huasenUnit.deleteTime');
-
-      // 添加等待时间和处理时间
-      if (addThrottleTime && handleTime && deleteTime) {
-        data.waitTime = handleTime - addThrottleTime;
-        data.responseTime = deleteTime - handleTime;
+      // 解析参数，剔除管理员登录密码及对称密钥
+      if (data.url === '/manage/login') {
+        delete data.payload.password
       }
-
+      delete data.payload._aes_secret;
       // 序列化
       let rawData = JSON.stringify(data);
       await setObjectFiledRedisItem(POOL_ACCESS, data.uid, rawData);

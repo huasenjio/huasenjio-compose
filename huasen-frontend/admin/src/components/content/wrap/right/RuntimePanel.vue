@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       form: {
-        runtimeScript: '',
+        runtimeScript: `global.huasen.responseData(res, req.huasenParams, 'SUCCESS', '获取请求参数');`,
       },
       rules: {},
       resultText: '无',
@@ -51,11 +51,13 @@ export default {
   methods: {
     comfirmDialog() {
       this.resultText = '无';
-      this.API.executeRuntimeCode(this.form, {
-        secret: true,
-      }).then(res => {
-        this.resultText = JSON.stringify(res.data, null, 4);
-      });
+      this.API.manage
+        .executeRuntimeCode(this.form, {
+          secret: 'aesinrsa',
+        })
+        .then(res => {
+          this.resultText = JSON.stringify(res.data, null, 4);
+        });
     },
 
     closeDialog() {

@@ -15,6 +15,7 @@ const updatePassword = post('/user/updatePassword');
 const backup = post('/user/backup');
 const recovery = post('/user/recovery');
 const findAppConfig = post('/user/findAppConfig');
+const quit = post('/user/quit');
 
 export default {
   login,
@@ -23,4 +24,5 @@ export default {
   backup,
   recovery,
   findAppConfig,
+  quit
 };

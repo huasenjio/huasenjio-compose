@@ -3,21 +3,32 @@
  * @Date: 2022-10-02 17:21:26
  * @LastEditors: huasenjio
  * @LastEditTime: 2023-03-13 21:59:05
- * @Description: 公共的服务模版
+ * @Description: 服务模版
  */
 
-// 分页查询
-async function findAllByPage(ep, schema, eventName, target, pageId, pageSize) {
+/**
+ * 分页查询模版
+ * @param {object} ep - 任务执行器
+ * @param {mongotSchema} schema - 模型
+ * @param {string} eventName - 服务名
+ * @param {object} query - 查询条件
+ * @param {object} projection - 返回字段
+ * @param {number} pageNo - 页码
+ * @param {number} pageSize - 页长
+ */
+async function findByPage(ep, schema, eventName, query, pageNo, pageSize, projection) {
   try {
-    pageId = Number(pageId) || 1;
+    pageNo = Number(pageNo) || 1;
     pageSize = Number(pageSize) || 10;
+    query = query || {};
+    projection = projection || {};
     // 跳过几条读几条
     let list = await schema
-      .find(target)
+      .find(query, projection)
       .limit(pageSize)
-      .skip((pageId - 1) * pageSize);
+      .skip((pageNo - 1) * pageSize);
     // 查询总数
-    let total = await schema.find(target).countDocuments();
+    let total = await schema.find(query, projection).countDocuments();
     ep.emit(eventName, {
       list,
       total,
@@ -38,17 +49,33 @@ async function count(ep, schema, eventName) {
   }
 }
 
-// 查询前几项
-async function limit(ep, schema, eventName, sort, count) {
+
+/**
+ * 排序查询模版
+ * @param {object} ep - 任务执行器
+ * @param {mongotSchema} schema - 模型
+ * @param {string} eventName - 服务名
+ * @param {object} sort - 排序规则，例如：{time: -1}，表示按照时间降序排序；{time: 1}，表示按照时间升序排序
+ * @param {number} count - 数量，表示返回记录数量
+ * @param {object} query - 查询条件
+ * @param {object} projection - 返回字段
+ */
+async function limit(ep, schema, eventName, sort, count, query = {}, projection = {}) {
   try {
-    let total = await schema.find().sort(sort).limit(count);
+    let total = await schema.find(query, projection).sort(sort).limit(count);
     ep.emit(eventName, total);
   } catch (err) {
     ep.emit('error', err);
   }
 }
 
-// 初始化记录
+/**
+ * 初始化数据模版，表为空时，才会插入数据
+ * @param {object} ep - 任务执行器
+ * @param {mongotSchema} schema - 模型
+ * @param {string} eventName - 服务名
+ * @param {array} data - 初始化数据
+ */
 async function init(ep, schema, eventName, data) {
   try {
     let count = await schema.find().countDocuments();
@@ -64,8 +91,8 @@ async function init(ep, schema, eventName, data) {
 }
 
 module.exports = {
-  findAllByPage,
+  findByPage,
   count,
   limit,
-  init,
+  init
 };

@@ -38,7 +38,7 @@ if (isMainThread) {
     // 解析传递的参数
     let { access } = workerData;
 
-    let routerPath = ['/user/', '/manage/', '/article/', '/file/', '/blacklist/', '/take/', '/mail/', '/record/', '/public/webapp/', '/huasen-store/', '/favicon.ico'];
+    let routerPath = ['/app/', '/user/', '/manage/', '/article/', '/file/', '/blacklist/', '/take/', '/mail/', '/record/', '/public/webapp/', '/huasen-store/', '/favicon.ico'];
 
     let traces = [];
     let dubious = [];
@@ -48,11 +48,13 @@ if (isMainThread) {
 
     let operateMap = {
       '/manage/login': '管理员登录',
+      '/manage/init': '初始化管理员',
+      '/manage/exist': '查询是否存在管理员',
       '/manage/upload': '文件上传',
       '/manage/uploadIcon': '网站图标上传',
       '/manage/executeRuntimeCode': '执行脚本',
       '/manage/saveAppConfig': '保存配置',
-      '/manage/findAppConfig': '查询配置',
+      // '/manage/findAppConfig': '查询配置',
       '/manage/remove': '移除管理员',
       '/manage/update': '更新管理员',
       '/manage/add': '添加管理员',

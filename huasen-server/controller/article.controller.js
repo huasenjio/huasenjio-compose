@@ -16,30 +16,33 @@ function add(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加文章成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '添加文章');
     },
   );
 }
 
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo, pageSize, title, manageId } = req.huasenParams;
   req.epWorking(
     [
       {
         schemaName: 'Article',
-        methodName: 'findAllByPage',
+        methodName: 'findByPage',
         payloads: [
           {
             $and: [{ title: { $regex: new RegExp(title, 'i') } }, { manageId: { $regex: new RegExp(manageId, 'i') } }],
           },
           pageNo,
           pageSize,
+          {
+            content: 0
+          }
         ],
         self: true,
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询文章成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询文章');
     },
   );
 }
@@ -54,7 +57,7 @@ function findAllByList(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '查询文章成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '查询文章');
     },
   );
 }
@@ -78,7 +81,7 @@ function findById(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '查询文章成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '查询文章');
     },
   );
 }
@@ -98,7 +101,7 @@ function remove(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除文章成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '删除文章');
     },
   );
 }
@@ -114,7 +117,7 @@ function update(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '更新文章成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '更新文章');
     },
   );
 }
@@ -137,18 +140,21 @@ function findByCode(req, res, next) {
             // 不是草稿
             isDraft: false,
           },
+          {
+            content: 0
+          }
         ],
       },
     ],
     articles => {
-      global.huasen.responseData(res, articles, 'SUCCESS', '查询文章成功', false);
+      global.huasen.responseData(res, articles, 'SUCCESS', '查询文章');
     },
   );
 }
 
 module.exports = {
   add,
-  findAllByPage,
+  findByPage,
   findAllByList,
   remove,
   findById,

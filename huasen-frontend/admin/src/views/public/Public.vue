@@ -60,8 +60,9 @@
 import { mapState } from 'vuex';
 import moment from 'moment';
 import MarkdownEditor from './markdown-editor/MarkdownEditor.vue';
-
-import { getElementFormValidator } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 export default {
   name: 'Public',
   components: { MarkdownEditor },
@@ -80,8 +81,8 @@ export default {
       },
       // 校验规则
       rules: {
-        title: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:2::标题长度不小于2', 'maxLength:20::标题长度不大于20']), trigger: 'blur' }],
-        manageId: [{ validator: getElementFormValidator(['isNoEmpty::必填项']), trigger: 'blur' }],
+        title: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:2::标题长度不小于2', 'maxLength:20::标题长度不大于20']) }],
+        manageId: [{ validator: getElementFormValidator(['isNonEmpty::必填项']) }],
       },
 
       // 标签
@@ -135,7 +136,7 @@ export default {
       this.$nextTick(async () => {
         // 路由跳转携带参数
         if (Object.keys(this.$route.query).length !== 0) {
-          let result = await this.API.findArticleById({ _id: this.$route.query['_id'] });
+          let result = await this.API.article.findArticleById({ _id: this.$route.query['_id'] });
           let article = result.data.pop();
           if (article) {
             this.articleForm = article;
@@ -188,12 +189,12 @@ export default {
         if (valid) {
           if (this.articleForm._id) {
             // 编辑
-            this.API.updateArticle(this.articleForm).then(res => {
+            this.API.article.updateArticle(this.articleForm).then(res => {
               this.$router.go(-1);
             });
           } else {
             // 添加
-            this.API.addArticle(this.articleForm).then(result => {
+            this.API.article.addArticle(this.articleForm).then(result => {
               this.$router.push('/article-manage');
             });
           }
@@ -204,7 +205,7 @@ export default {
     async handleImgAddUrl(index, file) {
       let formdata = new FormData();
       formdata.append('file', file);
-      let result = await this.API.uploadFile(formdata, {
+      let result = await this.API.manage.uploadFile(formdata, {
         url: '/manage/uploadIcon?type=article',
       });
       this.$tips('success', '上传成功', 'top-right', 1200);

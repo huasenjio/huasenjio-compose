@@ -1,4 +1,4 @@
-import WaterMarkSettings from 'config/watermark.config.js'
+import WaterMarkSettings from '@/config/watermark.config.js'
 
 export default function watermark(settings) {
     let defaultSettings = Object.assign(WaterMarkSettings, settings)

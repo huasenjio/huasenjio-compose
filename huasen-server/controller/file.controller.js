@@ -7,9 +7,10 @@
  */
 const path = require('path');
 const compressing = require('compressing');
+const { STORE } = require('../config.js');
 const { readDirectory, unlinkFile } = require('../utils/tool.js');
 
-const fileType = ['png', 'jpg', 'jpeg', 'zip', 'rar', 'pdf', 'md', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'html', 'css', 'js'];
+const fileType = Object.keys(STORE.acceptTypes);
 
 function findAll(req, res, next) {
   let files = readDirectory(path.resolve(process.cwd(), '../huasen-store'));
@@ -20,22 +21,23 @@ function findAll(req, res, next) {
   files = files.filter(filePath => {
     let fileName = filePath.split(/\/|\\/).slice(-1).join('');
     let ext = fileName.split('.').slice(-1).join('');
-    return fileType.includes(ext.toLowerCase());
+    return fileType.includes('.' + ext.toLowerCase());
   });
-  global.huasen.responseData(res, files, 'SUCCESS', '文件查询成功', false);
+  global.huasen.responseData(res, files, 'SUCCESS', '查询文件');
 }
 
 function findAllIcon(req, res, next) {
-  let files = readDirectory(path.resolve(process.cwd(), '../huasen-store/icon'));
+  const iconPath = path.resolve(process.cwd(), '../huasen-store/icon')
+  let files = readDirectory(iconPath);
   files = files.map(item => {
     return item.split(/\/|\\/).slice(-3).join('/');
   });
   files = files.filter(filePath => {
     let fileName = filePath.split(/\/|\\/).slice(-1).join('');
     let ext = fileName.split('.').slice(-1).join('');
-    return fileType.includes(ext.toLowerCase());
+    return fileType.includes('.' + ext.toLowerCase());
   });
-  global.huasen.responseData(res, files, 'SUCCESS', '初始化图标库成功', false);
+  global.huasen.responseData(res, files, 'SUCCESS', '查询图标库');
 }
 
 async function remove(req, res, next) {
@@ -52,7 +54,7 @@ async function remove(req, res, next) {
     await unlinkFile(removeFilePath);
   }
 
-  global.huasen.responseData(res, {}, 'SUCCESS', '文件删除成功', false);
+  global.huasen.responseData(res, {}, 'SUCCESS', '删除文件');
 }
 
 // 压缩后下载
@@ -60,7 +62,7 @@ async function downloadStoreByZip(req, res, next) {
   let filePath = path.resolve(process.cwd(), '../huasen-store');
   let outputPath = path.resolve(process.cwd(), `../huasen-store/zip/file${new Date().getTime()}.zip`);
   compressing.zip.compressDir(filePath, outputPath).then(async result => {
-    global.huasen.responseData(res, { filePath: outputPath }, 'SUCCESS', '查询文件句柄成功', false);
+    global.huasen.responseData(res, { filePath: outputPath }, 'SUCCESS', '查询文件句柄');
     await unlinkFile(outputPath);
   });
 }

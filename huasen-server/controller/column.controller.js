@@ -8,7 +8,7 @@
 
 const { Column } = require('../service/index.js');
 
-function findAllByPage(req, res, next) {
+function findByPage(req, res, next) {
   let { pageNo, pageSize, name, code } = req.huasenParams;
   // 模糊查询参数
   let params = { name: { $regex: new RegExp(name, 'i') } };
@@ -20,7 +20,7 @@ function findAllByPage(req, res, next) {
     [
       {
         schemaName: 'Column',
-        methodName: 'findAllByPage',
+        methodName: 'findByPage',
         payloads: [
           {
             $and: [params],
@@ -32,7 +32,7 @@ function findAllByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询');
     },
   );
 }
@@ -48,7 +48,7 @@ function add(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加栏目成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '添加栏目');
     },
   );
 }
@@ -68,7 +68,7 @@ function remove(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除栏目成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '删除栏目');
     },
   );
 }
@@ -84,7 +84,7 @@ function update(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '更新栏目成功', false);
+      global.huasen.responseData(res, result, 'SUCCESS', '更新栏目');
     },
   );
 }
@@ -111,7 +111,7 @@ function findByCode(req, res, next) {
       },
     ],
     columns => {
-      global.huasen.responseData(res, columns, 'SUCCESS', '查询栏目成功', false);
+      global.huasen.responseData(res, columns, 'SUCCESS', '查询栏目');
     },
   );
 }
@@ -126,7 +126,7 @@ function findByList(req, res, next) {
       },
     ],
     columns => {
-      global.huasen.responseData(res, columns, 'SUCCESS', '查询栏目成功', false);
+      global.huasen.responseData(res, columns, 'SUCCESS', '查询栏目');
     },
   );
 }
@@ -157,11 +157,11 @@ function bindSite(req, res, next) {
               },
             });
           } catch (err) {
-            global.huasen.responseData(res, {}, 'ERROR', '数据异常', false);
+            global.huasen.responseData(res, {}, 'ERROR', '数据异常');
           }
         });
         let updateResult = await Column.bulkWrite(bulkUpdates);
-        global.huasen.responseData(res, updateResult, 'SUCCESS', '绑定成功', false);
+        global.huasen.responseData(res, updateResult, 'SUCCESS', '链接绑定栏目');
       }
     },
   );
@@ -194,18 +194,18 @@ function unbindSite(req, res, next) {
               },
             });
           } catch (err) {
-            global.huasen.responseData(res, {}, 'ERROR', '数据异常', false);
+            global.huasen.responseData(res, {}, 'ERROR', '数据异常');
           }
         });
         let updateResult = await Column.bulkWrite(bulkUpdates);
-        global.huasen.responseData(res, updateResult, 'SUCCESS', '解绑成功', false);
+        global.huasen.responseData(res, updateResult, 'SUCCESS', '链接解绑栏目');
       }
     },
   );
 }
 
 module.exports = {
-  findAllByPage,
+  findByPage,
   add,
   update,
   remove,

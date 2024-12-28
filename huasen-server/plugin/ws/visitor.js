@@ -7,6 +7,7 @@
  */
 
 const moment = require('moment');
+const JWT = require('../../plugin/jwt.js');
 const { POOL_ACCESS } = require('../../config.js');
 const { getObjectRedisItem } = require('../ioredis/map.js');
 const { runWorker } = require('../threads/index.js');
@@ -14,12 +15,14 @@ const { runWorker } = require('../threads/index.js');
 async function getVisitorInformation() {
   try {
     let poolAccess = await getObjectRedisItem(POOL_ACCESS);
+    let onlines = await JWT.getActiveToken();
     let access = Object.values(poolAccess);
     let result = await runWorker({ access });
 
     return {
-      time: moment().format('HH:mm:ss'),
       ...result,
+      onlines,
+      time: moment().format('HH:mm:ss'),
     };
   } catch (err) {
     console.log(err);

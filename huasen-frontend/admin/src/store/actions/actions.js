@@ -12,6 +12,7 @@ export default {
   // 初始化本地管理员
   initManage(store, payload) {
     try {
+      let { onload } = payload;
       let manage = that.STORAGE.getItem(that.CONSTANT.localManage);
       if (manage) {
         store.commit('commitAll', {
@@ -23,9 +24,16 @@ export default {
           showWrapSign: false,
         });
       }
+      if (typeof onload === 'function') onload();
     } catch (err) {
       that.$tips('error', '初始化失败', 'top-right', 2000, () => {
-        that.STORAGE.clear();
+        that.STORAGE.clear('本地数据异常，点击“确定”，重置网站所有数据和功能，解决疑难杂症，您继续吗？', {
+          onConfirm: () => {
+            // 刷新页面
+            location.reload();
+          },
+          onCancel: () => { },
+        });
       });
     }
   },
@@ -33,7 +41,9 @@ export default {
   // 初始化项目配置
   async initAppConfig(store, payload) {
     try {
-      let res = await that.API.findAppConfig();
+      let res = await that.API.manage.findAppConfig({}, {
+        notify: false,
+      });
       let site = {
         name: that.LODASH.get(res.data, 'site.brandName') || '花森',
         logoURL: that.LODASH.get(res.data, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),

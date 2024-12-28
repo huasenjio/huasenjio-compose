@@ -19,7 +19,7 @@ import { judgeIE } from './judgeIE';
 import { timeout2Interval } from './timeout2Interval';
 import { randomColor } from './randomColor';
 import { stringToMD5 } from './stringToMD5';
-import { mergeByOwnKey } from './lodash-lib.js';
+import { overrideKeys } from './lodash-lib.js';
 
 export default {
   handleURL,
@@ -36,5 +36,5 @@ export default {
   timeout2Interval,
   randomColor,
   stringToMD5,
-  mergeByOwnKey,
+  overrideKeys,
 };

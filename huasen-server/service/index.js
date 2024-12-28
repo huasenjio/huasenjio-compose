@@ -3,13 +3,13 @@
  * @Date: 2022-07-31 21:55:16
  * @LastEditors: huasenjio
  * @LastEditTime: 2023-03-21 23:16:57
- * @Description:
+ * @Description: 任务执行器
  */
 
 const EventProxy = require('eventproxy');
 
 // 任务模版模版
-const { findAllByPage, count, limit, init } = require('./template.js');
+const { findByPage, count, limit, init } = require('./template.js');
 
 // 表实例
 const User = require('../mongodb/model/user.js');
@@ -31,7 +31,7 @@ const schemaMap = {
 };
 
 const methodMap = {
-  findAllByPage,
+  findByPage,
   count,
   limit,
   init,
@@ -96,8 +96,7 @@ function createEpWorking(works, callback) {
 }
 
 module.exports = {
+  ...schemaMap,
   epWorking,
   createEpWorking,
-
-  ...schemaMap,
 };

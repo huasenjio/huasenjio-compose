@@ -16,7 +16,7 @@ const { ioRedisClient } = require('./index.js')
 function setRedisItem(key, value, expire) {
   return new Promise((resolve, reject) => {
     // 异常排除
-    if (!key || typeof key != "string") reject()
+    if (!key || typeof key !== "string") reject()
     if (value === undefined || value === null) reject()
 
     // 如果是字符串或整数则直接存储，其他类型转为JSON字符串后存储
@@ -40,7 +40,7 @@ function setRedisItem(key, value, expire) {
  */
 function getRedisItem(key, expire) {
   return new Promise((resolve, reject) => {
-    if (!key || typeof key != "string") reject()
+    if (!key || typeof key !== "string") reject()
     ioRedisClient.get(key).then(value => {
       try {
         resolve(JSON.parse(value))
@@ -75,8 +75,57 @@ function delRedisItem(key) {
   })
 }
 
+/**
+ * 模糊查询键值对
+ * @param {string} pattern - 模糊查询规则，例如：“ * ”匹配所有，“user*”匹配user开头的键
+ * @returns {array} - 命中key列表
+ */
+function getRedisKeys(pattern) {
+  pattern = pattern || '*'
+  return new Promise((resolve, reject) => {
+    ioRedisClient.keys(pattern).then(keys => {
+      resolve(keys)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+/**
+ * 获取键的生存时间
+ * @param {string} key - 键
+ * @returns {number} - 生存时间，单位秒，-1表示永不过期，-2表示不存在
+ */
+function getRedisKeyTTL(key) {
+  return new Promise((resolve, reject) => {
+    ioRedisClient.ttl(key).then(ttl => {
+      resolve(ttl)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+/**
+ * 批量获取键值对
+ * @param {array} keys - 键列表
+ * @returns 
+ */
+function getRedisValuesByKeys(keys = []) {
+  return new Promise((resolve, reject) => {
+    ioRedisClient.mget(keys).then(values => {
+      resolve(values)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 module.exports = {
   delRedisItem,
   setRedisItem,
-  getRedisItem
+  getRedisItem,
+  getRedisKeys,
+  getRedisKeyTTL,
+  getRedisValuesByKeys
 }

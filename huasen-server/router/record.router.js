@@ -7,13 +7,14 @@
  */
 const express = require('express');
 const router = express.Router();
-const { add, findAllByPage, remove, removeMany } = require('../controller/record.controller.js');
+const { add, findByPage, remove, removeMany, copy } = require('../controller/record.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower } = require('../middleware/manage.middleware.js');
 
-router.post('/add', handleJWT, checkManagePower, handleUselessParams, add);
-router.post('/findByPage', handleJWT, checkManagePower, findAllByPage);
-router.post('/remove', handleJWT, checkManagePower, remove);
-router.post('/removeMany', handleJWT, checkManagePower, removeMany);
+router.post('/add', handleJWT(), checkManagePower, handleUselessParams, add);
+router.post('/remove', handleJWT(), checkManagePower, remove);
+router.post('/removeMany', handleJWT(), checkManagePower, removeMany);
+router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
+router.post('/copy', handleJWT(), checkManagePower, copy);
 
 module.exports = router;

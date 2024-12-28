@@ -8,7 +8,7 @@
 import { get, post } from '../request.js';
 
 const addArticle = post('/article/add');
-const findArticleByPage = get('/article/findByPage');
+const findArticleByPage = post('/article/findByPage');
 const findArticleByList = get('/article/findByList');
 const removeArticle = get('/article/remove');
 const findArticleById = get('/article/findById');

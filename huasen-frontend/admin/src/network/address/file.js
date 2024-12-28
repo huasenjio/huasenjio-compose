@@ -12,6 +12,5 @@ import { get, post } from '../request.js';
 const findAllFile = get('/file/findAll');
 const findAllIcon = get('/file/findAllIcon');
 const removeFile = post('/file/remove');
-const downloadStoreByZip = post('/file/downloadStoreByZip');
 
-export { findAllFile, findAllIcon, removeFile, downloadStoreByZip };
+export { findAllFile, findAllIcon, removeFile };

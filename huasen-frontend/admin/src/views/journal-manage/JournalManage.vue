@@ -46,7 +46,9 @@
 import TableList from '@/components/content/table-list/TableList.vue';
 import DialogForm from '@/components/content/dialog-form/DialogForm.vue';
 import ColumnSelector from './ColumnSelector.vue';
-import { getElementFormValidator } from '@/plugin/strategy.js';
+import { Validator } from 'huasen-lib';
+const validator = new Validator();
+const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 
 export default {
   name: 'JournalManage',
@@ -131,10 +133,10 @@ export default {
         },
       ],
       rule: {
-        name: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']), trigger: 'blur' }],
-        url: [{ validator: getElementFormValidator(['isNoEmpty::必填项', 'isUrl::请输入正确的网址']), trigger: 'blur' }],
-        columnStore: [{ validator: getElementFormValidator(['isJSONArray::请输入JSON数组']), trigger: 'blur' }],
-        expand: [{ validator: getElementFormValidator(['isJSONObject::请输入JSON对象']), trigger: 'blur' }],
+        name: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']) }],
+        url: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isUrl::请输入正确的网址']) }],
+        columnStore: [{ validator: getElementFormValidator(['isJSONArray::请输入JSON数组']) }],
+        expand: [{ validator: getElementFormValidator(['isJSONObject::请输入JSON对象']) }],
       },
       form: {
         name: '',
@@ -159,13 +161,15 @@ export default {
         },
         this.searchForm,
       );
-      this.API.findJournalByPage(params, {
-        notify: false,
-      }).then(res => {
-        this.tableData = res.data.list;
-        this.total = res.data.total;
-        this.cancel();
-      });
+      this.API.journal
+        .findJournalByPage(params, {
+          notify: false,
+        })
+        .then(res => {
+          this.tableData = res.data.list;
+          this.total = res.data.total;
+          this.cancel();
+        });
     },
 
     updatePagination(pageNo, pageSize) {
@@ -174,7 +178,7 @@ export default {
     },
 
     handleRemove(index, row, pageNo, pageSize) {
-      this.API.removeJournal({ _id: row._id }).then(res => {
+      this.API.journal.removeJournal({ _id: row._id }).then(res => {
         this.queryData();
       });
     },
@@ -204,13 +208,13 @@ export default {
 
     save() {
       if (this.mode === 'edit') {
-        this.API.updateJournal(this.form).then(res => {
+        this.API.journal.updateJournal(this.form).then(res => {
           this.queryData();
         });
       } else if (this.mode === 'add') {
         delete this.form._id;
         delete this.form._v;
-        this.API.addJournal(this.form).then(res => {
+        this.API.journal.addJournal(this.form).then(res => {
           this.queryData();
         });
       }

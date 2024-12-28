@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "11458824",
+      "name": "sousuoyinqing",
+      "font_class": "sousuoyinqing",
+      "unicode": "e67e",
+      "unicode_decimal": 59006
+    },
+    {
+      "icon_id": "41371198",
+      "name": "mita",
+      "font_class": "mita",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "42384938",
+      "name": "bing",
+      "font_class": "bing",
+      "unicode": "e73d",
+      "unicode_decimal": 59197
+    },
+    {
       "icon_id": "5916393",
       "name": "7z",
       "font_class": "SEVENZ",

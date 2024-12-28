@@ -59,35 +59,39 @@ export default {
 
   methods: {
     queryVisitorTotal() {
-      this.API.uvOverview(
-        {},
-        {
-          notify: false,
-        },
-      ).then(res => {
-        let vTemp = [];
-        let tTemp = [];
-        res.data.reverse().forEach(element => {
-          vTemp.push(element.count);
-          tTemp.push(element.time);
+      this.API.manage
+        .uvOverview(
+          {},
+          {
+            notify: false,
+          },
+        )
+        .then(res => {
+          let vTemp = [];
+          let tTemp = [];
+          res.data.reverse().forEach(element => {
+            vTemp.push(element.count);
+            tTemp.push(element.time);
+          });
+          this.totalData = vTemp.length ? vTemp : [1];
+          this.totalTime = tTemp.length ? tTemp : ['1970/01/01'];
+          // 绘制数据
+          this.initTotalChart();
         });
-        this.totalData = vTemp;
-        this.totalTime = tTemp;
-        // 绘制数据
-        this.initTotalChart();
-      });
     },
 
     queryVisitor() {
-      this.API.visitor(
-        {},
-        {
-          notify: false,
-        },
-      ).then(res => {
-        this.visitorCount = res.data.visitorCount;
-        this.visitorRate = res.data.visitorRate;
-      });
+      this.API.manage
+        .visitor(
+          {},
+          {
+            notify: false,
+          },
+        )
+        .then(res => {
+          this.visitorCount = res.data.visitorCount;
+          this.visitorRate = res.data.visitorRate;
+        });
     },
 
     initVisitorChart() {
@@ -310,7 +314,7 @@ export default {
           this.chart.resize();
         });
         this.chartObserve.observe(dom);
-        this.$once('hook:beforeDestroy', function() {
+        this.$once('hook:beforeDestroy', function () {
           this.chartObserve.unobserve(dom);
         });
       }
@@ -366,7 +370,7 @@ export default {
           this.totalChart.resize();
         });
         this.totalChartObserve.observe(dom);
-        this.$once('hook:beforeDestroy', function() {
+        this.$once('hook:beforeDestroy', function () {
           this.totalChartObserve.unobserve(dom);
         });
       }

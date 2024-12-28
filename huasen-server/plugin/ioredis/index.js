@@ -6,13 +6,13 @@
  * @Description: ioredis初始化文件
  */
 const ioRedis = require('ioredis');
-const { MODE, REDIS } = require('../../config.js');
+const { REDIS } = require('../../config.js');
 
 // redis实例
 let ioRedisClient = null;
 
 try {
-  if (MODE == 'dev') {
+  if (REDIS.redisDirConnection) {
     ioRedisClient = new ioRedis({
       host: REDIS.host,
       port: REDIS.port,

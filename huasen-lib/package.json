@@ -1,0 +1,31 @@
+{
+  "name": "huasen-lib",
+  "version": "1.0.0",
+  "main": "./dist/huasen-lib.cjs.js",
+  "module": "./dist/huasen-lib.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/huasen-lib.es.js",
+      "require": "./dist/huasen-lib.cjs.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "core-js": "^3.39.0",
+    "vite": "^6.0.1"
+  },
+  "dependencies": {
+    "constants": "^0.0.2",
+    "crypto": "^1.0.1"
+  },
+  "peerDependencies": {
+    "constants": "^0.0.2",
+    "crypto": "^1.0.1"
+  }
+}

@@ -25,7 +25,21 @@ const searchs = [
     key: 'q',
     params: {},
     name: '必应',
-    iconClass: 'iconfont icon-yingyong',
+    iconClass: 'iconfont icon-bing',
+  },
+  {
+    url: 'localhost',
+    key: 'instation',
+    params: {},
+    name: '站内',
+    iconClass: 'iconfont icon-md-planet',
+  },
+  {
+    url: 'https://metaso.cn/',
+    key: 'q',
+    params: {},
+    name: '秘塔',
+    iconClass: 'iconfont icon-mita',
   },
   {
     url: 'https://dict.youdao.com/search',
@@ -42,34 +56,28 @@ const searchs = [
     iconClass: 'iconfont icon-md-school',
   },
   {
-    url: 'https://image.baidu.com/search/index',
-    key: 'word',
-    params: {
-      tn: 'baiduimage',
-    },
-    name: '搜图',
+    url: 'https://ya.ru/images/search',
+    key: 'text',
+    params: {},
+    name: '图搜',
     iconClass: 'iconfont icon-md-image',
   },
-  {
-    url: 'https://duckduckgo.com/',
-    key: 'q',
-    params: {},
-    name: '匿名',
-    iconClass: 'iconfont icon-md-cube',
-  },
-  {
-    url: 'localhost',
-    key: 'instation',
-    params: {},
-    name: '站内',
-    iconClass: 'iconfont icon-md-planet',
-  },
   // {
-  //   url: "https://quark.sm.cn/s",
-  //   key: "q",
+  //   url: 'https://duckduckgo.com/',
+  //   key: 'q',
   //   params: {},
-  //   name: "夸克",
-  //   iconClass: "iconfont icon-md-planet",
+  //   name: '匿名',
+  //   iconClass: 'iconfont icon-sousuoyinqing',
+  // },
+  // {
+  //   url: 'https://image.baidu.com/search/index',
+  //   key: 'word',
+  //   params: {
+  //     tn: 'baiduimage',
+  //   },
+  //   name: '百度搜图',
+  //   iconClass: 'iconfont icon-md-image',
+  //   iconImg: 'https://n.huasenjio.top/img/favicon.57a83e22.svg'
   // },
 ];
 export default searchs;

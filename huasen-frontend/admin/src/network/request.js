@@ -7,15 +7,14 @@
  */
 
 const Mock = require('mockjs2');
-
 import Config from './config.js';
 import { http } from './http.js';
 
 /**
  * get请求方法
- * @param {String}  url       接口地址 必填
- * @param {Object}  mockData  随机数据（硬编码对象｜Mock数据格式｜函数）选填
- * @param {Boolean} FWS       数据模拟功能开关 选填
+ * @param {string}  url       接口地址 必填
+ * @param {object}  mockData  随机数据（硬编码对象｜Mock数据格式｜函数）选填
+ * @param {boolean} FWS       数据模拟功能开关 选填
  */
 export function get(url, mock, FSW = true) {
   let isMock = null;
@@ -51,9 +50,9 @@ export function get(url, mock, FSW = true) {
 
 /**
  * post请求方法
- * @param {String}  url       接口地址 必填
- * @param {Object}  mockData  随机数据（硬编码对象｜Mock数据格式｜函数）选填
- * @param {Boolean} FWS       数据模拟功能开关 选填
+ * @param {string}  url       接口地址 必填
+ * @param {object}  mockData  随机数据（硬编码对象｜Mock数据格式｜函数）选填
+ * @param {boolean} FWS       数据模拟功能开关 选填
  */
 export function post(url, mock, FSW = true) {
   let isMock = null;
@@ -91,16 +90,15 @@ export function post(url, mock, FSW = true) {
 
 /**
  * 上传请求方法
- * @param {String}  url  接口地址 必填
+ * @param {string} url - 接口地址
  */
 export function upload(url) {
   return function (data, option = {}) {
     return http({
+      ...option,
       url,
       data,
-      ...option,
       method: 'post',
-      // 配置axios的参数
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -109,9 +107,9 @@ export function upload(url) {
 }
 
 /**
- * 通过URL链接下载文件
- * @param {String}  url       文件地址
- * @param {String}  filename  文件名称（带后缀）
+ * URL链接形式下载文件
+ * @param {string} url - 接口地址 
+ * @param {string} filename - 文件名称，必须带有后缀
  */
 export function downloadFileByUrl(url, filename) {
   let a = document.createElement('a');
@@ -124,11 +122,13 @@ export function downloadFileByUrl(url, filename) {
 }
 
 /**
- * 通过二进制流下载文件
- * @param {Blob}        content     二进制流对象（Blob）
- * @param {String}      filename    文件名称（带后缀）
- * @param {String}      MIME        MINE类型
- * @param {Function}    callback    回调函数
+ * 二进制流形式下载文件
+ * @param {string} url - 接口地址
+ * @param {object} data - 参数对象
+ * @param {string} fileName - 文件名称，必须带有后缀
+ * @param {mine} MIME - 文件类型，如：application/zip
+ * @param {function} callback - 回调函数
+ * @returns 
  */
 export function downloadFileByBlob(url, data, fileName, MIME, callback) {
   return http({

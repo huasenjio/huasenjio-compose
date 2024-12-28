@@ -9,8 +9,8 @@
     "pro": "nodemon app.js MODE=pro",
     "pm2:dev": "pm2 start app.js --watch --node-args='--security-revert=CVE-2023-46809' -- MODE=dev",
     "pm2:pro": "pm2 start app.js --watch --node-args='--security-revert=CVE-2023-46809' -- MODE=pro",
-    "pm2-runtime:dev": "pm2-runtime start app.js --watch --node-args='--security-revert=CVE-2023-46809' -- MODE=dev",
-    "pm2-runtime:pro": "pm2-runtime start app.js --watch --node-args='--security-revert=CVE-2023-46809' -- MODE=pro",
+    "pm2-runtime:dev": "pm2-runtime start app.js --watch -- MODE=dev",
+    "pm2-runtime:pro": "pm2-runtime start app.js --watch -- MODE=pro",
     "api-doc": "apidoc -i router/ -o public/apidoc/"
   },
   "author": "huasen",
@@ -27,6 +27,7 @@
     "express": "4.17.1",
     "express-session": "1.17.1",
     "http-errors": "1.7.0",
+    "huasen-lib": "../huasen-lib",
     "ioredis": "^5.2.2",
     "jsonwebtoken": "8.5.1",
     "lodash": "^4.17.21",
