@@ -14,7 +14,6 @@ async function copyFiles(srcPath, destPath) {
     filter: (src) => {
       return (
         !src.includes("node_modules") &&
-        !src.includes(".vscode") &&
         !src.includes(".git")
       );
     },

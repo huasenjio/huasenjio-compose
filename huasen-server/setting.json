@@ -7,7 +7,7 @@
     "guidePageUrl": "http://huasenjio.top/",
     "footerHtml": "",
     "openLabelClassification": false,
-    "autoIOWenIcon": false,
+    "autoIconPatch": false,
     "jwt": "",
     "jwtLiveTime": 604800,
     "serviceQRCodeUrl": ""
@@ -41,13 +41,26 @@
   "mail": {
     "host": "smtp.163.com",
     "port": 465,
-    "user": "huasenjio@163.com",
-    "mtp": "HWIDIXVBPESBFBCM"
+    "user": "***@163.com",
+    "mtp": "***"
   },
   "article": {
-    "changelog": "648c79d1cdf0f0076b134525",
-    "about": "648c79d1cdf0f0076b134525",
-    "help": "648c79d1cdf0f0076b134525",
+    "changelog": "",
+    "about": "",
+    "help": "",
     "notice": ""
+  },
+  "copyright": {
+    "name": "花森开源项目",
+    "company": "Huasenjio Studio",
+    "github": {
+      "author": "huasenjio",
+      "repository": "https://github.com/huasenjio/huasenjio-compose",
+      "protocol": "Apache-2.0 license"
+    },
+    "contact": {
+      "website": "www.huasenjio.top",
+      "bilibili": "https://space.bilibili.com/241546158"
+    }
   }
 }

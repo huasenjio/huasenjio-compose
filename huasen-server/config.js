@@ -37,27 +37,32 @@ const POOL_MAIL = 'POOL_MAIL';
 // 令牌池
 const POOL_TOKEN = 'POOL_TOKEN';
 
-// 数据库连接配置
+// 数据库连接配置，默认开发环境直接外部访问，生产环境连接docker的mongo容器
+const dbDirConnection = MODE === 'dev';
 const DB = {
   name: 'huasenjio', // 角色名
   password: 'Mongo12345*', // 角色密码
-  ip: MODE == 'dev' ? '127.0.0.1' : 'mongo', // 数据库地址
+  ip: dbDirConnection ? '127.0.0.1' : 'mongo', // 数据库地址
   port: 37017, // 端口
   dbName: 'huasen', // 数据库名
+  dbDirConnection
+};
+
+// redis连接配置，默认开发环境直接外部访问，生产环境连接docker的redis容器
+const redisDirConnection = MODE === 'dev';
+const REDIS = {
+  port: 7379, // 端口号
+  host: redisDirConnection ? '127.0.0.1' : 'redis', // redis地址
+  password: 'Redis12345*', // redis密码
+  redisDirConnection
 };
 
 // websocket配置
 const WS = {
   port: 8181,
-  interval: 10000,
+  interval: 15000,
 };
 
-// redis连接配置
-const REDIS = {
-  port: 7379, // 端口号
-  host: MODE == 'dev' ? '127.0.0.1' : 'redis', // redis地址
-  password: 'Redis12345*', // redis密码
-};
 
 // QQ邮箱服务配置示例
 const QQ_MAIL = {
@@ -65,12 +70,23 @@ const QQ_MAIL = {
   port: 465,
   secure: true,
   auth: {
-    user: 'QQ邮箱', //  发送方邮箱地址
-    pass: 'QQ邮箱 mtp', //  自己申请的mtp的通行码
+    user: 'QQ邮箱', //  QQ邮箱地址
+    pass: 'QQ邮箱mtp', //  QQ邮箱地址的mtp通行码
   },
 };
 
-// 实际邮箱配置
+// 网易邮箱服务配置示例
+const WY_MAIL = {
+  host: 'smtp.163.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: '163邮箱',
+    pass: '163邮箱mtp',
+  },
+};
+
+// 必须配置项目的邮箱服务，否则无法发送验证码
 const MAIL = {
   host: _.get(setting, 'mail.host') || QQ_MAIL.host,
   port: _.get(setting, 'mail.port') || QQ_MAIL.port,
@@ -81,20 +97,9 @@ const MAIL = {
   },
 };
 
-// 站点配置
+// 重定向站点，当用户访问不正确的链接时，将会重定向到以下配置的站点
 const SITE = {
-  redirectURL: _.get(setting, 'site.redirectUrl') || 'http://huasen.cc/',
-};
-
-// 网易邮箱服务配置示例
-const WY_MAIL = {
-  host: 'smtp.163.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: '163邮箱',
-    pass: '163邮箱 mtp',
-  },
+  redirectURL: _.get(setting, 'site.redirectUrl') || 'https://huasenjio.top/',
 };
 
 /**
@@ -117,46 +122,40 @@ const SESSION = {
 // 文件上传配置
 const STORE = {
   // 文件默认允许的类型，仅支持MIME
-  acceptTypes: [
-    'image/jpg',
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/vnd.microsoft.icon',
-    'svg+xml',
+  acceptTypes: {
+    ".jpg": "image/jpg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".gif": "image/gif",
+    ".svg": "image/svg+xml",
+    ".ico": "image/vnd.microsoft.icon",
+    ".html": "text/html",
+    ".css": "text/css",
+    ".js": "text/javascript",
+    ".mp3": "audio/mpeg",
+    ".aac": "audio/aac",
+    ".mp4": "video/mp4",
+    ".mpeg": "video/mpeg",
+    ".webm": "audio/webm",
+    ".webp": "image/webp",
+    ".json": "application/json",
+    ".pdf": "application/pdf",
+    ".rar": "application/vnd.rar",
+    ".tar": "application/x-tar",
+    ".zip": "application/zip",
+    ".7z": "application/x-7z-compressed",
+    ".bz": "application/x-bzip",
+    ".sh": "application/x-sh",
+    ".bin": "application/octet-stream",
+    ".csv": "text/csv",
+    ".doc": "application/msword",
+    ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ".xls": "application/vnd.ms-excel",
+    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ".ppt": "application/vnd.ms-powerpoint",
+    ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+  },
 
-    'text/html',
-    'text/css',
-    'text/javascript',
-
-    'audio/mpeg',
-    'audio/aac',
-    'video/mp4',
-    'video/mpeg',
-
-    'audio/webm',
-    'video/webm',
-    'image/webp',
-
-    'application/json',
-    'application/pdf',
-    'application/vnd.rar',
-    'application/x-tar',
-    'application/zip',
-    'application/x-7z-compressed',
-    'application/x-bzip',
-
-    'application/x-sh',
-    'application/octet-stream',
-
-    'text/csv',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.ms-powerpoint',
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-  ],
   fileSize: 1024 * 1024 * 10, // 限制10m大小
   target: 'file', // 获取前端上传文件的key值
   encoding: 'utf-8', // 传输的编码格式
@@ -178,12 +177,6 @@ const STATUS = {
   ERROR: 400, // 服务器内部错误
   FORBIDDEN: 403, // 权限不足
   AUTH: 401, // 无法认证，重新登录
-};
-
-// 默认管理员
-const ADMIN = {
-  id: 'admin@qq.com',
-  password: '12345',
 };
 
 /**
@@ -254,7 +247,6 @@ module.exports = {
   SESSION,
   STORE,
   STATUS,
-  ADMIN,
 
   MAIL,
   QQ_MAIL,

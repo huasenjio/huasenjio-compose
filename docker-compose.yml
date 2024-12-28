@@ -34,7 +34,6 @@ services:
       # 将容器的27017端口映射到宿主机的27017端口
       - 37017:27017
     networks:
-      # 设置网络
       - huasenNetwork
 
   redis:
@@ -46,76 +45,70 @@ services:
       - TZ=Asia/Shanghai
     ports:
       - 7379:6379
-    # 挂载配置文件和数据
     volumes:
       - ./huasen-redis/conf/redis-open.conf:/usr/local/etc/redis/redis.conf
       - ./huasen-redis/data:/data:rw
-    # 执行配置
     command: redis-server /usr/local/etc/redis/redis.conf
     networks:
       - huasenNetwork
 
   nginx:
+    # 使用ottps实现SSL专用nginx镜像
+    # image: ohttps/ohttps-nginx
     image: nginx:1.23.1
     container_name: nginx
     restart: always
     volumes:
-      # 将容器中的nginx配置挂载到宿主机上对应的文件
       - ./huasen-nginx/conf/nginx-open.conf:/etc/nginx/nginx.conf
       - ./huasen-nginx/www:/home/www
       - ./huasen-nginx/log:/var/log/nginx
       - ./huasen-nginx/html:/usr/share/nginx/html
-    # 端口暴露
     ports:
       # 宿主机:容器
       - 80:80
-
-      # 详细语法
-      # - target: 80 # 容器内
-      #   published: 80 # 容器外
-      #   protocol: tcp
-      #   mode: host
     environment:
       - TZ=Asia/Shanghai
+      # ohttps部署节点id
+      # - PUSH_NODE_ID=push-***
+      # ohttps部署节点令牌
+      # - PUSH_NODE_TOKEN=***
     networks:
       - huasenNetwork
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
-    restart: always
-    privileged: true
-    user: root
-    volumes:
-      # 挂载目录到容器
-      - ./huasen-jenkins/:/var/jenkins_home
-      - ./huasen-jenkins-cache:/huasen-jenkins-cache
-      # 代理docker-compose到容器
-      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
-      - /usr/lib/x86_64-linux-gnu/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7
-    ports:
-      - "8080:8080"
-    environment:
-      - TZ=Asia/Shanghai
-    networks:
-      - huasenNetwork
+  # jenkins:
+  #   image: jenkins/jenkins:lts
+  #   container_name: jenkins
+  #   restart: always
+  #   privileged: true
+  #   user: root
+  #   volumes:
+  #     # 挂载目录到容器
+  #     - ./huasen-jenkins/:/var/jenkins_home
+  #     - ./huasen-jenkins-cache:/huasen-jenkins-cache
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - TZ=Asia/Shanghai
+  #   networks:
+  #     - huasenNetwork
 
   server:
     # 指定Dockerflie构建镜像
     build:
       context: ./huasen-server
-    # 定义容器名称
+    # 后端服务容器名称
     container_name: server
     restart: always
     privileged: true
     user: root
-    # 代理日志文件
+    # 挂载日志、静态文件目录、依赖库、服务参数、项目配置、前端构建包
     volumes:
       - ./huasen-log/:/app/huasen-server/log
       - ./huasen-store/:/app/huasen-store
+      - ./huasen-lib/:/app/huasen-lib
       - ./huasen-server/setting.json:/app/huasen-server/setting.json
+      - ./huasen-server/config.js:/app/huasen-server/config.js
+      - ./huasen-server/public/webapp/:/app/huasen-server/public/webapp/
     ports:
       - "3000:3000"
       - "8181:8181"

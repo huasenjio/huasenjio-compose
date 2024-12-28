@@ -4,7 +4,6 @@
 
 # 项目文件
 node_modules
-/dist
 /huasen-store/default/*
 /huasen-mongo/volume/*
 /huasen-redis/data/*

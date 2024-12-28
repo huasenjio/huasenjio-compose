@@ -1,6 +1,5 @@
-# 安装 Node V18 精简版
-FROM node:18-alpine
-# FROM node:16-alpine3.17 
+# 安装 Node V16 精简版，不要升级版本，避免出现不兼容问题，例如：非对称加密算法异常。
+FROM node:16-alpine
 # 设置维护者信息 
 LABEL maintainer="huasen<huasenjio@163.com>"
 # 防止中文打印信息显示乱码
@@ -10,7 +9,9 @@ COPY . /app/huasen-server
 # 制定终端开启路径
 WORKDIR /app/huasen-server
 # 使用淘宝镜像源
-RUN npm config set registry http://registry.npm.taobao.org
+# RUN npm config set registry http://registry.npm.taobao.org
+# 使用最新淘宝镜像源
+RUN npm config set registry https://registry.npmmirror.com
 # 安装 pm2 用来做服务器的进程守护
 RUN npm install pm2 -g
 # 安装项目依赖
