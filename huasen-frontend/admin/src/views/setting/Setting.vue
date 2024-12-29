@@ -245,7 +245,7 @@
 
       <!-- 配置总览 -->
       <el-collapse-item name="5">
-        <template slot="title"> <i class="el-icon-table-lamp mr-px-4"></i>配置代码总览</template>
+        <template slot="title"> <i class="el-icon-table-lamp mr-px-4"></i>配置代码总览（需要点击「SAVE」保存手动修改的配置代码）</template>
         <el-row :gutter="10">
           <el-col :span="24">
             <div class="result">
