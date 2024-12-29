@@ -268,7 +268,7 @@
 </template>
 
 <script>
-import VueJsonEditor from 'vue-json-editor';
+import VueJsonEditor from 'vue-json-editor-fix-cn';
 import { Validator } from 'huasen-lib';
 const validator = new Validator();
 const checkParamsByRules = validator.verify.bind(validator);
@@ -616,7 +616,7 @@ export default {
     }
   }
   ::v-deep .json-edit {
-    height: 100%;
+    height: calc(100vh - 180px);
     .jsoneditor-vue {
       width: 100%;
       height: 100%;

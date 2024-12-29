@@ -39,7 +39,7 @@
 
 <script>
 import HsDialog from '@/components/common/dialog/Dialog.vue';
-import VueJsonEditor from 'vue-json-editor';
+import VueJsonEditor from 'vue-json-editor-fix-cn';
 import { AF } from '@/plugin/af.js';
 export default {
   name: 'JsonToolPanel',
@@ -102,7 +102,7 @@ export default {
             };
             this.objectText = this.parseValue(obj, 1, retractMap[this.retract]);
           } else if (val === 'json') {
-            const sanitizedText = this.objectText.replace(/\b0(\d+)\b/g, "$1");
+            const sanitizedText = this.objectText.replace(/\b0(\d+)\b/g, '$1');
             let tempObj = eval(`(${sanitizedText})`);
             this.jsonText = JSON.stringify(tempObj, null, this.retract);
           }
