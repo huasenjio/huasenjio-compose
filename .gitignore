@@ -1,17 +1,15 @@
-# 系统和软件标识
 .DS_Store
-.idea
 
-# 项目文件
 node_modules
+
+/huasen-log/
 /huasen-store/default/*
 /huasen-mongo/volume/*
 /huasen-redis/data/*
 /huasen-nginx/log/*
 /huasen-server/log/*
 /huasen-jenkins/*
-/huasen-server/log/*
-/huasen-log/
+/huasen-jenkins-cache/*
 
 # local env files
 .env.local
