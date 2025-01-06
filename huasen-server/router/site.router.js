@@ -8,9 +8,9 @@
 
 const express = require('express');
 const router = express.Router();
-const { add, addMany, findByPage, remove, removeMany, update, findByCode, findByList, findSiteTagByList, findSiteColumnByList, bindColumn, unbindColumn, importSite, exportSite } = require('../controller/site.controller.js');
+const { add, addMany, findByPage, remove, removeMany, update, findByCode, findByList, findSiteTagByList, findSiteColumnByList, bindColumn, unbindColumn, importSite, exportSite, findSiteFavicon } = require('../controller/site.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
-const { checkManagePower } = require('../middleware/manage.middleware.js');
+const { checkManagePower } = require('../middleware/power.middleware.js');
 
 router.post('/add', handleJWT(), checkManagePower, handleUselessParams, add);
 router.post('/addMany', handleJWT(), checkManagePower, handleUselessParams, addMany);
@@ -58,5 +58,13 @@ router.post('/exportSite', handleJWT(), checkManagePower, exportSite);
  * @apiParam {number} code 权限码
  */
 router.post('/findByCode', handleJWT('parse'), findByCode);
+
+/**
+ * @api {post} /site/findSiteFavicon 通过网链地址查询favicon列表
+ * @apiVersion 1.0.0
+ * @apiGroup Site
+ * @apiParam {string} url 网链地址
+ */
+router.post('/findSiteFavicon', handleJWT(), checkManagePower, findSiteFavicon);
 
 module.exports = router;

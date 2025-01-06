@@ -9,7 +9,7 @@
 const express = require('express');
 const router = express.Router();
 const { findByPage, remove, add } = require('../controller/blacklist.controller.js');
-const { checkManagePower } = require('../middleware/manage.middleware.js');
+const { checkManagePower } = require('../middleware/power.middleware.js');
 const { handleJWT } = require('../middleware/common.middleware.js');
 
 router.post('/add', handleJWT(), checkManagePower, add);

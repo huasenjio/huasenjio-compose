@@ -45,8 +45,14 @@ export default {
   },
 
   watch: {
-    system(nV, oV) {
-      this.initMemoryChart();
+    system: {
+      handler() {
+        this.$nextTick(() => {
+          this.initMemoryChart();
+        });
+      },
+      deep: true,
+      immediate: true,
     },
   },
 
@@ -72,7 +78,7 @@ export default {
 
   methods: {
     queryDiskOverview() {
-      this.API.manage.diskOverview({}, { notify: false }).then(res => {
+      this.API.statistics.diskInfo({}, { notify: false }).then(res => {
         this.disk = res.data;
         this.initStoreChart();
       });

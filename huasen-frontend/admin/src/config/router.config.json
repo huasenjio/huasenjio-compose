@@ -6,7 +6,7 @@
   {
     "path": "/home",
     "name": "Home",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "home/Home",
     "keepAlive": true,
     "title": "数据表盘",
@@ -15,7 +15,7 @@
   {
     "path": "/error404",
     "name": "Error404",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "error/Error404",
     "title": "404",
     "children": []
@@ -23,7 +23,7 @@
   {
     "path": "/error403",
     "name": "Error403",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "error/Error403",
     "title": "403",
     "children": []
@@ -31,7 +31,7 @@
   {
     "path": "/public",
     "name": "Public",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "public/Public",
     "keepAlive": true,
     "title": "发布文章",
@@ -40,7 +40,7 @@
   {
     "path": "/article-manage",
     "name": "ArticleManage",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "article-manage/ArticleManage",
     "keepAlive": true,
     "title": "文章管理",
@@ -49,7 +49,7 @@
   {
     "path": "/account-manage",
     "name": "AccountManage",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "account-manage/AccountManage",
     "keepAlive": true,
     "title": "账号管理",
@@ -58,7 +58,7 @@
   {
     "path": "/file-manage",
     "name": "FileManage",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "file-manage/FileManage",
     "keepAlive": true,
     "title": "文件管理",
@@ -67,7 +67,7 @@
   {
     "path": "/site-manage",
     "name": "SiteManage",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "site-manage/SiteManage",
     "keepAlive": true,
     "title": "网链管理",
@@ -76,7 +76,7 @@
   {
     "path": "/journal-manage",
     "name": "JournalManage",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "journal-manage/JournalManage",
     "keepAlive": true,
     "title": "订阅管理",
@@ -85,7 +85,7 @@
   {
     "path": "/column-manage",
     "name": "ColumnManage",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "column-manage/ColumnManage",
     "keepAlive": true,
     "title": "栏目管理",
@@ -94,7 +94,7 @@
   {
     "path": "/record-manage",
     "name": "RecordManage",
-    "menuCode": "000",
+    "menuCode": 0,
     "component": "record-manage/RecordManage",
     "keepAlive": true,
     "title": "日志管理",
@@ -103,7 +103,7 @@
   {
     "path": "/setting",
     "name": "Setting",
-    "menuCode": "001",
+    "menuCode": 0,
     "component": "setting/Setting",
     "keepAlive": true,
     "title": "系统配置",

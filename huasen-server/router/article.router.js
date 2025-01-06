@@ -11,7 +11,7 @@ const router = express.Router();
 const { add, findByPage, findAllByList, remove, findById, update, findByCode } = require('../controller/article.controller.js');
 
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
-const { checkManagePower } = require('../middleware/manage.middleware.js');
+const { checkManagePower } = require('../middleware/power.middleware.js');
 
 router.post('/add', handleJWT(), checkManagePower, handleUselessParams, add);
 router.post('/update', handleJWT(), checkManagePower, update);

@@ -47,75 +47,57 @@ if (isMainThread) {
     let hostSet = new Set();
 
     let operateMap = {
-      '/manage/login': '管理员登录',
-      '/manage/init': '初始化管理员',
-      '/manage/exist': '查询是否存在管理员',
-      '/manage/upload': '文件上传',
-      '/manage/uploadIcon': '网站图标上传',
-      '/manage/executeRuntimeCode': '执行脚本',
-      '/manage/saveAppConfig': '保存配置',
-      // '/manage/findAppConfig': '查询配置',
-      '/manage/remove': '移除管理员',
-      '/manage/update': '更新管理员',
-      '/manage/add': '添加管理员',
-      // '/manage/findByPage': '分页查询管理员',
-      // '/manage/overview': '查询数据总览',
-      // '/manage/diskOverview': '查询磁盘空间',
-      // '/manage/uvOverview': '查询近日访客量',
-      // '/manage/visitor': '查询今日访客',
-      '/manage/findAppFavicon': ' 爬取网站图标',
+      '/app/runCode': '执行脚本',
+      '/app/saveAppConfig': '保存配置',
+      '/app/offline': '强制用户下线',
+
+      '/statistics/overview': '查询数据总览',
+      '/statistics/disk': '查询磁盘空间',
+      '/statistics/uv': '查询近日访客量',
+      '/statistics/visitor': '查询今日访客',
 
       '/mail/getCode': '发送邮箱验证码',
 
       '/file/remove': '移除文件',
-      // '/file/findAll': '查看全部文件',
-      // '/file/findAllIcon': '查看全部图标',
+      '/file/upload': '文件上传',
+      '/file/uploadIcon': '网站图标上传',
 
       '/record/add': '添加日志',
       '/record/remove': '删除日志',
-      // '/record/findByPage': '分页查询日志',
+      '/record/findByPage': '分页查询日志',
       '/record/removeMany': '批量删除日志',
 
       '/article/add': '添加文章',
       '/article/remove': '移除文章',
       '/article/update': '更新文章',
-      // '/article/findByPage': '分页查询文章',
+      '/article/findByPage': '分页查询文章',
 
+      '/user/manage/login': '登录管理员',
+      '/user/manage/init': '初始化管理员',
       '/user/add': '添加用户',
       '/user/remove': '移除用户',
       '/user/update': '更新用户',
-      // '/user/findByPage': '分页查询用户',
+      '/user/findByPage': '分页查询用户',
 
       '/blacklist/remove': '删除黑名单',
       '/blacklist/add': '添加黑名单',
-      // '/blacklist/findByPage': '查看黑名单',
 
       '/column/remove': '删除栏目',
       '/column/add': '添加栏目',
-      // '/column/findByPage': '分页查询栏目',
       '/column/update': '更新栏目',
-      // '/column/list': '查询栏目列表',
-      // '/column/bindSite': '栏目绑定站点',
-      // '/column/unbindSite': '栏目剔除站点',
 
       '/journal/add': '添加订阅',
       '/journal/remove': '删除订阅',
       '/journal/update': '更新订阅',
-      // '/journal/findByPage': '分页查询订阅',
 
       '/site/add': '添加网链',
       '/site/addMany': '导入网链',
-      // '/site/findByPage': '分页查询网链',
       '/site/remove': '删除网链',
       '/site/removeMany': '批量删除网链',
       '/site/update': '更新网链',
       '/site/exportSite': '导出网链',
       '/site/importSite': '导入网链',
-      // '/site/list': '查询网链列表',
-      // '/site/siteTagList': '查询全部网链标签',
-      // '/site/siteColumnList': '查询网链所属栏目',
-      // '/site/bindColumn': '网链加入栏目',
-      // '/site/unbindColumn': '网链解绑栏目',
+      '/site/findSiteFavicon': ' 爬取网站图标',
     };
 
     let ipMap = {};
@@ -170,7 +152,7 @@ if (isMainThread) {
     // 通知主进程传递计算后数据
     parentPort.postMessage(result);
   } catch (err) {
-    console.error('子线程计算出错', err);
+    console.error('子线程运算异常', err);
     parentPort.postMessage({});
   }
 }

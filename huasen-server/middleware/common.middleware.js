@@ -100,6 +100,7 @@ function handleJWT(type = 'auth') {
         req.huasenJWT = {
           token,
           proof: data,
+          isAdmin: _.get(data, 'code') >= 2,
         };
         next();
       })
@@ -137,6 +138,7 @@ function handleRequest(req, res, next) {
       key: '',
       code: 0,
     },
+    isAdmin: false,
   };
   req.huasenParams = {};
 
@@ -182,7 +184,7 @@ function handleRequest(req, res, next) {
 // 错误处理中间件
 const handleRequestError = function (err, req, res, next) {
   // 返回到客户端
-  global.huasen.responseData(res, {}, 'ERROR', '发生未知错误');
+  global.huasen.responseData(res, _.get(err, 'message'), 'ERROR', '发生未知错误');
   // 记录错误日志
   global.huasen.formatError(err, '全局错误处理中间件发现错误');
 };

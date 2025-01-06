@@ -425,7 +425,7 @@ export default {
     },
     // 查询配置
     queryConfig() {
-      this.API.manage.findAppConfig({}, { notify: false }).then(res => {
+      this.API.app.findAppConfig({}, { notify: false }).then(res => {
         // 移除表单等待赋值后默认数据更新
         this.loaded = false;
         // 遍历请求的配置项，例如：site、mail、theme、article
@@ -445,7 +445,7 @@ export default {
       list.push(this.checkForm('siteForm'), this.checkForm('mailForm'), this.checkForm('themeForm'), this.checkForm('articleForm'));
       Promise.all(list)
         .then(() => {
-          this.API.manage
+          this.API.app
             .saveAppConfig(
               {
                 systemConfig: JSON.stringify(this.setting, null, 2),
@@ -557,7 +557,7 @@ export default {
       const file = e.target.files[0];
       let formdata = new FormData();
       formdata.append('file', file);
-      this.API.manage.uploadFile(formdata, { url: '/manage/upload?type=' + 'img' }).then(res => {
+      this.API.file.uploadFile(formdata, { url: '/file/upload?type=' + 'img' }).then(res => {
         this.currentUploading.form[this.currentUploading.key] = this.LODASH.get(res.data, '0.path');
         e.target.value = null;
       });

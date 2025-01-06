@@ -39,12 +39,6 @@ let UserSchema = new mongoose.Schema({
     default: '',
   },
 
-  // 是否是管理员
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
-
   // 权限码(0-3)
   code: {
     type: Number,

@@ -51,8 +51,8 @@ export default {
   methods: {
     comfirmDialog() {
       this.resultText = '无';
-      this.API.manage
-        .executeRuntimeCode(this.form, {
+      this.API.app
+        .runCode(this.form, {
           secret: 'aesinrsa',
         })
         .then(res => {

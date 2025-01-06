@@ -41,7 +41,7 @@ export default {
   // 初始化项目配置
   async initAppConfig(store, payload) {
     try {
-      let res = await that.API.manage.findAppConfig({}, {
+      let res = await that.API.app.findAppConfig({}, {
         notify: false,
       });
       let site = {

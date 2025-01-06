@@ -62,10 +62,6 @@ export default {
           key: 'password',
         },
         {
-          label: '权限码',
-          key: 'code',
-        },
-        {
           label: '昵称',
           key: 'name',
         },
@@ -82,7 +78,11 @@ export default {
           key: 'config',
         },
         {
-          label: '是否可用',
+          label: '权限码',
+          key: 'code',
+        },
+        {
+          label: '是否启用',
           key: 'enabled',
         },
       ],
@@ -129,20 +129,9 @@ export default {
           type: 'input',
         },
         {
-          label: '权限码',
-          key: 'code',
-          type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
-        },
-        {
           label: '昵称',
           key: 'name',
           type: 'input',
-        },
-        {
-          label: '是否可用',
-          key: 'enabled',
-          type: 'switch',
         },
         {
           label: '头像',
@@ -158,6 +147,18 @@ export default {
           label: '配置',
           key: 'config',
           type: 'input',
+        },
+        {
+          label: '权限码',
+          key: 'code',
+          type: 'select',
+          selectOptions: this.CONSTANT.dictionary.code,
+        },
+        {
+          label: '是否可用',
+          key: 'enabled',
+          type: 'switch',
+          disabled: false,
         },
       ],
       rule: {
@@ -178,6 +179,21 @@ export default {
       pageNo: 1,
       pageSize: 10,
     };
+  },
+  watch: {
+    'form.code': {
+      handler(val) {
+        let targetFormItem = this.formMap.find(item => item.key === 'enabled');
+        if (val < 2) {
+          targetFormItem.disabled = false;
+        } else {
+          // 管理员不会被禁用
+          this.form.enabled = true;
+          targetFormItem.disabled = true;
+        }
+      },
+      deep: true,
+    },
   },
   mounted() {
     this.queryUser();
@@ -206,6 +222,10 @@ export default {
       this.pageSize = pageSize;
     },
     removeUser(index, row, pageNo, pageSize) {
+      if (this.$store.state.manage.id === row.id) {
+        this.$tips('error', '当前登录账号，不允许被删除！', 'top-right', 1200);
+        return;
+      }
       this.API.user.removeUser({ _id: row._id }).then(res => {
         this.queryUser();
       });

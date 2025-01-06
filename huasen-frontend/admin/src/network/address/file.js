@@ -7,10 +7,11 @@
  */
 
 const Mock = require('mockjs2');
-import { get, post } from '../request.js';
+import { get, post, upload } from '../request.js';
 
 const findAllFile = get('/file/findAll');
 const findAllIcon = get('/file/findAllIcon');
 const removeFile = post('/file/remove');
+const uploadFile = upload('/file/upload');
 
-export { findAllFile, findAllIcon, removeFile };
+export { findAllFile, findAllIcon, removeFile, uploadFile };

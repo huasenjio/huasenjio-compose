@@ -6,6 +6,7 @@
  * @Description: 全局方法注入
  */
 
+const _ = require('lodash');
 const { formatError } = require('../utils/error-handle.js');
 const { formatResponseData, responseData } = require('../utils/response-handle');
 const { epWorking, createEpWorking } = require('../service/index.js');
@@ -26,6 +27,7 @@ global.huasen = {
 global.huasenStatus = {
   // 系统数据
   currentCPU: 0,
+
   // 数据统计
   fileCount: 0,
   userCount: 0,
@@ -34,18 +36,81 @@ global.huasenStatus = {
   visitorCount: 0,
 };
 
-global.hsUtil = {}
 global.hsDic = {
-  pin2code: {
-    '热': 1,
-    '墙': 2,
-    '优': 3,
-    '免': 4,
+  /**
+   * 通过Value获取Label
+   * @param {String} dic - 字典名称
+   * @param {*} value - 值
+   */
+  getDicLabelByValue(dic, value) {
+    let _label
+    (this[dic] || []).forEach(item => {
+      if (item.value === value) {
+        _label = item.label;
+      }
+    });
+    return _label
   },
-  code2pin: {
-    1: '热',
-    2: '墙',
-    3: '优',
-    4: '免',
+
+  /**
+   * 通过Label获取Value
+   * @param {String} dic - 字典名称
+   * @param {String} label - 键
+   */
+  getDicValueByLabel(dic, label) {
+    let _value
+    (this[dic] || []).forEach(item => {
+      if (item.label === label) {
+        _value = item.value;
+      }
+    });
+    return _value
   },
+
+  code: [
+    {
+      label: '0-普通用户',
+      value: 0,
+    },
+    {
+      label: '1-特权用户',
+      value: 1,
+    },
+    {
+      label: '2-管理权限',
+      value: 2,
+    },
+    {
+      label: '3-作者权限',
+      value: 3,
+    },
+  ],
+  draft: [
+    {
+      label: '是',
+      value: true,
+    },
+    {
+      label: '否',
+      value: false,
+    },
+  ],
+  pin: [
+    {
+      label: '热',
+      value: 1,
+    },
+    {
+      label: '墙',
+      value: 2,
+    },
+    {
+      label: '优',
+      value: 3,
+    },
+    {
+      label: '免',
+      value: 4,
+    },
+  ],
 }

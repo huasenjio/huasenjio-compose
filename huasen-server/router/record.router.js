@@ -9,7 +9,7 @@ const express = require('express');
 const router = express.Router();
 const { add, findByPage, remove, removeMany, copy } = require('../controller/record.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
-const { checkManagePower } = require('../middleware/manage.middleware.js');
+const { checkManagePower } = require('../middleware/power.middleware.js');
 
 router.post('/add', handleJWT(), checkManagePower, handleUselessParams, add);
 router.post('/remove', handleJWT(), checkManagePower, remove);

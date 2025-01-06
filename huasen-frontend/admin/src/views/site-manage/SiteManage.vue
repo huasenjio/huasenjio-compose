@@ -198,15 +198,15 @@ export default {
           },
         },
         {
+          label: '备注',
+          key: 'remarks',
+          type: 'input',
+        },
+        {
           label: '权限码',
           key: 'code',
           type: 'select',
           selectOptions: this.CONSTANT.dictionary.code,
-        },
-        {
-          label: '备注',
-          key: 'remarks',
-          type: 'input',
         },
         {
           label: '是否可用',

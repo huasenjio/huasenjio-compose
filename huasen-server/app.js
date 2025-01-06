@@ -40,31 +40,18 @@ app.use('/huasen-store', express.static(path.join(__dirname, '../huasen-store'))
 app.use(handleRequest, handleBlackList, handleRequestParams);
 
 // 引入用户路由
-const UserRouter = require('./router/user.router.js');
-const ManageRouter = require('./router/manage.router.js');
-const ArticleRouter = require('./router/article.router.js');
-const FileRouter = require('./router/file.router.js');
-const BlacklistRouter = require('./router/blacklist.router.js');
-const MailRouter = require('./router/mail.router.js');
-const AppRouter = require('./router/app.router.js');
-const RecordRouter = require('./router/record.router.js');
-const SiteRouter = require('./router/site.router.js');
-const ColumnRouter = require('./router/column.router.js');
-const JournalRouter = require('./router/journal.router.js');
-const WeatherRouter = require('./router/weather.router.js');
-
-app.use('/user', UserRouter);
-app.use('/manage', ManageRouter);
-app.use('/article', ArticleRouter);
-app.use('/file', FileRouter);
-app.use('/blacklist', BlacklistRouter);
-app.use('/mail', MailRouter);
-app.use('/record', RecordRouter);
-app.use('/site', SiteRouter);
-app.use('/column', ColumnRouter);
-app.use('/journal', JournalRouter);
-app.use('/weather', WeatherRouter);
-app.use('/app', AppRouter);
+app.use('/user', require('./router/user.router.js'));
+app.use('/article', require('./router/article.router.js'));
+app.use('/file', require('./router/file.router.js'));
+app.use('/blacklist', require('./router/blacklist.router.js'));
+app.use('/mail', require('./router/mail.router.js'));
+app.use('/record', require('./router/record.router.js'));
+app.use('/site', require('./router/site.router.js'));
+app.use('/column', require('./router/column.router.js'));
+app.use('/journal', require('./router/journal.router.js'));
+app.use('/weather', require('./router/weather.router.js'));
+app.use('/app', require('./router/app.router.js'));
+app.use('/statistics', require('./router/statistics.router.js'));
 
 // 404页面重定向
 app.get('*', function (req, res) {

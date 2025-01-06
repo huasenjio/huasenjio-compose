@@ -9,14 +9,12 @@
   <div class="account-manage">
     <el-tabs class="tab-group" v-model="activeName">
       <el-tab-pane label="用户列表" name="user"><AccountUser></AccountUser></el-tab-pane>
-      <el-tab-pane label="管理列表" name="admin"><AccountAdmin></AccountAdmin></el-tab-pane>
       <el-tab-pane label="黑名单列表" name="blacklist"><AccountBlacklist></AccountBlacklist></el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import AccountAdmin from './admin/AccountAdmin.vue';
 import AccountUser from './user/AccountUser.vue';
 import AccountBlacklist from './blacklist/AccountBlacklist.vue';
 export default {
@@ -27,7 +25,6 @@ export default {
     };
   },
   components: {
-    AccountAdmin,
     AccountUser,
     AccountBlacklist,
   },

@@ -10,5 +10,10 @@ const Mock = require('mockjs2');
 import { get, post } from '../request.js';
 
 const getCopyright = get('/app/getCopyright');
+const getDictionary = post('/app/getDictionary');
+const findAppConfig = post('/app/findAppConfig');
+const saveAppConfig = post('/app/saveAppConfig');
+const runCode = post('/app/runCode');
+const offline = post('/app/offline');
 
-export { getCopyright };
+export { getCopyright, getDictionary, findAppConfig, saveAppConfig, runCode, offline };

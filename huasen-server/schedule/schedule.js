@@ -12,14 +12,15 @@ const moment = require('moment');
 
 const { POOL_ACCESS } = require('../config.js');
 
-const { createEpWorking, Record } = require('../service/index.js');
+const { schemaMap } = require('../service/index.js');
+const { Record } = schemaMap
 
-const { getUid, writeToFile } = require('../utils/tool.js');
+const { getUid } = require('../utils/tool.js');
 
 const { delRedisItem } = require('../plugin/ioredis/common.js');
 const { getObjectRedisItem } = require('../plugin/ioredis/map.js');
 
-const { readDirectory, unlinkFile } = require('../utils/tool.js');
+const { readDirectory } = require('../utils/tool.js');
 
 // *  *  *  *  *  *
 // ┬  ┬  ┬  ┬  ┬  ┬
@@ -31,7 +32,7 @@ const { readDirectory, unlinkFile } = require('../utils/tool.js');
 // │  └──────────── 分 --> 取值：0 - 59
 // └─────────────── 秒 --> 取值：0 - 59（可选）
 
-// 每天凌晨5点执行任务，保存当天访问数据入库，并且本地缓存，并且清除收集池
+// 每天凌晨3点执行任务，保存当天访问数据入库，并且本地缓存，并且清除收集池
 let accessRecordJob = schedule.scheduleJob('0 0 3 * * *', async () => {
   try {
     // 取出缓存当日访问数据的对象
@@ -45,7 +46,7 @@ let accessRecordJob = schedule.scheduleJob('0 0 3 * * *', async () => {
     await Record.insertMany(logObject);
     await delRedisItem(POOL_ACCESS);
   } catch (err) {
-    global.huasen.formatError(err, '访问数据持久化定时任务异常');
+    global.huasen.formatError(err, '日志数据持久化定时任务异常');
   }
 });
 
@@ -95,6 +96,6 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
       },
     );
   } catch (err) {
-    global.huasen.formatError(err, '数据库快照任务错误');
+    global.huasen.formatError(err, '数据库快照任务异常');
   }
 });

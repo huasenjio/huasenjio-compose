@@ -127,7 +127,7 @@ export default {
      * 判断管理员是否存在
      */
     async existMange() {
-      const res = await this.API.manage.exist({}, { notify: false });
+      const res = await this.API.user.exist({}, { notify: false });
       this.isExistManege = !!res.data;
     },
 
@@ -143,7 +143,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           if (this.isExistManege) {
-            this.API.manage
+            this.API.user
               .login(this.submitForm, {
                 secret: 'rsa',
               })
@@ -162,7 +162,7 @@ export default {
               type: 'warning',
             })
               .then(async () => {
-                await this.API.manage.init(this.submitForm, {
+                await this.API.user.init(this.submitForm, {
                   secret: 'rsa',
                 });
                 this.isExistManege = true;

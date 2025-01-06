@@ -14,7 +14,6 @@ const { findByPage, count, limit, init } = require('./template.js');
 // 表实例
 const User = require('../mongodb/model/user.js');
 const Record = require('../mongodb/model/record.js');
-const Manage = require('../mongodb/model/manage.js');
 const Article = require('../mongodb/model/article.js');
 const Column = require('../mongodb/model/column.js');
 const Site = require('../mongodb/model/site.js');
@@ -23,7 +22,6 @@ const Journal = require('../mongodb/model/journal.js');
 const schemaMap = {
   User,
   Record,
-  Manage,
   Article,
   Column,
   Site,
@@ -96,7 +94,7 @@ function createEpWorking(works, callback) {
 }
 
 module.exports = {
-  ...schemaMap,
+  schemaMap,
   epWorking,
   createEpWorking,
 };

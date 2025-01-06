@@ -134,12 +134,6 @@ export default {
           type: 'input',
         },
         {
-          label: '权限码',
-          key: 'code',
-          type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
-        },
-        {
           label: '备注',
           key: 'remarks',
           type: 'input',
@@ -148,6 +142,12 @@ export default {
           label: '封面',
           key: 'banner',
           type: 'banner',
+        },
+        {
+          label: '权限码',
+          key: 'code',
+          type: 'select',
+          selectOptions: this.CONSTANT.dictionary.code,
         },
         {
           label: '是否可用',

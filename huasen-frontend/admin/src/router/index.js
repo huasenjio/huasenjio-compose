@@ -98,12 +98,9 @@ router.beforeEach((to, form, next) => {
       // 页面不存在
       next({ path: '/error404' });
     }
-  } else if (Number(to.meta.menuCode) <= 0) {
+  } else if (to.meta.menuCode <= 0) {
     next();
-  } else if (!Number(userCode)) {
-    // 用户未登录
-    next({ path: '/login' });
-  } else if (Number(userCode) < Number(to.meta.menuCode)) {
+  } else if (userCode < to.meta.menuCode) {
     // 没有权限
     next({ path: '/error403' });
   } else {

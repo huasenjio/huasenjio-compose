@@ -23,4 +23,6 @@ export default {
   appMinHeight: 375,
   // 天气城市信息
   cityData,
+  // 词典
+  dictionary: {},
 };

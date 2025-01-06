@@ -9,17 +9,14 @@
 const WebSocketServer = require('ws').Server;
 const JWT = require('../../plugin/jwt.js');
 const { WS, POOL_BLACKLIST } = require('../../config.js');
-const readline = require('readline');
 const { getSystemInformation } = require('./system.js');
 const { getVisitorInformation } = require('./visitor.js');
 const { isExistObjectFiledRedisItem } = require('../ioredis/map.js');
 const { getClientIP } = require('../../utils/tool.js')
 
-
 class WSServer {
   constructor() {
-    this.wsClient = null;
-    this.wsServer = null;
+    this.WSClient = null;
     this.port = WS.port;
 
     // 初始化
@@ -28,42 +25,45 @@ class WSServer {
   // 初始化
   init() {
     try {
-      this.wsClient = new WebSocketServer({ port: this.port });
+      this.WSClient = new WebSocketServer({ port: this.port });
       console.log(`websocket：${this.port}`);
-      // 监听连接事件
-      this.wsClient.on('connection', (server, req) => {
-        this.wsServer = server;
+
+      // 监听连接
+      this.WSClient.on('connection', async (server, req) => {
         let ip = getClientIP(req)
         let token = req.url.split('?')[1].split('=')[1];
+        const serverKey = `${ip}-${token}`
         // 认证通过
         JWT.verifyToken(token)
-          .then(async result => {
-            // 保存连接对象
-            this.wsServer = server;
-            // 处理回调
+          .then(async ({ data }) => {
+            const proof = data
+            const { code } = proof;
+            // 判断管理员权限
+            if (code < 2) throw new Error('websocket authentication failed');
+            // 判断黑名单
+            let tag = await isExistObjectFiledRedisItem(POOL_BLACKLIST, ip);
+            if (tag === 1) throw new Error('websocket blacklist');
+
+            // 监听回调参数
             server.on('error', err => {
-              this.handleError(err);
+              throw err;
             });
-            server.on('message', msg => {
-              this.receiveData(msg);
+            server.on('message', async msg => {
+              const data = await this.receiveData(msg);
+              this.sendMessage(data, server);
             });
             server.on('close', info => {
-              this.handleClose(info);
+              server.close();
+              console.log(`${serverKey} 正常断开连接：`, info);
             });
-
-            // 黑名单判断
-            let tag = await isExistObjectFiledRedisItem(POOL_BLACKLIST, ip);
-            if (tag === 1) {
-              this.wsServer.close();
-            }
           })
           .catch(err => {
-            this.wsServer.close();
+            server.close();
+            console.error(`${serverKey} 异常断开连接：`, err);
           });
       });
     } catch (err) {
-      console.log('websocket failure to start');
-      throw err;
+      console.error('websocket failure to start: ', err);
     }
   }
 
@@ -77,31 +77,16 @@ class WSServer {
     if (msg.includes('visitor')) {
       data.visitor = await getVisitorInformation();
     }
-    this.sendMessage(data);
+    return data;
   }
 
-  // 消息返回前端
-  sendMessage(data) {
+  // 响应消息到客户端
+  sendMessage(data, server) {
     try {
-      if (this.wsServer) {
-        this.wsServer.send(JSON.stringify(data));
-      }
+      server.send(JSON.stringify(data));
     } catch (err) {
-      console.log('websocket failure to send message');
-      throw err;
+      console.error('websocket failure to send message', err);
     }
-  }
-
-  // 处理错误
-  handleError(err) {
-    this.wsClient = null;
-    this.wsServer = null;
-  }
-
-  // 处理关闭
-  handleClose(info) {
-    this.wsClient = null;
-    this.wsServer = null;
   }
 }
 const ws = new WSServer();

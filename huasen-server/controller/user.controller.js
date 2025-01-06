@@ -9,8 +9,8 @@ const _ = require('lodash');
 const { encrypt, decrypt } = require('huasen-lib');
 const JWT = require('../plugin/jwt.js');
 const { SECRET_AES } = require('../config.js');
-const { onlineByKey } = require('./common.controller.js')
-
+const { offlineByKey } = require('./common.controller.js')
+const { User } = require('../service/index.js').schemaMap;
 
 function login(req, res, next) {
   let { id, password } = req.huasenParams;
@@ -30,7 +30,7 @@ function login(req, res, next) {
       let user = users[0];
       let userPassword = user ? decrypt(user.password, SECRET_AES) : '';
       if (!user) {
-        global.huasen.responseData(res, {}, 'ERROR', '用户不存在');
+        global.huasen.responseData(res, {}, 'ERROR', '账号不存在');
       } else if (userPassword == password) {
         if (user.enabled) {
           // 生成token
@@ -73,7 +73,7 @@ function register(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, {}, 'SUCCESS', '注册用户');
+      global.huasen.responseData(res, {}, 'SUCCESS', '已注册');
     },
   );
 }
@@ -90,7 +90,7 @@ function updatePassword(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, {}, 'SUCCESS', '已重置用户密码');
+      global.huasen.responseData(res, {}, 'SUCCESS', '已重置密码');
     },
   );
 }
@@ -130,29 +130,12 @@ function recovery(req, res, next) {
     async function (users) {
       let user = users[0];
       if (!user) {
-        global.huasen.responseData(res, {}, 'ERROR', '用户不存在');
+        global.huasen.responseData(res, {}, 'ERROR', '账号不存在');
       } else {
         // 剔除密码
         let { records, config } = user;
         global.huasen.responseData(res, { records, config }, 'SUCCESS', '应用云端数据', 'aes');
       }
-    },
-  );
-}
-
-function add(req, res, next) {
-  // 密码对称加密存储
-  req.huasenParams.password = encrypt(req.huasenParams.password, SECRET_AES);
-  req.epWorking(
-    [
-      {
-        schemaName: 'User',
-        methodName: 'insertMany',
-        payloads: [req.huasenParams],
-      },
-    ],
-    result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '添加用户');
     },
   );
 }
@@ -180,79 +163,186 @@ function findByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询用户');
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询');
+    },
+  );
+}
+
+function add(req, res, next) {
+  // 密码对称加密存储
+  req.huasenParams.password = encrypt(req.huasenParams.password, SECRET_AES);
+  req.epWorking(
+    [
+      {
+        schemaName: 'User',
+        methodName: 'insertMany',
+        payloads: [req.huasenParams],
+      },
+    ],
+    result => {
+      global.huasen.responseData(res, result, 'SUCCESS', '已添加');
     },
   );
 }
 
 function remove(req, res, next) {
   let { _id } = req.huasenParams;
-  req.epWorking(
-    [
-      {
-        schemaName: 'User',
-        methodName: 'deleteOne',
-        payloads: [
-          {
-            _id,
-          },
-        ],
-      },
-    ],
-    result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '删除用户');
-    },
-  );
-}
-
-function update(req, res, next) {
-  // 解析修改的记录索引
-  let { _id, password } = req.huasenParams;
-
+  let { proof } = req.huasenJWT;
   req.epWorking(
     [
       {
         schemaName: 'User',
         methodName: 'find',
         payloads: [{ _id }],
-      },
+      }
     ],
-    users => {
-      let user = users[0];
-      if (!user) {
-        global.huasen.responseData(res, result, 'ERROR', '用户不存在');
+    async (users) => {
+      let userId = _.get(users, '[0].id');
+      if (userId === proof.key) {
+        global.huasen.responseData(res, {}, 'ERROR', '无法删除自己');
       } else {
-        if (user.password != password) {
-          req.huasenParams.password = encrypt(password, SECRET_AES);
-        }
-        // 发起更新服务
-        req.epWorking(
-          [
-            {
-              schemaName: 'User',
-              methodName: 'updateOne',
-              payloads: [{ _id }, { $set: req.huasenParams }, { runValidators: true }],
-            },
-          ],
-          result => {
-            global.huasen.responseData(res, result, 'SUCCESS', '更新用户');
-          },
-        );
+        const result = await User.deleteOne({ _id });
+        await JWT.destroyTokenByKey(userId);
+        global.huasen.responseData(res, result, 'SUCCESS', '已删除');
       }
     },
   );
 }
 
-function findAppConfig(req, res, next) {
-  let systemConfig = require('../setting.json');
-  let result = _.omit(systemConfig, ['mail', 'site.jwt', 'site.jwtLiveTime', 'a.jwtLiveTime']);
-  global.huasen.responseData(res, result, 'SUCCESS', '查询配置');
+function update(req, res, next) {
+  // 解析修改的记录索引
+  let { _id, password, code } = req.huasenParams;
+  let { proof } = req.huasenJWT;
+  req.epWorking(
+    [
+      {
+        schemaName: 'User',
+        methodName: 'find',
+      },
+    ],
+    async users => {
+      let user = users.find(user => user._id == _id);
+      let manages = users.filter(user => user.code === 3);
+      if (!user) {
+        global.huasen.responseData(res, result, 'ERROR', '账号不存在');
+      } else {
+        // 避免用户更新时，不修改密码，导致密码被加密两次，无法登录
+        if (user.password !== password) {
+          req.huasenParams.password = encrypt(password, SECRET_AES);
+        }
+        if (user.code === 3 && manages.length < 2 && code < user.code) {
+          global.huasen.responseData(res, {}, 'ERROR', '至少保留一个作者权限账号');
+        } else {
+          // 管理员默认启用账号
+          if (code >= 2) {
+            req.huasenParams.enabled = true;
+          }
+          const result = await User.updateOne({ _id }, { $set: req.huasenParams }, { runValidators: true });
+          await JWT.destroyTokenByKey(user.id);
+          global.huasen.responseData(res, result, 'SUCCESS', '已更新');
+
+        }
+      }
+    },
+  );
 }
 
 async function quit(req, res, next) {
   const { proof } = req.huasenJWT;
-  onlineByKey(res, proof.key);
+  offlineByKey(res, proof.key);
 }
+
+function manageLogin(req, res, next) {
+  let { id, password } = req.huasenParams;
+  req.epWorking(
+    [
+      {
+        schemaName: 'User',
+        methodName: 'find',
+        payloads: [
+          {
+            id,
+            // 筛选管理员
+            code: { $gte: 2 },
+          },
+        ],
+      },
+    ],
+    async (manages) => {
+      const manage = manages[0];
+      if (!manage) {
+        global.huasen.responseData(res, {}, 'ERROR', '管理员不存在');
+      } else if (decrypt(manage.password, SECRET_AES) === password) {
+        let token = await JWT.createToken(id, { key: id, code: manage.code });
+        global.huasen.responseData(
+          res,
+          {
+            id,
+            token,
+            code: manage.code,
+          },
+          'SUCCESS',
+          '已登录',
+          'rsa',
+        );
+      } else {
+        global.huasen.responseData(res, {}, 'ERROR', '账户密码不匹配');
+      }
+    },
+  );
+}
+
+async function manageExist(req, res, next) {
+  req.epWorking(
+    [
+      {
+        schemaName: 'User',
+        methodName: 'find',
+        payloads: [
+          {
+            // 筛选权限码大于等于2的管理用户
+            code: { $gte: 2 },
+          },
+        ],
+      },
+    ],
+    async (manages) => {
+      const manage = manages[0];
+      if (!manage) {
+        global.huasen.responseData(res, false, 'SUCCESS', '请添加管理员账号');
+      } else {
+        global.huasen.responseData(res, true, 'SUCCESS', '请登录管理员账号');
+      }
+    },
+  );
+}
+
+async function manageInit(req, res, next) {
+  req.epWorking(
+    [
+      {
+        schemaName: 'User',
+        methodName: 'find',
+        payloads: [
+          {
+            code: { $gte: 2 },
+          },
+        ],
+      },
+    ],
+    async (manages) => {
+      const manage = manages[0];
+      if (!manage) {
+        // 初始化创建作者权限账号
+        req.huasenParams.code = 3;
+        add(req, res, next);
+      } else {
+        global.huasen.responseData(res, {}, 'ERROR', '已创建管理员账号，请勿重复操作！');
+      }
+    },
+  );
+}
+
 
 module.exports = {
   login,
@@ -260,12 +350,14 @@ module.exports = {
   updatePassword,
   backup,
   recovery,
+  quit,
 
   add,
   findByPage,
   remove,
   update,
 
-  findAppConfig,
-  quit
+  manageLogin,
+  manageExist,
+  manageInit,
 };

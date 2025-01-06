@@ -46,6 +46,9 @@ export default {
   async created() {
     // 请求版权信息
     await this.API.app.getCopyright({}, { notify: false });
+    // 请求字典
+    const dicRes = await this.API.app.getDictionary({}, { notify: false });
+    this.CONSTANT.dictionary = dicRes.data;
 
     // 移除开屏动画
     let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');

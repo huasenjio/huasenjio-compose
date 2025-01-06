@@ -25,13 +25,14 @@
             :multiple="getSelectByAttr('selectConfig.multiple', formTtem)"
             :multiple-limit="getSelectByAttr('selectConfig.multiple-limit', formTtem, 8)"
             :popper-append-to-body="false"
+            :disabled="!!LODASH.get(formTtem, 'disabled')"
           >
             <el-option v-for="(option, i) in formTtem.selectOptions" :key="i" :label="option.label" :value="option.value"> </el-option>
           </el-select>
           <!-- 开关 -->
-          <el-switch v-if="formTtem.type === 'switch'" v-model="formData[formTtem.key]"></el-switch>
+          <el-switch v-if="formTtem.type === 'switch'" :disabled="!!LODASH.get(formTtem, 'disabled')" v-model="formData[formTtem.key]"></el-switch>
           <!-- 文本域 -->
-          <el-input v-if="formTtem.type === 'textarea'" :autosize="{ minRows: 4 }" type="textarea" v-model="formData[formTtem.key]"></el-input>
+          <el-input v-if="formTtem.type === 'textarea'" :disabled="!!LODASH.get(formTtem, 'disabled')" :autosize="{ minRows: 4 }" type="textarea" v-model="formData[formTtem.key]"></el-input>
           <!-- 图标项 -->
           <div class="icon-group" v-if="formTtem.type === 'icon'">
             <el-tabs v-model="activeName" type="border-card" @tab-click="handleTabClick">
@@ -345,9 +346,9 @@ export default {
               let file = new File([blob], 'favicon.png', { type: blob.type });
               let formdata = new FormData();
               formdata.append('file', file);
-              this.API.manage
+              this.API.file
                 .uploadFile(formdata, {
-                  url: '/manage/uploadIcon?type=icon',
+                  url: '/file/upload?type=icon',
                 })
                 .then(res => {
                   this.formData['icon'] = res.data[0].path;
@@ -374,7 +375,7 @@ export default {
 
     // 获取el-upload的上传地址
     getUploadAction(type) {
-      return this.TOOL.getServerApi('/manage/uploadIcon?type=' + type);
+      return this.TOOL.getServerApi('/file/upload?type=' + type);
     },
 
     // 显示图片到el-upload中
@@ -433,7 +434,7 @@ export default {
         this.$tips('error', '请输入网站地址', 'top-right', 1200);
         return;
       }
-      this.API.manage.findAppFavicon({ url: this.formData['url'] }, { notify: false }).then(res => {
+      this.API.site.findSiteFavicon({ url: this.formData['url'] }, { notify: false }).then(res => {
         this.favicons = res.data;
       });
     },

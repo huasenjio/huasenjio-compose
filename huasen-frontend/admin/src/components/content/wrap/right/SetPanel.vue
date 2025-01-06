@@ -47,7 +47,7 @@ export default {
 
   methods: {
     queryConfig() {
-      this.API.manage.findAppConfig().then(res => {
+      this.API.app.findAppConfig().then(res => {
         this.systemConfig = JSON.stringify(res.data, null, 2);
       });
     },
@@ -72,7 +72,7 @@ export default {
         this.$tips('error', errText, 'top-right', 1000);
         return;
       }
-      this.API.manage
+      this.API.app
         .saveAppConfig({
           systemConfig: this.systemConfig,
         })

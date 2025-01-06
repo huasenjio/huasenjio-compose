@@ -113,7 +113,7 @@ export default {
       return moment().format('YYYY-MM-DD HH:mm:ss');
     },
     action() {
-      return this.TOOL.getServerApi('/manage/upload');
+      return this.TOOL.getServerApi('/file/upload');
     },
     uploadStyle() {
       return {
@@ -205,8 +205,8 @@ export default {
     async handleImgAddUrl(index, file) {
       let formdata = new FormData();
       formdata.append('file', file);
-      let result = await this.API.manage.uploadFile(formdata, {
-        url: '/manage/uploadIcon?type=article',
+      let result = await this.API.file.uploadFile(formdata, {
+        url: '/file/upload?type=article',
       });
       this.$tips('success', '上传成功', 'top-right', 1200);
       // 返回url写入内容

@@ -12,7 +12,6 @@ const Mock = require('mockjs2');
 // 封装的请求方法
 import { get, post } from './request.js';
 
-import * as manage from './address/manage.js';
 import * as article from './address/article.js';
 import * as user from './address/user.js';
 import * as file from './address/file.js';
@@ -22,6 +21,7 @@ import * as site from './address/site.js';
 import * as journal from './address/journal.js';
 import * as column from './address/column.js';
 import * as app from './address/app.js';
+import * as statistics from './address/statistics.js';
 
 // mock功能
 const mock = get('/mock/test', {
@@ -51,7 +51,6 @@ const mock = get('/mock/test', {
 });
 
 export default {
-  manage,
   article,
   user,
   file,
@@ -60,5 +59,6 @@ export default {
   site,
   journal,
   column,
-  app
+  app,
+  statistics
 };

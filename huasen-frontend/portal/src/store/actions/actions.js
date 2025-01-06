@@ -63,7 +63,7 @@ export default {
   // 初始化配置
   async initAppConfigInfo(context, payload) {
     let { callback } = { ...payload };
-    let res = await that.API.User.findAppConfig({}, { notify: false });
+    let res = await that.API.App.findAppConfig({}, { notify: false });
     const config = res.data
     try {
       const autoIconPatch = that.LODASH.get(config, 'site.autoIconPatch')

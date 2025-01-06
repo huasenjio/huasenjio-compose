@@ -6,7 +6,7 @@
  * @Description: 栏目表控制器
  */
 
-const { Column } = require('../service/index.js');
+const { Column } = require('../service/index.js').schemaMap;
 
 function findByPage(req, res, next) {
   let { pageNo, pageSize, name, code } = req.huasenParams;

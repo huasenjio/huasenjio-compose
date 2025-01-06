@@ -7,9 +7,9 @@
  */
 const express = require('express');
 const router = express.Router();
-const { login, register, updatePassword, recovery, backup, quit, add, findByPage, remove, update, findAppConfig } = require('../controller/user.controller.js');
+const { login, register, updatePassword, recovery, backup, quit, add, findByPage, remove, update, manageLogin, manageExist, manageInit } = require('../controller/user.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
-const { checkManagePower, checkManageHighestPower } = require('../middleware/manage.middleware.js');
+const { checkManagePower, checkManageHighestPower } = require('../middleware/power.middleware.js');
 const { checkUserAccountUnique } = require('../middleware/user.middleware.js');
 const { checkMailCode } = require('../middleware/mail.middleware.js');
 
@@ -51,11 +51,34 @@ router.post('/quit', handleJWT(), quit);
  * }
  */
 router.post('/recovery', handleJWT(), recovery);
-router.post('/findAppConfig', findAppConfig);
 
 
-// 管理员调用
-router.post('/add', handleJWT(), checkManagePower, checkUserAccountUnique, handleUselessParams, add);
+/**
+ * @api {post} /user/manage/login 登录管理员
+ * @apiVersion 1.0.0
+ * @apiGroup Manage
+ * @apiParam {string} id 管理员账号
+ * @apiParam {string} password 管理员密码
+ */
+router.post('/manage/login', manageLogin);
+
+/**
+ * @api {post} /user/manage/init 初始化管理员账号
+ * @apiVersion 1.0.0
+ * @apiGroup Manage
+ * @apiParam {string} id 管理员账号
+ * @apiParam {string} password 管理员密码
+ */
+router.post('/manage/init', manageInit);
+
+/**
+ * @api {post} /user/manage/exist 判断已存在管理员
+ * @apiVersion 1.0.0
+ * @apiGroup Manage
+ */
+router.post('/manage/exist', manageExist);
+
+router.post('/add', handleJWT(), checkManagePower, checkManageHighestPower, checkUserAccountUnique, handleUselessParams, add);
 router.post('/remove', handleJWT(), checkManagePower, checkManageHighestPower, remove);
 router.post('/update', handleJWT(), checkManagePower, checkManageHighestPower, update);
 router.post('/findByPage', handleJWT(), checkManagePower, findByPage);

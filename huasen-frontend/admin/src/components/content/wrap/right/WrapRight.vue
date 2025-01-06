@@ -315,8 +315,8 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          this.API.manage
-            .quitManage()
+          this.API.user
+            .quit()
             .then(() => {})
             .catch(() => {})
             .finally(() => {

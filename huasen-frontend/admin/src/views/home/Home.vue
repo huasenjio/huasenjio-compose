@@ -8,7 +8,7 @@
 <template>
   <div class="home">
     <el-alert title="温馨提示：数据表盘实时统计大量数据，常驻后台会消耗较多性能，可能导致接口请求变慢！" type="warning" show-icon> </el-alert>
-    <HomeStatistics></HomeStatistics>
+    <HomeOverview></HomeOverview>
     <HomeVisitor :visitor="visitorStatus"></HomeVisitor>
     <HomeSystem :system="systemStatus"></HomeSystem>
     <el-tabs class="tab-group" type="border-card">
@@ -66,7 +66,7 @@
   </div>
 </template>
 <script>
-import HomeStatistics from './statistics/HomeStatistics.vue';
+import HomeOverview from './overview/HomeOverview.vue';
 import HomeVisitor from './visitor/HomeVisitor.vue';
 import HomeSystem from './system/HomeSystem.vue';
 
@@ -79,17 +79,27 @@ import { mapState } from 'vuex';
 export default {
   name: 'Home',
 
+  components: {
+    HomeOverview,
+    HomeVisitor,
+    HomeSystem,
+    HomeMatrix,
+    HomeRelation,
+    HomeWordCloud,
+    HomeSheet,
+  },
+
   data() {
     return {
       // 连接对象
       ws: null,
       // 定时轮询对象
-      timmer: null,
+      timer: null,
       // 系统状态信息
       systemStatus: {
-        time: [''],
-        cpu: [],
-        memory: [],
+        time: ['00:00:01', '00:00:02'],
+        cpu: [10, 20],
+        memory: [20, 10],
       },
 
       // 访问数据
@@ -161,24 +171,14 @@ export default {
 
       // 访问数据
       visitorStatus: {
-        time: ['00:00:00'],
-        user: [0],
-        admin: [0],
-        other: [0],
+        time: ['00:00:01', '00:00:02', '00:00:03'],
+        user: [0, 3, 1],
+        admin: [0, 2, 2],
+        other: [0, 1, 3],
       },
       statusCount: 0,
       maxStatusCount: 240,
     };
-  },
-
-  components: {
-    HomeStatistics,
-    HomeVisitor,
-    HomeSystem,
-    HomeMatrix,
-    HomeRelation,
-    HomeWordCloud,
-    HomeSheet,
   },
 
   mounted() {
@@ -201,7 +201,7 @@ export default {
             this.$tips('error', '您无法下线自己，请手动退出账号！', 'top-right', 1200);
             return;
           }
-          await this.API.manage.offline({ id: row.id });
+          await this.API.app.offline({ id: row.id });
           this.onlines = this.onlines.filter(el => el.id !== row.id);
         })
         .catch(() => {});
@@ -351,7 +351,7 @@ export default {
 
     // 心跳
     initPoll() {
-      this.timmer = this.TOOL.timeout2Interval(
+      this.timer = this.TOOL.timeout2Interval(
         () => {
           if (this.ws && this.ws.readyState === 1) {
             this.ws.send(JSON.stringify(['system', 'visitor']));
@@ -365,7 +365,7 @@ export default {
 
   destroyed() {
     if (this.ws) this.ws.close();
-    if (this.timmer) this.timmer.clear();
+    if (this.timer) this.timer.clear();
   },
 };
 </script>

@@ -4,9 +4,7 @@
       <div class="left" @click="fileClick">
         <img src="./img/upload.png" />
       </div>
-      <div class="right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
-        将文件拖到此处上传
-      </div>
+      <div class="right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">将文件拖到此处上传</div>
     </div>
     <footer>
       <div class="text">
@@ -91,7 +89,7 @@ export default {
       if (files.kind) {
         files = files.webkitGetAsEntry();
       }
-      files.createReader().readEntries(function(file) {
+      files.createReader().readEntries(function (file) {
         for (let i = 0; i < file.length; i++) {
           if (file[i].isFile) {
             _this.foldersAdd(file[i]);
@@ -104,7 +102,7 @@ export default {
 
     foldersAdd(entry) {
       let _this = this;
-      entry.file(function(file) {
+      entry.file(function (file) {
         _this.fileAdd(file);
       });
     },
@@ -125,9 +123,9 @@ export default {
         let image = new Image();
         let _this = this;
         reader.readAsDataURL(file);
-        reader.onload = function() {
+        reader.onload = function () {
           file.src = this.result;
-          image.onload = function() {
+          image.onload = function () {
             let width = image.width;
             let height = image.height;
             file.width = width;

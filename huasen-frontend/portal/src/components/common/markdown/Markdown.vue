@@ -1,6 +1,6 @@
 <template>
   <div class="h-markdown-container">
-    <div ref="areaContent" class="area-content" :style="{ paddingRight: showAnchors ? '10px' : 0 }">
+    <div ref="areaContent" class="area-content" :style="{ padding: showAnchors ? '0 10px' : 0 }">
       <div class="content__body">
         <div v-html="content" v-highlight></div>
       </div>

@@ -7,8 +7,10 @@
  */
 const fs = require('fs');
 const ExcelJS = require('exceljs');
-const { Site, Column, epWorking } = require('../service/index.js');
+const { fetchFavicons } = require('@meltwater/fetch-favicon');
 const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
+const { downloadAndConvertToBase64 } = require('../utils/tool.js');
+const { Site, Column } = require('../service/index.js').schemaMap;
 
 function findByPage(req, res, next) {
   let { pageNo, pageSize, name, code, tag } = req.huasenParams;
@@ -355,9 +357,8 @@ function importSite(req, res, next) {
                   // 解析pin
                   if (pinStr && pinStr.trim() !== '') {
                     pinStr.split('&').forEach(el => {
-                      if (global.hsDic.pin2code[el]) {
-                        pins.push(global.hsDic.pin2code[el])
-                      }
+                      let code = global.hsDic.getDicValueByLabel('pin', el)
+                      if (code) pins.push(code)
                     })
                   }
                   // 添加绑定的栏目
@@ -449,8 +450,8 @@ async function exportSite(req, res, next) {
   sites.forEach(site => {
     let expand = JSON.parse(site.expand || "{}")
     // 真实有效的标记
-    let realPins = (expand.pin || []).filter(code => global.hsDic.code2pin[code])
-    let pinStr = (realPins.map(code => global.hsDic.code2pin[code])).join('&')
+    let realPins = (expand.pin || []).filter(code => global.hsDic.getDicLabelByValue('pin', Number(code)))
+    let pinStr = (realPins.map(code => global.hsDic.getDicLabelByValue('pin', Number(code)))).join('&')
     let tagStr = (expand.tag || []).join('&')
     site.enabledStr = site.enabled ? '是' : '否'
     site.pinStr = pinStr
@@ -474,6 +475,63 @@ async function exportSite(req, res, next) {
   res.send(buffer)
 }
 
+/**
+ * 获取网站域名
+ * @param {String} urlString - 网站链接地址
+ * @returns domain - 域名
+ */
+function getDomainFromURL(urlString) {
+  try {
+    // 创建URL对象
+    const url = new URL(urlString);
+    // 获取域名
+    return url.hostname;
+  } catch (error) {
+    // 如果URL格式不正确，则返回错误信息
+    console.error('Invalid URL:', error);
+    return null;
+  }
+}
+
+/**
+ * 获取favicon.im图标
+ * @param {String} siteUrl - 网站链接地址
+ */
+function getFaviconByUrl(siteUrl) {
+  let domain = getDomainFromURL(siteUrl);
+  if (!domain) return;
+  return `https://favicon.im/${domain}?larger=true`;
+}
+
+async function findSiteFavicon(req, res, next) {
+  let { url } = req.huasenParams;
+  const faviconBase64s = []
+  try {
+    const icons = await fetchFavicons(url);
+    console.log(`网链 ${url} 推荐图标列表：`, icons);
+    for (let i = 0; i < icons.length; i++) {
+      try {
+        let base64 = await downloadAndConvertToBase64(icons[i].href);
+        faviconBase64s.push(base64);
+      } catch (err) {
+        console.error('下载图片捕获到错误', err);
+      }
+    }
+    const iconUrl = getFaviconByUrl(url)
+    if (iconUrl) {
+      try {
+        let iconUrlBase64 = await downloadAndConvertToBase64(iconUrl);
+        faviconBase64s.unshift(iconUrlBase64)
+      } catch (err) {
+        console.error('下载favicon.im图片捕获到错误', err);
+      }
+    }
+    global.huasen.responseData(res, faviconBase64s, 'SUCCESS', '推荐图标');
+  } catch (err) {
+    global.huasen.responseData(res, [], 'ERROR', '推荐图标异常');
+  }
+}
+
 module.exports = {
   findByPage,
   add,
@@ -488,5 +546,6 @@ module.exports = {
   bindColumn,
   unbindColumn,
   importSite,
-  exportSite
+  exportSite,
+  findSiteFavicon
 };

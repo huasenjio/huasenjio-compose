@@ -108,7 +108,7 @@ export default {
       // 校验的规则
       rules: {
         id: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:50::长度大于50', 'isEmail::请输入邮箱']) }],
-        password: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:20::长度大于20', 'isPassword::密码仅支持数字/字母/下划线']) }],
+        password: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:5::长度小于5', 'maxLength:20::长度大于20']) }],
         mailCode: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isInteger::请输入数字']) }],
       },
 

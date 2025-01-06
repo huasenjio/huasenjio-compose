@@ -76,13 +76,14 @@ export default {
     return {
       files: [],
       fileTypeName: {
+        default: '默认空间',
+        img: '相册',
         icon: '图标',
-        article: '文章附件',
+        data: '文件',
         pdf: 'PDF',
         zip: '压缩包',
-        banner: '封面',
-        img: '图库',
-        default: '其它',
+        article: '文章附件',
+        banner: '文章封面',
         'open-sh': '开放脚本',
       },
       type2icon: {
@@ -175,7 +176,7 @@ export default {
     async upload(file, index, callback) {
       let formdata = new FormData();
       formdata.append('file', file);
-      this.API.manage
+      this.API.file
         .uploadFile(formdata, {
           notify: true,
         })

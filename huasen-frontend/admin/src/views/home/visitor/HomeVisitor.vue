@@ -33,8 +33,14 @@ export default {
   },
 
   watch: {
-    visitor() {
-      this.initVisitorChart();
+    visitor: {
+      handler(newVal, oldVal) {
+        this.$nextTick(() => {
+          this.initVisitorChart();
+        });
+      },
+      deep: true,
+      immediate: true,
     },
   },
 
@@ -59,8 +65,8 @@ export default {
 
   methods: {
     queryVisitorTotal() {
-      this.API.manage
-        .uvOverview(
+      this.API.statistics
+        .uvInfo(
           {},
           {
             notify: false,
@@ -81,8 +87,8 @@ export default {
     },
 
     queryVisitor() {
-      this.API.manage
-        .visitor(
+      this.API.statistics
+        .visitorInfo(
           {},
           {
             notify: false,
