@@ -35,7 +35,7 @@ router.post('/runCode', handleJWT(), checkManagePower, checkManageHighestPower, 
 /**
  * @api {post} /app/offline 下线
  * @apiVersion 1.0.0
- * @apiGroup Manage
+ * @apiGroup App
  * @apiParam {string} id 账号
  */
 router.post('/offline', handleJWT(), checkManagePower, checkManageHighestPower, offline);

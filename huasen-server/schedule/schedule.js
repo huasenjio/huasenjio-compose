@@ -69,13 +69,7 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
       [
         {
           schemaName: 'User',
-          methodName: 'count',
-          self: true,
-        },
-        {
-          schemaName: 'Manage',
-          methodName: 'count',
-          self: true,
+          methodName: 'find',
         },
         {
           schemaName: 'Article',
@@ -83,7 +77,16 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
           self: true,
         },
       ],
-      async (userCount, manageCount, articleCount) => {
+      async (users, articleCount) => {
+        console.log()
+        let userCount = 0, manageCount = 0;
+        users.forEach(item => {
+          if (item.code >= 2) {
+            manageCount++;
+          } else {
+            userCount++;
+          }
+        });
         // 记录到全局中
         global.huasenStatus.userCount = userCount;
         global.huasenStatus.manageCount = manageCount;
@@ -93,6 +96,7 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
         global.huasenStatus.fileCount = file.length;
         let visitor = await getObjectRedisItem(POOL_ACCESS);
         global.huasenStatus.visitorCount = Object.values(visitor).length;
+        console.log(global.huasenStatus)
       },
     );
   } catch (err) {
