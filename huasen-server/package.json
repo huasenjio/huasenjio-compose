@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sprite": "webpack --config ./webpack.config.js",
     "dev": "nodemon app.js MODE=dev",
     "pro": "nodemon app.js MODE=pro",
-    "pm2:dev": "pm2 start app.js --watch --node-args='--security-revert=CVE-2023-46809' -- MODE=dev",
-    "pm2:pro": "pm2 start app.js --watch --node-args='--security-revert=CVE-2023-46809' -- MODE=pro",
-    "pm2-runtime:dev": "pm2-runtime start app.js --watch -- MODE=dev",
-    "pm2-runtime:pro": "pm2-runtime start app.js --watch -- MODE=pro",
-    "api-doc": "apidoc -i router/ -o public/apidoc/"
+    "pm2:dev": "pm2 start app.js --watch --ignore-watch='log/error.log log/warn.log' --node-args='--security-revert=CVE-2023-46809' -- MODE=dev HSENV=dev",
+    "pm2:pro": "pm2 start app.js --watch --ignore-watch='log/error.log log/warn.log' --node-args='--security-revert=CVE-2023-46809' -- MODE=pro HSENV=pro",
+    "pm2-in-docker": "pm2 start app.js --no-daemon --watch --ignore-watch='log/error.log log/warn.log' -- MODE=pro HSENV=pro",
+    "api-doc": "apidoc -i router/ -o public/apidoc",
+    "sprite": "webpack --config webpack.config.js"
   },
   "author": "huasen",
   "license": "ISC",

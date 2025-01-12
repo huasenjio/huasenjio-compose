@@ -54,12 +54,12 @@ class WSServer {
             });
             server.on('close', info => {
               server.close();
-              console.log(`${serverKey} 正常断开连接：`, info);
+              console.log(`[WebSocket Log] ${serverKey} 正常断开连接：`, info);
             });
           })
           .catch(err => {
             server.close();
-            console.error(`${serverKey} 异常断开连接：`, err);
+            console.error(`[WebSocket Log] ${serverKey} 异常断开连接：`, err);
           });
       });
     } catch (err) {
