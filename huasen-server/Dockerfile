@@ -18,5 +18,5 @@ RUN npm install pm2 -g
 RUN npm install
 # 暴露3000端口
 EXPOSE 3000
-# 通过 pm2 启动打包之后的项目
+# 通过 pm2 启动打包之后的项目, pm2在容器中运行需要用 pm2-runtime 命令
 CMD ["npm", "run", "pm2-in-docker"]
