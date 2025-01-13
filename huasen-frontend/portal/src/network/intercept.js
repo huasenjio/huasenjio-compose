@@ -32,7 +32,7 @@ if (!aesSecret) {
 
 function requestIntercept(config) {
   // 开启遮罩
-  that.$startLoading();
+  if (config._loading) that.$startLoading();
   // 用户埋点
   config.headers.Dot = 'user';
   config.headers.Token = state.user.token || '***·***·***';
@@ -72,9 +72,9 @@ function requestError(error) {
 }
 
 function responseIntercept(result) {
-  // 关闭遮罩
-  that.$stopLoading();
   let { headers, config, status, data } = result;
+  // 关闭遮罩
+  if (config._loading) that.$resetLoading();
   // 保存非对称公钥
   let rsaScrect = getHeadersValue(headers, 'Rsa-Public-Secret');
   if (rsaScrect) {

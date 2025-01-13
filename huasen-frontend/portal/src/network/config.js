@@ -28,6 +28,9 @@ export default {
   globalNotify: true,
   // 是否全局错误通知
   globalErrorNotify: true,
+  // 是否全局加载遮罩
+  globalLoading: true,
+
   // 取消请求配置
   cancelToken: source.token,
 

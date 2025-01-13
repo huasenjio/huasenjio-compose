@@ -25,9 +25,14 @@ try {
       password: REDIS.password,
     });
   }
-  if (ioRedisClient.status === 'connecting') console.log(`ioredis：${REDIS.port}`);
+  ioRedisClient.on('ready', () => {
+    console.log(`ioredis：${REDIS.port}`)
+  });
+  ioRedisClient.on('error', (error) => {
+    console.log('ioredis 异常', error);
+  });
 } catch (err) {
-  console.log('ioredis failure to start');
+  console.log('ioredis 初始化失败', err);
 }
 
 module.exports = {

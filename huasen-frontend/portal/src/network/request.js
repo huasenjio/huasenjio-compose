@@ -36,6 +36,8 @@ export function get(url, mock, FSW = true) {
     if (option._cancelable) option.cancelToken = Config.cancelToken;
     // 是否是Mock请求
     if (isMock) option._isMock = isMock;
+    // 配置加载遮罩
+    option._loading = Object.prototype.hasOwnProperty.call(option, 'loading') ? option.loading : Config.globalLoading;
     // 配置提示
     option._notify = Object.prototype.hasOwnProperty.call(option, 'notify') ? option.notify : Config.globalNotify;
     // 配置错误提示
@@ -74,12 +76,14 @@ export function post(url, mock, FSW = true) {
     if (option._cancelable) option.cancelToken = Config.cancelToken;
     // 是否是Mock请求
     if (isMock) option._isMock = isMock;
+    // 配置加载遮罩
+    option._loading = Object.prototype.hasOwnProperty.call(option, 'loading') ? option.loading : Config.globalLoading;
     // 配置提示
     option._notify = Object.prototype.hasOwnProperty.call(option, 'notify') ? option.notify : Config.globalNotify;
-    // 加密传输
-    option._secret = Object.prototype.hasOwnProperty.call(option, 'secret') ? option.secret : Config.globalSecret;
     // 配置错误提示
     option._errorNotify = Object.prototype.hasOwnProperty.call(option, 'errorNotify') ? option.errorNotify : Config.globalErrorNotify;
+    // 加密传输
+    option._secret = Object.prototype.hasOwnProperty.call(option, 'secret') ? option.secret : Config.globalSecret;
     return http({
       url,
       data,

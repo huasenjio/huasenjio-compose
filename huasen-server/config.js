@@ -24,7 +24,7 @@ let args = process.argv.find(row => {
 
 // 运行环境常量（dev ｜ pro）
 const MODE = args ? args.split('=')[1] : 'dev';
-console.log('[Huasen Log] 运行模式 MODE =', MODE);
+console.log('[Huasen Log]：运行模式 MODE =', MODE);
 
 // 服务启动端口
 const PORT_SERVER = 3000;

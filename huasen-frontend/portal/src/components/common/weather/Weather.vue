@@ -139,6 +139,8 @@ export default {
           { cityId: this.user.config.cityCode },
           {
             notify: false,
+            errorNotify: false,
+            loading: false,
           },
         ).then(res => {
           this.loaded = true;
