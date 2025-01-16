@@ -63,7 +63,7 @@
             </el-popconfirm>
             <el-button v-if="showCopy" size="mini" type="warning" @click="copy(scope.$index, scope.row)">复制</el-button>
             <el-button v-if="showEdit" size="mini" type="primary" @click="edit(scope.$index, scope.row)">编辑</el-button>
-            <el-button v-if="showOperate" size="mini" type="info" @click="operate(scope.$index, scope.row)">操作</el-button>
+            <el-button v-if="showRelation" size="mini" type="info" @click="relation(scope.$index, scope.row)">关联</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -153,7 +153,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    showOperate: {
+    showRelation: {
       type: Boolean,
       default: false,
     },
@@ -237,8 +237,8 @@ export default {
       this.$emit('edit', index, row);
     },
 
-    operate(index, row) {
-      this.$emit('operate', index, row);
+    relation(index, row) {
+      this.$emit('relation', index, row);
     },
 
     copy(index, row) {

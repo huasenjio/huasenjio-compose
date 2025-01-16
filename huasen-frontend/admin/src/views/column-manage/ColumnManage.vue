@@ -14,8 +14,8 @@
       :formMap="searchFormMap"
       :total="total"
       :showAdd="true"
-      :showOperate="true"
-      @operate="handleOperate"
+      :showRelation="true"
+      @relation="handleRelation"
       @edit="handleEdit"
       @add="handleAdd"
       @remove="handleRemove"
@@ -233,7 +233,7 @@ export default {
       });
     },
 
-    handleOperate(index, row) {
+    handleRelation(index, row) {
       this.showSiteSelector = true;
       this.currentColumn = { ...row };
     },

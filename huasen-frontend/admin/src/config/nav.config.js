@@ -13,7 +13,7 @@ export default [
     iconClass: 'iconfont icon-md-planet',
   },
   {
-    name: '发布新闻',
+    name: '发布文章',
     path: '/public',
     iconClass: 'iconfont icon-pen-fill',
   },
