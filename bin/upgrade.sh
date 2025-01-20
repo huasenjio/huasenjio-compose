@@ -12,6 +12,10 @@ gitStoragePath="https://gitee.com/HuaSenJioJio/huasenjio-compose.git"
 # 缓存目录
 tempPath=$sh_path"/../../huasen-temp"
 
+# 执行备份文件脚本
+echo '[Huasen Log]：正在备份数据...'
+$sh_path/backup.sh
+
 echo '[Huasen Log]：正在初始化缓存目录...'
 # 若没有缓存目录，则创建缓存目录
 if [ ! -d $tempPath ]; then mkdir $tempPath; fi
