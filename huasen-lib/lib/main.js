@@ -1,3 +1,4 @@
+import 'core-js'
 import { publicEncrypt, publicDecrypt, privateDecrypt, privateEncrypt, rsaEncryptLong, rsaDecryptLong } from './rsa.js';
 import { getAESSecret, decrypt, encrypt } from './aes.js';
 import { Validator, strategies } from './strategy.js';
