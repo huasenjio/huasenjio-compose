@@ -4,6 +4,7 @@ const path = require('path');
 const crypto = require('crypto');
 const moment = require('moment');
 const request = require('request');
+const { spawn } = require('child_process')
 
 /**
  * 防抖函数
@@ -36,20 +37,6 @@ function copyObject(object) {
     obj[k] = typeof v == 'object' ? copyObject(v) : v; // 如果当前属性是引用类型则递归调用，基础数据类型则直接赋值。
   }
   return obj; // 返还对象
-}
-
-/**
- * 交换数组元素位置
- * @param {Array}  array   操作数组
- * @param {Number} before 移动前的下标
- * @param {Number} to     移动到的下标
- */
-function exchangeArrayItem(array, before, to) {
-  // 保存原位置的对象
-  let oldItem = array[to];
-  // 开始交换位置
-  array.splice(to, 1, array[before]);
-  array.splice(before, 1, oldItem);
 }
 
 /**
@@ -230,14 +217,24 @@ function getUid(len, radix) {
   return uuid.join('');
 }
 
+/**
+ * 计算同比增长
+ * @param {Number} nV - 新值
+ * @param {Number} oV - 旧值
+ * @returns
+ */
 function handleRate(nV, oV) {
   if (oV === 0) return '--%';
-
   let rate = (Math.abs((nV - oV) / oV) * 100).toFixed(2);
   let flag = nV < oV ? '-' : '+';
   return flag + rate + '%';
 }
 
+/**
+ * 下载图片并转换为base64
+ * @param {String} imageUrl - 图片地址
+ * @returns 
+ */
 async function downloadAndConvertToBase64(imageUrl) {
   return new Promise((resolve, reject) => {
     request.get({ url: imageUrl, timeout: 6000, encoding: null }, (error, response, body) => {
@@ -255,6 +252,11 @@ async function downloadAndConvertToBase64(imageUrl) {
   });
 }
 
+/**
+ * 字节转换大小
+ * @param {Number} bytes - 字节数
+ * @returns 
+ */
 function bytesToSize(bytes) {
   if (bytes === 0) return '0 B';
   let k = 1024;
@@ -263,10 +265,20 @@ function bytesToSize(bytes) {
   return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
 }
 
+/**
+ * 获取当前时间
+ * @param {Boolean} simple 
+ * @returns 
+ */
 function getTime(simple) {
   return simple ? moment().format('YYYYMMDDHHmmss') : moment().format('YYYY-MM-DD HH:mm:ss');
 }
 
+/**
+ * 获取客户端IP
+ * @param {Object} req - 请求对象
+ * @returns 
+ */
 function getClientIP(req) {
   // 按优先级获取客户端IP
   return (
@@ -278,10 +290,29 @@ function getClientIP(req) {
   );
 }
 
+
+/**
+ * 执行命令
+ * @param {String} command - 命令
+ * @param {Array} args - 参数
+ * @param {Object} options - 选项
+ * @returns
+ */
+function commandSpawn(command, args, options) {
+  return new Promise((resolve, reject) => {
+    // 开启子终端执行命令，例如npm install为spawn('npm', ['install'], {cwd: '工作路径'})
+    const childProcess = spawn(command, args, options)
+    childProcess.stdout.pipe(process.stdout)
+    childProcess.stdout.pipe(process.stderr)
+    childProcess.on('close', () => {
+      path.resolve();
+    })
+  })
+}
+
 module.exports = {
   debounce,
   copyObject,
-  exchangeArrayItem,
   deleteDir,
   stringToMD5,
   streamPipe,
@@ -295,5 +326,6 @@ module.exports = {
   downloadAndConvertToBase64,
   bytesToSize,
   getTime,
-  getClientIP
+  getClientIP,
+  commandSpawn
 };

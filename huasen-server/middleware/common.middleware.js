@@ -8,6 +8,7 @@
 
 const _ = require('lodash');
 const session = require('express-session');
+const CrawlerDetector = require('crawler-detect');
 
 const { SESSION, POOL_BLACKLIST, SECRET_RSA_PRIVATE } = require('../config.js');
 const { handleRecord } = require('../utils/record-handle.js');
@@ -109,7 +110,7 @@ function handleJWT(type = 'auth') {
         let tag = _.get(err, 'tag');
         if (type === 'auth') {
           global.huasen.responseData(res, {}, 'FORBIDDEN', msg);
-        } else {
+        } else if (type === 'parse') {
           next();
         }
       });
@@ -152,7 +153,7 @@ function handleRequest(req, res, next) {
     host: hostname,
     dot: req.get('dot'),
     referer: req.get('referer'),
-    agent: req.get['user-agent'],
+    agent: req.get('user-agent'),
     waitTime: 0,
     responseTime: 0,
   };
@@ -189,6 +190,19 @@ const handleRequestError = function (err, req, res, next) {
   global.huasen.formatError(err, '全局错误处理中间件发现错误');
 };
 
+/**
+ * 检测爬虫
+ */
+const handleDetectCrawler = function (req, res, next) {
+  req.isCrawler = CrawlerDetector.isCrawler(req.headers['user-agent'], (test, ua, match) => {
+    if (test) {
+      console.warn(`检测爬虫：${test} ${ua} ${match}`);
+    }
+
+  });
+  next();
+};
+
 module.exports = {
   handleSession,
   handleBlackList,
@@ -197,4 +211,5 @@ module.exports = {
   handleRequestError,
   handleRequest,
   handleJWT,
+  handleDetectCrawler
 };

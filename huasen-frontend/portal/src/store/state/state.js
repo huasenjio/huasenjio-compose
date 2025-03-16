@@ -12,16 +12,16 @@ export default {
     name: '本地用户',
     headImg: '',
     token: '',
-    code: 1,
+    code: 0,
     records: [],
     config: {
-      // 色值｜图片链接| base64
+      // 色值｜图片链接|base64
       bg: require('@/assets/img/wallpaper/3.jpeg'),
       // 顶栏文字颜色
       headerFontColor: '#ffffff',
       // 背景模糊度 0-10
       bgFilter: 0,
-      // 背景明暗0-1（黑）
+      // 背景明暗0-1（白-黑）
       bgLightness: 0,
       // 极简模式
       simpleMode: false,
@@ -39,8 +39,6 @@ export default {
       showNavbar: true,
       // 城市码
       cityCode: 101210101,
-      // 城市名
-      cityName: '杭州'
     },
   },
   // 全部站点
@@ -63,30 +61,29 @@ export default {
   },
 
   // 搜索引擎
-  searchConfig: [],
+  searchConfig: [
+    {
+      url: 'localhost',
+      key: 'instation',
+      params: {},
+      name: '站内',
+      icon: 'iconfont icon-md-planet',
+    },
+  ],
+  asideConfig: [],
+  navConfig: [],
 
   // 系统配置
   appConfig: {
     // 是否已加载配置
     loaded: false,
-
-    article: {
-      id: '',
-      course: '',
-      about: '',
-      help: '',
-      notice: '',
-    },
     site: {
-      name: '花森',
-      logoURL: require('@/assets/img/logo/favicon.svg'),
-      redirectURL: 'http://huasenjio.top/',
-      guidePageName: '花森小窝',
-      guidePageUrl: 'http://huasenjio.top/',
+      brandName: '花森',
+      brandUrl: require('@/assets/img/logo/favicon.svg'),
       footerHtml: '',
-      serviceQRCodeUrl: require('@/assets/img/logo/weixin.png'),
       openLabelClassification: false,
-      autoIconPatch: false
+      autoIconPatch: false,
+      notifyArticleId: null,
     },
   },
 };

@@ -25,8 +25,8 @@
     <section v-if="showMenu" class="collapse">
       <ul class="links">
         <li v-for="(item, index) in links" :key="index" @click="jump(item, index)">
-          <i :class="item.iconfontClass" class="icon"></i>
-          <span class="text">{{ item.text }}</span>
+          <IconBox v-if="item.icon" size="16px" :icon="item.icon"></IconBox>
+          <span class="text">{{ item.label }}</span>
         </li>
       </ul>
     </section>
@@ -40,8 +40,8 @@
     </section>
     <section v-if="showMenu" class="take">
       <el-dropdown class="dropdown" trigger="click" @command="handleSelectJournal">
-        <span class="el-dropdown-link pointer">
-          {{ currentJournal.name || '无订阅' }}
+        <span class="el-dropdown-link pointer" @click="handleSelectJournal(currentJournal._id)">
+          {{ currentJournal.name || '无订阅源' }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu class="journal-dropdown-menu" slot="dropdown">
@@ -67,12 +67,14 @@
 import { mapState, mapMutations } from 'vuex';
 import Clock from '@/components/common/clock/Clock.vue';
 import Weather from '@/components/common/weather/Weather.vue';
+import IconBox from '@/components/common/iconBox/IconBox.vue';
 export default {
   name: 'HomeHead',
 
   components: {
     Clock,
     Weather,
+    IconBox,
   },
 
   props: {
@@ -107,27 +109,8 @@ export default {
       return this.user.token ? this.user.name : '注册登录';
     },
     links() {
-      let site = this.$store.state.appConfig.site;
-      return [
-        {
-          iconfontClass: 'iconfont icon-md-home',
-          text: site.guidePageName,
-          url: site.guidePageUrl,
-          isArticle: false,
-        },
-        {
-          iconfontClass: 'iconfont icon-md-stats',
-          text: '更新日志',
-          url: this.$store.state.appConfig.article.changelog,
-          isArticle: true,
-        },
-        {
-          iconfontClass: 'iconfont icon-md-at',
-          text: '关于我们',
-          url: this.$store.state.appConfig.article.about,
-          isArticle: true,
-        },
-      ];
+      let site = this.$store.state.navConfig;
+      return site;
     },
     // 默认选择的订阅源id，链接上携带的参数优先级最高
     defaultJournalId() {
@@ -184,6 +167,7 @@ export default {
     },
 
     handleSelectJournal(_id) {
+      if (!_id) return;
       let exist = this.journals.find(item => item._id === _id);
       if (!exist) {
         this.$notify.warning('订阅源不存在，请您重新选择！');
@@ -264,11 +248,16 @@ export default {
 
     // 跳转
     jump(item, index) {
-      let url = item.url;
-      if (index === 0) {
-        this.TOOL.openPage(url);
-      } else {
-        this.TOOL.jumpToRead(this, url);
+      let articleId;
+      switch (item.type) {
+        case 'link':
+          this.TOOL.openPage(this.LODASH.get(item, 'typeConfig.url'), this.LODASH.get(item, 'typeConfig.target'));
+          break;
+        case 'article':
+          articleId = this.LODASH.get(item, 'typeConfig.articleId');
+          if (!articleId) return;
+          this.TOOL.jumpToRead(this, articleId);
+          break;
       }
     },
   },

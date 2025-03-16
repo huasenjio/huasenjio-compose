@@ -63,11 +63,18 @@ async function getDictionary(req, res, next) {
   global.huasen.responseData(res, { code, draft, pin }, 'SUCCESS', '获取字典', 'aes');
 }
 
+function getCity(req, res, next) {
+  const cityData = require('../city.json')
+  global.huasen.responseData(res, cityData, 'SUCCESS', '获取城市数据');
+}
+
+
 module.exports = {
   getCopyright,
   findAppConfig,
   saveAppConfig,
   runCode,
   offline,
-  getDictionary
+  getDictionary,
+  getCity
 };

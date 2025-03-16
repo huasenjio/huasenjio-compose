@@ -26,7 +26,12 @@ export function getPath(data, path = []) {
   return lodashPaths;
 }
 
-
+/**
+ * 覆盖对象属性
+ * @param {Object} data - 目标对象
+ * @param {Object} srcData - 源对象
+ * @param {Boolean} ignoreInvalidValue - 是否忽略undefined值
+ */
 export function overrideKeys(data, srcData, ignoreInvalidValue = false) {
   let paths = getPath(data);
   paths.forEach(path => {

@@ -23,7 +23,7 @@ if (DB.dbDirConnection) {
 
 function initMongo() {
   // 连接数据库
-  console.log('[Huasen Log]：连接数据库...');
+  console.log('[Huasen Log]：即将连接数据库...');
   mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -41,5 +41,5 @@ db.on('error', err => {
 db.on('open', () => {
   // 连接成功之后，初始化数据库默认数据
   require('./init/initArticle.js');
-  console.log(`mongodb：${DB.port}`);
+  console.log(`[Huasen Log]：mongodb 服务端口为${DB.port}`);
 });

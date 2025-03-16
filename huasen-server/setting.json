@@ -1,16 +1,20 @@
 {
   "site": {
     "brandName": "花森",
-    "brandUrl": "",
-    "redirectUrl": "http://huasenjio.top/",
-    "guidePageName": "花森小窝",
-    "guidePageUrl": "http://huasenjio.top/",
+    "brandUrl": "https://n.huasenjio.top/huasen-store/icon/logo.png",
+    "brandDescription": "花森起始页由可自定义网址导航、文章博客、后台管理模块组成的开源项目，专注于收录互联网优秀站点，涵盖了生活、娱乐、学习、影视、考研、工作、科技、工具等领域，提供一个信息聚合的空间，让用户高效上网冲浪的综合性平台！",
+    "brandKeywords": "huasenjio.top,花森起始页,花森主页,花森导航,花森博客,花生起始页,花生主页,花生网址导航,花生博客,综合门户,网址导航,实用工具",
+    "redirectUrl": "https://huasenjio.top/",
+    "origin": "",
+    "headHtml": "<script></script>",
+    "bodyHtml": "<div></div>",
     "footerHtml": "",
     "openLabelClassification": false,
-    "autoIconPatch": false,
+    "autoIconPatch": true,
     "jwt": "",
     "jwtLiveTime": 604800,
-    "serviceQRCodeUrl": ""
+    "cityCode": 101210101,
+    "notifyArticleId": null
   },
   "theme": {
     "pure": [
@@ -21,6 +25,10 @@
       {
         "color": "#ffffff",
         "background": "#000000"
+      },
+      {
+        "color": "#ffffff",
+        "background": "#5522FF"
       }
     ],
     "wallpaper": [
@@ -31,95 +39,133 @@
       {
         "headerFontColor": "#000000",
         "background": "https://s2.loli.net/2023/03/31/W9n7RoFvhtlpg6U.jpg"
+      },
+      {
+        "headerFontColor": "#FFFFFF",
+        "background": "huasen-store/img/1698771433825.jpg"
+      },
+      {
+        "headerFontColor": "#FFFFFF",
+        "background": "huasen-store/img/1699075427945.jpg"
+      },
+      {
+        "headerFontColor": "#FFFFFF",
+        "background": "huasen-store/img/1700315475749.jpg"
       }
     ],
     "default": {
-      "bg": "https://s2.loli.net/2023/03/31/W9n7RoFvhtlpg6U.jpg",
-      "color": "#000000"
+      "order": 0,
+      "bg": "https://s2.loli.net/2023/03/31/oSz3nJB84dC5ueh.jpg",
+      "color": "#FFFFFF"
     }
   },
   "mail": {
     "host": "smtp.163.com",
     "port": 465,
-    "user": "***@163.com",
-    "mtp": "***"
+    "user": "huasenjio@163.com",
+    "mtp": ""
   },
-  "article": {
-    "changelog": "",
-    "about": "",
-    "help": "",
-    "notice": ""
-  },
-  "copyright": {
-    "name": "花森开源项目",
-    "company": "Huasenjio Studio",
-    "github": {
-      "author": "huasenjio",
-      "repository": "https://github.com/huasenjio/huasenjio-compose",
-      "protocol": "Apache-2.0 license"
+  "nav": [
+    {
+      "label": "花森小窝",
+      "type": "link",
+      "typeConfig": {
+        "url": "https://huasenjio.top/",
+        "target": "_blank"
+      },
+      "icon": "iconfont icon-md-home"
     },
-    "contact": {
-      "website": "www.huasenjio.top",
-      "bilibili": "https://space.bilibili.com/241546158"
+    {
+      "label": "更新日志",
+      "type": "article",
+      "typeConfig": {
+        "articleId": ""
+      },
+      "icon": "iconfont icon-md-stats"
+    },
+    {
+      "label": "关于我们",
+      "type": "article",
+      "typeConfig": {
+        "articleId": ""
+      },
+      "icon": "iconfont icon-md-at"
     }
-  },
+  ],
+  "aside": [
+    {
+      "label": "微信二维码",
+      "type": "html",
+      "typeConfig": {
+        "domStr": "<img src=\"https://a.huasenjio.top/huasen-store/default/1668990565457.png\" style=\"width: 64px; height: 64px\"/>"
+      },
+      "icon": "iconfont icon-weixin"
+    },
+    {
+      "label": "帮助文档",
+      "type": "article",
+      "typeConfig": {
+        "articleId": "67828ab45ecb62738adbf096"
+      },
+      "icon": "iconfont icon-md-help-circle"
+    }
+  ],
   "search": [
     {
       "url": "https://www.baidu.com/s",
       "key": "word",
       "params": {},
       "name": "百度",
-      "iconClass": "iconfont icon-baidu"
+      "icon": "iconfont icon-baidu"
     },
     {
       "url": "https://www.google.com/search",
       "key": "q",
       "params": {},
       "name": "谷歌",
-      "iconClass": "iconfont icon-chrome"
+      "icon": "iconfont icon-chrome"
     },
     {
       "url": "https://cn.bing.com/search",
       "key": "q",
       "params": {},
       "name": "必应",
-      "iconClass": "iconfont icon-bing"
+      "icon": "iconfont icon-bing"
     },
     {
       "url": "localhost",
       "key": "instation",
       "params": {},
       "name": "站内",
-      "iconClass": "iconfont icon-md-planet"
+      "icon": "iconfont icon-md-planet"
     },
     {
       "url": "https://metaso.cn/",
       "key": "q",
       "params": {},
       "name": "秘塔",
-      "iconClass": "iconfont icon-mita"
+      "icon": "iconfont icon-mita"
     },
     {
       "url": "https://dict.youdao.com/search",
       "key": "q",
       "params": {},
       "name": "翻译",
-      "iconClass": "iconfont icon-translate"
+      "icon": "iconfont icon-translate"
     },
     {
       "url": "https://xueshu.baidu.com/s",
       "key": "wd",
       "params": {},
       "name": "学术",
-      "iconClass": "iconfont icon-md-school"
+      "icon": "iconfont icon-md-school"
     },
     {
       "url": "https://ya.ru/images/search",
       "key": "text",
       "params": {},
       "name": "图搜",
-      "iconClass": "iconfont icon-md-image",
-      "iconImg": "huasen-store/default/yaru-20241229235108.png"
+      "icon": "huasen-store/default/yaru-20241229235108.png"
     }
   ]
 }

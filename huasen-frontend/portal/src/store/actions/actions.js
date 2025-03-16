@@ -7,7 +7,6 @@
  */
 
 import Vue from 'vue';
-import searchs from '@/config/search.config.js';
 const that = Vue.prototype;
 
 export default {
@@ -20,8 +19,6 @@ export default {
       if (user) {
         let config = { ...context.state.user.config, ...JSON.parse(user.config) };
         let records = JSON.parse(user.records);
-
-        // 提交更新
         context.commit('commitAll', {
           user: {
             id: user.id,
@@ -66,61 +63,39 @@ export default {
     let res = await that.API.App.findAppConfig({}, { notify: false });
     const config = res.data
     try {
-      const autoIconPatch = that.LODASH.get(config, 'site.autoIconPatch')
       const searchConfig = that.LODASH.get(config, 'search')
+      const asideConfig = that.LODASH.get(config, 'aside')
+      const navConfig = that.LODASH.get(config, 'nav')
+      const themeConfig = that.LODASH.get(config, 'theme')
       let state = {
-        appConfig: {
-          loaded: true,
-          article: that.LODASH.get(config, 'article'),
-          site: {
-            name: that.LODASH.get(config, 'site.brandName') || '花森',
-            logoURL: that.LODASH.get(config, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
-            redirectURL: that.LODASH.get(config, 'site.redirectUrl') || 'http://huasenjio.top/',
-            guidePageName: that.LODASH.get(config, 'site.guidePageName') || '花森小窝',
-            guidePageUrl: that.LODASH.get(config, 'site.guidePageUrl') || 'http://huasenjio.top/',
-            footerHtml: that.LODASH.get(config, 'site.footerHtml') || '',
-            openLabelClassification: !!that.LODASH.get(config, 'site.openLabelClassification'),
-            serviceQRCodeUrl: that.LODASH.get(config, 'site.serviceQRCodeUrl') || require('@/assets/img/logo/weixin.png'),
-            autoIconPatch: autoIconPatch === undefined ? true : !!autoIconPatch,
+        user: {
+          config: {
+            bg: that.LODASH.get(config, 'theme.default.bg'),
+            headerFontColor: that.LODASH.get(config, 'theme.default.color'),
+            cityCode: that.LODASH.get(config, 'site.cityCode')
           },
         },
-        searchConfig: (searchConfig !== undefined && (Array.isArray(searchConfig) && searchConfig.length)) ? searchConfig : searchs,
-        themeConfig: that.LODASH.get(config, 'theme'),
+        appConfig: {
+          loaded: true,
+          site: {
+            brandName: that.LODASH.get(config, 'site.brandName'),
+            brandUrl: that.LODASH.get(config, 'site.brandUrl'),
+            footerHtml: that.LODASH.get(config, 'site.footerHtml'),
+            openLabelClassification: that.LODASH.get(config, 'site.openLabelClassification'),
+            autoIconPatch: that.LODASH.get(config, 'site.autoIconPatch'),
+            notifyArticleId: that.LODASH.get(config, 'site.notifyArticleId'),
+          },
+        },
+        searchConfig: searchConfig,
+        asideConfig: asideConfig,
+        navConfig: navConfig,
+        themeConfig: themeConfig,
       };
-
       // 默认配置合并
       context.commit('commitAll', state);
-
-      // 设置默认壁纸
-      let bg = that.LODASH.get(config, 'theme.default.bg');
-      let headerFontColor = that.LODASH.get(config, 'theme.default.color');
-
-      if (bg) {
-        context.commit('commitAll', {
-          user: {
-            config: {
-              bg,
-            },
-          },
-        });
-      }
-
-      if (headerFontColor) {
-        context.commit('commitAll', {
-          user: {
-            config: {
-              headerFontColor,
-            },
-          },
-        });
-      }
-
-      context.commit('commitAll', state);
-
       // 请求配置成功回调，处理document.title
       if (callback) callback();
-
-      console.log('初始化配置成功');
+      console.log('初始化配置成功', state);
     } catch (err) {
       that.$tips('error', '初始化配置出错', 'top-right', 2000);
     }
@@ -129,22 +104,19 @@ export default {
   // 保存当前用户快照
   snapshoot(context, payload) {
     let { user } = context.state;
-
     Object.keys(user.config.theme).map(key => {
       let node = document.getElementById(key);
+      // 过滤无用的theme配置
       if (!node) {
-        // 过滤无用的theme配置
         delete user.config.theme[key];
       }
     });
-
     that.STORAGE.setItem(that.CONSTANT.localUser, {
       id: user.id,
       name: user.name,
       code: user.code,
       headImg: user.headImg,
       token: user.token,
-
       records: JSON.stringify(user.records),
       config: JSON.stringify(user.config),
     });

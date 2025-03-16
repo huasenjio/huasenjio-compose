@@ -37,7 +37,7 @@
         </el-select>
       </el-form-item>
     </el-form>
-    <MarkdownEditor :value.sync="articleForm.content" :onImgAdd="handleImgAddUrl"></MarkdownEditor>
+    <MarkdownEditor :value.sync="articleForm.content" :onImgAdd="handleImgAddUrl" @onSave="handleSave"></MarkdownEditor>
     <div class="upload-img-group">
       <el-upload class="upload-box" :style="uploadStyle" :headers="headers" :action="action" :on-error="uploadImgError" :on-success="uploadImgSuccess" accept=".png" drag>
         <i class="el-icon-upload"></i>
@@ -122,10 +122,6 @@ export default {
     },
   },
 
-  // mounted() {
-  //   this.initSubmitForm();
-  // },
-
   activated() {
     this.initSubmitForm();
   },
@@ -202,6 +198,8 @@ export default {
       });
     },
 
+    handleSave() {},
+
     async handleImgAddUrl(index, file) {
       let formdata = new FormData();
       formdata.append('file', file);
@@ -211,7 +209,6 @@ export default {
       this.$tips('success', '上传成功', 'top-right', 1200);
       // 返回url写入内容
       return location.origin + location.pathname + result.data[0].path;
-      // return result.data[0].path;
     },
   },
 };

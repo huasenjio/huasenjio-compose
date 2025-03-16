@@ -15,5 +15,6 @@ const findAppConfig = post('/app/findAppConfig');
 const saveAppConfig = post('/app/saveAppConfig');
 const runCode = post('/app/runCode');
 const offline = post('/app/offline');
+const getCity = get('/app/getCity');
 
-export { getCopyright, getDictionary, findAppConfig, saveAppConfig, runCode, offline };
+export { getCopyright, getDictionary, findAppConfig, saveAppConfig, runCode, offline, getCity };

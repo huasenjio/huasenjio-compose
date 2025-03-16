@@ -71,7 +71,7 @@ export default {
     // 优先处理应用配置
     await this.initAppConfigInfo({
       callback: () => {
-        let brandName = this.LODASH.get(this.appConfig, 'site.name');
+        let brandName = this.LODASH.get(this.appConfig, 'site.brandName');
         if (brandName) {
           document.title = brandName;
         }
@@ -80,6 +80,8 @@ export default {
     // 加载处理用户信息
     await this.initLocalUserInfo();
     await this.initLocalStyleInfo();
+    await this.queryCity();
+
     this.loaded = true;
     console.log('页面已挂载成功');
   },
@@ -91,6 +93,11 @@ export default {
   methods: {
     // 导入vuex中的方法
     ...mapActions(['initLocalUserInfo', 'initLocalStyleInfo', 'initAppConfigInfo']),
+
+    async queryCity() {
+      const result = await this.API.App.getCity();
+      this.CONSTANT.cityData = result.data;
+    },
   },
 };
 </script>

@@ -20,7 +20,7 @@
         </div>
         <div class="info-group border border-gray-300 border-dashed">
           <div class="time">
-            <div class="text">{{ `${appConfig.site.name}原创 · 最后修改于${time}` }}</div>
+            <div class="text">{{ `${appConfig.site.brandName}原创 · 最后修改于${time}` }}</div>
           </div>
           <div class="tag">
             <div v-for="item in tags" :key="item" v-randomColor class="text-white inline-block text-xs px-px-8 py-px-2 first:mx-px-0 mx-px-4 rounded-full">

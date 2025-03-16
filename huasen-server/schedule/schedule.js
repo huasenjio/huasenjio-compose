@@ -5,21 +5,23 @@
  * @LastEditTime: 2023-03-19 10:40:02
  * @Description: 定时任务
  */
+
+const prettier = require('prettier');
+const ejs = require('ejs');
 const osUtils = require('os-utils');
 const schedule = require('node-schedule');
 const path = require('path');
 const moment = require('moment');
+const { get } = require('lodash');
+const setting = require('../setting.json')
+
 
 const { POOL_ACCESS } = require('../config.js');
-
 const { schemaMap } = require('../service/index.js');
 const { Record } = schemaMap
-
-const { getUid } = require('../utils/tool.js');
-
+const { getUid, writeToFile } = require('../utils/tool.js');
 const { delRedisItem } = require('../plugin/ioredis/common.js');
 const { getObjectRedisItem } = require('../plugin/ioredis/map.js');
-
 const { readDirectory } = require('../utils/tool.js');
 
 // *  *  *  *  *  *
@@ -63,7 +65,7 @@ let accessCPUJob = schedule.scheduleJob('0 * * * * *', async () => {
 });
 
 // 每天凌晨记录数据快照
-let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
+let accessYesterdaySummaryJob = schedule.scheduleJob('0 0 3 * * *', async () => {
   try {
     global.huasen.createEpWorking(
       [
@@ -78,7 +80,6 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
         },
       ],
       async (users, articleCount) => {
-        console.log()
         let userCount = 0, manageCount = 0;
         users.forEach(item => {
           if (item.code >= 2) {
@@ -91,7 +92,6 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
         global.huasenStatus.userCount = userCount;
         global.huasenStatus.manageCount = manageCount;
         global.huasenStatus.articleCount = articleCount;
-
         let file = readDirectory(path.resolve(process.cwd(), '../huasen-store'));
         global.huasenStatus.fileCount = file.length;
         let visitor = await getObjectRedisItem(POOL_ACCESS);
@@ -103,3 +103,73 @@ let accessYesterdaySummary = schedule.scheduleJob('0 0 3 * * *', async () => {
     global.huasen.formatError(err, '数据库快照任务异常');
   }
 });
+
+// 每小时更新一次SEO数据
+let accessSEOJob = schedule.scheduleJob('0 0 * * * *', async () => {
+  const code = 0
+  const sitemapPath = path.resolve(__dirname, '../public/webapp/portal/index-seo.html');
+  const sitemapTemplatePath = path.resolve(__dirname, '../public/seo/portal.ejs');
+  global.huasen.createEpWorking(
+    [
+      {
+        schemaName: 'Site',
+        methodName: 'find',
+        payloads: [
+          {
+            // 筛选出小于等于用户权限的订阅源
+            code: { $lte: code },
+            // 可订阅
+            enabled: true,
+          },
+          {
+            name: 1,
+            url: 1,
+            description: 1,
+          }
+        ],
+      },
+      {
+        schemaName: 'Article',
+        methodName: 'find',
+        payloads: [
+          {
+            // 筛选出小于等于用户权限的文章
+            code: { $lte: code },
+            // 不是草稿
+            isDraft: false,
+          },
+          {
+            manageId: 0,
+            code: 0,
+            tag: 0,
+            bannerImg: 0,
+            isDraft: 0,
+          }
+        ],
+      },
+    ],
+    async (sites, articles) => {
+      const origin = get(setting, 'site.origin') || ''
+      articles.forEach(item => {
+        item.url = `${origin}/#/read/${item._id}`
+      })
+      const ejsOpt = {
+        brandName: get(setting, 'site.brandName'),
+        brandUrl: get(setting, 'site.brandUrl'),
+        brandDescription: get(setting, 'site.brandDescription'),
+        brandKeywords: get(setting, 'site.brandKeywords'),
+        headHtml: get(setting, 'site.headHtml'),
+        bodyHtml: get(setting, 'site.bodyHtml'),
+        sites,
+        articles
+      }
+      ejs.renderFile(sitemapTemplatePath, ejsOpt, async (err, html) => {
+        if (err) throw err;
+        const formatted = await prettier.format(html, { parser: 'html', tabWidth: 2, printWidth: 300 });
+        await writeToFile(sitemapPath, formatted);
+      });
+
+    },
+  );
+});
+

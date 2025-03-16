@@ -1,63 +1,78 @@
 import "core-js";
 import s from "crypto";
 import h from "constants";
-const f = h.RSA_PKCS1_PADDING;
-function d(e, t, r, n, i) {
+function d(e, t, r) {
+  r && e();
+  let n = null;
+  function i() {
+    clearTimeout(n), e(), n = setTimeout(i, t);
+  }
+  return n = setTimeout(i, t), {
+    clear() {
+      clearTimeout(n);
+    }
+  };
+}
+const D = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  timeout2Interval: d
+}, Symbol.toStringTag, { value: "Module" })), a = h.RSA_PKCS1_PADDING;
+function y(e, t, r, n, i) {
   return s.publicEncrypt(
     {
       key: t,
-      padding: i || f
-    },
-    Buffer.from(e, r)
-  ).toString(n);
-}
-function y(e, t, r, n, i) {
-  return s.publicDecrypt(
-    {
-      key: t,
-      padding: i || f
+      padding: i || a
     },
     Buffer.from(e, r)
   ).toString(n);
 }
 function g(e, t, r, n, i) {
-  return s.privateEncrypt(
+  return s.publicDecrypt(
     {
       key: t,
-      padding: f
+      padding: i || a
     },
     Buffer.from(e, r)
   ).toString(n);
 }
 function m(e, t, r, n, i) {
-  return s.privateDecrypt(
+  return s.privateEncrypt(
     {
       key: t,
-      padding: f
+      padding: a
     },
     Buffer.from(e, r)
   ).toString(n);
 }
-function D(e, t, r, n) {
+function A(e, t, r, n, i) {
+  return s.privateDecrypt(
+    {
+      key: t,
+      padding: a
+    },
+    Buffer.from(e, r)
+  ).toString(n);
+}
+function E(e, t, r, n) {
   let i = 0, c = [];
   for (; r[i * n]; ) {
-    let u = i * n, p = (i + 1) * n;
-    c.push(r.slice(u, p)), i++;
+    let o = i * n, f = (i + 1) * n;
+    c.push(r.slice(o, f)), i++;
   }
-  let o = [];
-  for (let u = 0; u < c.length; u++) {
-    let p = e === "public" ? d(c[u], t, "utf8", "hex", f) : g(c[u], t, "utf8", "hex");
-    o.push(p);
+  let u = [];
+  for (let o = 0; o < c.length; o++) {
+    let f = e === "public" ? y(c[o], t, "utf8", "hex", a) : m(c[o], t, "utf8", "hex");
+    u.push(f);
   }
-  return o.join(":hs:");
+  return u.join(":hs:");
 }
-function E(e, t, r) {
+function j(e, t, r) {
   return r.split(":hs:").reduce((i, c) => {
-    let o = e === "public" ? y(c, t, "hex", "utf8", f) : m(c, t, "hex", "utf8");
-    return i + o;
+    let u = e === "public" ? g(c, t, "hex", "utf8", a) : A(c, t, "hex", "utf8");
+    return i + u;
   }, "");
 }
-function a() {
+function p() {
   const e = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let t = "";
   const r = e.length;
@@ -65,10 +80,10 @@ function a() {
     t += e.charAt(Math.floor(Math.random() * r));
   return t;
 }
-function T() {
-  return [a(), a()];
+function z() {
+  return [p(), p()];
 }
-function z(e, t) {
+function O(e, t) {
   t = t;
   let r = [], n = s.createDecipheriv("aes-128-cbc", t[0], t[1]);
   return n.setAutoPadding(!0), r.push(n.update(e, "base64", "utf8")), r.push(n.final("utf8")), r.join("");
@@ -78,7 +93,7 @@ function Z(e, t) {
   let r = [], n = s.createCipheriv("aes-128-cbc", t[0], t[1]);
   return n.setAutoPadding(!0), r.push(n.update(e, "utf8", "base64")), r.push(n.final("base64")), r.join("");
 }
-let A = {
+let b = {
   /**
    * 判断是否小于限定长度
    * @param {string} value - 输入值
@@ -224,7 +239,7 @@ class l {
   add(t, r) {
     r.map((n) => {
       let i = n.strategy.split(/:|：/), c = i.shift();
-      i.unshift(t), i.push(n.errMsg), this.caches.push(() => A[c].apply(this, i));
+      i.unshift(t), i.push(n.errMsg), this.caches.push(() => b[c].apply(this, i));
     });
   }
   /**
@@ -266,14 +281,14 @@ class l {
         errMsg: c[1]
       };
     }), n = this;
-    return function(i, c, o) {
-      let u = n.verify([
+    return function(i, c, u) {
+      let o = n.verify([
         {
           rules: r,
           value: c
         }
       ]);
-      u ? o(new Error(u)) : o();
+      o ? u(new Error(o)) : u();
     };
   }
   clear() {
@@ -282,14 +297,15 @@ class l {
 }
 export {
   l as Validator,
-  z as decrypt,
+  O as decrypt,
   Z as encrypt,
-  T as getAESSecret,
-  m as privateDecrypt,
-  g as privateEncrypt,
-  y as publicDecrypt,
-  d as publicEncrypt,
-  E as rsaDecryptLong,
-  D as rsaEncryptLong,
-  A as strategies
+  z as getAESSecret,
+  A as privateDecrypt,
+  m as privateEncrypt,
+  g as publicDecrypt,
+  y as publicEncrypt,
+  j as rsaDecryptLong,
+  E as rsaEncryptLong,
+  b as strategies,
+  D as tool
 };

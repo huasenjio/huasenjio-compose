@@ -76,7 +76,7 @@ router.beforeEach((to, form, next) => {
   Nprogress.start();
 
   let loaded = state.appConfig.loaded;
-  let brandName = state.appConfig.site.name;
+  let brandName = state.appConfig.site.brandName;
   if (loaded && brandName) {
     // 将路由中的属性赋值到title中
     document.title = to.meta.title ? brandName + '·' + to.meta.title : 'huasen-portal';

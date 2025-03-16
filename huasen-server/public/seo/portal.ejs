@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="<%= brandUrl %>" />
+    <title><%= brandName %>站点地图</title>
+    <meta name="keywords" content="<%= brandKeywords %>" />
+    <meta name="description" content="<%= brandDescription %>" />
+    <% headHtml %>
+  </head>
+  <body>
+    <h1>推荐网站列表</h1>
+    <section>
+      <ul>
+        <% sites.forEach(site => { %>
+        <li class="site">
+          <a class="site__url" href="<%= site.url %>"><%= site.name %></a>
+          <p class="site__description"><%= site.description %></p>
+        </li>
+        <% }) %>
+      </ul>
+    </section>
+    <section>
+      <h1>推荐文章列表</h1>
+      <ul>
+        <% articles.forEach(article => { %>
+        <li class="article">
+          <a class="article__url" href="<%= article.url %>"><%= article.title %></a>
+          <p class="article__content"><%= article.content %></p>
+          <time class="article__time"><%= article.time %></time>
+        </li>
+        <% }) %>
+      </ul>
+    </section>
+    <% bodyHtml %>
+  </body>
+</html>

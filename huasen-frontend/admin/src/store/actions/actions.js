@@ -45,8 +45,8 @@ export default {
         notify: false,
       });
       let site = {
-        name: that.LODASH.get(res.data, 'site.brandName') || '花森',
-        logoURL: that.LODASH.get(res.data, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
+        brandName: that.LODASH.get(res.data, 'site.brandName') || '花森',
+        brandUrl: that.LODASH.get(res.data, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
       };
       store.commit('commitAll', {
         site,

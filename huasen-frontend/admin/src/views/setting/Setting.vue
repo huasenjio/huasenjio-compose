@@ -2,88 +2,169 @@
   <div v-if="loaded" class="setting">
     <el-collapse class="setting-collapse" v-model="activeNames">
       <!-- 站点配置 -->
-      <el-collapse-item name="1">
+      <el-collapse-item name="site">
         <template slot="title"> <i class="el-icon-monitor mr-px-4"></i> 站点配置</template>
         <el-form :model="site" :rules="siteRule" ref="siteForm" class="site-form">
           <el-row :gutter="10">
             <el-col :span="12">
               <el-form-item prop="brandName">
-                <el-input placeholder="请输入品牌名" v-model="site.brandName">
+                <el-input size="small" placeholder="请输入品牌名" v-model="site.brandName">
                   <template slot="prepend">品牌名称</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
+              <el-form-item prop="brandDescription">
+                <el-input size="small" placeholder="请输入描述" v-model="site.brandDescription">
+                  <template slot="prepend">品牌描述</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="brandKeywords">
+                <el-input size="small" placeholder="请输入关键词" v-model="site.brandKeywords">
+                  <template slot="prepend">品牌关键词</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item prop="brandUrl">
-                <el-input placeholder="请输入链接" v-model="site.brandUrl">
+                <el-input size="small" placeholder="请输入链接" v-model="site.brandUrl">
                   <template slot="prepend">品牌图片</template>
-                  <el-button slot="append" icon="el-icon-picture" @click="handleUpload(site, 'brandUrl')"></el-button>
+                  <template slot="append">
+                    <ImgUpload size="28px" :url="site.brandUrl" @click.native="handleUpload(site, 'brandUrl')"></ImgUpload>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="redirectUrl">
-                <el-input placeholder="请输入重定向地址" v-model="site.redirectUrl">
-                  <template slot="prepend">重定向地址</template>
+                <el-input size="small" placeholder="请输入重定向地址" v-model="site.redirectUrl">
+                  <template slot="prepend">
+                    <div class="input__prepend flex items-center justify-between">
+                      重定向地址
+                      <el-tooltip content="用户访问网站地址错误时，将会自动跳转到该链接。" placement="right">
+                        <i class="el-icon-info"></i>
+                      </el-tooltip>
+                    </div>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item prop="serviceQRCodeUrl">
-                <el-input placeholder="请输入二维码地址" v-model="site.serviceQRCodeUrl">
-                  <template slot="prepend">客服二维码</template>
-                  <el-button slot="append" icon="el-icon-picture" @click="handleUpload(site, 'serviceQRCodeUrl')"></el-button>
+              <el-form-item prop="origin">
+                <el-input size="small" placeholder="请输入访问源" v-model="site.origin">
+                  <template slot="prepend">
+                    <div class="input__prepend flex items-center justify-between">
+                      访问源
+                      <el-tooltip content="用于拼接整站资源访问地址，例如：协议://域名，末尾不用添加/，建议输入值与主站location.origin一致！" placement="bottom">
+                        <i class="el-icon-info"></i>
+                      </el-tooltip>
+                    </div>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item prop="guidePageName">
-                <el-input placeholder="请输入引导页名称" v-model="site.guidePageName">
-                  <template slot="prepend">引导页名称</template>
+              <el-form-item prop="headHtml">
+                <el-input size="small" placeholder="添加HTML片段到<head></head>标签中" v-model="site.headHtml">
+                  <template slot="prepend">页头代码</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item prop="guidePageUrl">
-                <el-input placeholder="请输入引导页地址" v-model="site.guidePageUrl">
-                  <template slot="prepend">引导页地址</template>
+              <el-form-item prop="bodyHtml">
+                <el-input size="small" placeholder="添加HTML片段到<body></body>标签中" v-model="site.bodyHtml">
+                  <template slot="prepend">页体代码</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="footerHtml">
-                <el-input placeholder="请输入页脚代码" v-model="site.footerHtml">
+                <el-input size="small" placeholder="添加HTML片段到页脚" v-model="site.footerHtml">
                   <template slot="prepend">页脚代码</template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="jwt">
-                <el-input placeholder="请输入令牌密钥" v-model="site.jwt">
-                  <template slot="prepend">令牌密钥</template>
+                <el-input size="small" placeholder="请输入令牌密钥" v-model="site.jwt">
+                  <template slot="prepend">
+                    <div class="input__prepend flex items-center justify-between">
+                      令牌密钥
+                      <el-tooltip placement="right" content="用户登录凭证加密串，一旦更改，所有用户需要重新登录，请您谨慎修改！">
+                        <i class="el-icon-info"></i>
+                      </el-tooltip>
+                    </div>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="jwtLiveTime">
-                <el-input placeholder="1000 = 1秒" @input="value => (site.jwtLiveTime = Number(value.replace(/[^0-9.]/g, '')) || 604800)" v-model="site.jwtLiveTime">
-                  <template slot="prepend">令牌存活时间</template>
+                <el-input size="small" placeholder="请输入令牌存活时间" @input="value => (site.jwtLiveTime = Number(value.replace(/[^0-9.]/g, '')) || 604800)" v-model="site.jwtLiveTime">
+                  <template slot="prepend">
+                    <div class="input__prepend flex items-center justify-between">
+                      令牌存活时间
+                      <el-tooltip content="用户登录凭证有效期，单位：毫秒，例如：1000 * 60 * 60 * 24 * 7 = 604800 = 7天，不宜过小，否则影响用户体验！">
+                        <i class="el-icon-info"></i>
+                      </el-tooltip>
+                    </div>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="24"> </el-col>
             <el-col :span="12">
               <el-form-item prop="autoIconPatch">
-                <div class="flex items-center">
-                  开启网链图标自动补全策略：
-                  <el-switch v-model="site.autoIconPatch" active-text="开启" inactive-text="关闭"> </el-switch>
+                <div class="setting__form-item">
+                  <div class="setting__form-item__label">
+                    网链图标自动补全策略
+                    <el-tooltip content="开启状态下，若链接图标未配置或加载失败，则自动请求favicon.im补全显示。" placement="right">
+                      <i class="el-icon-info text-gray-600"></i>
+                    </el-tooltip>
+                  </div>
+                  <div class="setting__form-item__value">
+                    <el-switch v-model="site.autoIconPatch" active-text="开启" inactive-text="关闭"> </el-switch>
+                  </div>
                 </div>
               </el-form-item>
-            </el-col>
-            <el-col :span="12">
               <el-form-item prop="openLabelClassification">
-                <div class="flex items-center">
-                  网链标签分类栏显示：
-                  <el-switch v-model="site.openLabelClassification" active-text="显示" inactive-text="隐藏"> </el-switch>
+                <div class="setting__form-item">
+                  <div class="setting__form-item__label">网链标签分类</div>
+                  <div class="setting__form-item__value">
+                    <el-switch v-model="site.openLabelClassification" active-text="显示" inactive-text="隐藏"> </el-switch>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item prop="cityCode">
+                <div class="setting__form-item">
+                  <div class="setting__form-item__label">
+                    默认城市
+                    <el-tooltip content="网站默认显示已选城市的天气信息" placement="right">
+                      <i class="el-icon-info text-gray-600"></i>
+                    </el-tooltip>
+                  </div>
+                  <div class="setting__form-item__value">
+                    <el-select style="flex: 1" size="small" v-model="site.cityCode" filterable placeholder="请选择城市码">
+                      <el-option v-for="(city, index) in cityOptions" :key="index" :label="city.countyname" :value="city.areaid"> </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item prop="notifyArticleId">
+                <div class="setting__form-item">
+                  <div class="setting__form-item__label">
+                    公告文章
+                    <el-tooltip content="选择已发布文章作为网站公告" placement="right">
+                      <i class="el-icon-info text-gray-600"></i>
+                    </el-tooltip>
+                  </div>
+                  <div class="setting__form-item__value">
+                    <el-select style="flex: 1" size="small" v-model="site.notifyArticleId" filterable placeholder="请选择">
+                      <el-option v-for="(city, index) in articleOptions" :key="index" :label="city.label" :value="city.value"> </el-option>
+                    </el-select>
+                  </div>
                 </div>
               </el-form-item>
             </el-col>
@@ -92,8 +173,8 @@
       </el-collapse-item>
 
       <!-- 主题配置 -->
-      <el-collapse-item name="2">
-        <template slot="title"> <i class="el-icon-magic-stick mr-px-4"></i>主题配置</template>
+      <el-collapse-item class="theme" name="theme">
+        <template slot="title"> <i class="el-icon-magic-stick mr-px-4"></i>墙纸配置</template>
         <el-form :model="theme" :rules="themeRule" ref="themeForm" class="theme-form">
           <el-row :gutter="10">
             <el-col :span="12">
@@ -106,28 +187,29 @@
             <el-col :span="12">
               <el-form-item prop="default.color">
                 <el-input placeholder="<颜色代码>" v-model="theme.default.color">
-                  <template slot="prepend">背景字体颜色</template>
+                  <template slot="prepend">默认字体颜色</template>
                 </el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <div class="pure">
+          <div class="theme-item pure">
             <div class="px-px-2 text-bold">
               纯色背景列表
               <i class="el-icon-circle-plus text-green-500 pointer" @click="addTheme('pure')"></i>
             </div>
             <ul class="flex overflow-x-auto px-px-2 py-px-6">
-              <li v-for="(item, index) in theme.pure" :key="index" class="flex-shrink-0 w-px-184 relative ml-px-15 first:ml-px-0 shadow p-px-8 rounded">
-                <i class="el-icon-top absolute -top-px-6 right-px-12 z-10 text-blue-500 pointer" title="设为默认" @click="setDefaultTheme('pure', item, index)"></i>
-                <i class="el-icon-remove absolute -top-px-6 -right-px-4 z-10 text-red-500 pointer" title="移除色块" @click="removeTheme('pure', item, index)"></i>
-
-                <el-tooltip :disabled="!!!checkColorCode(item.background)" class="item" effect="light" content="内容格式非法" placement="right">
+              <li v-for="(item, index) in theme.pure" :key="index" class="pure__item flex-shrink-0 relative w-px-184 ml-px-15 first:ml-px-0 shadow p-px-8 rounded">
+                <div class="icon__group">
+                  <i class="icon__top el-icon-top text-blue-500" title="设为默认" @click="setDefaultTheme('pure', item, index)"></i>
+                  <i class="icon__remove el-icon-remove text-red-500" title="移除色块" @click="removeTheme('pure', item, index)"></i>
+                  <i v-if="isDefaultTheme('pure', item, index)" class="pure__icon--default el-icon-success text-green-500" title="默认主题"></i>
+                </div>
+                <el-tooltip :disabled="!!!checkColorCode(item.background)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkColorCode(item.background) }" v-model="item.background" placeholder="背景颜色">
                     <el-color-picker v-model="item.background" class="relative top-px-5 left-px-0" popper-class="setting-color-picker-popper" slot="prefix" size="mini"></el-color-picker>
                   </el-input>
                 </el-tooltip>
-
-                <el-tooltip :disabled="!!!checkColorCode(item.color)" class="item" effect="light" content="内容格式非法" placement="right">
+                <el-tooltip :disabled="!!!checkColorCode(item.color)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkColorCode(item.color) }" v-model="item.color" class="mt-px-4" placeholder="字体颜色">
                     <el-color-picker v-model="item.color" class="relative top-px-5 left-px-0" popper-class="setting-color-picker-popper" slot="prefix" size="mini"></el-color-picker>
                   </el-input>
@@ -136,29 +218,29 @@
             </ul>
           </div>
 
-          <div class="wallpaper">
+          <div class="theme-item wallpaper">
             <div class="px-px-2 text-bold">
               壁纸背景列表
               <i class="el-icon-circle-plus text-green-500 pointer" @click="addTheme('wallpaper')"></i>
             </div>
             <ul class="flex overflow-x-auto px-px-2 py-px-6">
-              <li v-for="(item, index) in theme.wallpaper" :key="index" class="flex-shrink-0 w-px-184 relative ml-px-15 first:ml-px-0 shadow p-px-8 rounded">
-                <i class="el-icon-top absolute -top-px-6 right-px-12 z-10 text-blue-500 pointer" title="设为默认" @click="setDefaultTheme('wallpaper', item, index)"></i>
-                <i class="el-icon-remove absolute -top-px-6 -right-px-4 z-10 text-red-500 pointer" title="移除壁纸" @click="removeTheme('wallpaper', item, index)"></i>
-
+              <li v-for="(item, index) in theme.wallpaper" :key="index" class="wallpaper__item relative flex-shrink-0 w-px-184 ml-px-15 first:ml-px-0 shadow p-px-8 rounded">
+                <div class="icon__group">
+                  <i class="icon__top el-icon-top text-blue-500" title="设为默认" @click="setDefaultTheme('wallpaper', item, index)"></i>
+                  <i class="icon__remove el-icon-remove text-red-500" title="移除壁纸" @click="removeTheme('wallpaper', item, index)"></i>
+                  <i v-if="isDefaultTheme('wallpaper', item, index)" class="icon__default el-icon-success text-green-500" title="默认主题"></i>
+                </div>
                 <div class="w-full h-px-80 mb-px-4 text-center p-px-4 bg-gray-100 border border-dashed border-gray-400 rounded">
                   <img v-lazy="{ unload: require('@/assets/img/error/image-error.png') }" class="max-w-full max-h-full rounded" :src="item.background" />
                 </div>
-
-                <el-tooltip :disabled="!!!checkImgUrl(item.background)" class="item" effect="light" content="内容格式非法" placement="right">
+                <el-tooltip :disabled="!!!checkImgUrl(item.background)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkImgUrl(item.background) }" v-model="item.background" placeholder="图片链接">
                     <div slot="prefix" class="w-px-28 h-px-28 p-px-4 relative top-px-5 left-px-0 border border-solid border-gray-300 rounded flex justify-center items-center pointer">
-                      <i class="el-icon-picture text-lg text-gray-600" @click="handleUpload(item, 'background')"></i>
+                      <i class="el-icon-upload text-lg text-gray-600 hover:text-blue-600" @click="handleUpload(item, 'background')"></i>
                     </div>
                   </el-input>
                 </el-tooltip>
-
-                <el-tooltip :disabled="!!!checkColorCode(item.headerFontColor)" class="item" effect="light" content="内容格式非法" placement="right">
+                <el-tooltip :disabled="!!!checkColorCode(item.headerFontColor)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkColorCode(item.headerFontColor) }" v-model="item.headerFontColor" class="mt-px-4" placeholder="字体颜色">
                     <el-color-picker v-model="item.headerFontColor" class="relative top-px-5 left-px-0" popper-class="setting-color-picker-popper" slot="prefix" size="mini"></el-color-picker>
                   </el-input>
@@ -169,45 +251,8 @@
         </el-form>
       </el-collapse-item>
 
-      <!-- 文章配置 -->
-      <el-collapse-item name="3">
-        <template slot="title"> <i class="el-icon-document mr-px-4"></i>关键文章配置</template>
-        <el-form :model="article" ref="articleForm" class="article-form" label-position="top">
-          <el-row :gutter="10">
-            <el-col :span="12">
-              <el-form-item prop="changelog" label="更新日志">
-                <el-select v-model="article.changelog" clearable filterable placeholder="请选择更新日志">
-                  <el-option v-for="item in articleOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="about" label="关于我们">
-                <el-select v-model="article.about" clearable filterable placeholder="请选择关于我们">
-                  <el-option v-for="item in articleOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="help" label="帮助文档">
-                <el-select v-model="article.help" clearable filterable placeholder="请选择帮助文档">
-                  <el-option v-for="item in articleOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item prop="notice" label="网站公告">
-                <el-select v-model="article.notice" clearable filterable placeholder="请选择网站公告">
-                  <el-option v-for="item in articleOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </el-collapse-item>
-
       <!-- 邮箱配置 -->
-      <el-collapse-item name="4">
+      <el-collapse-item name="mail">
         <template slot="title"> <i class="el-icon-message mr-px-4"></i>邮箱配置</template>
         <el-form :model="mail" ref="mailForm" class="mail-form">
           <el-row :gutter="10">
@@ -244,8 +289,8 @@
       </el-collapse-item>
 
       <!-- 配置总览 -->
-      <el-collapse-item name="5">
-        <template slot="title"> <i class="el-icon-table-lamp mr-px-4"></i>配置代码总览（需要点击「SAVE」保存手动修改的配置代码）</template>
+      <el-collapse-item name="code">
+        <template slot="title"> <i class="el-icon-table-lamp mr-px-4"></i>配置代码总览（<font class="text-red-500">需要点击「SAVE」保存手动修改的配置代码</font>）</template>
         <el-row :gutter="10">
           <el-col :span="24">
             <div class="result">
@@ -263,45 +308,47 @@
     </div>
 
     <!-- input 方式兼容性好 -->
-    <input style="display: none" id="js-img-picker" @change="upload($event)" accept="image/gif,image/jpeg,image/jpg,image/png" type="file" />
+    <input style="display: none" id="js-img-picker" @change="upload($event)" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg+xml" type="file" />
   </div>
 </template>
 
 <script>
+import ImgUpload from '@/components/common/img-upload/ImgUpload.vue';
 import VueJsonEditor from 'vue-json-editor-fix-cn';
 import { Validator } from 'huasen-lib';
 const validator = new Validator();
 const checkParamsByRules = validator.verify.bind(validator);
 const getElementFormValidator = validator.getElementFormValidator.bind(validator);
+
 export default {
   name: 'Setting',
 
-  props: {},
-
-  components: { VueJsonEditor },
+  components: { VueJsonEditor, ImgUpload },
 
   data() {
     return {
       loaded: false,
-
-      activeNames: ['1', '2', '3', '4'],
-      // 表单数据
+      activeNames: ['site', 'theme', 'mail', 'code'],
       site: {
         brandName: '花森',
-        brandUrl: '',
-        redirectUrl: 'http://huasenjio.top/',
-        guidePageName: '花森小窝',
-        guidePageUrl: 'http://huasenjio.top/',
+        brandUrl: 'https://n.huasenjio.top/huasen-store/icon/logo.png',
+        brandDescription:
+          '花森起始页由可自定义网址导航、文章博客、后台管理模块组成的开源项目，专注于收录互联网优秀站点，涵盖了生活、娱乐、学习、影视、考研、工作、科技、工具等领域，提供一个信息聚合的空间，让用户高效上网冲浪的综合性平台！',
+        brandKeywords: 'huasenjio.top,花森起始页,花森主页,花森导航,花森博客,花生起始页,花生主页,花生网址导航,花生博客,综合门户,网址导航,实用工具',
+        redirectUrl: 'https://huasenjio.top/',
+        origin: '',
+        headHtml: '',
+        bodyHtml: '',
         footerHtml: '',
         openLabelClassification: false,
         autoIconPatch: false,
-        jwt: '',
+        jwt: 'abcdefghyjklmnobqrstuvwhyz123456',
         jwtLiveTime: 604800,
-        serviceQRCodeUrl: '',
+        cityCode: 101210101,
+        notifyArticleId: null,
       },
       siteRule: {
         redirectUrl: [{ validator: getElementFormValidator(['isUrl::链接格式不正确']) }],
-        guidePageUrl: [{ validator: getElementFormValidator(['isUrl::链接格式不正确']) }],
         jwt: [
           { validator: getElementFormValidator(['minLength:32::请输入32个字符', 'maxLength:32::请输入32个字符']) },
           {
@@ -319,12 +366,6 @@ export default {
         port: 465,
         user: 'test@qq.com',
         mtp: '',
-      },
-      article: {
-        changelog: '',
-        about: '',
-        help: '',
-        notice: '',
       },
       theme: {
         pure: [
@@ -348,6 +389,7 @@ export default {
           },
         ],
         default: {
+          order: -1,
           bg: '',
           color: '',
         },
@@ -355,43 +397,56 @@ export default {
       themeRule: {
         'default.color': [{ validator: getElementFormValidator(['isColor::内容不正确']) }],
       },
-      // 配置项
+      cityOptions: [],
       articleOptions: [],
-      // 当前上传的表单项
       currentUploading: {
         form: null,
         key: '',
       },
-      // 原始主题数据
       originPure: [],
       originWallpaper: [],
-
       settingKeys: [],
     };
   },
 
   created() {
+    this.queryCity();
     this.queryConfig();
     this.queryArticle();
   },
 
   computed: {
-    setting: {
-      get() {
-        let keys = this.settingKeys || [];
-        let json = {};
-        for (let key of keys) {
-          json[key] = this[key];
-        }
-        return json;
-      },
-      set() {},
+    setting() {
+      let keys = this.settingKeys || [];
+      let json = {};
+      for (let key of keys) {
+        json[key] = this[key];
+      }
+      return json;
     },
   },
 
   methods: {
+    /**
+     * 判断是否为默认主题
+     * @param type - 主题数据类型，例如：pure | wallpaper
+     * @param item - 主题数据
+     * @param index - 主题数据索引
+     */
+    isDefaultTheme(type, item, index) {
+      if (type === 'pure') {
+        return this.theme.default.bg === item.background && this.theme.default.color === item.color && this.theme.default.order === index;
+      } else if (type === 'wallpaper') {
+        return this.theme.default.bg === item.background && this.theme.default.color === item.headerFontColor && this.theme.default.order === index;
+      }
+    },
+
+    /**
+     * 保存配置代码
+     * @param {Object} json - json数据
+     */
     handleJSONSave(json) {
-      this.$confirm('该操作将忽略所有表单输入项，并且保存编辑器中的代码作为最新配置，您确定吗？', '保存配置代码', {
+      this.$confirm('该操作将忽略上面所有表单输入项，并且保存编辑器中的代码作为最新配置，您确定吗？', '保存配置代码', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -400,49 +455,61 @@ export default {
           let that = this;
           this.settingKeys = Object.keys(json);
           for (let key of this.settingKeys) {
-            if (['site', 'mail', 'theme', 'article'].includes(key)) {
-              // 对于表单输入项，采取同名覆盖策略
+            if (['site', 'mail', 'theme'].includes(key)) {
+              // 对于表单输入项，采取同名覆盖策略，忽略undefined
               this.TOOL.overrideKeys(that[key], json[key], true);
             } else {
               that[key] = json[key];
             }
           }
-          this.$nextTick(() => {
-            this.saveConfig();
-          });
+          this.saveConfig();
         })
         .catch(() => {});
     },
-    // 重置配置
+
+    /**
+     * 重置配置
+     */
     reset() {
       this.$refs.siteForm.resetFields();
       this.$refs.mailForm.resetFields();
       this.$refs.themeForm.resetFields();
-      this.$refs.articleForm.resetFields();
       this.theme.pure = this.LODASH.cloneDeep(this.originPure);
       this.theme.wallpaper = this.LODASH.cloneDeep(this.originWallpaper);
-      this.$tips('success', '重置配置表单成功', null, 2000);
+      this.$tips('success', '重置配置成功', null, 2000);
     },
-    // 查询配置
+
+    /**
+     * 查询城市信息
+     */
+    queryCity() {
+      this.API.app.getCity().then(res => {
+        this.cityOptions = res.data;
+      });
+    },
+
+    /**
+     * 查询配置
+     */
     queryConfig() {
       this.API.app.findAppConfig({}, { notify: false }).then(res => {
-        // 移除表单等待赋值后默认数据更新
         this.loaded = false;
-        // 遍历请求的配置项，例如：site、mail、theme、article
         this.settingKeys = Object.keys(res.data);
         for (let key of this.settingKeys) {
           this[key] = res.data[key];
         }
         this.originPure = this.LODASH.cloneDeep(this.theme.pure);
         this.originWallpaper = this.LODASH.cloneDeep(this.theme.wallpaper);
-        // 优先赋值，表单重置方法才能生效
         this.loaded = true;
       });
     },
-    // 保存配置
+
+    /**
+     * 保存配置
+     */
     saveConfig() {
       let list = [];
-      list.push(this.checkForm('siteForm'), this.checkForm('mailForm'), this.checkForm('themeForm'), this.checkForm('articleForm'));
+      list.push(this.checkForm('siteForm'), this.checkForm('mailForm'), this.checkForm('themeForm'));
       Promise.all(list)
         .then(() => {
           this.API.app
@@ -467,7 +534,11 @@ export default {
           this.$tips('error', '校验失败，请检查配置输入项！', null, 2000);
         });
     },
-    // 校验转为Promise
+
+    /**
+     * 校验表单
+     * @param formName - 表单名称
+     */
     checkForm(formName) {
       return new Promise((resolve, reject) => {
         this.$refs[formName].validate(valid => {
@@ -477,7 +548,10 @@ export default {
         });
       });
     },
-    // 查询文章
+
+    /**
+     * 查询文章列表
+     */
     queryArticle() {
       this.API.article.findArticleByList({}, { notify: false, secret: 'rsa' }).then(res => {
         this.articleOptions = res.data.map(item => {
@@ -488,7 +562,11 @@ export default {
         });
       });
     },
-    // 校验图片链接
+
+    /**
+     * 校验图片链接
+     * @param value - 图片链接
+     */
     checkImgUrl(value) {
       let errText = checkParamsByRules([
         {
@@ -503,7 +581,11 @@ export default {
       ]);
       return errText;
     },
-    // 校验颜色代码
+
+    /**
+     * 校验颜色代码
+     * @param value - 颜色代码
+     */
     checkColorCode(value) {
       let errText = checkParamsByRules([
         {
@@ -522,7 +604,11 @@ export default {
       ]);
       return errText;
     },
-    // 添加墙纸
+
+    /**
+     * 添加主题
+     * @param tag - 主题类型，例如：pure | wallpaper
+     */
     addTheme(tag) {
       let data;
       switch (tag) {
@@ -543,7 +629,12 @@ export default {
         this.theme[tag].push(data);
       }
     },
-    // 打开文件选择弹窗
+
+    /**
+     * 打开文件选择弹窗
+     * @param form - 表单对象
+     * @param key - 表单对象的key
+     */
     handleUpload(form, key) {
       // 记录操作的表单项
       this.currentUploading.form = form;
@@ -552,7 +643,11 @@ export default {
       let node = document.getElementById('js-img-picker');
       if (node) node.click();
     },
-    // 上传图片
+
+    /**
+     * 上传图片
+     * @param {Object} e - 事件对象
+     */
     upload(e) {
       const file = e.target.files[0];
       let formdata = new FormData();
@@ -562,12 +657,25 @@ export default {
         e.target.value = null;
       });
     },
-    // 移除墙纸
+
+    /**
+     * 移除墙纸
+     * @param tag
+     * @param data
+     * @param index
+     */
     removeTheme(tag, data, index) {
       this.theme[tag].splice(index, 1);
     },
-    // 设置默认壁纸
+
+    /**
+     * 设置默认壁纸
+     * @param tag
+     * @param data
+     * @param index
+     */
     setDefaultTheme(tag, data, index) {
+      this.theme.default.order = index;
       this.theme.default.bg = data.background;
       this.theme.default.color = tag === 'pure' ? data.color : data.headerFontColor;
     },
@@ -575,41 +683,68 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.setting {
-  .setting-collapse {
-    .el-select {
-      width: 100%;
-    }
-    .el-input-group__prepend {
-      width: 110px;
-      padding-left: 15px;
-      padding-right: 10px;
-    }
-  }
-  .pure {
-    .el-input__inner {
-      padding-left: 38px;
-    }
-  }
-  .wallpaper {
-    .el-input__inner {
-      padding-left: 38px;
-    }
-  }
-}
-
-.setting-color-picker-popper {
-  .el-color-dropdown__btn {
-    margin-left: auto;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .setting {
   width: 100%;
   padding: 10px;
+  .setting__form-item {
+    display: flex;
+    align-items: center;
+    padding-bottom: 4px;
+    .setting__form-item__label {
+      width: 180px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      i {
+        margin-left: 4px;
+      }
+    }
+    .setting__form-item__value {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      overflow: hidden;
+      margin-left: 20px;
+    }
+  }
+  .theme {
+    .theme-item {
+      position: relative;
+      & > ul > li {
+        &:hover {
+          .icon__top {
+            display: block !important;
+          }
+          .icon__remove {
+            display: block !important;
+          }
+        }
+      }
+      .icon__group {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        z-index: 10;
+        display: flex;
+        .icon__top {
+          display: none;
+        }
+        .icon__remove {
+          display: none;
+        }
+        i {
+          margin-left: 6px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
   ::v-deep .error-tip {
     input {
       border-color: var(--red-500);
@@ -643,6 +778,37 @@ export default {
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.setting {
+  .setting-collapse {
+    .el-select {
+      width: 100%;
+    }
+    .el-input-group__prepend {
+      width: 120px;
+      padding-left: 15px;
+      padding-right: 10px;
+    }
+  }
+  .pure {
+    .el-input__inner {
+      padding-left: 38px;
+    }
+  }
+  .wallpaper {
+    .el-input__inner {
+      padding-left: 38px;
+    }
+  }
+}
+
+.setting-color-picker-popper {
+  .el-color-dropdown__btn {
+    margin-left: auto;
   }
 }
 </style>

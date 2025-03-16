@@ -6,8 +6,6 @@
  * @Description: 常量/词典
  */
 
-import cityData from '@/config/city.json';
-
 export default {
   // 用户本地缓存句柄
   localUser: '_localUser',
@@ -22,7 +20,7 @@ export default {
   // 根节点最小高度
   appMinHeight: 375,
   // 天气城市信息
-  cityData,
+  cityData: [],
   // 词典
   dictionary: {},
 };

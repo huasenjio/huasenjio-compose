@@ -8,7 +8,7 @@
 <template>
   <div class="wrap-left">
     <div class="logo">
-      <div class="text title">{{ site.name }}后台管理</div>
+      <div class="text title">{{ site.brandName }}后台管理</div>
     </div>
     <div class="navbar">
       <router-link :to="item.path" v-for="item in this.navs" :key="item.path">

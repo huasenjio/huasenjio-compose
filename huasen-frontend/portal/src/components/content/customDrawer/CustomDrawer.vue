@@ -172,8 +172,6 @@ export default {
       showLeftNavbar: true,
       // 天气码
       cityCode: 101210101,
-      // 城市
-      cityName: '杭州市',
       // 封面颜色可选纯色系
       pures: [
         {
@@ -240,7 +238,6 @@ export default {
     this.searchEngineIndex = this.user.config.searchEngineIndex;
     this.showLeftNavbar = this.user.config.showNavbar;
     this.cityCode = this.user.config.cityCode;
-    this.cityName = this.user.config.cityName;
   },
 
   computed: {
@@ -283,7 +280,6 @@ export default {
         user: {
           config: {
             cityCode: code,
-            cityName: exist.countyname,
           },
         },
       });
@@ -355,7 +351,7 @@ export default {
       // 1048576 = 1M
       // 2097152 = 2M
       // 3145728 = 3M
-      if (file.size <= 2097152) {
+      if (file.size <= 3145728) {
         this.TOOL.getBase64(file, bs64 => {
           this.initCustomStyle({
             user: {

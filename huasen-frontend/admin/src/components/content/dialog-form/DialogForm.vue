@@ -118,7 +118,7 @@
                   :on-error="handleSiteImportError"
                   :on-success="handleSiteImportSuccess"
                 >
-                  <div class="w-px-348 h-px-80 flex justify-center items-center border-dashed border border-gray-500 rounded">
+                  <div style="width: 348px; height: 80px" class="flex justify-center items-center border-dashed border border-gray-500 rounded">
                     <i class="el-icon-plus text-24px"></i>
                   </div>
                   <div class="text-gray-500" @click.stop>仅支持 .xlsx 文件，大小不超过 1MB，点击<font class="text-blue-500 pointer" @click="downloadSiteTemplate">下载模版</font>！</div>

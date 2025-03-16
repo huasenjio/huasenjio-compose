@@ -28,7 +28,7 @@
 
 // tooltip文字缩略
 .el-tooltip__popper {
-  max-width: 200px;
+  max-width: calc(100% - 20px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

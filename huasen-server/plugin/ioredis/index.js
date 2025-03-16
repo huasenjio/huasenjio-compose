@@ -26,7 +26,7 @@ try {
     });
   }
   ioRedisClient.on('ready', () => {
-    console.log(`ioredis：${REDIS.port}`)
+    console.log(`[Huasen Log]：ioredis 服务端口为${REDIS.port}`)
   });
   ioRedisClient.on('error', (error) => {
     console.log('ioredis 异常', error);

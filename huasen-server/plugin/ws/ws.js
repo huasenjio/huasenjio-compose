@@ -26,7 +26,7 @@ class WSServer {
   init() {
     try {
       this.WSClient = new WebSocketServer({ port: this.port });
-      console.log(`websocket：${this.port}`);
+      console.log(`[Huasen Log]：websocket 服务端口为${this.port}`);
 
       // 监听连接
       this.WSClient.on('connection', async (server, req) => {

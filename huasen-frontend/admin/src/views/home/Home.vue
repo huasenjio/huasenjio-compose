@@ -7,7 +7,7 @@
 -->
 <template>
   <div class="home">
-    <el-alert title="温馨提示：数据表盘实时统计大量数据，常驻后台会消耗较多性能，可能导致接口请求变慢！" type="warning" show-icon> </el-alert>
+    <el-alert title="温馨提示：数据表盘页面实时统计大量数据，常驻后台会消耗较多性能，可能导致接口请求变慢！" type="warning" show-icon> </el-alert>
     <HomeOverview></HomeOverview>
     <HomeVisitor :visitor="visitorStatus"></HomeVisitor>
     <HomeSystem :system="systemStatus"></HomeSystem>
@@ -18,7 +18,7 @@
           UV矩阵
           {{ uvs.length }}
         </span>
-        <div class="w-full h-px-400">
+        <div class="w-full" style="height: 400px">
           <HomeRelation :chartData="uvs"></HomeRelation>
         </div>
       </el-tab-pane>
@@ -28,7 +28,7 @@
           逆向链接
           {{ referers.length }}
         </span>
-        <div class="w-full h-px-400">
+        <div class="w-full" style="height: 400px">
           <HomeMatrix :chartData="referers"></HomeMatrix>
         </div>
       </el-tab-pane>
@@ -38,7 +38,7 @@
           主机记录
           {{ hosts.length }}
         </span>
-        <div class="w-full h-px-400">
+        <div class="w-full" style="height: 400px">
           <HomeWordCloud :chartData="hosts"></HomeWordCloud>
         </div>
       </el-tab-pane>
@@ -48,7 +48,7 @@
           操作记录
           {{ traces.length }}
         </span>
-        <div class="w-full h-px-400">
+        <div class="w-full" style="height: 400px">
           <HomeSheet :tableData="traces" :tableMap="tracesMap"></HomeSheet>
         </div>
       </el-tab-pane>
@@ -58,7 +58,7 @@
           在线人数
           {{ onlines.length }}
         </span>
-        <div class="w-full h-px-400">
+        <div class="w-full" style="height: 400px">
           <HomeSheet :tableData="onlines" :tableMap="onlinesMap" :showOffline="true" @offline="handleOffline"></HomeSheet>
         </div>
       </el-tab-pane>

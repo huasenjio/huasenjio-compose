@@ -81,7 +81,7 @@ export default {
       mode: 'add',
       formMap: [
         {
-          label: 'IP地址',
+          label: 'IPV4地址',
           key: 'ip',
           type: 'input',
           editDisabled: true,

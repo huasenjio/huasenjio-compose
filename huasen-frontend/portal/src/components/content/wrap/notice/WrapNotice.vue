@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     queryNotice() {
-      let _id = this.appConfig.article.notice;
+      let _id = this.appConfig.site.notifyArticleId;
       if (_id) {
         this.API.Article.getArtcileById(
           { _id },

@@ -3,7 +3,7 @@
  * @Date: 2022-09-06 21:34:24
  * @LastEditors: huasenjio
  * @LastEditTime: 2022-10-24 23:15:40
- * @Description: 用户相关接口
+ * @Description: User
  */
 
 import Mock from 'mockjs2';

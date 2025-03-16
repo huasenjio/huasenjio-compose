@@ -74,8 +74,9 @@ module.exports = {
       72: '18rem',
       80: '20rem',
       96: '24rem',
-      ...createPX(600, 'positive'),
-      ...createPX(200, 'negative'),
+      'px-600': '600px',
+      ...createPX(400, 'positive'), // 生成<=400px的尺寸
+      ...createPX(200, 'negative'), // 生成>=200px的尺寸
     },
     // 默认动画
     animation: {

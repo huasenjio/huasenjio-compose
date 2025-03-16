@@ -1,4 +1,5 @@
-import 'core-js'
+import "core-js";
+import * as tool from './tool.js';
 import { publicEncrypt, publicDecrypt, privateDecrypt, privateEncrypt, rsaEncryptLong, rsaDecryptLong } from './rsa.js';
 import { getAESSecret, decrypt, encrypt } from './aes.js';
 import { Validator, strategies } from './strategy.js';
@@ -17,5 +18,7 @@ export {
   encrypt,
   // 校验器
   Validator,
-  strategies
+  strategies,
+  // 工具
+  tool
 };

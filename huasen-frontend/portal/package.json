@@ -10,7 +10,7 @@
   "dependencies": {
     "animate.css": "^4.1.1",
     "axios": "^0.21.1",
-    "core-js": "^3.39.0",
+    "core-js": "3.39.0",
     "element-ui": "^2.15.5",
     "highlight": "^0.2.4",
     "huasen-lib": "../../huasen-lib",

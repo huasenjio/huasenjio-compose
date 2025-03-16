@@ -56,7 +56,7 @@ export default {
         shortCut: false, // 启用快捷键
         trash: true, // 清空
         autofocus: false,
-        save: true, // 保存（触发events中的save事件）
+        save: false, // 保存（触发events中的save事件）
         navigation: true, // 导航目录
       },
       prop: {
@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     save(value, text) {
-      this.$emit('doSave');
+      this.$emit('onSave');
     },
     change() {
       this.$emit('change');

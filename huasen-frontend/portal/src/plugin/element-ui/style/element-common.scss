@@ -21,11 +21,11 @@
 
 // 因为tooltip文字缩略，导致小箭头不显示
 .el-tooltip__popper {
-  // max-width: 200px;
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
-  // word-break: break-all;
+  max-width: calc(100% - 20px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
 }
 
 // 分页文字缩略

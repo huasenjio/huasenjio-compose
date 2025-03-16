@@ -11,7 +11,7 @@
     "animate.css": "^4.1.1",
     "awe-dnd": "^0.3.4",
     "axios": "^0.21.1",
-    "core-js": "^3.39.0",
+    "core-js": "3.39.0",
     "echarts-liquidfill": "^3.1.0",
     "element-ui": "^2.15.5",
     "html2canvas": "^1.4.1",

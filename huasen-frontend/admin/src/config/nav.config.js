@@ -8,7 +8,7 @@
 
 export default [
   {
-    name: '数据表盘',
+    name: '数据仪表盘',
     path: '/home',
     iconClass: 'iconfont icon-md-planet',
   },
@@ -24,7 +24,7 @@ export default [
   },
 
   {
-    name: '订阅管理',
+    name: '订阅源管理',
     path: '/journal-manage',
     iconClass: 'iconfont icon-a-smartrobot-fill',
   },

@@ -9,7 +9,7 @@
     "menuCode": 0,
     "component": "home/Home",
     "keepAlive": true,
-    "title": "数据表盘",
+    "title": "数据仪表盘",
     "children": []
   },
   {
@@ -79,7 +79,7 @@
     "menuCode": 0,
     "component": "journal-manage/JournalManage",
     "keepAlive": true,
-    "title": "订阅管理",
+    "title": "订阅源管理",
     "children": []
   },
   {

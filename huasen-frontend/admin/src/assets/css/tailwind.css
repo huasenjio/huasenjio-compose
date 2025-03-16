@@ -8,6 +8,17 @@
   .pointer {
     cursor: pointer;
   }
+  .text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+  }
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   /* 响应式的功能类 */
   /* 示例：sm:pointer */
   @variants responsive {

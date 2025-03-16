@@ -54,7 +54,21 @@
         </li>
       </ul>
     </main>
-    <FormDialog v-if="showForm" :visible.sync="showForm" ref="formDialog" width="400" :buttons="{ comfirm: '确 认', cancel: '取 消' }" :title="title" :close-on-click-modal="false" :formData="formData" :formMap="formMap" :formRule="formRule" @comfirmForm="save" @cancelForm="cancel"></FormDialog>
+    <FormDialog
+      v-if="showForm"
+      :visible.sync="showForm"
+      ref="formDialog"
+      width="400"
+      height="365"
+      :buttons="{ comfirm: '确 认', cancel: '取 消' }"
+      :title="title"
+      :close-on-click-modal="false"
+      :formData="formData"
+      :formMap="formMap"
+      :formRule="formRule"
+      @comfirmForm="save"
+      @cancelForm="cancel"
+    ></FormDialog>
     <CustomDrawer :visible.sync="showCustom" :direction="'rtl'" :size="435" :wrapperClosable="false"></CustomDrawer>
     <RecoveryDialog v-if="showRecovery" :visible.sync="showRecovery" :showMax="false"></RecoveryDialog>
   </div>

@@ -15,7 +15,7 @@
       <WrapPerson></WrapPerson>
       <WrapSimple v-show="simpleMode"></WrapSimple>
     </div>
-    <div v-if="showWrapFooter" v-html="appConfig.site.footerHtml" class="wrap-footer"></div>
+    <div v-if="showWrapFooter && !simpleMode" v-html="appConfig.site.footerHtml" class="wrap-footer"></div>
     <WrapNotice v-if="appConfig.loaded"></WrapNotice>
   </div>
 </template>
@@ -65,7 +65,10 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   .wrap-body {
+    flex: 1;
     position: relative;
     width: 100%;
     height: 100%;
@@ -75,16 +78,6 @@ export default {
   }
   .wrap-footer {
     width: 100%;
-    height: 20px;
-    text-align: center;
-    line-height: 20px;
-    font-size: 12px;
-    border-top: 1px solid var(--gray-50);
-    background-color: var(--gray-0);
-    z-index: 1;
-    a {
-      color: var(--gray-600);
-    }
   }
 }
 </style>

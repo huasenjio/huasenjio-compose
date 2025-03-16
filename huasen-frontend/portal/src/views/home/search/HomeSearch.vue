@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ top: top, borderRadius: user.config.searchBorderRadius + 'px' }" class="home-search xl:w-px-600 lg:w-px-400 sm:w-px-360 h-px-40">
+  <div :style="{ top, borderRadius: user.config.searchBorderRadius + 'px' }" class="home-search xl:w-px-600 lg:w-px-400 sm:w-px-350 h-px-40">
     <!-- 搜索引擎菜单 -->
     <ul class="menu" v-discolor>
       <li v-for="(item, index) in this.searchConfig" :key="index" :data-url="item.url" :data-keyword="item.key" @click="selectEngine(index)" class="xl:text-base" :class="{ active: activeSearchIndex === index }">
@@ -9,8 +9,7 @@
     <form @submit.prevent="doSearch">
       <!-- 搜索引擎下拉菜单 -->
       <div class="left">
-        <img v-if="currentSearch.iconImg" v-lazy class="w-px-24 h-px-24" :src="currentSearch.iconImg" />
-        <i v-else :class="['iconfont icon-sousuoyinqing', currentSearch.iconClass]"></i>
+        <IconBox size="24px" :icon="currentSearch.icon" radius="50%"></IconBox>
         <!-- placeholder -->
         <div v-if="showPlaceholder" class="left-placeholder">
           <div class="left-placeholder-unfocus" key="unfocus">
@@ -58,6 +57,7 @@
 </template>
 
 <script>
+import IconBox from '@/components/common/iconBox/IconBox.vue';
 import { AF } from '@/plugin/AF.js';
 import { jsonp } from '@/network/http.js';
 import { mapState } from 'vuex';
@@ -67,6 +67,11 @@ import * as BusType from '@/plugin/event-type.js';
 
 export default {
   name: 'HomeSearch',
+
+  components: {
+    IconBox,
+  },
+
   props: {
     top: {
       type: String,

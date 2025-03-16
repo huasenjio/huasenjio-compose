@@ -1,6 +1,6 @@
 // 构建px的尺寸
 /**
- * 注入精细化变量 <= 800
+ * 注入精细化变量 <= 200
  * top-px-98
  * -top-px-98
  * p-px-50
@@ -9,7 +9,7 @@
  * h-px-50
  * @returns Array
  */
-function useFullPx(range = 400) {
+function useFullPx(range = 200) {
   let fullPxs = {};
   let negativeFullSize = {};
   for (let index = 0; index <= range; index++) {

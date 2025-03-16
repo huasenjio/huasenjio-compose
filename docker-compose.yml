@@ -95,17 +95,17 @@ services:
   server:
     # 指定Dockerflie构建镜像
     build:
-      context: ./huasen-server
-    # 后端服务容器名称
+      context: .
+      dockerfile: huasen-server/Dockerfile
+    # 定义容器名称
     container_name: server
     restart: always
     privileged: true
     user: root
     # 挂载日志、静态文件目录、依赖库、服务参数、项目配置、前端构建包
     volumes:
-      - ./huasen-log/:/app/huasen-server/log
       - ./huasen-store/:/app/huasen-store
-      - ./huasen-lib/:/app/huasen-lib
+      - ./huasen-log/:/app/huasen-server/log
       - ./huasen-server/setting.json:/app/huasen-server/setting.json
       - ./huasen-server/config.js:/app/huasen-server/config.js
       - ./huasen-server/public/webapp/:/app/huasen-server/public/webapp/

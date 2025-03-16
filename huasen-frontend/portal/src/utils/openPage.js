@@ -6,6 +6,6 @@
  * @Description: 打开新标签页
  */
 
-export function openPage(url) {
-  window.open(url, '_blank');
+export function openPage(url, target = '_blank') {
+  window.open(url, target);
 }

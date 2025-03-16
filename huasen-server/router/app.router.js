@@ -11,7 +11,7 @@ const router = express.Router();
 
 const { checkManagePower, checkManageHighestPower } = require('../middleware/power.middleware.js');
 const { handleJWT } = require('../middleware/common.middleware.js');
-const { getCopyright, getDictionary, findAppConfig, saveAppConfig, runCode, offline } = require('../controller/app.controller.js');
+const { getCopyright, getDictionary, findAppConfig, saveAppConfig, runCode, offline, getCity } = require('../controller/app.controller.js');
 
 /**
  * @api {get} /app/getCopyright 获取版权信息
@@ -39,5 +39,12 @@ router.post('/runCode', handleJWT(), checkManagePower, checkManageHighestPower, 
  * @apiParam {string} id 账号
  */
 router.post('/offline', handleJWT(), checkManagePower, checkManageHighestPower, offline);
+
+/**
+ * @api {get} /app/getCity 获取城市
+ * @apiVersion 1.0.0
+ * @apiGroup App
+ */
+router.get('/getCity', getCity);
 
 module.exports = router;

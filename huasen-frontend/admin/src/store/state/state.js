@@ -10,20 +10,16 @@ export default {
   manage: {
     id: 'localhost@qq.com',
     token: '',
-    code: 1,
+    code: 0,
   },
   // 开启登录面板
   showWrapSign: true,
   showWrapLeft: true,
 
   site: {
-    name: '花森',
-    logoURL: require('@/assets/img/logo/favicon.svg'),
-    redirectURL: 'http://huasenjio.top/',
-    home: {
-      title: '花森小窝',
-      url: 'http://huasenjio.top/',
-    },
+    brandName: '花森',
+    brandUrl: require('@/assets/img/logo/favicon.svg'),
+    redirectUrl: 'http://huasenjio.top/',
   },
 
   caches: [],

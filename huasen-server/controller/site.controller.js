@@ -338,10 +338,10 @@ function importSite(req, res, next) {
                   let rowData = row.values
                   let site = {
                     name: rowData[1] || '花森小窝',
-                    url: rowData[2] || 'huasenjio.top',
+                    url: typeof rowData[2] === 'object' ? rowData[2].text : (rowData[2] || 'huasenjio.top'),
                     code: Number(rowData[3]) || 0,
                     enabled: rowData[4] === '是',
-                    icon: rowData[5] || 'http://n.huasenjio.top/huasen-store/icon/logo.png',
+                    icon: typeof rowData[5] === 'object' ? rowData[5].text : (rowData[5] || 'http://n.huasenjio.top/huasen-store/icon/logo.png'),
                     description: rowData[6] || '',
                     remarks: rowData[9] || '',
                   }

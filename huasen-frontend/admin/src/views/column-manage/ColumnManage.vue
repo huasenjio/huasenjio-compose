@@ -40,8 +40,8 @@
     >
       <template v-slot:tips>
         <div class="text text-gray-500">
-          <i class="el-icon-warning-outline text-orange-400 mr-px-4"></i>
-          温馨提示：添加的<font class="text-red-400">栏目</font>需要配置绑定到<font class="text-red-400">订阅源</font>后才会被加载显示
+          <i class="el-icon-warning-outline text-orange-400"></i>
+          温馨提示：添加的<font class="text-red-400">栏目</font>需要配置关联到<font class="text-red-400">订阅源</font>后才会被加载显示
         </div>
       </template>
     </DialogForm>

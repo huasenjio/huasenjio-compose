@@ -46,7 +46,6 @@
           <router-view v-if="isRenderTab"></router-view>
         </keep-alive>
       </div>
-      <div class="footer text">{{ (site.name || '花森').split('').join(' ') }} 后 台 管 理 由 腾 讯 云 强 力 驱 动 · 2021 年 2 月 3 日</div>
     </main>
     <RuntimePanel v-if="showRumtime" :visible.sync="showRumtime"></RuntimePanel>
     <SetPanel v-if="showSet" :visible.sync="showSet"></SetPanel>
@@ -409,7 +408,7 @@ export default {
     }
     .router-body {
       width: 100%;
-      height: calc(100% - 80px);
+      height: calc(100% - 66px);
       overflow-x: hidden;
       overflow-y: auto;
       background-color: var(--gray-0);
