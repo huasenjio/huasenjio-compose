@@ -62,10 +62,14 @@ const replaceOrInsert = (parent, content, marker) => {
 
     // 处理head内容
     const headHtml = get(site, 'headHtml');
-    replaceOrInsert(document.head, headHtml, 'head-custom-by-huasen');
+    if (headHtml) {
+      replaceOrInsert(document.head, headHtml, 'head-custom-by-huasen');
+    }
     // 处理body内容
     const bodyHtml = get(site, 'bodyHtml');
-    replaceOrInsert(document.body, bodyHtml, 'body-custom-by-huasen');
+    if (bodyHtml) {
+      replaceOrInsert(document.body, bodyHtml, 'body-custom-by-huasen');
+    }
     // 保存修改后的HTML
     const updatedHtml = dom.serialize();
     const formatted = await prettier.format(updatedHtml, { parser: 'html', tabWidth: 2, printWidth: 300 });
