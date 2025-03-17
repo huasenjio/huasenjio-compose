@@ -14,7 +14,7 @@
       <li class="sidebar__item shadow">
         <i class="iconfont icon-a-unfoldcross-line" @click="handleNavbar"> </i>
       </li>
-      <li class="sidebar__item shadow" v-for="(item, index) in asideConfig" :key="index" :title="item.label" @click="handleSidebar(item)">
+      <li class="sidebar__item shadow" v-for="(item, index) in displayAsidebar" :key="index" :title="item.label" @click="handleSidebar(item)">
         <el-popover placement="left" popper-class="app-wrap__asidebar__popover" :open-delay="400" trigger="hover" :disabled="!(item.type === 'html')">
           <div v-if="item.type === 'html'" v-html="item.typeConfig.domStr"></div>
           <template slot="reference">

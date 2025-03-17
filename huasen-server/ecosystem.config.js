@@ -4,7 +4,7 @@ module.exports = {
       name: 'app',
       script: 'app.js',
       watch: true,
-      ignore_watch: ['log/error.log', 'log/warn.log', 'public/webapp/portal/index.html', 'node_modules'],
+      ignore_watch: ['log/error.log', 'log/warn.log', 'public/webapp', , 'node_modules'],
       args: 'MODE=pro'
     }
   ]
