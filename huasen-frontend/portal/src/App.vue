@@ -95,7 +95,7 @@ export default {
     ...mapActions(['initLocalUserInfo', 'initLocalStyleInfo', 'initAppConfigInfo']),
 
     async queryCity() {
-      const result = await this.API.App.getCity();
+      const result = await this.API.App.getCity({}, { notify: false });
       this.CONSTANT.cityData = result.data;
     },
   },

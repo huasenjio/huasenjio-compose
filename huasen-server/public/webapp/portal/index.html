@@ -1,24 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh_CN" theme-mode="light">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" href="https://n.huasenjio.top/huasen-store/icon/logo.png" />
+    <link rel="icon" href="huasen-store/icon/favicon.svg" />
     <title>花森</title>
     <meta name="keywords" content="huasenjio.top,花森起始页,花森主页,花森导航,花森博客,花生起始页,花生主页,花生网址导航,花生博客,综合门户,网址导航,实用工具" />
-    <meta name="description" content="花森起始页由可自定义网址导航、文章博客、后台管理模块组成的开源项目，专注于收录互联网优秀站点，涵盖了生活、娱乐、学习、影视、考研、工作、科技、工具等领域，提供一个信息聚合的空间，让用户高效上网冲浪的综合性平台！" />
+    <meta
+      name="description"
+      content="花森起始页由可自定义网址导航、文章博客、后台管理模块组成的开源项目，专注于收录互联网优秀站点，涵盖了生活、娱乐、学习、影视、考研、工作、科技、工具等领域，提供一个信息聚合的空间，让用户高效上网冲浪的综合性平台！"
+    />
     <link rel="stylesheet" href="./loading.css" />
     <link rel="stylesheet" href="./loading-ie.css" />
-    <script>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?2b594f3ae0d20961d638e34cc8b62e69";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
     <link href="css/chunk-044bdba6.7d5d0d3d.css" rel="prefetch" />
     <link href="css/chunk-121b60e9.5cdec156.css" rel="prefetch" />
     <link href="css/chunk-3158845a.f7c23f3a.css" rel="prefetch" />
@@ -40,16 +34,15 @@
     <link href="css/app.8d093619.css" rel="preload" as="style" />
     <link href="css/chunk-element.83ddf129.css" rel="preload" as="style" />
     <link href="css/chunk-vendors.e1e84d33.css" rel="preload" as="style" />
-    <link href="js/app.d46e7724.js" rel="preload" as="script" />
+    <link href="js/app.61b2736e.js" rel="preload" as="script" />
     <link href="js/chunk-element.223b37ba.js" rel="preload" as="script" />
     <link href="js/chunk-vendors.a44770f8.js" rel="preload" as="script" />
     <link href="css/chunk-element.83ddf129.css" rel="stylesheet" />
     <link href="css/chunk-vendors.e1e84d33.css" rel="stylesheet" />
     <link href="css/app.8d093619.css" rel="stylesheet" />
+    <!-- start-head-custom-by-huasen -->
 
-    <!--start-head-custom-by-huasen-->
-    <script></script>
-    <!--end-head-custom-by-huasen-->
+    <!-- end-head-custom-by-huasen -->
   </head>
   <body>
     <noscript><strong>We're sorry but huasen-portal doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript>
@@ -92,13 +85,13 @@
     <script>
       function judgeIE(file, callback) {
         var userAgent = navigator.userAgent; // 浏览器的userAgent字符串
-        var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; // 判断是否IE<11浏览器
-        var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; // 判断是否IE的Edge浏览器
-        var isIE11 = userAgent.indexOf("Trident") > -1 && userAgent.indexOf("rv:11.0") > -1; // 判断是否IE11浏览器
+        var isIE = userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1; // 判断是否IE<11浏览器
+        var isEdge = userAgent.indexOf('Edge') > -1 && !isIE; // 判断是否IE的Edge浏览器
+        var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf('rv:11.0') > -1; // 判断是否IE11浏览器
         if (isIE) {
-          var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+          var reIE = new RegExp('MSIE (\\d+\\.\\d+);');
           reIE.test(userAgent);
-          var fIEVersion = parseFloat(RegExp["$1"]);
+          var fIEVersion = parseFloat(RegExp['$1']);
           if (fIEVersion === 7) {
             return 7;
           } else if (fIEVersion === 8) {
@@ -111,7 +104,7 @@
             return 6; // IE版本<= 7
           }
         } else if (isEdge) {
-          return "edge"; // edge
+          return 'edge'; // edge
         } else if (isIE11) {
           return 11; // IE11
         } else {
@@ -120,25 +113,24 @@
       }
       var browerVersion = judgeIE();
       var loadingNode = undefined;
-      if (browerVersion === -1 || browerVersion === "edge") {
+      if (browerVersion === -1 || browerVersion === 'edge') {
         // 高级浏览器
-        loadingNode = document.getElementById("js-app-loading__container--routine");
+        loadingNode = document.getElementById('js-app-loading__container--routine');
       } else if (browerVersion > 8) {
         // 垃圾ie
-        loadingNode = document.getElementById("js-app-loading__container--ie");
+        loadingNode = document.getElementById('js-app-loading__container--ie');
       } else {
         // 不兼容垃圾
       }
       if (loadingNode) {
-        loadingNode.style.visibility = "visible";
+        loadingNode.style.visibility = 'visible';
       }
     </script>
     <script src="js/chunk-element.223b37ba.js"></script>
     <script src="js/chunk-vendors.a44770f8.js"></script>
-    <script src="js/app.d46e7724.js"></script>
+    <script src="js/app.61b2736e.js"></script>
+    <!-- start-body-custom-by-huasen -->
 
-    <!--start-body-custom-by-huasen-->
-    <div></div>
-    <!--end-body-custom-by-huasen-->
+    <!-- end-body-custom-by-huasen -->
   </body>
 </html>

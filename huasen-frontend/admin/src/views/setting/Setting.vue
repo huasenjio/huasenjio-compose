@@ -68,14 +68,28 @@
             <el-col :span="12">
               <el-form-item prop="headHtml">
                 <el-input size="small" placeholder="添加HTML片段到<head></head>标签中" v-model="site.headHtml">
-                  <template slot="prepend">页头代码</template>
+                  <template slot="prepend">
+                    <div class="input__prepend flex items-center justify-between">
+                      页头代码
+                      <el-tooltip content="该代码将会插入<head></head>中，例如：title、meta、link、style、script、base、noscript等标签，请严格遵守W3C规范！" placement="bottom">
+                        <i class="el-icon-info"></i>
+                      </el-tooltip>
+                    </div>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item prop="bodyHtml">
                 <el-input size="small" placeholder="添加HTML片段到<body></body>标签中" v-model="site.bodyHtml">
-                  <template slot="prepend">页体代码</template>
+                  <template slot="prepend">
+                    <div class="input__prepend flex items-center justify-between">
+                      页体代码
+                      <el-tooltip content="该代码将会插入<body></body>中，例如：h1、div、span、img、video等标签，请严格遵守W3C规范！" placement="bottom">
+                        <i class="el-icon-info"></i>
+                      </el-tooltip>
+                    </div>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
@@ -358,6 +372,16 @@ export default {
               }
               callback();
             },
+          },
+        ],
+        headHtml: [
+          {
+            validator: getElementFormValidator(['isValidHeadTag::请输入title、meta、link、style、script、base、noscript标签，并且必须闭合！']),
+          },
+        ],
+        bodyHtml: [
+          {
+            validator: getElementFormValidator(['isValidHtmlTag::请输入符合HTML规范的标签，并且必须闭合！']),
           },
         ],
       },

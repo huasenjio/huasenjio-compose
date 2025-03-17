@@ -5,25 +5,25 @@ const { get } = require('lodash');
 const { JSDOM } = require('jsdom');
 const setting = require('../setting.json');
 
-const replaceOrInsert = (parent, content, marker) => {
-  const startComment = `start-${marker}`;
-  const endComment = `end-${marker}`;
-  const nodes = Array.from(parent.childNodes);
-  const startIndex = nodes.findIndex(n => n.nodeType === 8 && n.nodeValue.includes(startComment));
-  const endIndex = nodes.findIndex(n => n.nodeType === 8 && n.nodeValue.includes(endComment));
-  // 创建新内容片段，并且精确删除旧内容
-  const fragment = `<!--${startComment}--> ${content} <!--${endComment}-->`;
-  if (startIndex > -1 && endIndex > -1 && startIndex < endIndex) {
-    const deleteQueue = [];
-    for (let i = startIndex; i <= endIndex; i++) {
-      deleteQueue.push(nodes[i]);
-    }
-    deleteQueue.forEach(node => parent.removeChild(node));
-  }
-  // 插入新内容
-  parent.insertAdjacentHTML('beforeend', fragment);
-};
+const replaceOrInsert = (type, originalHtml, newContent, marker) => {
+  const startMarker = `start-${marker}`;
+  const endMarker = `end-${marker}`;
+  const pattern = new RegExp(
+    `<!-- ${startMarker} -->[\\s\\S]*?<!-- ${endMarker} -->`,
+    'g'
+  );
+  const replacement = `<!-- ${startMarker} -->\n${newContent}\n<!-- ${endMarker} -->`;
 
+  if (pattern.test(originalHtml)) {
+    return originalHtml.replace(pattern, replacement);
+  }
+  // 根据标记类型决定插入位置
+  if (type === 'head') {
+    return originalHtml.replace(/<\/head>/i, `${replacement}</head>`);
+  } else if (type === 'body') {
+    return originalHtml.replace(/<\/body>/i, `${replacement}</body>`);
+  }
+};
 
 (async () => {
   try {
@@ -59,23 +59,18 @@ const replaceOrInsert = (parent, content, marker) => {
         if (element) element[property] = value;
       });
     });
-
+    // 保存修改后的HTML
+    let updatedHtml = dom.serialize();
     // 处理head内容
     const headHtml = get(site, 'headHtml');
-    if (headHtml) {
-      replaceOrInsert(document.head, headHtml, 'head-custom-by-huasen');
-    }
+    updatedHtml = replaceOrInsert('head', updatedHtml, headHtml, 'head-custom-by-huasen');
     // 处理body内容
     const bodyHtml = get(site, 'bodyHtml');
-    if (bodyHtml) {
-      replaceOrInsert(document.body, bodyHtml, 'body-custom-by-huasen');
-    }
-    // 保存修改后的HTML
-    const updatedHtml = dom.serialize();
-    const formatted = await prettier.format(updatedHtml, { parser: 'html', tabWidth: 2, printWidth: 300 });
-    fs.writeFileSync(htmlPath, formatted, 'utf8');
+    updatedHtml = replaceOrInsert('body', updatedHtml, bodyHtml, 'body-custom-by-huasen');
+    // const formatted = await prettier.format(updatedHtml, { parser: 'html', tabWidth: 2, printWidth: 300 });
+    fs.writeFileSync(htmlPath, updatedHtml, 'utf8');
     console.log('[Huasen Log]：初始化网站入口成功');
   } catch (error) {
-    console.error('初始化站点异常：', error);
+    console.log('[Huasen Log]：初始化网站入口失败', error);
   }
 })();
