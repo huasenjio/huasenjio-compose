@@ -1,13 +1,13 @@
 {
   "site": {
     "brandName": "花森",
-    "brandUrl": "https://n.huasenjio.top/huasen-store/icon/logo.png",
+    "brandUrl": "https://n.huasenjio.top/huasen-store/icon/favicon.svg",
     "brandDescription": "花森起始页由可自定义网址导航、文章博客、后台管理模块组成的开源项目，专注于收录互联网优秀站点，涵盖了生活、娱乐、学习、影视、考研、工作、科技、工具等领域，提供一个信息聚合的空间，让用户高效上网冲浪的综合性平台！",
     "brandKeywords": "huasenjio.top,花森起始页,花森主页,花森导航,花森博客,花生起始页,花生主页,花生网址导航,花生博客,综合门户,网址导航,实用工具",
     "redirectUrl": "https://huasenjio.top/",
     "origin": "",
-    "headHtml": "<script></script>",
-    "bodyHtml": "<div></div>",
+    "headHtml": "",
+    "bodyHtml": "",
     "footerHtml": "",
     "openLabelClassification": false,
     "autoIconPatch": true,

@@ -108,7 +108,7 @@ const SITE = {
  * 密钥格式：32位数子/字母
  */
 const JWT = {
-  screat: _.get(setting, 'site.jwt') || 'Lyh9gVf9dQstDgtvD6fuhy9ygYgycrWs', // jwt加密密钥
+  screat: _.get(setting, 'site.jwt') || 'abcdefghyjklmnobqrstuvwhyz123456', // jwt加密密钥
   expiresIn: _.get(setting, 'site.jwtLiveTime') || 604800, // 7天失效时间
 };
 
