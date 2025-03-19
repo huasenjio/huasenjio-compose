@@ -8,7 +8,7 @@
 <template>
   <div id="js-wrap-left" class="wrap-left" v-discolor>
     <div class="logo">
-      <img :src="brandUrl" />
+      <img v-lazy :src="brandUrl" />
     </div>
     <ul class="navbar">
       <router-link :to="item.path" v-for="(item, index) in this.navs" :key="index">

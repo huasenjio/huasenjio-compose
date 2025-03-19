@@ -1,5 +1,6 @@
 <template>
   <div v-if="loaded" class="setting">
+    <el-alert title="温馨提示：请您关注官方开源仓库 setting.json 文件，并且及时合并配置项，以确保网站稳定性和体验新功能。" type="info" show-icon> </el-alert>
     <el-collapse class="setting-collapse" v-model="activeNames">
       <!-- 站点配置 -->
       <el-collapse-item name="site">
@@ -301,11 +302,13 @@
           </el-row>
         </el-form>
       </el-collapse-item>
-
       <!-- 配置总览 -->
       <el-collapse-item name="code">
-        <template slot="title"> <i class="el-icon-table-lamp mr-px-4"></i>配置代码总览（<font class="text-red-500">需要点击「SAVE」保存手动修改的配置代码</font>）</template>
-        <el-row :gutter="10">
+        <template slot="title">
+          <div class="flex items-center"><i class="el-icon-table-lamp mr-px-4"></i>配置代码总览<font class="text-red-500"></font></div>
+        </template>
+        <el-alert title="点击「SAVE」保存手动修改的配置代码，需要注意，您的输入不会被校验，请确保正确性，否则网站无法启动！" type="warning" show-icon :closable="false"> </el-alert>
+        <el-row class="mt-px-8" :gutter="10">
           <el-col :span="24">
             <div class="result">
               <VueJsonEditor class="json-edit" v-model="setting" :show-btns="true" :expandedOnStart="true" mode="view" :modes="['code', 'view']" @json-save="handleJSONSave"></VueJsonEditor>

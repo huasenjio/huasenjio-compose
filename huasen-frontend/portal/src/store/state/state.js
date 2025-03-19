@@ -34,7 +34,7 @@ export default {
       // 搜索框圆角
       searchBorderRadius: 24,
       // 预选搜索引擎索引
-      searchEngineIndex: 2,
+      searchEngineIndex: 0,
       // 显示左侧切换栏
       showNavbar: true,
       // 城市码

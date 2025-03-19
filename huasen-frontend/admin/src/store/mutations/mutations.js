@@ -19,10 +19,12 @@ export default {
         pKeys.forEach(key => {
           const sValue = s[key];
           const pValue = p[key];
-          if (typeof sValue === typeof pValue) {
-            // 忽略更新值为undefined的情况
-            if (pValue === undefined) return;
-            if (Object.prototype.toString.call(sValue) === '[object Object]' && Object.prototype.toString.call(pValue) === '[object Object]') {
+          const sType = Object.prototype.toString.call(sValue);
+          const pType = Object.prototype.toString.call(pValue);
+          // 忽略更新值为undefined的情况
+          if (pValue === undefined) return;
+          if (sType === pType) {
+            if (pType === '[object Object]') {
               merge(sValue, pValue);
             } else {
               s[key] = pValue;
