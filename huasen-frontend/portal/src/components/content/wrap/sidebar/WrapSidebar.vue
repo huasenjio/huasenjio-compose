@@ -41,20 +41,24 @@ export default {
   computed: {
     ...mapState(['showWrapSidebarSocket', 'asideConfig', 'appConfig', 'user']),
     displayAsidebar() {
-      return [
-        // 版权声明不可移除，否则视作侵权行为，后果自负！
-        // The copyright declaration cannot be removed, otherwise it will be regarded as infringement and the consequences will be borne by you!
-        {
-          label: '版权声明',
-          type: 'html',
-          typeConfig: {
-            domStr:
-              '<div style="width:100%;max-width:480px;font-size:12px"><div style="border-bottom:1px solid #f0f0f0;padding-bottom:8px;margin-bottom:4px"><h3 style="color:#303133;font-size:16px">© 2025 花森工作室</h3><div style="color:#606266;font-size:12px">开源协议 Apache-2.0 license</div></div><div style="margin-bottom:6px"><a href="https://github.com/huasenjio/huasenjio-compose" style="color:#409eff;text-decoration:none;display:flex;align-items:center;padding:6px 0"><span style="display:inline-block;width:4px;height:16px;background:#409eff;margin-right:12px;flex-shrink:0"></span> GitHub：https://github.com/huasenjio/huasenjio-compose </a><a href="https://gitee.com/HuaSenJioJio/huasenjio-compose" style="color:#e6a23c;text-decoration:none;display:flex;align-items:center;padding:6px 0"><span style="display:inline-block;width:4px;height:16px;background:#e6a23c;margin-right:12px;flex-shrink:0"></span> Gitee：https://gitee.com/HuaSenJioJio/huasenjio-compose</a></div><div style="background:#fef1f0;border-left:2px solid #f56c6c;padding:8px 12px;border-radius:2px"><p style="color:#f56c6c;font-size:12px;line-height:1.5;margin:0">卡片不可移除，否则视作侵权行为，后果自负！<br>The card cannot be removed, otherwise it will be regarded as infringement and the consequences will be borne by you!</p></div></div>',
+      // 未经授权，版权声明不可移除，否则视作侵权行为，后果自负！
+      // Without authorization, the copyright notice cannot be removed, otherwise it will be regarded as infringement and the consequences will be borne by you!
+      if (this.appConfig.site.authorization) {
+        return this.asideConfig;
+      } else {
+        return [
+          {
+            label: '版权声明',
+            type: 'html',
+            typeConfig: {
+              domStr:
+                '<div style="width:100%;max-width:480px;font-size:12px"><div style="border-bottom:1px solid #f0f0f0;padding-bottom:8px;margin-bottom:4px"><h3 style="color:#303133;font-size:16px">© 2025 花森工作室</h3><div style="color:#606266;font-size:12px">开源协议 Apache-2.0 license</div></div><div style="margin-bottom:6px"><a href="https://github.com/huasenjio/huasenjio-compose" style="color:#409eff;text-decoration:none;display:flex;align-items:center;padding:6px 0"><span style="display:inline-block;width:4px;height:16px;background:#409eff;margin-right:12px;flex-shrink:0"></span> GitHub：https://github.com/huasenjio/huasenjio-compose </a><a href="https://gitee.com/HuaSenJioJio/huasenjio-compose" style="color:#e6a23c;text-decoration:none;display:flex;align-items:center;padding:6px 0"><span style="display:inline-block;width:4px;height:16px;background:#e6a23c;margin-right:12px;flex-shrink:0"></span> Gitee：https://gitee.com/HuaSenJioJio/huasenjio-compose</a></div><div style="background:#fef1f0;border-left:2px solid #f56c6c;padding:8px 12px;border-radius:2px"><p style="color:#f56c6c;font-size:12px;line-height:1.5;margin:0">未经授权，卡片不可移除，否则视作侵权行为，后果自负！<br>Without authorization, The card cannot be removed, otherwise it will be regarded as infringement and the consequences will be borne by you!</p></div></div>',
+            },
+            icon: 'iconfont icon-github',
           },
-          icon: 'iconfont icon-github',
-        },
-        ...this.asideConfig,
-      ];
+          ...this.asideConfig,
+        ];
+      }
     },
   },
   methods: {

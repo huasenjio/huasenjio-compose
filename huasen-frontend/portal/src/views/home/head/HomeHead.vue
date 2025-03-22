@@ -39,7 +39,7 @@
       </div>
     </section>
     <section v-if="showMenu" class="take">
-      <el-dropdown class="dropdown" trigger="click" @command="handleSelectJournal">
+      <el-dropdown class="dropdown" @command="handleSelectJournal">
         <span class="el-dropdown-link pointer" @click="handleSelectJournal(currentJournal._id)">
           {{ currentJournal.name || '无订阅源' }}
           <i class="el-icon-arrow-down el-icon--right"></i>

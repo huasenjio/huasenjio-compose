@@ -139,11 +139,11 @@ function responseError(error) {
   } else if (response.status == 401) {
     // 请求未认证，需要登录
     if (config._errorNotify) that.$tips('warning', response.data.msg, 'top-right', 2000);
-    state.showWrapSign = true;
+    state.loaded = false;
   } else if (response.status == 403) {
     // 请求禁止，权限不够
     if (config._errorNotify) that.$tips('error', response.data.msg, 'top-right', 2000);
-    state.showWrapSign = true;
+    state.loaded = false;
   } else {
     that.$tips('error', '服务异常，稍后重试！', 'top-right', 2000);
   }

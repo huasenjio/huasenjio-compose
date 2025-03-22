@@ -27,9 +27,34 @@ router.get('/getCopyright', getCopyright);
  */
 router.post('/getDictionary', getDictionary);
 
+/**
+ * @api {post} /app/user/findAppConfig 用户查询配置
+ * @apiVersion 1.0.0
+ * @apiGroup App
+ */
+router.post('/user/findAppConfig', handleJWT(false), findAppConfig);
 
-router.post('/findAppConfig', handleJWT('parse'), findAppConfig);
+/**
+ * @api {post} /app/manage/findAppConfig 管理员查询配置
+ * @apiVersion 1.0.0
+ * @apiGroup App
+ */
+router.post('/manage/findAppConfig', handleJWT(), checkManagePower, findAppConfig);
+
+/**
+ * @api {post} /app/saveAppConfig 保存配置
+ * @apiVersion 1.0.0
+ * @apiGroup App
+ * @apiParam {string} systemConfig 系统配置
+ */
 router.post('/saveAppConfig', handleJWT(), checkManagePower, checkManageHighestPower, saveAppConfig);
+
+/**
+ * @api {post} /app/runCode 运行代码
+ * @apiVersion 1.0.0
+ * @apiGroup App
+ * @apiParam {string} runtimeScript 运行代码
+ */
 router.post('/runCode', handleJWT(), checkManagePower, checkManageHighestPower, runCode);
 
 /**

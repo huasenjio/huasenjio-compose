@@ -9,20 +9,18 @@
   <div class="hs-wrap">
     <WrapLeft v-if="showWrapLeft"></WrapLeft>
     <WrapRight></WrapRight>
-    <WrapSign></WrapSign>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex';
 import WrapLeft from './left/WrapLeft.vue';
 import WrapRight from './right/WrapRight.vue';
-import WrapSign from './sign/WrapSign.vue';
 
 export default {
   name: 'Wrap',
-  components: { WrapLeft, WrapRight, WrapSign },
+  components: { WrapLeft, WrapRight },
   computed: {
-    ...mapState(['showWrapLeft']),
+    ...mapState(['loaded', 'showWrapLeft']),
   },
 };
 </script>

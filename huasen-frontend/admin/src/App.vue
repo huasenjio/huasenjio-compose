@@ -6,14 +6,18 @@
  * @Description: 根组件
 -->
 <template>
-  <div id="app" v-if="loaded">
+  <div id="app">
     <BrowserTips v-if="!isSupport"></BrowserTips>
-    <Wrap v-else> </Wrap>
+    <template v-else>
+      <Wrap v-if="loaded"> </Wrap>
+      <Sign v-else> </Sign>
+    </template>
   </div>
 </template>
 <script>
 import BrowserTips from '@/components/content/browser-tips/BrowserTips.vue';
 import Wrap from '@/components/content/wrap/Wrap.vue';
+import Sign from '@/components/content/sign/Sign.vue';
 
 import { mapState } from 'vuex';
 import watermark from '@/plugin/watermark.js';
@@ -21,16 +25,14 @@ import watermark from '@/plugin/watermark.js';
 export default {
   name: 'App',
 
-  components: { Wrap, BrowserTips },
+  components: { BrowserTips, Wrap, Sign },
 
   data() {
-    return {
-      loaded: false,
-    };
+    return {};
   },
 
   computed: {
-    ...mapState(['manage']),
+    ...mapState(['loaded', 'manage']),
     // 判断浏览器支持
     isSupport() {
       let temp = this.TOOL.judgeIE();
@@ -44,17 +46,16 @@ export default {
   },
 
   async created() {
-    // 请求版权信息
-    await this.API.app.getCopyright({}, { notify: false });
-    // 请求字典
-    const dicRes = await this.API.app.getDictionary({}, { notify: false });
-    this.CONSTANT.dictionary = dicRes.data;
-
     // 移除开屏动画
     let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');
     if (loadingDOM) {
       document.body.removeChild(loadingDOM);
     }
+    // 请求版权信息
+    await this.API.app.getCopyright({}, { notify: false });
+    // 请求字典
+    const dicRes = await this.API.app.getDictionary({}, { notify: false });
+    this.CONSTANT.dictionary = dicRes.data;
     // 初始化本地数据
     await this.$store.dispatch('initManage', {
       onload: () => {
@@ -65,7 +66,6 @@ export default {
     });
     // 请求应用配置
     await this.$store.dispatch('initAppConfig');
-    this.loaded = true;
   },
 };
 </script>

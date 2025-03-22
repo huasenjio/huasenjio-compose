@@ -19,7 +19,7 @@ router.post('/findByCode', handleJWT(), checkManagePower, findByCode);
 router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
 
 // 用户调用
-router.post('/findAll', handleJWT('parse'), findAll);
-router.post('/findJournalInformationById', handleJWT('parse'), findJournalInformationById);
+router.post('/findAll', handleJWT(false), findAll);
+router.post('/findJournalInformationById', handleJWT(false), findJournalInformationById);
 
 module.exports = router;

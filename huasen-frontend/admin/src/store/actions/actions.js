@@ -21,7 +21,6 @@ export default {
             token: manage.token,
             code: manage.code,
           },
-          showWrapSign: false,
         });
       }
       if (typeof onload === 'function') onload();
@@ -45,11 +44,12 @@ export default {
         notify: false,
       });
       let site = {
-        brandName: that.LODASH.get(res.data, 'site.brandName') || '花森',
-        brandUrl: that.LODASH.get(res.data, 'site.brandUrl') || require('@/assets/img/logo/favicon.svg'),
+        brandName: that.LODASH.get(res.data, 'site.brandName'),
+        brandUrl: that.LODASH.get(res.data, 'site.brandUrl'),
       };
       store.commit('commitAll', {
         site,
+        loaded: true,
       });
     } catch (err) {
       console.log(err);

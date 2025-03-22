@@ -84,6 +84,7 @@ export default {
             openLabelClassification: that.LODASH.get(config, 'site.openLabelClassification'),
             autoIconPatch: that.LODASH.get(config, 'site.autoIconPatch'),
             notifyArticleId: that.LODASH.get(config, 'site.notifyArticleId'),
+            authorization: that.LODASH.get(config, 'site.authorization'),
           },
         },
         searchConfig: searchConfig,

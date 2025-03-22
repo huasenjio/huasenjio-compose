@@ -10,7 +10,7 @@ const Mock = require('mockjs2');
 import { get, post } from '../request.js';
 
 const getCopyright = get('/app/getCopyright');
-const findAppConfig = post('/app/findAppConfig');
 const getCity = get('/app/getCity');
+const findAppConfig = post('/app/user/findAppConfig');
 
 export default { getCopyright, findAppConfig, getCity };

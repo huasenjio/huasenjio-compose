@@ -52,17 +52,17 @@ export default {
   },
 
   async created() {
+    // 移除开屏动画
+    let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');
+    if (loadingDOM) {
+      document.body.removeChild(loadingDOM);
+    }
     await this.API.App.getCopyright(
       {},
       {
         notify: false,
       },
     );
-    // 移除开屏动画
-    let loadingDOM = this.isSupport ? document.getElementById('js-app-loading__container--routine') : document.getElementById('js-app-loading__container--ie');
-    if (loadingDOM) {
-      document.body.removeChild(loadingDOM);
-    }
     // 调整文档大小，避免网站在移动端网页中，无法适应屏幕的问题
     initScaleDocument();
   },

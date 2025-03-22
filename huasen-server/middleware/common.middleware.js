@@ -89,10 +89,10 @@ function handleRequestParams(req, res, next) {
 
 /**
  * 预处理请求携带的凭证信息
- * @param {string} type - 处理类型，如果是为auth，那么当token无效时，直接响应错误信息；若为parse，则充当身份解析，token无效时，直接放行
+ * @param {boolean} intercept - 是否拦截请求
  * @returns 
  */
-function handleJWT(type = 'auth') {
+function handleJWT(intercept = true) {
   return function authentication(req, res, next) {
     const token = req.get('token');
     JWT.verifyToken(token)
@@ -101,16 +101,24 @@ function handleJWT(type = 'auth') {
         req.huasenJWT = {
           token,
           proof: data,
-          isAdmin: _.get(data, 'code') >= 2,
+          isManage: _.get(data, 'code') >= 2,
         };
         next();
       })
       .catch(err => {
         let msg = _.get(err, 'msg');
         let tag = _.get(err, 'tag');
-        if (type === 'auth') {
+        if (intercept) {
           global.huasen.responseData(res, {}, 'FORBIDDEN', msg);
-        } else if (type === 'parse') {
+        } else {
+          // 不拦截请求，认为普通用户访问，身份凭证数据如下：
+          // req.huasenJWT = {
+          //   token,
+          //   proof: {
+          //     code: 0,
+          //   },
+          //   isManage: false,
+          // };
           next();
         }
       });
@@ -139,7 +147,7 @@ function handleRequest(req, res, next) {
       key: '',
       code: 0,
     },
-    isAdmin: false,
+    isManage: false,
   };
   req.huasenParams = {};
 

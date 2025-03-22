@@ -11,10 +11,10 @@ import { get, post } from '../request.js';
 
 const getCopyright = get('/app/getCopyright');
 const getDictionary = post('/app/getDictionary');
-const findAppConfig = post('/app/findAppConfig');
-const saveAppConfig = post('/app/saveAppConfig');
 const runCode = post('/app/runCode');
 const offline = post('/app/offline');
 const getCity = get('/app/getCity');
+const findAppConfig = post('/app/manage/findAppConfig');
+const saveAppConfig = post('/app/saveAppConfig');
 
 export { getCopyright, getDictionary, findAppConfig, saveAppConfig, runCode, offline, getCity };

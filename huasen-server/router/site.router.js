@@ -57,7 +57,7 @@ router.post('/exportSite', handleJWT(), checkManagePower, exportSite);
  * @apiGroup Site
  * @apiParam {number} code 权限码
  */
-router.post('/findByCode', handleJWT('parse'), findByCode);
+router.post('/findByCode', handleJWT(false), findByCode);
 
 /**
  * @api {post} /site/findSiteFavicon 通过网链地址查询favicon列表

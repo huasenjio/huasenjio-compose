@@ -20,9 +20,9 @@ router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
 router.get('/findByList', handleJWT(), checkManagePower, findAllByList);
 
 // 用户调用&管理员
-router.get('/findById', handleJWT('parse'), findById);
+router.get('/findById', handleJWT(false), findById);
 
 // 用户调用
-router.post('/findByCode', handleJWT('parse'), findByCode);
+router.post('/findByCode', handleJWT(false), findByCode);
 
 module.exports = router;

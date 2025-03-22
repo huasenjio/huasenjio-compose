@@ -6,20 +6,20 @@
  * @Description:
 */
 export default {
+  loaded: false,
   // 管理员信息
   manage: {
     id: 'localhost@qq.com',
     token: '',
     code: 0,
   },
-  // 开启登录面板
-  showWrapSign: true,
+  // 是否显示侧边栏
   showWrapLeft: true,
 
   site: {
     brandName: '花森',
     brandUrl: require('@/assets/img/logo/favicon.svg'),
-    redirectUrl: 'http://huasenjio.top/',
+    redirectUrl: 'https://huasenjio.top/',
   },
 
   caches: [],

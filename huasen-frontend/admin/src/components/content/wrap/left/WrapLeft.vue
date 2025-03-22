@@ -7,7 +7,12 @@
 -->
 <template>
   <div class="wrap-left">
-    <div class="logo">
+    <div
+      class="logo"
+      :style="{
+        backgroundImage: `url(${site.brandUrl})`,
+      }"
+    >
       <div class="text title">{{ site.brandName }}后台管理</div>
     </div>
     <div class="navbar">
@@ -52,7 +57,6 @@ export default {
     justify-content: center;
     align-items: center;
     background-color: var(--gray-100);
-    background-image: url('~@/assets/img/logo/favicon.svg');
     background-position: 18px center;
     background-size: 38px 38px;
     background-repeat: no-repeat;

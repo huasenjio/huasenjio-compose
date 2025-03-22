@@ -21,9 +21,9 @@ async function getCopyright(req, res, next) {
 }
 
 function findAppConfig(req, res, next) {
-  const { proof, isAdmin } = req.huasenJWT;
+  const { proof, isManage } = req.huasenJWT;
   let config
-  if (isAdmin) {
+  if (isManage) {
     config = setting;
   } else {
     config = _.omit(setting, ['mail', 'site.jwt', 'site.jwtLiveTime']);
