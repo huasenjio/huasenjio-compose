@@ -443,13 +443,16 @@ export default {
   },
 
   computed: {
-    setting() {
-      let keys = this.settingKeys || [];
-      let json = {};
-      for (let key of keys) {
-        json[key] = this[key];
-      }
-      return json;
+    setting: {
+      get() {
+        let keys = this.settingKeys || [];
+        let json = {};
+        for (let key of keys) {
+          json[key] = this[key];
+        }
+        return json;
+      },
+      set(val) {},
     },
   },
 
@@ -484,7 +487,7 @@ export default {
           for (let key of this.settingKeys) {
             if (['site', 'mail', 'theme'].includes(key)) {
               // 对于表单输入项，采取同名覆盖策略，忽略undefined
-              this.TOOL.overrideKeys(that[key], json[key], true);
+              this.TOOL.overrideKeys(that[key], json[key]);
             } else {
               that[key] = json[key];
             }

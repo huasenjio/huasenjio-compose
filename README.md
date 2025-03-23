@@ -212,22 +212,54 @@
 
 > 2023/07/28 部署方式：
 >
-> 1.常规部署
+> 1.一键脚本部署（推荐）
 >
 > 2.宝塔部署
 >
-> 3.一键脚本部署（推荐）
+> 3.常规部署
 
-### 方式 1：常规部署
+### 环境要求
+
+1. 操作系统要求CentOS 7.x，建议7.4；
+2. 云服务器要求至少1核2G，带宽2M+，否则首次加载过慢；
+
+### 方式 1：一键脚本部署（新手推荐）
+
+> ⚠️ 打开弹幕和查看评论区
+>
+> 视频教程：https://www.bilibili.com/video/BV1gu4y1X7Kf/
+
+#### 🏁 流程
+
+进入服务器，执行`curl -O https://www.huasenjio.top/huasen-store/open-sh/install.sh ; chmod +x install.sh ; ./install.sh`命令，下载安装脚本并且执行。如果运行失败，重新运行即可。更多操作脚本，请查阅 `huasenjio-compose/bin/readme.md` 文档。
+
+### 方式 2：宝塔部署
+
+> ⚠️ 打开弹幕和查看评论区
+>
+> 视频教程：https://www.bilibili.com/video/BV1xA411z7QA
+
+#### 🏁 流程
+
+##### 上传源码
+
+由于宝塔自带git，所以可以手动上传或克隆源码到服务器。
+
+##### 启动容器
+
+进入项目根目录终端，执行`chmod u+x ./bin/*` ，为所有快捷脚本设置可执行权限，然后执行`./bin/start.sh`，静等拉取镜像后自动启动。
+
+##### 常见问题
+
+###### nginx端口冲突
+
+报错：`Error starting userland proxy: listen tcp4 0.0.0.0:80: bind: address already in use`，因为**宝塔自带nginx**已占用80端口，所以需要更改**nginx容器**的端口，我们在根目录下找到docker-compose.yml文件，找到`80:80`改为`8787:80`，保存之后，执行`./bin/start.sh`，通过快捷启动脚本启动网站。
+
+### 方式 3：常规部署（进阶）
 
 > ⚠️ 打开弹幕和查看评论区
 >
 > 视频教程：https://www.bilibili.com/video/BV1G44y1Q7MV
-
-#### 🏁 测试环境
-
-1. Centos 7.4；
-2. 腾讯云服务器 1 核 2G（学生机）；
 
 #### 🏁 安装依赖
 
@@ -413,39 +445,7 @@ docker-compose up -d
 ```bash
 官网：协议://ip/portal/
 后台管理：协议://ip/admin/
-默认管理员：admin@qq.com/12345
 ```
-
-### 方式 2：宝塔部署
-
-> ⚠️ 打开弹幕和查看评论区
->
-> 视频教程：https://www.bilibili.com/video/BV1xA411z7QA
-
-#### 🏁 测试环境
-
-1. Centos 7.4；
-2. 腾讯云服务器 1 核 2G（学生机）；
-3. 宝塔面板正式版；
-
-#### 🏁 流程
-
-进入宝塔面板，安装 docker，拉取 git 源码，修改 docker-compose.yml 文件，添加 compose 模版，添加运行项目。如果宝塔面板已安装 nginx，需要修改 docker-compose.yml 配置文件的 nginx 的运行端口，否则端口冲突，无法启动容器。
-
-### 方式 3：一键脚本部署
-
-> ⚠️ 打开弹幕和查看评论区
->
-> 视频教程：https://www.bilibili.com/video/BV1gu4y1X7Kf/
-
-#### 🏁 测试环境
-
-1. Centos 7.4；
-2. 腾讯云服务器 1 核 2G（学生机）；
-
-#### 🏁 流程
-
-进入服务器，执行`curl -O https://www.huasenjio.top/huasen-store/open-sh/install.sh ; chmod +x install.sh ; ./install.sh`命令，下载安装脚本并且执行。如果运行失败，重新运行即可。更多操作脚本，请查阅 `huasenjio-compose/bin/readme.md` 文档。
 
 ## ❓ 常见 QA
 
@@ -539,7 +539,7 @@ docker-compose up -d
 
 （16）显示部署成功之后，我访问网站，老是打开 up 的主页？
 
-遇到重定向到主页的情况，说明网站部署没问题，只是访问的地址不对，根据 `http://ip(域名):nginx端口/portal` 格式检查一下。截止 2023 年 9 月 1 日后台管理已支持动态配置重定向地址，打开系统配置页面，设置重定向链接。
+遇到重定向到主页的情况，说明网站部署没问题，只是访问的地址不对，根据 `http://ip或域名:nginx容器端口/portal` 格式检查一下。截止 2023 年 9 月 1 日后台管理已支持动态配置重定向地址，打开系统配置页面，设置重定向链接。
 
 （17）我已经添加网链，为什么官网不显示链接呢？
 
