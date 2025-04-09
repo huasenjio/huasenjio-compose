@@ -57,7 +57,7 @@ export default {
     position: absolute;
     padding: 2px;
     bottom: 18px;
-    right: 28px;
+    right: 26px;
     font-size: 24px;
     // filter: invert(100%);
     cursor: pointer;

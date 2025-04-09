@@ -32,6 +32,7 @@
     "@vue/cli-service": "~4.5.0",
     "autoprefixer": "^9.8.8",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "postcss": "^7.0.39",

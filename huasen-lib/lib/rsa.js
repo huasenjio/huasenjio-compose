@@ -2,7 +2,8 @@ import crypto from 'crypto';
 import constants from 'constants';
 
 // 定义默认填充方式
-const DEFAULT_PADDING = constants.RSA_PKCS1_PADDING;
+// const DEFAULT_PADDING = constants.RSA_PKCS1_PADDING; // node.js 16及以下
+const DEFAULT_PADDING = constants.RSA_PKCS1_OAEP_PADDING // node.js 18及以上
 
 /**
  * 公钥加密数据

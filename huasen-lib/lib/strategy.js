@@ -143,35 +143,7 @@ let strategies = {
     } catch (error) {
       return invalidMsg;
     }
-  },
-
-  /**
-   * 验证 HTML 标签是否合法（仅限 head 标签），强制要求闭合标签，例如：<meta>、<link/>不允许
-   * @param {string} value - 输入的 HTML 字符串
-   * @param {string} invalidMsg - 错误提示信息
-   * @returns 
-   */
-  isValidHeadTag: function (value, invalidMsg) {
-    if (value === '') return;
-    const pattern = /^<(title|meta|link|style|script|base|noscript)(\s+[\w\-:]+(=("[^"]*"|'[^']*'|[\w\-]+))?)*\s*>[\s\S]*?<\/\1>$/i;
-    if (!pattern.test(value.trim())) {
-      return invalidMsg;
-    }
-  },
-
-  /**
-   * 验证 body 标签是否闭合（仅校验闭合结构）
-   * @param {string} value - 输入的 HTML 字符串
-   * @param {string} invalidMsg - 错误提示信息
-   * @returns 
-   */
-  isValidHtmlTag: function (value, invalidMsg) {
-    if (value === '') return;
-    const pattern = /^<([a-zA-Z][\w-]*)(\s+[\w\-:]+(=("[^"]*"|'[^']*'|[\w\-]+))?)*\s*>[\s\S]*?<\/\1>$/i;
-    if (!pattern.test(value.trim())) {
-      return invalidMsg;
-    }
-  },
+  }
 };
 
 // 执行器

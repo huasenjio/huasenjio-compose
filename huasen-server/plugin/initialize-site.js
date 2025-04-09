@@ -66,49 +66,10 @@ const replaceOrInsert = (type, originalHtml, newContent, marker) => {
     let updatedHtml = dom.serialize();
     // 处理head内容
     const headHtml = get(site, 'headHtml') || '';
-    const hErrMsg = validator.verify([
-      {
-        value: headHtml,
-        rules: [
-          {
-            strategy: 'isNonEmpty',
-            errMsg: '请输入',
-          },
-          {
-            strategy: 'isValidHeadTag',
-            errMsg: '请输入符合head插入规则的标签',
-          },
-        ],
-      },
-    ])
-    if (!hErrMsg) {
-      updatedHtml = replaceOrInsert('head', updatedHtml, headHtml, 'head-custom-by-huasen');
-    } else {
-      console.log('[Huasen Log]：headHtml' + hErrMsg);
-    }
-
+    updatedHtml = replaceOrInsert('head', updatedHtml, headHtml, 'head-custom-by-huasen');
     // 处理body内容
     const bodyHtml = get(site, 'bodyHtml') || '';
-    const bErrMsg = validator.verify([
-      {
-        value: bodyHtml,
-        rules: [
-          {
-            strategy: 'isNonEmpty',
-            errMsg: '请输入',
-          },
-          {
-            strategy: 'isValidHtmlTag',
-            errMsg: '请输入正确的标签',
-          },
-        ],
-      },
-    ])
-    if (!bErrMsg) {
-      updatedHtml = replaceOrInsert('body', updatedHtml, bodyHtml, 'body-custom-by-huasen');
-    } else {
-      console.log('[Huasen Log]：bodyHtml' + bErrMsg);
-    }
+    updatedHtml = replaceOrInsert('body', updatedHtml, bodyHtml, 'body-custom-by-huasen');
     // const formatted = await prettier.format(updatedHtml, { parser: 'html' });
     fs.writeFileSync(htmlPath, updatedHtml, 'utf8');
     console.log('[Huasen Log]：初始化网站入口成功');

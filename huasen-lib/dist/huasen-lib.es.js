@@ -1,5 +1,5 @@
 import "core-js";
-import u from "crypto";
+import s from "crypto";
 import h from "constants";
 function d(e, t, r) {
   r && e();
@@ -13,12 +13,12 @@ function d(e, t, r) {
     }
   };
 }
-const w = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const E = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   timeout2Interval: d
-}, Symbol.toStringTag, { value: "Module" })), a = h.RSA_PKCS1_PADDING;
+}, Symbol.toStringTag, { value: "Module" })), a = h.RSA_PKCS1_OAEP_PADDING;
 function y(e, t, r, n, i) {
-  return u.publicEncrypt(
+  return s.publicEncrypt(
     {
       key: t,
       padding: i || a
@@ -27,7 +27,7 @@ function y(e, t, r, n, i) {
   ).toString(n);
 }
 function g(e, t, r, n, i) {
-  return u.publicDecrypt(
+  return s.publicDecrypt(
     {
       key: t,
       padding: i || a
@@ -36,7 +36,7 @@ function g(e, t, r, n, i) {
   ).toString(n);
 }
 function m(e, t, r, n, i) {
-  return u.privateEncrypt(
+  return s.privateEncrypt(
     {
       key: t,
       padding: a
@@ -45,7 +45,7 @@ function m(e, t, r, n, i) {
   ).toString(n);
 }
 function A(e, t, r, n, i) {
-  return u.privateDecrypt(
+  return s.privateDecrypt(
     {
       key: t,
       padding: a
@@ -59,17 +59,17 @@ function D(e, t, r, n) {
     let o = i * n, f = (i + 1) * n;
     c.push(r.slice(o, f)), i++;
   }
-  let s = [];
+  let u = [];
   for (let o = 0; o < c.length; o++) {
     let f = e === "public" ? y(c[o], t, "utf8", "hex", a) : m(c[o], t, "utf8", "hex");
-    s.push(f);
+    u.push(f);
   }
-  return s.join(":hs:");
+  return u.join(":hs:");
 }
-function E(e, t, r) {
+function j(e, t, r) {
   return r.split(":hs:").reduce((i, c) => {
-    let s = e === "public" ? g(c, t, "hex", "utf8", a) : A(c, t, "hex", "utf8");
-    return i + s;
+    let u = e === "public" ? g(c, t, "hex", "utf8", a) : A(c, t, "hex", "utf8");
+    return i + u;
   }, "");
 }
 function p() {
@@ -83,14 +83,14 @@ function p() {
 function z() {
   return [p(), p()];
 }
-function j(e, t) {
+function O(e, t) {
   t = t;
-  let r = [], n = u.createDecipheriv("aes-128-cbc", t[0], t[1]);
+  let r = [], n = s.createDecipheriv("aes-128-cbc", t[0], t[1]);
   return n.setAutoPadding(!0), r.push(n.update(e, "base64", "utf8")), r.push(n.final("utf8")), r.join("");
 }
 function Z(e, t) {
   t = t || aesSecret;
-  let r = [], n = u.createCipheriv("aes-128-cbc", t[0], t[1]);
+  let r = [], n = s.createCipheriv("aes-128-cbc", t[0], t[1]);
   return n.setAutoPadding(!0), r.push(n.update(e, "utf8", "base64")), r.push(n.final("base64")), r.join("");
 }
 let b = {
@@ -225,28 +225,6 @@ let b = {
     } catch {
       return t;
     }
-  },
-  /**
-   * 验证 HTML 标签是否合法（仅限 head 标签），强制要求闭合标签，例如：<meta>、<link/>不允许
-   * @param {string} value - 输入的 HTML 字符串
-   * @param {string} invalidMsg - 错误提示信息
-   * @returns 
-   */
-  isValidHeadTag: function(e, t) {
-    if (e === "") return;
-    if (!/^<(title|meta|link|style|script|base|noscript)(\s+[\w\-:]+(=("[^"]*"|'[^']*'|[\w\-]+))?)*\s*>[\s\S]*?<\/\1>$/i.test(e.trim()))
-      return t;
-  },
-  /**
-   * 验证 body 标签是否闭合（仅校验闭合结构）
-   * @param {string} value - 输入的 HTML 字符串
-   * @param {string} invalidMsg - 错误提示信息
-   * @returns 
-   */
-  isValidHtmlTag: function(e, t) {
-    if (e === "") return;
-    if (!/^<([a-zA-Z][\w-]*)(\s+[\w\-:]+(=("[^"]*"|'[^']*'|[\w\-]+))?)*\s*>[\s\S]*?<\/\1>$/i.test(e.trim()))
-      return t;
   }
 };
 class l {
@@ -303,14 +281,14 @@ class l {
         errMsg: c[1]
       };
     }), n = this;
-    return function(i, c, s) {
+    return function(i, c, u) {
       let o = n.verify([
         {
           rules: r,
           value: c
         }
       ]);
-      o ? s(new Error(o)) : s();
+      o ? u(new Error(o)) : u();
     };
   }
   clear() {
@@ -319,15 +297,15 @@ class l {
 }
 export {
   l as Validator,
-  j as decrypt,
+  O as decrypt,
   Z as encrypt,
   z as getAESSecret,
   A as privateDecrypt,
   m as privateEncrypt,
   g as publicDecrypt,
   y as publicEncrypt,
-  E as rsaDecryptLong,
+  j as rsaDecryptLong,
   D as rsaEncryptLong,
   b as strategies,
-  w as tool
+  E as tool
 };

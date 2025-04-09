@@ -155,7 +155,7 @@ export default {
   data() {
     return {
       show: false,
-      activeName: '1',
+      activeName: ['1', '2'],
       // 背景
       bg: '',
       // 控制封面模糊度

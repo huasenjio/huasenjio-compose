@@ -377,16 +377,6 @@ export default {
             },
           },
         ],
-        headHtml: [
-          {
-            validator: getElementFormValidator(['isValidHeadTag::请输入title、meta、link、style、script、base、noscript标签，并且必须闭合！']),
-          },
-        ],
-        bodyHtml: [
-          {
-            validator: getElementFormValidator(['isValidHtmlTag::请输入符合HTML规范的标签，并且必须闭合！']),
-          },
-        ],
       },
       mail: {
         host: 'smtp.qq.com',
