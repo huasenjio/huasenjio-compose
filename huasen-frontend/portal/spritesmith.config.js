@@ -1,5 +1,9 @@
-// 图标类名前缀
-const classPrefix = 'icon-lhs'
+const path = require('path');
+
+const classPrefix = 'icon-lhs' // 图标类名前缀
+const iconPath = path.resolve(__dirname, './src/assets/sprite/source'); // 图标的位置
+const spriteImgPath = path.resolve(__dirname, './src/assets/sprite/output/sprite.png'); // 输出精灵图的位置
+const spriteCssPath = path.resolve(__dirname, './src/assets/sprite/output/sprite.css'); // 输出精灵样式的位置
 
 /**
  * 图标编译函数
@@ -27,5 +31,9 @@ const templateFunction = function (data) {
 
 
 module.exports = {
+  iconPath,
+  spriteImgPath,
+  spriteCssPath,
+
   templateFunction
 }

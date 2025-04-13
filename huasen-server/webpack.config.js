@@ -8,31 +8,32 @@
 
 const path = require('path');
 const SpritesmithPlugin = require('webpack-spritesmith');
-const { templateFunction, spriteIconPath } = require('./spritesmith.config.js');
+const { templateFunction, iconPath, spriteImgPath, spriteCssPath } = require('./spritesmith.config.js');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
   entry: {},
   output: {},
   plugins: [
-    new FileManagerPlugin({
-      events: {
-        onStart: {
-          copy: [{ source: './public/default/spriteImg/*.png', destination: spriteIconPath }],
-        },
-      },
-    }),
+    // 打包完成后移动精灵图和样式文件
+    // new FileManagerPlugin({
+    //   events: {
+    //     onStart: {
+    //       copy: [{ source: '', destination: '' }],
+    //     },
+    //   },
+    // }),
     new SpritesmithPlugin({
       src: {
-        cwd: path.resolve(__dirname, spriteIconPath), // 图标的位置
+        cwd: iconPath, // 图标的位置
         glob: '*.png', // 图标的后缀
       },
+      // 输出精灵图的位置和样式
       target: {
-        image: path.resolve(__dirname, './public/webapp/sprite.png'), // 输出精灵图的位置
+        image: spriteImgPath,
         css: [
           [
-            // 精灵样式输出的路径和格式
-            path.resolve(__dirname, './public/webapp/sprite.css'),
+            spriteCssPath,
             {
               // 标记引用自己的模板
               format: 'function_based_template',
@@ -44,7 +45,7 @@ module.exports = {
       customTemplates: {
         function_based_template: templateFunction,
       },
-      // 精灵图的引用前缀
+      // CSS中引用精灵图的路径
       apiOptions: {
         cssImageRef: './sprite.png',
       },
@@ -55,7 +56,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    modules: ['node_modules', spriteIconPath],
+    modules: ['node_modules', iconPath],
   },
   mode: 'development',
 };

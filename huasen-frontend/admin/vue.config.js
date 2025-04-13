@@ -7,9 +7,6 @@
  */
 const path = require('path');
 
-const SpritesmithPlugin = require('webpack-spritesmith');
-const { templateFunction } = require('./spritesmith.config.js');
-
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -22,39 +19,7 @@ module.exports = {
   configureWebpack: config => {
     config.devtool = process.env.NODE_ENV === 'development' ? 'cheap-module-eval-source-map' : 'nosources-source-map'
     config.resolve.modules = ['node_modules', './src/assets/icon'];
-    const Plugins = [
-      new SpritesmithPlugin({
-        src: {
-          cwd: path.resolve(__dirname, './src/assets/icon'), // 图标的位置
-          glob: '*.png', // 图标的后缀
-        },
-        target: {
-          image: path.resolve(__dirname, './src/assets/sprite/sprite.png'), // 输出精灵图的位置
-          css: [
-            [
-              // 精灵样式输出的路径和格式
-              path.resolve(__dirname, './src/assets/sprite/sprite.css'),
-              {
-                // 标记引用自己的模板
-                format: 'function_based_template',
-              },
-            ],
-          ],
-        },
-        // 精灵图和精灵使用的格式方法
-        customTemplates: {
-          function_based_template: templateFunction,
-        },
-        // 精灵图的引用前缀
-        apiOptions: {
-          cssImageRef: './sprite.png',
-        },
-        // 精灵之间的间隔
-        spritesmithOptions: {
-          padding: 20,
-        },
-      }),
-    ];
+    const Plugins = [];
     // 生产环境配置打包文件大小
     if (process.env.NODE_ENV === 'production') {
       // 代码大小显示

@@ -1,6 +1,10 @@
+const path = require('path');
 // 图标类名前缀
 const classPrefix = 'icon-lhs';
-const spriteIconPath = '../huasen-store/spriteIcon';
+const iconPath = path.resolve(__dirname, './public/sprite/source'); // 图标的位置
+const spriteImgPath = path.resolve(__dirname, './public/sprite/output/sprite.png'); // 输出精灵图的位置
+const spriteCssPath = path.resolve(__dirname, './public/sprite/output/sprite.css'); // 输出精灵样式的位置
+
 /**
  * 图标编译函数
  * @param {Object} data 图片信息
@@ -30,5 +34,8 @@ const templateFunction = function (data) {
 
 module.exports = {
   templateFunction,
-  spriteIconPath,
+
+  iconPath,
+  spriteImgPath,
+  spriteCssPath,
 };

@@ -38,7 +38,7 @@ function requestIntercept(config) {
   config.headers.Token = state.user.token || '***·***·***';
   // rsa加密传输对称密钥
   if (aesSecret && rsaPublicSecret) {
-    config.headers['Secret-Key'] = rsaEncryptLong('public', rsaPublicSecret, JSON.stringify(aesSecret), 64)
+    config.headers['Secret-Key'] = rsaEncryptLong('public', rsaPublicSecret, JSON.stringify(aesSecret), 117)
   }
   // 加密传输参数
   if (config.method === 'post' && config.data && ['rsa', 'aesinrsa'].includes(config._secret)) {
@@ -50,7 +50,7 @@ function requestIntercept(config) {
       let realData = config.data;
       if (secretMethod === 'rsa' && rsaPublicSecret) {
         // 小量数据传输
-        secretText = rsaEncryptLong('public', rsaPublicSecret, JSON.stringify(realData), 64)
+        secretText = rsaEncryptLong('public', rsaPublicSecret, JSON.stringify(realData), 117)
       } else if (secretMethod === 'aesinrsa' && rsaPublicSecret) {
         // 推荐使用，支持大量传输数据。对称加密数据，非对称加密aes密钥
         secretText = encrypt(JSON.stringify(realData), aesSecret)
@@ -95,7 +95,7 @@ function responseIntercept(result) {
           realRawData = decrypt(data.data, aesSecret);
           break;
         case 'rsa':
-          realRawData = rsaDecryptLong('public', rsaPublicSecret, data.data, 64);
+          realRawData = rsaDecryptLong('public', rsaPublicSecret, data.data, 117);
           break;
       }
       data.data = realRawData ? JSON.parse(realRawData) : data.data

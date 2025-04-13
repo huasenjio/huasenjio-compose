@@ -68,7 +68,7 @@ function responseData(response, data, tag, msg, secret = null) {
       originData = encrypt(JSON.stringify(data), _aes_secret)
       response.append('Secret-Method', 'aes');
     } else if (secret === 'rsa') {
-      originData = rsaEncryptLong('private', SECRET_RSA_PRIVATE, JSON.stringify(data), 64);
+      originData = rsaEncryptLong('private', SECRET_RSA_PRIVATE, JSON.stringify(data), 117);
       response.append('Secret-Method', 'rsa');
     }
     formatData.data = originData

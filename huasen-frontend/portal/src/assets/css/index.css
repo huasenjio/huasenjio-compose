@@ -12,4 +12,4 @@
 /* tailwind */
 @import url('./tailwind.css');
 /* 前端编译的图标 */
-@import url('../sprite-icon/sprite.css');
+@import url('../sprite/output/sprite.css');

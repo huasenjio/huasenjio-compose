@@ -61,7 +61,7 @@ function handleRequestParams(req, res, next) {
   // 私钥解密对称密钥
   let aesSecret;
   if (secretKey) {
-    const aseRaw = rsaDecryptLong('private', SECRET_RSA_PRIVATE, secretKey, 64);
+    const aseRaw = rsaDecryptLong('private', SECRET_RSA_PRIVATE, secretKey, 117);
     aesSecret = JSON.parse(aseRaw)
   }
   // 仅支持POST请求加密传输
@@ -70,7 +70,7 @@ function handleRequestParams(req, res, next) {
       let raw;
       if (secretMethod === 'rsa') {
         // 非对称解密
-        raw = rsaDecryptLong('private', SECRET_RSA_PRIVATE, secretText, 64);
+        raw = rsaDecryptLong('private', SECRET_RSA_PRIVATE, secretText, 117);
       } else if (secretMethod === 'aesinrsa' && aesSecret) {
         // 私钥解析aes密钥，然后使用aes解密数据
         raw = decrypt(secretText, aesSecret)
