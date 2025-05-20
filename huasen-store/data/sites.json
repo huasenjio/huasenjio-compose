@@ -3,10 +3,10 @@
     "expand": "{}",
     "enabled": true,
     "code": 0,
-    "name": "改图神器",
-    "url": "https://img.logosc.cn/",
-    "icon": "huasen-store/icon/1680024055278.png",
-    "description": "强大的图片编辑器",
+    "name": "花森起始页",
+    "url": "https://n.huasenjio.top/",
+    "icon": "huasen-store/icon/logo.png",
+    "description": "一个优雅且开源的浏览器起始页",
     "remarks": ""
   }
 ]
