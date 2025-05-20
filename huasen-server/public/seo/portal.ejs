@@ -4,13 +4,13 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="<%= brandUrl %>" />
-    <title><%= brandName %>站点地图</title>
+    <title><%= brandName %>起始页</title>
     <meta name="keywords" content="<%= brandKeywords %>" />
     <meta name="description" content="<%= brandDescription %>" />
     <% headHtml %>
   </head>
   <body>
-    <h1>推荐网站列表</h1>
+    <h1>推荐网站</h1>
     <section>
       <ul>
         <% sites.forEach(site => { %>
@@ -22,7 +22,7 @@
       </ul>
     </section>
     <section>
-      <h1>推荐文章列表</h1>
+      <h1>推荐文章</h1>
       <ul>
         <% articles.forEach(article => { %>
         <li class="article">
