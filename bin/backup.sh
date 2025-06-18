@@ -25,6 +25,9 @@ docker-compose stop
 # rm -f "$BACKUP_DIR"/huasen-server_*.tar.gz
 
 echo "[Huasen Log]：正在备份网站关键配置文件至${DATE_FOLDER}中，如需恢复，请手动恢复到项目对应目录下！"
+
+cp "${PROJECT_DIR}"/docker-compose.yml "$DATE_FOLDER"
+
 backup_service() {
     local service_name=$1
     local backup_file="${DATE_FOLDER}/${service_name}_${CUR_DATE}.tar.gz"
@@ -37,9 +40,11 @@ backup_service() {
         echo "[Huasen Log]：Backup for ${service_name} created: ${backup_file}"
     fi
 }
+backup_service "bin"
 backup_service "huasen-mongo"
 backup_service "huasen-redis"
 backup_service "huasen-store"
+backup_service "huasen-lib"
 backup_service "huasen-server"
 
 echo "[Huasen Log]：重新启动docker容器..."

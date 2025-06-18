@@ -39,11 +39,15 @@
       </div>
     </section>
     <section v-if="showMenu" class="take">
-      <el-dropdown class="dropdown" @command="handleSelectJournal">
-        <span class="el-dropdown-link pointer" @click="handleSelectJournal(currentJournal._id)">
-          {{ currentJournal.name || '无订阅源' }}
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
+      <el-dropdown class="dropdown" @command="handleSelectJournal" @visible-change="val => (showJournalDropdown = val)">
+        <div class="journal__wrap">
+          <div class="journal__name mr-px-4 text">
+            {{ currentJournal.name || '无订阅源' }}
+          </div>
+          <i v-if="!showJournalDropdown" class="el-icon-arrow-down"></i>
+          <i v-else class="el-icon-arrow-up"></i>
+          <i class="el-icon-refresh ml-px-4 pointer" @click="handleSelectJournal(currentJournal._id)"></i>
+        </div>
         <el-dropdown-menu class="journal-dropdown-menu" slot="dropdown">
           <template v-if="journals.length">
             <el-dropdown-item v-for="item in journals" :key="item._id" style="max-width: 124px" class="text" :title="item.name" :command="item._id">
@@ -93,6 +97,7 @@ export default {
   data() {
     return {
       showMenu: false,
+      showJournalDropdown: false,
       selectedTake: '常用热门',
       takes: [],
       journals: [],
@@ -336,6 +341,14 @@ export default {
     order: 5;
     .dropdown {
       color: inherit;
+      .journal__wrap {
+        max-width: 120px;
+        display: flex;
+        align-items: center;
+        .journal__name {
+          flex: 1;
+        }
+      }
     }
   }
   .sign {

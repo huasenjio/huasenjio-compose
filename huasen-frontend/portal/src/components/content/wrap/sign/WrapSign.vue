@@ -244,18 +244,26 @@ export default {
       }
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          let params = {
-            id: this.submitForm.id,
-            password: this.submitForm.password,
-          };
-          this.API.User.login(params, {
-            notify: true,
-            secret: 'aesinrsa',
-          }).then(res => {
-            // 用户数据本地持久化
-            this.STORAGE.setItem(this.CONSTANT.localUser, res.data);
-            location.reload();
-          });
+          this.$confirm('登录账号将会清空本地数据（如：自定义网站、墙纸等）并拉取云端数据，请合理备份数据，避免数据丢失。您是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+            .then(() => {
+              let params = {
+                id: this.submitForm.id,
+                password: this.submitForm.password,
+              };
+              this.API.User.login(params, {
+                notify: true,
+                secret: 'aesinrsa',
+              }).then(res => {
+                // 用户数据本地持久化
+                this.STORAGE.setItem(this.CONSTANT.localUser, res.data);
+                location.reload();
+              });
+            })
+            .catch(() => {});
         }
       });
     },
