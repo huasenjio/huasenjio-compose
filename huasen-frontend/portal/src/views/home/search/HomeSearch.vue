@@ -2,7 +2,15 @@
   <div :style="{ top, borderRadius: user.config.searchBorderRadius + 'px' }" class="home-search xl:w-px-600 lg:w-px-400 sm:w-px-350 h-px-40">
     <!-- 搜索引擎菜单 -->
     <ul class="menu" v-discolor>
-      <li v-for="(item, index) in this.searchConfig" :key="index" :data-url="item.url" :data-keyword="item.key" @click="selectEngine(index)" class="xl:text-base" :class="{ active: activeSearchIndex === index }">
+      <li
+        v-for="(item, index) in this.searchConfig"
+        :key="index"
+        :data-url="item.url"
+        :data-keyword="item.key"
+        @click="selectEngine(index)"
+        class="xl:text-base"
+        :class="{ active: activeSearchIndex === index }"
+      >
         {{ item.name }}
       </li>
     </ul>
@@ -46,7 +54,7 @@
           <!-- 站内搜索 -->
           <div v-if="instationEngine" class="instation-idea">
             <div class="name text" v-html="getHighlightText(item.name, item.target)"></div>
-            <div class="describe text" v-html="getHighlightText(item.describe, item.target)"></div>
+            <div class="describe text" v-html="getHighlightText(item.description, item.target)"></div>
           </div>
           <!-- 普通搜索 -->
           <div v-else>{{ item }}</div>
@@ -58,7 +66,7 @@
 
 <script>
 import IconBox from '@/components/common/iconBox/IconBox.vue';
-import { AF } from '@/plugin/AF.js';
+import { AF, tool } from 'huasen-lib';
 import { jsonp } from '@/network/http.js';
 import { mapState } from 'vuex';
 
@@ -115,11 +123,7 @@ export default {
     // 扁平化网链
     flatSites() {
       let temp = [...this.sites];
-      return temp.map(item => {
-        item.remark = item.remarks;
-        item.describe = item.description;
-        return item;
-      });
+      return temp;
     },
   },
   watch: {
@@ -233,7 +237,7 @@ export default {
           if (Object.keys(this.currentSearch.params) != 0) {
             params = Object.assign(params, this.currentSearch.params);
           }
-          url = this.TOOL.handleURL(this.currentSearch.url, params);
+          url = tool.handleURL(this.currentSearch.url, params);
         }
         if (url) window.open(url);
       }
@@ -264,7 +268,7 @@ export default {
           this.flatSites.forEach(site => {
             // 检索站点链接或者描述
             let isTargetName = reg.exec(site.name);
-            let isTargetDescribe = reg.exec(site.describe);
+            let isTargetDescribe = reg.exec(site.description);
             if (isTargetName || isTargetDescribe) {
               // 计算命中的长度，用于排序选择命中范围最大的站点
               let nameL = isTargetName ? isTargetName['0'] : '';
@@ -400,7 +404,7 @@ export default {
       top: 50px;
       left: 0;
       right: 0;
-      max-height: 180px;
+      max-height: 200px;
       border-radius: 4px;
       overflow-y: auto;
       li {
@@ -456,7 +460,7 @@ export default {
       flex: none;
       position: relative;
       height: 32px;
-      padding: 5px 4px 0 4px;
+      padding: 4px 4px 0 4px;
       cursor: pointer;
 
       &:first-child {
@@ -470,7 +474,7 @@ export default {
       &::after {
         content: '';
         position: absolute;
-        bottom: 2px;
+        bottom: -2px;
         left: 50%;
         transform: translateX(-50%);
         display: block;
@@ -478,6 +482,7 @@ export default {
         height: 6px;
         border-radius: 50%;
         background-color: var(--green-500);
+        outline: 1px solid var(--white-o8);
       }
     }
   }

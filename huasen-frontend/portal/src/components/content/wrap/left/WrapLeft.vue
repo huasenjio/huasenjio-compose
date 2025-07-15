@@ -12,7 +12,7 @@
     </div>
     <ul class="navbar">
       <router-link :to="item.path" v-for="(item, index) in this.navs" :key="index">
-        <el-tooltip effect="dark" :content="item.name" placement="right">
+        <el-tooltip placement="right" popper-class="wrap-left__navbar__popper" :content="item.name">
           <li>
             <i :class="item.iconClass" class="inherit-text"> </i>
           </li>
@@ -89,5 +89,10 @@ export default {
       }
     }
   }
+}
+</style>
+<style lang="scss">
+.wrap-left__navbar__popper {
+  left: 52px !important;
 }
 </style>

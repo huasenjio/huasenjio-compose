@@ -7,7 +7,7 @@
  */
 const path = require('path');
 const SpritesmithPlugin = require('webpack-spritesmith');
-const { templateFunction, iconPath, spriteImgPath, spriteCssPath, } = require('./spritesmith.config.js');
+const { templateFunction, iconPath, spriteImgPath, spriteCssPath } = require('./spritesmith.config.js');
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -20,7 +20,15 @@ module.exports = {
   productionSourceMap: false,
   runtimeCompiler: true, // 运行时编译
   configureWebpack: config => {
-    config.devtool = process.env.NODE_ENV === 'development' ? 'cheap-module-eval-source-map' : 'nosources-source-map'
+    config.devtool = process.env.NODE_ENV === 'development' ? 'cheap-module-eval-source-map' : 'nosources-source-map';
+
+    // 添加.mjs文件处理规则
+    config.module.rules.push({
+      test: /\.mjs$/,
+      include: /node_modules\/markdown-it/,
+      type: 'javascript/auto',
+    });
+
     // 配置雪碧图
     const Plugins = [
       new SpritesmithPlugin({

@@ -12,6 +12,11 @@ function handleLoadashPath(keys) {
   return atrr;
 }
 
+/**
+ * 获取对象的key路径
+ * @param {Object} data - 目标对象
+ * @param {Array} path - 路径数组
+ */
 export function getPath(data, path = []) {
   let lodashPaths = [];
   _.forEach(data, (value, key) => {
@@ -49,10 +54,10 @@ export function overrideKeys(data, srcData, ignoreUndefined = false, append = tr
   if (append) {
     addPaths.forEach(path => {
       _.set(data, path, _.get(srcData, path));
-    })
+    });
   }
   // 修改公共属性
   commonPaths.forEach(path => {
     _.set(data, path, _.get(srcData, path));
-  })
+  });
 }

@@ -100,8 +100,12 @@ export default {
       pageSize: 10,
     };
   },
-  mounted() {
+  // 进入路由时
+  activated() {
     this.queryBlacklist();
+  },
+  mounted() {
+    // this.queryBlacklist();
   },
   methods: {
     queryBlacklist() {

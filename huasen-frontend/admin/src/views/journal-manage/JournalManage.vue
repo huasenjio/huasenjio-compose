@@ -38,7 +38,15 @@
       @comfirmForm="save"
       @cancelForm="cancel"
     ></DialogForm>
-    <ColumnSelector v-if="showColumnSelector" title="配置订阅源" size="500" :visible.sync="showColumnSelector" :wrapperClosable="false" :currentJournal="currentJournal" @save="handleJournalSave"></ColumnSelector>
+    <ColumnSelector
+      v-if="showColumnSelector"
+      title="配置订阅源"
+      size="500"
+      :visible.sync="showColumnSelector"
+      :wrapperClosable="false"
+      :currentJournal="currentJournal"
+      @save="handleJournalSave"
+    ></ColumnSelector>
   </div>
 </template>
 
@@ -63,14 +71,14 @@ export default {
           label: '订阅源名称',
           key: 'name',
         },
-        {
-          label: '栏目',
-          key: 'columnStore',
-        },
-        {
-          label: '拓展字段',
-          key: 'expand',
-        },
+        // {
+        //   label: '栏目',
+        //   key: 'columnStore',
+        // },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        // },
         {
           label: '权限码',
           key: 'code',
@@ -149,8 +157,11 @@ export default {
       pageSize: 10,
     };
   },
-  mounted() {
+  activated() {
     this.queryData();
+  },
+  mounted() {
+    // this.queryData();
   },
   methods: {
     queryData() {

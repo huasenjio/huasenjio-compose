@@ -45,7 +45,15 @@
         </div>
       </template>
     </DialogForm>
-    <SiteSelector v-if="showSiteSelector" title="配置栏目" size="500" :visible.sync="showSiteSelector" :wrapperClosable="false" :currentColumn="currentColumn" @save="handleColumnSave"></SiteSelector>
+    <SiteSelector
+      v-if="showSiteSelector"
+      title="配置栏目"
+      size="500"
+      :visible.sync="showSiteSelector"
+      :wrapperClosable="false"
+      :currentColumn="currentColumn"
+      @save="handleColumnSave"
+    ></SiteSelector>
   </div>
 </template>
 
@@ -74,10 +82,10 @@ export default {
           label: '描述',
           key: 'description',
         },
-        {
-          label: '封面',
-          key: 'banner',
-        },
+        // {
+        //   label: '封面',
+        //   key: 'banner',
+        // },
         {
           label: '权限码',
           key: 'code',
@@ -90,14 +98,14 @@ export default {
           label: '备注',
           key: 'remarks',
         },
-        {
-          label: '网址仓库',
-          key: 'siteStore',
-        },
-        {
-          label: '拓展字段',
-          key: 'expand',
-        },
+        // {
+        //   label: '网址仓库',
+        //   key: 'siteStore',
+        // },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        // },
       ],
 
       // 搜索表单
@@ -138,11 +146,11 @@ export default {
           key: 'remarks',
           type: 'input',
         },
-        {
-          label: '封面',
-          key: 'banner',
-          type: 'banner',
-        },
+        // {
+        //   label: '封面',
+        //   key: 'banner',
+        //   type: 'banner',
+        // },
         {
           label: '权限码',
           key: 'code',
@@ -186,8 +194,11 @@ export default {
       pageSize: 10,
     };
   },
-  mounted() {
+  activated() {
     this.queryData();
+  },
+  mounted() {
+    // this.queryData();
   },
   methods: {
     queryData() {

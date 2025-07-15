@@ -72,7 +72,7 @@ export default {
   mounted() {
     this.initScrollEvent();
     this.initEventBus();
-    this.initLocalStyleInfo();
+    this.initLocalThemeInfo();
 
     // 创建事件总线
     Bus.pubEv(BusType.HOME_CREATE_KEYUP_SLASH);
@@ -87,14 +87,14 @@ export default {
   },
   methods: {
     ...mapMutations(['commitAll']),
-    ...mapActions(['initLocalStyleInfo']),
+    ...mapActions(['initLocalThemeInfo']),
 
     handleHomeSearchFucos(event) {
       Bus.pubEv(BusType.HOME_FUCOS, event.key);
     },
 
     initScrollEvent() {
-      let debounce = this.TOOL.debounce(event => {
+      let debounce = this.LODASH.debounce(event => {
         let temp = {
           clear: false,
           white: false,

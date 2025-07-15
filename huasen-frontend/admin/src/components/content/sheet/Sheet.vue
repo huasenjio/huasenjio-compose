@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { tool } from 'huasen-lib';
 export default {
   name: 'Sheet',
 
@@ -91,7 +92,9 @@ export default {
       this.currentPage = currentPage;
     },
     handleCopy(row, column, cell, event) {
-      this.TOOL.copyTextToClip(cell.innerText, '已拷贝单元格内容');
+      tool.copyTextToClip(cell.innerText, () => {
+        alert('已拷贝单元格内容');
+      });
     },
   },
 };

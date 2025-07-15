@@ -1,8 +1,17 @@
 import "core-js";
-import * as tool from './tool.js';
-import { publicEncrypt, publicDecrypt, privateDecrypt, privateEncrypt, rsaEncryptLong, rsaDecryptLong } from './rsa.js';
-import { getAESSecret, decrypt, encrypt } from './aes.js';
-import { Validator, strategies } from './strategy.js';
+import dayjs from "dayjs";
+import * as tool from "./tool.js";
+import {
+  publicEncrypt,
+  publicDecrypt,
+  privateDecrypt,
+  privateEncrypt,
+  rsaEncryptLong,
+  rsaDecryptLong,
+} from "./rsa.js";
+import { getAESSecret, decrypt, encrypt } from "./aes.js";
+import { Validator, strategies } from "./strategy.js";
+import { AF } from "./AF.js";
 
 export {
   // RSA
@@ -20,5 +29,7 @@ export {
   Validator,
   strategies,
   // 工具
-  tool
+  tool,
+  AF,
+  dayjs,
 };

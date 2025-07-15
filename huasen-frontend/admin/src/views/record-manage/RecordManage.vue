@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { tool } from 'huasen-lib';
 import TableList from '@/components/content/table-list/TableList.vue';
 
 export default {
@@ -77,14 +78,19 @@ export default {
       pageSize: 10,
     };
   },
-  mounted() {
+  activated() {
     this.queryRecord();
+  },
+  mounted() {
+    // this.queryRecord();
   },
   methods: {
     handleCopy(index, row) {
       const { _id } = row;
       this.API.record.copyRecord({ _id }).then(res => {
-        this.TOOL.copyTextToClip(JSON.stringify(res.data), null, true);
+        tool.copyTextToClip(JSON.stringify(res.data), () => {
+          alert('已复制日志数据');
+        });
       });
     },
 

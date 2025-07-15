@@ -15,7 +15,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/default.css';
 
 // markdown代码高亮
-Vue.directive('highlight', function(el) {
+Vue.directive('highlight', function (el) {
   let blocks = el.querySelectorAll('pre code');
   blocks.forEach(block => {
     hljs.highlightBlock(block);
@@ -41,10 +41,10 @@ function handleLazy(el, binding) {
       // 进入可视区域时，加载图片资源
       el.src = url;
       // 加载成功时，移除监听
-      el.onload = function() {
+      el.onload = function () {
         observe.unobserve(el);
       };
-      el.onerror = function() {
+      el.onerror = function () {
         // 加载失败时，显示加载失败图片，移除监听
         el.src = unload;
         observe.unobserve(el);
@@ -57,22 +57,23 @@ function handleLazy(el, binding) {
 // 自动获取焦点指令
 Vue.directive('focus', {
   // 当被绑定的元素插入到 DOM 中会获得焦点
-  inserted: function(el) {
+  inserted: function (el) {
     // 聚焦元素
     el.focus();
   },
 });
 
-// 生成随机背景指令
-Vue.directive('randomColor', function(el) {
+// 生成随机颜色指令
+Vue.directive('randomColor', function (el, binding) {
+  let { forText = false } = binding.value ? binding.value : {};
   let colors = ['#fd7e14', '#ffc107', '#33b86c', '#007bff', '#17a2b8', '#e83e8c'];
   let tempIndex = Math.floor(Math.random() * colors.length);
-  el.style.backgroundColor = colors[tempIndex];
+  el.style[forText ? 'color' : 'backgroundColor'] = colors[tempIndex];
 });
 
 // 子元素间隔相等
 Vue.directive('balance', {
-  inserted: function(el) {
+  inserted: function (el) {
     el.style.display = 'flex';
     el.style.flexWrap = 'wrap';
     if (el.childElementCount != 0) {
@@ -87,7 +88,7 @@ Vue.directive('balance', {
 
 // 根据可视窗口缩放大小指令
 Vue.directive('autoScale', {
-  inserted: function(el) {
+  inserted: function (el) {
     el.style.transformOrigin = 'left top';
     // 执行立即缩放
     handleScale(el);
@@ -102,15 +103,15 @@ Vue.directive('autoScale', {
 
 // 拖拽指令
 Vue.directive('drag', {
-  inserted: function(el) {
-    el.onmousedown = function(e) {
+  inserted: function (el) {
+    el.onmousedown = function (e) {
       const disx = e.pageX - el.offsetLeft;
       const disy = e.pageY - el.offsetTop;
-      document.onmousemove = function(event) {
+      document.onmousemove = function (event) {
         el.style.left = event.pageX - disx + 'px';
         el.style.top = event.pageY - disy + 'px';
       };
-      document.onmouseup = function() {
+      document.onmouseup = function () {
         document.onmousemove = document.onmouseup = null;
         const resizeEvent = new Event('resize');
         window.dispatchEvent(resizeEvent);
@@ -125,7 +126,7 @@ function addresize(dom, fn) {
     h = dom.offsetHeight,
     oldfn = window.onresize;
   if (oldfn) {
-    window.onresize = function() {
+    window.onresize = function () {
       // 若resize回调存在，则调用绑定window上下午，直接执行一遍
       oldfn.call(window);
       if (dom.offsetWidth != w || dom.offsetHeight != h) {
@@ -136,7 +137,7 @@ function addresize(dom, fn) {
       }
     };
   } else {
-    window.onresize = function() {
+    window.onresize = function () {
       if (dom.offsetWidth != w || dom.offsetHeight != h) {
         w = dom.offsetWidth;
         h = dom.offsetHeight;

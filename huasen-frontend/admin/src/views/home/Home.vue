@@ -66,6 +66,7 @@
   </div>
 </template>
 <script>
+import { tool } from 'huasen-lib';
 import HomeOverview from './overview/HomeOverview.vue';
 import HomeVisitor from './visitor/HomeVisitor.vue';
 import HomeSystem from './system/HomeSystem.vue';
@@ -351,7 +352,7 @@ export default {
 
     // 心跳
     initPoll() {
-      this.timer = this.TOOL.timeout2Interval(
+      this.timer = tool.timeout2Interval(
         () => {
           if (this.ws && this.ws.readyState === 1) {
             this.ws.send(JSON.stringify(['system', 'visitor']));

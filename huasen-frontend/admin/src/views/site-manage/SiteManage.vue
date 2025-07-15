@@ -16,8 +16,10 @@
       :showAdd="true"
       :showAddMany="true"
       :showSelection="true"
+      :showDetail="true"
       @edit="handleEdit"
       @add="handleAdd"
+      @detail="handleDetail"
       @addMany="handleAddMany"
       @remove="handleRemove"
       @removeMany="handleRemoveMany"
@@ -52,28 +54,45 @@
       v-if="showImport"
       ref="dialogImportForm"
       width="420"
-      maxHeight="480"
+      height="400"
+      maxHeight="400"
       title="链接导入/出"
       :visible.sync="showImport"
       :formMap="importFormMap"
       :formData.sync="importForm"
       :formRule="importRule"
-      :close-on-click-modal="false"
       :mode="importMode"
+      :close-on-click-modal="false"
+      @siteImportSuccess="handleSiteImportSuccess"
     ></DialogForm>
+    <HsDialog
+      v-if="showDetail"
+      width="820"
+      maxHeight="460"
+      :title="`${LODASH.get(activeSite, 'name')}详情页`"
+      :close-on-click-modal="false"
+      :visible.sync="showDetail"
+      :buttons="{ comfirm: '保 存' }"
+      @close="handleCancel"
+      @comfirmDialog="handleSaveDetail"
+    >
+      <MarkdownEditor :value.sync="currentSiteDetail" :onImgAdd="handleImgAddUrl"></MarkdownEditor>
+    </HsDialog>
   </div>
 </template>
 
 <script>
+import HsDialog from '@/components/common/dialog/Dialog.vue';
 import TableList from '@/components/content/table-list/TableList.vue';
 import DialogForm from '@/components/content/dialog-form/DialogForm.vue';
+import MarkdownEditor from '@/components/content/markdown-editor/MarkdownEditor.vue';
 import { Validator } from 'huasen-lib';
 const validator = new Validator();
 const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 
 export default {
   name: 'SiteManage',
-  components: { TableList, DialogForm },
+  components: { HsDialog, TableList, DialogForm, MarkdownEditor },
   data() {
     return {
       // 表格相关
@@ -98,13 +117,18 @@ export default {
           width: 100,
         },
         {
-          label: '备注',
-          key: 'remarks',
+          label: '访问量',
+          key: 'pv',
+          width: 64,
         },
-        {
-          label: '拓展字段',
-          key: 'expand',
-        },
+        // {
+        //   label: '备注',
+        //   key: 'remarks',
+        // },
+        // {
+        //   label: '拓展字段',
+        //   key: 'expand',
+        // },
         {
           label: '权限码',
           key: 'code',
@@ -139,9 +163,9 @@ export default {
           selectOptions: this.CONSTANT.dictionary.code,
         },
       ],
-
       show: false,
       showImport: false,
+      showDetail: false,
       mode: 'add',
       importMode: 'add',
       formMap: [
@@ -237,7 +261,11 @@ export default {
         },
       ],
       rule: {
-        name: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']) }],
+        name: [
+          {
+            validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:2::长度不能小于2', 'maxLength:20::长度不能大于20']),
+          },
+        ],
         url: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isUrl::请输入正确的网址']) }],
         expand: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isJSONObject::请输入JSON对象']) }],
       },
@@ -265,12 +293,19 @@ export default {
 
       siteTagNameOptions: [],
       columnOptions: [],
+      activeSite: {},
+      currentSiteDetail: '',
     };
   },
 
-  mounted() {
+  activated() {
     this.queryData();
     this.queryColumnData();
+  },
+
+  mounted() {
+    // this.queryData();
+    // this.queryColumnData();
   },
 
   methods: {
@@ -328,6 +363,11 @@ export default {
       this.pageSize = pageSize;
     },
 
+    handleSiteImportSuccess() {
+      this.queryData();
+      this.queryColumnData();
+    },
+
     handleRemove(index, row) {
       this.API.site.removeSite({ _id: row._id }).then(res => {
         this.queryData();
@@ -347,6 +387,19 @@ export default {
       this.$nextTick(() => {
         this.initForm = this.LODASH.cloneDeep(this.form);
       });
+    },
+
+    handleDetail(index, row) {
+      this.API.site
+        .findSiteDetail({ _id: row._id }, { notify: false })
+        .then(res => {
+          this.activeSite = res.data;
+          this.currentSiteDetail = this.LODASH.get(res.data, 'detail', '');
+          this.$nextTick(() => {
+            this.showDetail = true;
+          });
+        })
+        .catch(err => {});
     },
 
     handleAddMany() {
@@ -459,6 +512,46 @@ export default {
       this.show = false;
       this.initForm = null;
     },
+
+    /**
+     * 取消或重置详情页
+     */
+    handleCancel() {
+      this.showDetail = false;
+      this.activeSite = null;
+      this.currentSiteDetail = '';
+    },
+
+    /**
+     * 保存详情页
+     */
+    handleSaveDetail() {
+      this.API.site.updateSite({ _id: this.activeSite._id, detail: this.currentSiteDetail }, { notify: false }).then(res => {
+        this.$tips('success', '网链详情页保存成功', 'top-right', 1200);
+        this.activeSite.detail = this.currentSiteDetail;
+        this.handleCancel();
+
+        this.$nextTick(() => {
+          this.queryData();
+        });
+      });
+    },
+
+    /**
+     * 处理详情页图片上传
+     * @param {*} index
+     * @param {*} file
+     */
+    async handleImgAddUrl(index, file) {
+      let formdata = new FormData();
+      formdata.append('file', file);
+      let result = await this.API.file.uploadFile(formdata, {
+        url: '/file/upload?type=article',
+      });
+      this.$tips('success', '上传成功', 'top-right', 1200);
+      // 返回url写入内容
+      return location.origin + location.pathname + result.data[0].path;
+    },
   },
 };
 </script>
@@ -468,5 +561,13 @@ export default {
   width: 100%;
   height: calc(100% - 120px);
   padding: 10px 10px;
+  ::v-deep .h-markdown-editor {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    .markdown-editor {
+      height: 430px;
+    }
+  }
 }
 </style>

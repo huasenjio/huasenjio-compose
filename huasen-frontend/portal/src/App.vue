@@ -15,6 +15,7 @@
 <script>
 import Wrap from '@/components/content/wrap/Wrap.vue';
 import BrowserTips from '@/components/content/browserTips/BrowserTips.vue';
+import { tool } from 'huasen-lib';
 
 import { mapState, mapActions } from 'vuex';
 import { initScaleDocument, destoryScaleDocument } from '@/plugin/scale-document.js';
@@ -35,7 +36,7 @@ export default {
 
     // 判断浏览器支持
     isSupport() {
-      let temp = this.TOOL.judgeIE();
+      let temp = tool.judgeIE();
       console.log('浏览器信息：' + temp);
       if (temp === -1 || temp === 'edge') {
         return true;
@@ -79,7 +80,7 @@ export default {
     });
     // 加载处理用户信息
     await this.initLocalUserInfo();
-    await this.initLocalStyleInfo();
+    await this.initLocalThemeInfo();
     await this.queryCity();
 
     this.loaded = true;
@@ -92,7 +93,7 @@ export default {
 
   methods: {
     // 导入vuex中的方法
-    ...mapActions(['initLocalUserInfo', 'initLocalStyleInfo', 'initAppConfigInfo']),
+    ...mapActions(['initLocalUserInfo', 'initLocalThemeInfo', 'initAppConfigInfo']),
 
     async queryCity() {
       const result = await this.API.App.getCity({}, { notify: false });

@@ -2,42 +2,9 @@ const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
 const crypto = require('crypto');
-const moment = require('moment');
 const request = require('request');
-const { spawn } = require('child_process')
-
-/**
- * 防抖函数
- * 特定事件段内触发的函数不会被执行
- * @param {Function} function
- * @param {Number} delay
- */
-function debounce(func, delay) {
-  let timeing = null; // 定义一个定时器变量
-  return function (...args) {
-    // 存在则清除定时器
-    if (timeing) {
-      clearTimeout(timeing);
-    }
-    // 不存在则重新定时
-    timeing = setTimeout(() => {
-      return func.apply(this, arguments); // 传入参数
-    }, delay);
-  };
-}
-
-/**
- * 对象深拷贝函数
- * @param {object} object
- */
-function copyObject(object) {
-  let obj = object instanceof Array ? [] : {}; // 判断是数组或者对象进行声明变量
-  // 解构获得键值对
-  for (const [k, v] of Object.entries(object)) {
-    obj[k] = typeof v == 'object' ? copyObject(v) : v; // 如果当前属性是引用类型则递归调用，基础数据类型则直接赋值。
-  }
-  return obj; // 返还对象
-}
+const { spawn } = require('child_process');
+const { tool } = require('huasen-lib');
 
 /**
  * md5签名
@@ -186,38 +153,6 @@ function readDirectory(filePath) {
 }
 
 /**
- * 指定长度获得不重复的uid
- * @param {Number} len    长度
- * @param {Number} radix  基数位数
- * @returns
- */
-function getUid(len, radix) {
-  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-  var uuid = [],
-    i;
-  radix = radix || chars.length;
-  if (len) {
-    // Compact form
-    for (i = 0; i < len; i++) uuid[i] = chars[0 | (Math.random() * radix)];
-  } else {
-    // rfc4122, version 4 form
-    var r;
-    // rfc4122 requires these characters
-    uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-    uuid[14] = '4';
-    // Fill in random data.  At i==19 set the high bits of clock sequence as
-    // per rfc4122, sec. 4.1.5
-    for (i = 0; i < 36; i++) {
-      if (!uuid[i]) {
-        r = 0 | (Math.random() * 16);
-        uuid[i] = chars[i == 19 ? (r & 0x3) | 0x8 : r];
-      }
-    }
-  }
-  return uuid.join('');
-}
-
-/**
  * 计算同比增长
  * @param {Number} nV - 新值
  * @param {Number} oV - 旧值
@@ -233,7 +168,7 @@ function handleRate(nV, oV) {
 /**
  * 下载图片并转换为base64
  * @param {String} imageUrl - 图片地址
- * @returns 
+ * @returns
  */
 async function downloadAndConvertToBase64(imageUrl) {
   return new Promise((resolve, reject) => {
@@ -255,7 +190,7 @@ async function downloadAndConvertToBase64(imageUrl) {
 /**
  * 字节转换大小
  * @param {Number} bytes - 字节数
- * @returns 
+ * @returns
  */
 function bytesToSize(bytes) {
   if (bytes === 0) return '0 B';
@@ -267,17 +202,17 @@ function bytesToSize(bytes) {
 
 /**
  * 获取当前时间
- * @param {Boolean} simple 
- * @returns 
+ * @param {Boolean} simple
+ * @returns
  */
 function getTime(simple) {
-  return simple ? moment().format('YYYYMMDDHHmmss') : moment().format('YYYY-MM-DD HH:mm:ss');
+  return simple ? tool.formatDate(new Date(), 'YYYYMMDDHHmmss') : tool.formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss');
 }
 
 /**
  * 获取客户端IP
  * @param {Object} req - 请求对象
- * @returns 
+ * @returns
  */
 function getClientIP(req) {
   // 按优先级获取客户端IP
@@ -290,7 +225,6 @@ function getClientIP(req) {
   );
 }
 
-
 /**
  * 执行命令
  * @param {String} command - 命令
@@ -301,18 +235,16 @@ function getClientIP(req) {
 function commandSpawn(command, args, options) {
   return new Promise((resolve, reject) => {
     // 开启子终端执行命令，例如npm install为spawn('npm', ['install'], {cwd: '工作路径'})
-    const childProcess = spawn(command, args, options)
-    childProcess.stdout.pipe(process.stdout)
-    childProcess.stdout.pipe(process.stderr)
+    const childProcess = spawn(command, args, options);
+    childProcess.stdout.pipe(process.stdout);
+    childProcess.stdout.pipe(process.stderr);
     childProcess.on('close', () => {
       path.resolve();
-    })
-  })
+    });
+  });
 }
 
 module.exports = {
-  debounce,
-  copyObject,
   deleteDir,
   stringToMD5,
   streamPipe,
@@ -320,12 +252,11 @@ module.exports = {
   readFileByLine,
   readDirectory,
   createDirSync,
-  getUid,
   writeToFile,
   handleRate,
   downloadAndConvertToBase64,
   bytesToSize,
   getTime,
   getClientIP,
-  commandSpawn
+  commandSpawn,
 };

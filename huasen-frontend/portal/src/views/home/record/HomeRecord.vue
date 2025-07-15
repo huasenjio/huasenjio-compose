@@ -42,7 +42,7 @@
     <main id="js-home-record__main" v-discolor>
       <ul v-balance>
         <li class="record-item" v-for="(item, index) in user.records" :key="`${item}-${index}`">
-          <a class="inherit-text text" v-if="!isEditMode" :title="item.remark" :href="item.url" target="_blank">
+          <a class="inherit-text text" v-if="!isEditMode" :title="item.name" :href="item.url" :class="{ 'delete-model': isDeleteMode }" target="_blank">
             {{ item.name }}
           </a>
           <!-- 编辑的替身 -->
@@ -59,7 +59,7 @@
       :visible.sync="showForm"
       ref="formDialog"
       width="400"
-      height="365"
+      height="420"
       :buttons="{ comfirm: '确 认', cancel: '取 消' }"
       :title="title"
       :close-on-click-modal="false"
@@ -76,7 +76,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 
-import { Validator } from 'huasen-lib';
+import { Validator, tool } from 'huasen-lib';
 const validator = new Validator();
 const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 
@@ -104,7 +104,7 @@ export default {
       formData: {
         name: '',
         url: '',
-        remark: '',
+        remarks: '',
       },
 
       formMap: [
@@ -119,15 +119,15 @@ export default {
           type: 'input',
         },
         {
-          key: 'remark',
+          key: 'remarks',
           label: '备注',
           type: 'textarea',
           minRows: 4,
         },
       ],
       formRule: {
-        name: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isName::请输入汉字/英文/数字']) }],
-        url: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'isUrl::请输入正确的网址']) }],
+        name: [{ required: true, message: '请输入名称' }, { validator: getElementFormValidator(['isName::请输入汉字/英文/数字']) }],
+        url: [{ required: true, message: '请输入链接' }, { validator: getElementFormValidator(['isUrl::请输入正确的网址']) }],
       },
     };
   },
@@ -148,7 +148,7 @@ export default {
     ...mapMutations(['commitAll']),
 
     openAddMode() {
-      this.title = `添加网站`;
+      this.title = `添加自定义网站`;
       this.isEditMode = false;
       this.isDeleteMode = false;
       this.showForm = true;
@@ -164,7 +164,7 @@ export default {
 
     // 处理编辑
     handleEdit(site, index) {
-      this.title = `编辑网站`;
+      this.title = `编辑自定义网站`;
       this.showForm = true;
       this.$nextTick(() => {
         this.formData = Object.assign(this.formData, site);
@@ -173,13 +173,16 @@ export default {
 
     // 打开极简模式
     openSimpleMode() {
-      this.handleCommit({
-        user: {
-          config: {
-            simpleMode: !this.user.config.simpleMode,
+      this.handleCommit(
+        {
+          user: {
+            config: {
+              simpleMode: !this.user.config.simpleMode,
+            },
           },
         },
-      });
+        ['config.simpleMode'],
+      );
     },
 
     // 删除
@@ -190,11 +193,14 @@ export default {
           records.splice(index, 1);
         }
       });
-      this.handleCommit({
-        user: {
-          records: records,
+      this.handleCommit(
+        {
+          user: {
+            records: records,
+          },
         },
-      });
+        ['records'],
+      );
     },
 
     // 添加和修改
@@ -206,7 +212,7 @@ export default {
           id: '',
           name: '',
           url: '',
-          remark: '',
+          remarks: '',
         },
         {
           ...this.formData,
@@ -221,14 +227,17 @@ export default {
         }
       } else {
         // 添加
-        record.id = this.TOOL.getUid(16, 8);
+        record.id = tool.getUid(16, 8);
         records.push(record);
       }
-      this.handleCommit({
-        user: {
-          records: records,
+      this.handleCommit(
+        {
+          user: {
+            records: records,
+          },
         },
-      });
+        ['records'],
+      );
       this.cancel();
     },
 
@@ -241,10 +250,9 @@ export default {
     },
 
     // 统一处理提交
-    handleCommit(data) {
-      if (Object.keys(data).length === 0) return;
+    handleCommit(data, paths) {
       this.commitAll(data);
-      this.$store.dispatch('snapshoot');
+      this.$store.dispatch('snapshoot', { paths });
     },
 
     // 显示备份恢复面板
@@ -311,28 +319,36 @@ export default {
       flex-wrap: wrap;
       .record-item {
         position: relative;
-        width: 110px;
-        padding: 10px;
+        width: 128px;
+        padding: 6px;
         display: flex;
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
         a {
           width: 80%;
+          padding: 2px;
           border: 1px solid transparent;
           border-radius: 3px;
           text-align: center;
           color: var(--gray-600);
+          &.edit-mode {
+            border: 1px solid var(--red-400) !important;
+            color: var(--red-400);
+          }
+          &.delete-model {
+            border: 1px solid var(--red-400) !important;
+          }
         }
         i {
           position: absolute;
-          top: 0px;
-          right: 10px;
+          top: -2px;
+          right: 11px;
           cursor: pointer;
         }
-        .edit-mode {
+
+        .remove-model {
           border: 1px solid var(--red-400) !important;
-          color: var(--red-400);
         }
         .delete-icon {
           color: var(--red-400);

@@ -6,7 +6,7 @@
  * @Description: 登录面板
 -->
 <template>
-  <HsDialog :fullscreen="true" :show-close="false" :close-on-press-escape="false" :visible="showSign">
+  <HsDialog title="" :fullscreen="true" :show-close="false" :close-on-press-escape="false" :visible="showSign">
     <div class="sign shadow-md rounded-lg">
       <div class="banner">
         <img src="~@/assets/img/sign/default.svg" />

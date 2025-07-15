@@ -4,15 +4,6 @@
     "redirect": "/home"
   },
   {
-    "path": "/home",
-    "name": "Home",
-    "menuCode": "000",
-    "component": "home/Home",
-    "title": "主页",
-    "keepAlive": true,
-    "children": []
-  },
-  {
     "path": "/error404",
     "name": "Error404",
     "menuCode": "000",
@@ -29,11 +20,20 @@
     "children": []
   },
   {
+    "path": "/home",
+    "name": "Home",
+    "menuCode": "000",
+    "component": "home/Home",
+    "title": "网址导航",
+    "keepAlive": true,
+    "children": []
+  },
+  {
     "path": "/article",
     "name": "Article",
     "menuCode": "000",
     "component": "article/Article",
-    "title": "文章",
+    "title": "博客",
     "keepAlive": true,
     "children": []
   },
@@ -42,7 +42,7 @@
     "name": "Read",
     "menuCode": "000",
     "component": "read/Read",
-    "title": "阅读",
+    "title": "文章阅读",
     "children": []
   }
 ]

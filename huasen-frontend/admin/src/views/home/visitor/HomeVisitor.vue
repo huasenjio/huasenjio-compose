@@ -53,15 +53,15 @@ export default {
     };
   },
 
-  mounted() {
-    this.queryVisitorTotal();
-    this.queryVisitor();
-  },
-
-  // activated() {
+  // mounted() {
   //   this.queryVisitorTotal();
   //   this.queryVisitor();
   // },
+
+  activated() {
+    this.queryVisitorTotal();
+    this.queryVisitor();
+  },
 
   methods: {
     queryVisitorTotal() {

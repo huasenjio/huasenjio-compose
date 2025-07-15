@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2940247 */
-  src: url('iconfont.woff2?t=1734860687633') format('woff2'),
-       url('iconfont.woff?t=1734860687633') format('woff'),
-       url('iconfont.ttf?t=1734860687633') format('truetype');
+  src: url('iconfont.woff2?t=1750600309071') format('woff2'),
+       url('iconfont.woff?t=1750600309071') format('woff'),
+       url('iconfont.ttf?t=1750600309071') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,38 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xiangshang:before {
+  content: "\e76f";
+}
+
+.icon-xiangxia:before {
+  content: "\e774";
+}
+
+.icon-xiangyou:before {
+  content: "\e776";
+}
+
+.icon-xiangzuo:before {
+  content: "\e77a";
+}
+
+.icon-boke:before {
+  content: "\e8df";
+}
+
+.icon-aiapp:before {
+  content: "\e6d6";
+}
+
+.icon-bokewenzi:before {
+  content: "\e63e";
+}
+
+.icon-wangzhidaohang:before {
+  content: "\e62d";
 }
 
 .icon-sousuoyinqing:before {
@@ -133,7 +165,7 @@
   content: "\e66f";
 }
 
-.icon-rcd-image-error-f:before {
+.icon-image-error:before {
   content: "\e618";
 }
 

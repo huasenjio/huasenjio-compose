@@ -20,7 +20,6 @@
     "jsencrypt": "^3.2.1",
     "mavon-editor": "^2.10.4",
     "mockjs2": "^1.0.8",
-    "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "sass": "~1.26.5",
     "showdown": "^1.9.1",

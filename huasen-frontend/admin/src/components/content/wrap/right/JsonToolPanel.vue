@@ -40,7 +40,7 @@
 <script>
 import HsDialog from '@/components/common/dialog/Dialog.vue';
 import VueJsonEditor from 'vue-json-editor-fix-cn';
-import { AF } from '@/plugin/af.js';
+import { AF } from 'huasen-lib';
 export default {
   name: 'JsonToolPanel',
 

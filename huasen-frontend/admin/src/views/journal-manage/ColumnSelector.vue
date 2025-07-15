@@ -14,16 +14,19 @@
             <div class="title">已选择</div>
           </div>
           <ul class="column-list">
-            <Draggable v-model="selectColumns" filter=".no-drap" animation="400">
-              <transition-group>
-                <li class="column-item drag-item" v-for="(item, index) in selectColumns" :key="item._id">
-                  <i class="el-icon-rank pointer"></i>
-                  <div class="name text no-drap">{{ item.name | emptyTip }}</div>
-                  <div class="description text no-drap">{{ item.description | emptyTip }}</div>
-                  <i class="el-icon-delete pointer remove no-drap" @click="remove(item, index)"></i>
-                </li>
-              </transition-group>
-            </Draggable>
+            <template v-if="selectColumns.length">
+              <Draggable v-model="selectColumns" filter=".no-drap" animation="400">
+                <transition-group>
+                  <li class="column-item drag-item" v-for="(item, index) in selectColumns" :key="item._id">
+                    <i class="el-icon-rank pointer"></i>
+                    <div class="name text no-drap">{{ item.name | emptyTip }}</div>
+                    <div class="description text no-drap">{{ item.description | emptyTip }}</div>
+                    <i class="el-icon-delete pointer remove no-drap" @click="remove(item, index)"></i>
+                  </li>
+                </transition-group>
+              </Draggable>
+            </template>
+            <el-empty v-else :image-size="60" description="请选择展示的栏目"></el-empty>
           </ul>
         </div>
         <div class="selecting">

@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "constants": "^0.0.2",
-    "crypto": "^1.0.1"
+    "crypto": "^1.0.1",
+    "dayjs": "^1.11.13"
   },
   "peerDependencies": {
     "constants": "^0.0.2",

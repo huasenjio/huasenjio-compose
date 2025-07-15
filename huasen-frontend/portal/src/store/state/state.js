@@ -25,8 +25,6 @@ export default {
       bgLightness: 0,
       // 极简模式
       simpleMode: false,
-      // 明亮模式
-      lightMode: true,
       // 配色
       theme: {},
       // 搜索联想数量
@@ -39,6 +37,9 @@ export default {
       showNavbar: true,
       // 城市码
       cityCode: 101210101,
+
+      // 明亮模式
+      lightMode: true,
     },
   },
   // 全部站点

@@ -42,7 +42,8 @@
                   <div class="detail">控制搜索框的圆角样式</div>
                 </div>
                 <div class="right px-px-12">
-                  <el-slider v-model="searchBorderRadius" :min="0" :max="24" :step="2" show-stops :format-tooltip="val => val + 'px'" @change="handleSearchBorderRadiusChange"> </el-slider>
+                  <el-slider v-model="searchBorderRadius" :min="0" :max="24" :step="2" show-stops :format-tooltip="val => val + 'px'" @change="handleSearchBorderRadiusChange">
+                  </el-slider>
                 </div>
               </div>
               <div class="row">
@@ -145,6 +146,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
+import { tool } from 'huasen-lib';
 import HsDrawer from '@/components/content/drawer/Drawer.vue';
 
 export default {
@@ -276,74 +278,95 @@ export default {
           return true;
         }
       });
-      this.initCustomStyle({
-        user: {
-          config: {
-            cityCode: code,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              cityCode: code,
+            },
           },
         },
-      });
+        ['config.cityCode'],
+      );
     },
 
     handleSearchBorderRadiusChange(val) {
-      this.initCustomStyle({
-        user: {
-          config: {
-            searchBorderRadius: val,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              searchBorderRadius: val,
+            },
           },
         },
-      });
+        ['config.searchBorderRadius'],
+      );
     },
 
     handleSearchEngineChange(val) {
-      this.initCustomStyle({
-        user: {
-          config: {
-            searchEngineIndex: val,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              searchEngineIndex: val,
+            },
           },
         },
-      });
+        ['config.searchEngineIndex'],
+      );
     },
 
     handleNavbar(val) {
-      this.initCustomStyle({
-        user: {
-          config: {
-            showNavbar: !!val,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              showNavbar: !!val,
+            },
           },
         },
-      });
+        ['config.showNavbar'],
+      );
     },
 
     handleBlur() {
       this.associationCount = this.associationCount < 2 || this.associationCount > 10 ? 6 : this.associationCount;
-      this.initCustomStyle({
-        user: {
-          config: {
-            searchAssociationCount: this.associationCount,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              searchAssociationCount: this.associationCount,
+            },
           },
         },
-      });
+        ['config.searchAssociationCount'],
+      );
     },
 
     changeFilter(val) {
-      this.initCustomStyle({
-        user: {
-          config: {
-            bgFilter: val,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              bgFilter: val,
+            },
           },
         },
-      });
+        ['config.bgFilter'],
+      );
     },
 
     changeShadow(val) {
-      this.initCustomStyle({
-        user: {
-          config: {
-            bgLightness: val,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              bgLightness: val,
+            },
           },
         },
-      });
+        ['config.bgLightness'],
+      );
     },
 
     // 上传文件转换成base64进行保存
@@ -352,14 +375,17 @@ export default {
       // 2097152 = 2M
       // 3145728 = 3M
       if (file.size <= 3145728) {
-        this.TOOL.getBase64(file, bs64 => {
-          this.initCustomStyle({
-            user: {
-              config: {
-                bg: bs64,
+        tool.getBase64(file, bs64 => {
+          this.initCustomStyle(
+            {
+              user: {
+                config: {
+                  bg: bs64,
+                },
               },
             },
-          });
+            ['config.bg'],
+          );
         });
       } else {
         this.$tips('error', '图片大小已超过 2MB', null, 2000);
@@ -368,19 +394,21 @@ export default {
     },
 
     changeBg(val, tag) {
-      this.initCustomStyle({
-        user: {
-          config: {
-            bg: tag == 'pick' ? val : val.background,
+      this.initCustomStyle(
+        {
+          user: {
+            config: {
+              bg: tag == 'pick' ? val : val.background,
+            },
           },
         },
-      });
+        ['config.bg'],
+      );
     },
 
-    initCustomStyle(data) {
+    initCustomStyle(data, paths) {
       this.commitAll(data);
-      this.$store.dispatch('snapshoot');
-      this.$store.dispatch('initLocalUserInfo');
+      this.$store.dispatch('snapshoot', { paths });
     },
   },
 };

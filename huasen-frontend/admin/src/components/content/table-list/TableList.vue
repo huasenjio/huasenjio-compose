@@ -14,7 +14,14 @@
           <el-col v-for="(formItem, index) in formMap" :key="index" :span="formItem.span || 5">
             <el-form-item>
               <!-- input -->
-              <el-input v-if="formItem.type == 'input'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)" @keyup.native.enter="search" clearable></el-input>
+              <el-input
+                v-if="formItem.type == 'input'"
+                v-model="formData[formItem.key]"
+                :placeholder="handlePlaceHolder(formItem)"
+                @keyup.native.enter="search"
+                @clear="search"
+                clearable
+              ></el-input>
               <!-- select -->
               <el-select v-if="formItem.type == 'select'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)" @change="search">
                 <el-option label="全部" value=""></el-option>
@@ -37,7 +44,16 @@
     </header>
     <!-- 中间表格 -->
     <main v-if="showContent">
-      <el-table ref="table" :data="tableData" :stripe="true" :border="true" highlight-current-row @selection-change="handleSelectionChange" @cell-dblclick="handleCopy" height="100%">
+      <el-table
+        ref="table"
+        :data="tableData"
+        :stripe="true"
+        :border="true"
+        highlight-current-row
+        @selection-change="handleSelectionChange"
+        @cell-dblclick="handleCopy"
+        height="100%"
+      >
         <!-- 多选 -->
         <el-table-column v-if="showSelection" type="selection" width="48"> </el-table-column>
         <!-- 序号 -->
@@ -51,6 +67,22 @@
                 <img v-lazy class="max-w-full max-h-full" :src="scope.row[col.key]" />
               </div>
             </template>
+            <!-- 添加时间&更新时间 -->
+            <template v-else-if="col.key === 'createTime' || col.key === 'updateTime'">
+              <div class="text">{{ formatDate(scope.row[col.key]) }}</div>
+            </template>
+            <!-- 权限码 -->
+            <template v-else-if="col.key === 'code'">
+              <el-tag v-if="scope.row[col.key] === 3" type="danger" size="mini">作者权限</el-tag>
+              <el-tag v-if="scope.row[col.key] === 2" type="warning" size="mini">管理权限</el-tag>
+              <el-tag v-if="scope.row[col.key] === 1" type="info" size="mini">特权用户</el-tag>
+              <el-tag v-if="scope.row[col.key] === 0" size="mini">普通用户</el-tag>
+            </template>
+            <!-- 开关 -->
+            <template v-else-if="col.key === 'enabled'">
+              <el-switch v-model="scope.row[col.key]" size="mini" disabled></el-switch>
+            </template>
+
             <!-- 其它 -->
             <div v-else class="text">{{ scope.row[col.key] | emptyTip }}</div>
           </template>
@@ -58,12 +90,13 @@
         <!-- 操作 -->
         <el-table-column label="操作" :width="240">
           <template slot-scope="scope">
-            <el-popconfirm v-if="showRemove" @confirm="remove(scope.$index, scope.row)" class="mr-px-10" popper-class="delete-popcomfirm" title="确定删除吗？">
-              <el-button slot="reference" size="mini" type="danger">删除</el-button>
+            <el-button v-if="showDetail" size="mini" plain @click="detail(scope.$index, scope.row)">详情书</el-button>
+            <el-button v-if="showRelation" size="mini" type="info" plain @click="relation(scope.$index, scope.row)">关联</el-button>
+            <el-button v-if="showCopy" size="mini" type="warning" plain @click="copy(scope.$index, scope.row)">复制</el-button>
+            <el-button v-if="showEdit" size="mini" type="primary" plain @click="edit(scope.$index, scope.row)">编辑</el-button>
+            <el-popconfirm v-if="showRemove" @confirm="remove(scope.$index, scope.row)" class="ml-px-10" popper-class="delete-popcomfirm" title="确定删除吗？">
+              <el-button slot="reference" size="mini" plain type="danger">删除</el-button>
             </el-popconfirm>
-            <el-button v-if="showCopy" size="mini" type="warning" @click="copy(scope.$index, scope.row)">复制</el-button>
-            <el-button v-if="showEdit" size="mini" type="primary" @click="edit(scope.$index, scope.row)">编辑</el-button>
-            <el-button v-if="showRelation" size="mini" type="info" @click="relation(scope.$index, scope.row)">关联</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -88,6 +121,7 @@
 </template>
 
 <script>
+import { tool } from 'huasen-lib';
 export default {
   name: 'TableList',
 
@@ -165,6 +199,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showDetail: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -237,6 +275,10 @@ export default {
       this.$emit('edit', index, row);
     },
 
+    detail(index, row) {
+      this.$emit('detail', index, row);
+    },
+
     relation(index, row) {
       this.$emit('relation', index, row);
     },
@@ -253,6 +295,10 @@ export default {
       this.handleEmit('search', this.pagination.pageNo, this.pagination.pageSize);
     },
 
+    formatDate(dateStr) {
+      return dateStr ? tool.formatDate(dateStr, 'YYYY-MM-DD HH:mm:ss') : '--';
+    },
+
     handleEmit(eventName) {
       this.$nextTick(() => {
         let args = [...Array.from(arguments)];
@@ -262,7 +308,9 @@ export default {
     },
 
     handleCopy(row, column, cell, event) {
-      this.TOOL.copyTextToClip(cell.innerText, '已拷贝单元格内容');
+      tool.copyTextToClip(cell.innerText, () => {
+        alert('已拷贝单元格内容');
+      });
     },
   },
 };

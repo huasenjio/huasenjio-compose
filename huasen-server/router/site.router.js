@@ -8,7 +8,24 @@
 
 const express = require('express');
 const router = express.Router();
-const { add, addMany, findByPage, remove, removeMany, update, findByCode, findByList, findSiteTagByList, findSiteColumnByList, bindColumn, unbindColumn, importSite, exportSite, findSiteFavicon } = require('../controller/site.controller.js');
+const {
+  add,
+  addMany,
+  findByPage,
+  remove,
+  removeMany,
+  update,
+  findByCode,
+  findByList,
+  findSiteTagByList,
+  findSiteColumnByList,
+  bindColumn,
+  unbindColumn,
+  importSite,
+  exportSite,
+  findSiteFavicon,
+  findSiteDetail,
+} = require('../controller/site.controller.js');
 const { handleJWT, handleUselessParams } = require('../middleware/common.middleware.js');
 const { checkManagePower } = require('../middleware/power.middleware.js');
 
@@ -66,5 +83,13 @@ router.post('/findByCode', handleJWT(false), findByCode);
  * @apiParam {string} url 网链地址
  */
 router.post('/findSiteFavicon', handleJWT(), checkManagePower, findSiteFavicon);
+
+/**
+ * @api {post} /site/findSiteDetail 通过网_id查询网链详情
+ * @apiVersion 1.0.0
+ * @apiGroup Site
+ * @apiParam {string} _id 链接_id
+ */
+router.post('/findSiteDetail', handleJWT(false), findSiteDetail);
 
 module.exports = router;

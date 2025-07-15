@@ -8,7 +8,7 @@
 
 const EventProxy = require('eventproxy');
 const { epWorking } = require('../service/index.js');
-const { getUid } = require('../utils/tool.js');
+const { tool } = require('huasen-lib');
 
 class Throttle {
   constructor(maxCount, queueCount, sleepTime) {
@@ -28,7 +28,7 @@ class Throttle {
   addRequest(req, res, next, options = {}) {
     // 生产唯一执行单元信息
     let unit = {
-      uid: getUid(16, 8),
+      uid: tool.getUid(16, 8),
       req,
       res,
       next,
@@ -98,7 +98,7 @@ class Throttle {
       unit.options.deleteRequestHook();
     }
     // 请求已结束
-    unit.ended = true
+    unit.ended = true;
     // 处理队列第一个请求
     this.executionFirstRequest();
   }

@@ -14,7 +14,7 @@ const defaultSettings = {
   watermark_x_space: 100, // x轴间隔
   watermark_y_space: 50, // y轴间隔
   watermark_color: '#000', // 字体颜色
-  watermark_alpha: 0.08, // 透明度
+  watermark_alpha: 0.04, // 透明度
   watermark_fontsize: '14px', // 字体大小
   watermark_font: '微软雅黑', // 字体
   watermark_width: 200, // 宽度

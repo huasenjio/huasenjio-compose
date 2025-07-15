@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item label="内容标签" prop="tag">
         <ul class="tag-group">
-          <li v-for="(item, index) in tags" :key="index">
+          <li v-randomColor="{ forText: true }" v-for="(item, index) in tags" :key="index">
             {{ item }}
             <i class="iconfont icon-md-close-circle" v-if="item" @click="deleteTag(index)"></i>
           </li>
@@ -45,8 +45,7 @@
       </el-upload>
     </div>
     <div class="submit-group">
-      <div class="time">{{ `${this.articleForm._id ? '编辑' : '创建'}时间：${getTime}` }}</div>
-      <div class="btn-group">
+      <div class="btn-group ml-auto">
         <el-button type="primary" @click="cancel">取消发布</el-button>
         <el-button type="danger" @click="submit">
           {{ this.articleForm._id ? '完成编辑' : '立即发布' }}
@@ -58,9 +57,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import moment from 'moment';
-import MarkdownEditor from './markdown-editor/MarkdownEditor.vue';
-import { Validator } from 'huasen-lib';
+import MarkdownEditor from '@/components/content/markdown-editor/MarkdownEditor.vue';
+import { Validator, tool } from 'huasen-lib';
 const validator = new Validator();
 const getElementFormValidator = validator.getElementFormValidator.bind(validator);
 export default {
@@ -77,7 +75,6 @@ export default {
         bannerImg: '',
         code: 0,
         isDraft: false,
-        time: '',
       },
       // 校验规则
       rules: {
@@ -109,9 +106,6 @@ export default {
         token: this.manage.token,
       };
     },
-    getTime() {
-      return moment().format('YYYY-MM-DD HH:mm:ss');
-    },
     action() {
       return this.TOOL.getServerApi('/file/upload');
     },
@@ -132,7 +126,7 @@ export default {
       this.$nextTick(async () => {
         // 路由跳转携带参数
         if (Object.keys(this.$route.query).length !== 0) {
-          let result = await this.API.article.findArticleById({ _id: this.$route.query['_id'] });
+          let result = await this.API.article.findArticleById({ _id: this.$route.query['_id'] }, { notify: false });
           let article = result.data.pop();
           if (article) {
             this.articleForm = article;
@@ -144,7 +138,6 @@ export default {
         }
         // 默认赋值
         this.articleForm.manageId = this.manage.id;
-        this.articleForm.time = this.getTime;
       });
     },
 
@@ -231,16 +224,16 @@ export default {
       li {
         display: inline-block;
         margin-left: 10px;
-        font-size: 12px;
+        font-size: 14px;
         color: var(--blue-500);
         &:first-of-type {
           margin-left: 0;
         }
         i {
           position: relative;
-          left: -3px;
+          left: -2px;
           color: var(--red-500);
-          font-size: 10px;
+          font-size: 12px;
           cursor: pointer;
         }
       }
@@ -281,6 +274,14 @@ export default {
     position: absolute !important;
     left: 0px !important;
     border: 1px solid var(--gray-50);
+  }
+}
+::v-deep .h-markdown-editor {
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  .markdown-editor {
+    min-height: 400px;
+    max-height: calc(100vh - 160px);
   }
 }
 </style>

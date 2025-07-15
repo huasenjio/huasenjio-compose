@@ -9,7 +9,7 @@
   <div id="js-empty" class="empty" v-discolor :style="style">
     <main>
       <img class="w-full" src="./img/empty.png" />
-      <div class="w-full text">空空如也</div>
+      <div class="w-full text">{{ description }}</div>
     </main>
   </div>
 </template>
@@ -25,6 +25,10 @@ export default {
     height: {
       type: [Number, String],
       default: '100%',
+    },
+    description: {
+      type: String,
+      default: '空空如也',
     },
   },
 

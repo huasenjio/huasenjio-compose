@@ -7,7 +7,7 @@
  */
 
 const path = require('path');
-const moment = require('moment');
+const { tool } = require('huasen-lib');
 const checkDiskSpace = require('check-disk-space').default;
 const { POOL_ACCESS } = require('../config.js');
 const { readDirectory, bytesToSize, handleRate } = require('../utils/tool.js');
@@ -27,12 +27,13 @@ function overview(req, res, next) {
       },
     ],
     (users, articleCount) => {
-      let userCount = 0, manageCount = 0
+      let userCount = 0;
+      let manageCount = 0;
       users.forEach(user => {
         if (user.code >= 2) {
-          manageCount++
+          manageCount++;
         } else {
-          userCount++
+          userCount++;
         }
       });
       const fileCount = readDirectory(path.resolve(process.cwd(), '../huasen-store')).length;
@@ -87,12 +88,12 @@ function uvInfo(req, res, next) {
     ],
     result => {
       let list = result.map(item => {
-        const { _id, id, log } = item
+        const { _id, id, log } = item;
         return {
           _id,
           id,
-          time: moment(item.time).format('YYYY/MM/DD'),
-          count: log ? Object.keys(log).length : 0
+          time: tool.formatDate(item.time, 'YYYY/MM/DD'),
+          count: log ? Object.keys(log).length : 0,
         };
       });
       global.huasen.responseData(res, list, 'SUCCESS', '查询日志数据');
@@ -122,5 +123,5 @@ module.exports = {
   overview,
   visitorInfo,
   diskInfo,
-  uvInfo
+  uvInfo,
 };

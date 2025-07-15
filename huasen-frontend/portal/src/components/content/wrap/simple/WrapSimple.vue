@@ -24,11 +24,11 @@ export default {
     ...mapState(['user']),
   },
   mounted() {
-    this.initLocalStyleInfo();
+    this.initLocalThemeInfo();
   },
   methods: {
     ...mapMutations(['commitAll']),
-    ...mapActions(['snapshoot', 'initLocalStyleInfo']),
+    ...mapActions(['snapshoot', 'initLocalThemeInfo']),
     closeSimpleMode() {
       this.commitAll({
         user: {
@@ -37,7 +37,7 @@ export default {
           },
         },
       });
-      this.snapshoot();
+      this.snapshoot({ paths: ['config.simpleMode'] });
       this.$nextTick(() => {
         // hs-todo：发布一个resize事件
         let event = new Event('resize', { bubbles: true, cancelable: false });

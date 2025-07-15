@@ -43,7 +43,13 @@ function findByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询记录');
+      const list = result.list;
+      const total = result.total;
+      // 按时间倒序
+      list.sort((a, b) => {
+        return new Date(b.time) - new Date(a.time);
+      });
+      global.huasen.responseData(res, { list, total }, 'SUCCESS', '分页查询记录');
     },
   );
 }
@@ -105,5 +111,5 @@ module.exports = {
   remove,
   findByPage,
   removeMany,
-  copy
+  copy,
 };

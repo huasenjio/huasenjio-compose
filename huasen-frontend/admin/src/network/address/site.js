@@ -20,5 +20,19 @@ const findSiteColmunByList = post('/site/siteColumnList');
 const bindColumnToSite = post('/site/bindColumn');
 const unbindColumnToSite = post('/site/unbindColumn');
 const findSiteFavicon = post('/site/findSiteFavicon');
+const findSiteDetail = post('/site/findSiteDetail');
 
-export { findSiteByPage, addSite, removeSite, removeManySite, updateSite, findSiteByList, findSiteTagByList, findSiteColmunByList, bindColumnToSite, unbindColumnToSite, findSiteFavicon };
+export {
+  findSiteByPage,
+  addSite,
+  removeSite,
+  removeManySite,
+  updateSite,
+  findSiteByList,
+  findSiteTagByList,
+  findSiteColmunByList,
+  bindColumnToSite,
+  unbindColumnToSite,
+  findSiteFavicon,
+  findSiteDetail,
+};

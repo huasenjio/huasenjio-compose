@@ -7,14 +7,14 @@
  */
 const navs = [
   {
-    name: '极简主页',
+    name: '网址导航',
     path: '/home',
-    iconClass: 'iconfont icon-iconset0278',
+    iconClass: 'iconfont icon-wangzhidaohang',
   },
   {
-    name: '文章笔记',
+    name: '博客',
     path: '/article',
-    iconClass: 'iconfont icon-iconset0156',
+    iconClass: 'iconfont icon-bokewenzi',
   },
 ];
 export default navs;

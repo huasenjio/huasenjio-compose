@@ -58,6 +58,11 @@ export default {
         //   key: 'content',
         // },
         {
+          label: '访问量',
+          key: 'pv',
+          width: 64,
+        },
+        {
           label: '是否草稿',
           key: 'isDraft',
         },
@@ -90,8 +95,12 @@ export default {
       pageSize: 10,
     };
   },
-  created() {
+  // 进入路由时
+  activated() {
     this.queryArticle();
+  },
+  created() {
+    // this.queryArticle();
   },
   methods: {
     // 获取全部的新闻数据

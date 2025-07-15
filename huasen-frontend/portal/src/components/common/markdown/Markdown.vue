@@ -4,14 +4,21 @@
       <div class="content__body">
         <div v-html="content" v-highlight></div>
       </div>
-      <div class="content__footer">
-        <div class="text">版权说明：MIT开源协议</div>
-        <div class="text">免责声明：内容仅供学习交流，禁止用于商业用途！</div>
+      <div v-if="showFooter" class="content__footer">
+        <slot name="footer">
+          <div class="text mb-px-4">开源协议：MIT license</div>
+          <div class="text">版权声明：内容仅供学习交流，禁止用于商业用途！</div>
+        </slot>
       </div>
     </div>
     <ul v-if="showAnchors && anchors.length" class="area-catalog">
       <li v-for="(item, index) in anchors" :key="index" :style="handleStyle(item)">
-        <i v-if="item.tagName === 'H1' || item.tagName === 'H2' || item.tagName === 'H3'" :class="{ h1Point: item.tagName === 'H1', h2Point: item.tagName === 'H2', h3Point: item.tagName === 'H3' }" class="point"> </i>
+        <i
+          v-if="item.tagName === 'H1' || item.tagName === 'H2' || item.tagName === 'H3'"
+          :class="{ h1Point: item.tagName === 'H1', h2Point: item.tagName === 'H2', h3Point: item.tagName === 'H3' }"
+          class="point"
+        >
+        </i>
         <div class="text pointer" :title="item.value" @click="goAnchor(item.id)">
           {{ item.value }}
         </div>
@@ -21,11 +28,40 @@
 </template>
 
 <script>
-const showdownJS = require('showdown');
-const converter = new showdownJS.Converter();
+const MarkdownIt = require('markdown-it').default;
+const anchor = require('markdown-it-anchor').default;
+const mark = require('markdown-it-mark').default;
+const sub = require('markdown-it-sub').default;
+const sup = require('markdown-it-sup').default;
+const ins = require('markdown-it-ins').default;
+import hljs from 'highlight.js';
 
-converter.setOption('tables', true);
-converter.setOption('emoji', true);
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true,
+  highlight: function(str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(str, { language: lang }).value;
+      } catch (__) {}
+    }
+    return '';
+  },
+})
+  .use(anchor, {
+    permalink: false, // 不生成永久链接
+    level: [1, 2, 3, 4, 5, 6], // 只为h1-h6生成ID
+    slugify: s =>
+      String(s)
+        .trim()
+        .toLowerCase()
+        .replace(/[^\w]+/g, '-'), // 生成ID的规则
+  })
+  .use(mark) // ==标记==
+  .use(ins) // ++下划线++
+  .use(sub) // 下标 ~sub~
+  .use(sup); // 上标 ^sup^
 
 export default {
   name: 'Markdown',
@@ -43,13 +79,18 @@ export default {
         return '';
       },
     },
+    showFooter: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     value: {
       handler(nV, oV) {
-        this.content = converter.makeHtml(nV);
+        this.content = md.render(nV); // 修改为使用markdown-it渲染
         this.$nextTick(() => {
           this.collectAnchors();
+          this.setupImageZoom();
         });
       },
       immediate: true,
@@ -99,6 +140,15 @@ export default {
       });
     },
 
+    setupImageZoom() {
+      const container = this.$refs.areaContent;
+      container.querySelectorAll('img').forEach(img => {
+        img.addEventListener('click', () => {
+          img.classList.toggle('zoomed');
+        });
+      });
+    },
+
     // 手动实现锚点跳转
     goAnchor(id) {
       let target = null;
@@ -108,6 +158,9 @@ export default {
         target = h1s[0];
       } else {
         target = document.getElementById(id);
+      }
+      if (!target) {
+        return;
       }
       // 滚动操作
       target.scrollIntoView({
@@ -121,15 +174,16 @@ export default {
 
 <style lang="scss" scoped>
 .h-markdown-container {
+  // 统一设置盒子模型
+  * {
+    box-sizing: border-box;
+  }
+
   position: relative;
   width: 100%;
   height: 100%;
   display: flex;
   overflow: hidden;
-  // 统一设置盒子模型
-  * {
-    box-sizing: border-box;
-  }
   .area-catalog {
     position: relative;
     width: 150px;
@@ -190,9 +244,12 @@ export default {
     }
 
     ::v-deep .content__body {
-      * {
-        box-sizing: border-box;
+      p > code {
+        padding: 2px 4px 0 4px;
+        color: var(--gray-400);
+        background-color: var(--gray-200);
       }
+
       pre,
       code {
         font-size: 14px;
@@ -238,7 +295,7 @@ export default {
           margin: 10px auto;
           border-radius: 6px;
           border: 1px dashed var(--gray-300);
-          padding: 4px;
+          padding: 2px;
         }
       }
       table,
@@ -250,41 +307,7 @@ export default {
       ol {
         margin: 10px 5px;
       }
-      ul,
-      ol {
-        padding-left: 15px;
-      }
-      ul li {
-        list-style-type: disc !important;
-      }
-      ol li {
-        list-style-type: decimal !important;
-      }
-      li {
-        margin: 10px;
-      }
-      li p {
-        margin: 0px 0 10px 0 !important;
-      }
-      ul ul,
-      ul ol,
-      ol ul,
-      ol ol {
-        margin: 0;
-        padding-left: 10px;
-      }
-      dl {
-        padding: 0;
-      }
-      dl dt {
-        font-size: 1em;
-        font-weight: bold;
-        font-style: italic;
-      }
-      dl dd {
-        margin: 0 0 10px;
-        padding: 0 10px;
-      }
+
       blockquote,
       q {
         border-left: 2px solid var(--red-500);
@@ -403,6 +426,69 @@ export default {
         color: var(--gray-100);
         border: 1px solid var(--red-400);
         background-color: var(--red-400);
+      }
+
+      ul,
+      ol {
+        padding-left: 15px;
+      }
+      ul li {
+        list-style-type: disc !important;
+      }
+      ol li {
+        list-style-type: decimal !important;
+      }
+      li {
+        margin: 10px;
+      }
+      li p {
+        margin: 0px 0 10px 0 !important;
+      }
+      ul ul,
+      ul ol,
+      ol ul,
+      ol ol {
+        margin: 0;
+        padding-left: 20px; // 增加嵌套列表的缩进
+      }
+      ul ul li {
+        list-style-type: circle !important; // 二级无序列表使用空心圆点
+      }
+      ul ul ul li {
+        list-style-type: square !important; // 三级无序列表使用方块
+      }
+      ol ol li {
+        list-style-type: lower-alpha !important; // 二级有序列表使用小写字母
+      }
+      ol ol ol li {
+        list-style-type: lower-roman !important; // 三级有序列表使用小写罗马数字
+      }
+
+      p {
+        img {
+          cursor: zoom-in;
+          transition: transform 0.2s;
+
+          &:hover {
+            transform: scale(1.006);
+          }
+
+          &.zoomed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+            background-color: var(--black-o6);
+            z-index: 9999;
+            cursor: zoom-out;
+            padding: 18px;
+            transform: none;
+            margin: 0px;
+            color: var(--gray-300);
+          }
+        }
       }
     }
   }

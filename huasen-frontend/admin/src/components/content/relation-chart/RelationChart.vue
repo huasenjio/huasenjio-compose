@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { tool } from 'huasen-lib';
 export default {
   name: 'RelationChart',
 
@@ -34,7 +35,7 @@ export default {
 
   computed: {
     chartId() {
-      return String(this.TOOL.getUid(4, 6));
+      return String(tool.getUid(4, 6));
     },
   },
 
@@ -47,7 +48,7 @@ export default {
             return `IP地址：${params.data.name} </br> 访问次数：${params.data.value}`;
           },
         },
-        animationDurationUpdate: function(idx) {
+        animationDurationUpdate: function (idx) {
           // 越往后的数据延迟越大
           return idx * 100;
         },
@@ -80,7 +81,7 @@ export default {
           this.chart.resize();
         });
         this.chartObserve.observe(dom);
-        this.$once('hook:beforeDestroy', function() {
+        this.$once('hook:beforeDestroy', function () {
           this.chartObserve.unobserve(dom);
         });
       }

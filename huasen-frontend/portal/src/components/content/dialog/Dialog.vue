@@ -6,7 +6,17 @@
  * @Description: 二次封装el-dialog
 -->
 <template>
-  <el-dialog ref="hsDialog" :title="title" :fullscreen="full" v-bind="$attrs" v-on="$listeners" :width="dialogWidth" :style="dialogStyle" @scroll.capture.native="handleScroll" @contextmenu.native.stop>
+  <el-dialog
+    ref="hsDialog"
+    :title="title"
+    :fullscreen="full"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :width="dialogWidth"
+    :style="dialogStyle"
+    @scroll.capture.native="handleScroll"
+    @contextmenu.native.stop
+  >
     <!-- 标题插槽 -->
     <div class="w-full" slot="title">
       <div class="hs-dialog__title w-full flex">
@@ -30,14 +40,14 @@
   </el-dialog>
 </template>
 <script>
-import { AF } from '@/plugin/AF.js';
+import { AF } from 'huasen-lib';
 export default {
   name: 'HsDialog',
 
   props: {
     title: {
       type: String,
-      default: '弹窗标题',
+      default: '标题',
     },
     // 设置width属性，所以不会透传width属性，进行二次处理，默认435px
     width: {
@@ -102,7 +112,7 @@ export default {
     dialogStyle() {
       let headHeight = 55;
       let footerHeight = Object.keys(this.buttons).length ? 62 : 0;
-      let bodyMaxHeight = `calc(100vh - ${headHeight}px - ${footerHeight}px - 40px)`;
+      let bodyMaxHeight = `calc(100vh - ${headHeight}px - ${footerHeight}px - 0px)`;
       // 如果不是全屏状态下，使用用户传入的width属性作为最小宽度
       let dialogMinWidth = this.full ? `${this.CONSTANT.appMinWidth}px` : this.TOOL.handleSize(this.width);
       let dialogBodyMaxHeight = this.full ? bodyMaxHeight : this.TOOL.handleSize(this.maxHeight);

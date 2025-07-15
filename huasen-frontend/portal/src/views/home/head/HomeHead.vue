@@ -201,7 +201,7 @@ export default {
           },
         },
       });
-      this.$store.dispatch('snapshoot');
+      this.$store.dispatch('snapshoot', { paths: ['config.showNavbar'] });
     },
 
     // 登录用户

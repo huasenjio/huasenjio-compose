@@ -18,6 +18,7 @@
 import BrowserTips from '@/components/content/browser-tips/BrowserTips.vue';
 import Wrap from '@/components/content/wrap/Wrap.vue';
 import Sign from '@/components/content/sign/Sign.vue';
+import { tool } from 'huasen-lib';
 
 import { mapState } from 'vuex';
 import watermark from '@/plugin/watermark.js';
@@ -35,7 +36,7 @@ export default {
     ...mapState(['loaded', 'manage']),
     // 判断浏览器支持
     isSupport() {
-      let temp = this.TOOL.judgeIE();
+      let temp = tool.judgeIE();
       console.log('浏览器信息：' + temp);
       if (temp === -1 || temp === 'edge') {
         return true;

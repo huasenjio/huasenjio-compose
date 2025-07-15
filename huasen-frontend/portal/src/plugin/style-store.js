@@ -5,12 +5,13 @@
  * @LastEditTime: 2022-09-30 01:01:28
  * @Description: 根据查询存储的样式数据
  */
-
+import _ from 'lodash';
 import state from '@/store/state/state.js';
 
 export function getStyleById(id) {
   try {
-    return state.user.config.theme[id] ? state.user.config.theme[id] : {};
+    const theme = _.get(state, 'user.config.theme', {});
+    return theme[id] || {};
   } catch (err) {
     return {};
   }
@@ -18,14 +19,18 @@ export function getStyleById(id) {
 
 export function setStyleById(id, style) {
   try {
-    let localStyle = state.user.config.theme;
-    localStyle[id] = style;
-  } catch (err) {}
+    const theme = _.get(state, 'user.config.theme', {});
+    theme[id] = style;
+  } catch (err) {
+    console.warn('setStyleById', err);
+  }
 }
 
 export function removeStyleById(id) {
   try {
-    let localStyle = state.user.config.theme;
-    delete localStyle[id];
-  } catch (err) {}
+    const theme = _.get(state, 'user.config.theme', {});
+    delete theme[id];
+  } catch (err) {
+    console.warn('removeStyleById', err);
+  }
 }

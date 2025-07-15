@@ -6,7 +6,7 @@
  * @Description: 用户数据统计
  */
 
-const moment = require('moment');
+const { tool } = require('huasen-lib');
 const JWT = require('../../plugin/jwt.js');
 const { POOL_ACCESS } = require('../../config.js');
 const { getObjectRedisItem } = require('../ioredis/map.js');
@@ -22,7 +22,7 @@ async function getVisitorInformation() {
     return {
       ...result,
       onlines,
-      time: moment().format('HH:mm:ss'),
+      time: tool.formatDate(new Date(), 'HH:mm:ss'),
     };
   } catch (err) {
     console.log(err);

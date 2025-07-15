@@ -41,26 +41,26 @@ function getDomainFromURL(urlString) {
 // 图片标签懒加载
 Vue.directive('lazy', {
   inserted: handleLazy,
-  componentUpdated: handleLazy,
+  // componentUpdated: handleLazy, // 组件更新时触发太过频繁
 });
 function handleLazy(el, binding) {
   const url = el.src; // 保存原始图标地址
   el.src = loadImg; // 替换图标为加载图标
-  el.isIconPatch = false // 一为图标加载标记
+  el.isIconPatch = false; // 一为图标加载标记
   const { unload = unloadImg, siteUrl, iconPatch } = binding.value || {};
   let observe = new IntersectionObserver(([{ isIntersecting }]) => {
     if (isIntersecting) {
       // 元素进入可视区域触发回调
       el.src = url;
-      el.onload = function () {
+      el.onload = function() {
         observe.unobserve(el);
       };
-      el.onerror = function () {
+      el.onerror = function() {
         if (iconPatch && !el.isIconPatch && siteUrl) {
           // 加载补全图标
-          let domain = getDomainFromURL(siteUrl)
+          let domain = getDomainFromURL(siteUrl);
           el.src = `https://favicon.im/${domain}?larger=true`;
-          el.isIconPatch = true
+          el.isIconPatch = true;
         } else {
           // 加载失败时
           el.src = unload;
@@ -74,9 +74,9 @@ function handleLazy(el, binding) {
 
 // 右键菜单
 Vue.directive('discolor', {
-  inserted: function (el, binding) {
+  inserted: function(el, binding) {
     // 处理默认参数
-    let { menuId = 'styleMenuId9527', focusClassName = 'hs-right-menu-shadow', cpn = StyleMenu } = binding.value || {};
+    let { menuId = 'js-right-menu__discolor-wrap', focusClassName = 'hs-right-menu-shadow', cpn = StyleMenu } = binding.value || {};
     // dom生成xpan作为id
     let xpath = TOOL.getElementPath(el);
     el.id = el.id || xpath;
@@ -104,7 +104,7 @@ Vue.directive('discolor', {
       let MenuCreate = Vue.extend({
         // 解析模版
         template: `<RightMenu :menuId="menuId" :clientX="clientX" :clientY="clientY"><cpn :xpath="xpath"></cpn></RightMenu>`,
-        data: function () {
+        data: function() {
           return {
             menuId,
             xpath: el.id,
@@ -132,7 +132,8 @@ Vue.directive('discolor', {
       let domPath = event.path || (event.composedPath && event.composedPath()) || [];
       // 一真则真
       let inPath = [...domPath].some(el => {
-        return el.id === menuId;
+        const classList = el.classList ? Array.from(el.classList) : [];
+        return el.id === menuId || classList.includes('js-style-menu__color-picker-popper');
       });
       let menuDOM = document.getElementById(menuId);
       if (!inPath && menuDOM) {
@@ -154,7 +155,7 @@ function handleRightMenuShadow(focusClassName) {
 }
 
 // markdown代码高亮
-Vue.directive('highlight', function (el) {
+Vue.directive('highlight', function(el) {
   let blocks = el.querySelectorAll('pre code');
   blocks.forEach(block => {
     hljs.highlightBlock(block);
@@ -164,22 +165,23 @@ Vue.directive('highlight', function (el) {
 // 自动获取焦点指令
 Vue.directive('focus', {
   // 当被绑定的元素插入到 DOM 中会获得焦点
-  inserted: function (el) {
+  inserted: function(el) {
     // 聚焦元素
     el.focus();
   },
 });
 
-// 生成随机背景指令
-Vue.directive('randomColor', function (el) {
+// 生成随机颜色指令
+Vue.directive('randomColor', function(el, binding) {
+  let { forText = false } = binding.value ? binding.value : {};
   let colors = ['#fd7e14', '#ffc107', '#33b86c', '#007bff', '#17a2b8', '#e83e8c'];
   let tempIndex = Math.floor(Math.random() * colors.length);
-  el.style.backgroundColor = colors[tempIndex];
+  el.style[forText ? 'color' : 'backgroundColor'] = colors[tempIndex];
 });
 
 // 子元素间隔相等
 Vue.directive('balance', {
-  inserted: function (el) {
+  inserted: function(el) {
     el.style.display = 'flex';
     el.style.flexWrap = 'wrap';
     if (el.childElementCount != 0) {
@@ -194,7 +196,7 @@ Vue.directive('balance', {
 
 // 根据可视窗口缩放大小指令
 Vue.directive('autoScale', {
-  inserted: function (el) {
+  inserted: function(el) {
     el.style.transformOrigin = 'left top';
     // 执行立即缩放
     handleScale(el);
@@ -209,15 +211,15 @@ Vue.directive('autoScale', {
 
 // 拖拽指令
 Vue.directive('drag', {
-  inserted: function (el) {
-    el.onmousedown = function (e) {
+  inserted: function(el) {
+    el.onmousedown = function(e) {
       const disx = e.pageX - el.offsetLeft;
       const disy = e.pageY - el.offsetTop;
-      document.onmousemove = function (event) {
+      document.onmousemove = function(event) {
         el.style.left = event.pageX - disx + 'px';
         el.style.top = event.pageY - disy + 'px';
       };
-      document.onmouseup = function () {
+      document.onmouseup = function() {
         document.onmousemove = document.onmouseup = null;
         const resizeEvent = new Event('resize');
         window.dispatchEvent(resizeEvent);
@@ -233,7 +235,7 @@ function addresize(dom, fn) {
   let h = dom.offsetHeight;
   let oldfn = window.onresize;
   if (oldfn) {
-    window.onresize = function () {
+    window.onresize = function() {
       // 若resize回调存在，则调用绑定window上下午，直接执行一遍
       oldfn.call(window);
       if (dom.offsetWidth != w || dom.offsetHeight != h) {

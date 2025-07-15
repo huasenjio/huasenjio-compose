@@ -17,7 +17,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import { AF } from '@/plugin/AF.js';
+import { AF } from 'huasen-lib';
 const af = new AF(this, 200);
 
 const imgDaytimeMap = {

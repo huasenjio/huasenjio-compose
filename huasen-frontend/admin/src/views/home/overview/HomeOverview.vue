@@ -59,8 +59,12 @@ export default {
     };
   },
 
-  mounted() {
+  activated() {
     this.queryOverview();
+  },
+
+  mounted() {
+    // this.queryOverview();
   },
 
   methods: {

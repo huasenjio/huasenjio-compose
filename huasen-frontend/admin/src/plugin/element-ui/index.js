@@ -55,6 +55,7 @@ import Radio from 'element-ui/lib/radio';
 import RadioGroup from 'element-ui/lib/radio-group';
 import Popover from 'element-ui/lib/popover';
 import Alert from 'element-ui/lib/alert';
+import Tag from 'element-ui/lib/tag';
 import { InfiniteScroll } from 'element-ui';
 
 Vue.use(Button);
@@ -89,6 +90,7 @@ Vue.use(Empty);
 Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(Alert);
+Vue.use(Tag);
 Vue.use(Loading.directive);
 Vue.use(InfiniteScroll);
 
@@ -98,7 +100,7 @@ Vue.prototype.$message = Message;
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
 
-Vue.prototype.$startLoading = function(text) {
+Vue.prototype.$startLoading = function (text) {
   HLoadingCount++;
   HLoading = Loading.service({
     lock: true,
@@ -108,18 +110,18 @@ Vue.prototype.$startLoading = function(text) {
     customClass: 'request-loading',
   });
 };
-Vue.prototype.$stopLoading = function() {
+Vue.prototype.$stopLoading = function () {
   HLoadingCount--;
   if (HLoadingCount <= 0) {
     HLoading.close();
   }
 };
-Vue.prototype.$resetLoading = function() {
+Vue.prototype.$resetLoading = function () {
   HLoadingCount = 0;
   HLoading && HLoading.close();
 };
 
-Vue.prototype.$tips = function(type, msg, position, time, callback) {
+Vue.prototype.$tips = function (type, msg, position, time, callback) {
   // 初始化参数
   let title = '';
   type = type || 'info';

@@ -60,9 +60,14 @@ export default {
     },
   },
 
-  mounted() {
+  // 进入路由时
+  activated() {
     this.queryArticles();
   },
+
+  // mounted() {
+  //   this.queryArticles();
+  // },
 
   methods: {
     // 生成随机图标

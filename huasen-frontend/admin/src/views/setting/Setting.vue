@@ -117,7 +117,12 @@
             </el-col>
             <el-col :span="12">
               <el-form-item prop="jwtLiveTime">
-                <el-input size="small" placeholder="请输入令牌存活时间" @input="value => (site.jwtLiveTime = Number(value.replace(/[^0-9.]/g, '')) || 604800)" v-model="site.jwtLiveTime">
+                <el-input
+                  size="small"
+                  placeholder="请输入令牌存活时间"
+                  @input="value => (site.jwtLiveTime = Number(value.replace(/[^0-9.]/g, '')) || 604800)"
+                  v-model="site.jwtLiveTime"
+                >
                   <template slot="prepend">
                     <div class="input__prepend flex items-center justify-between">
                       令牌存活时间
@@ -221,12 +226,24 @@
                 </div>
                 <el-tooltip :disabled="!!!checkColorCode(item.background)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkColorCode(item.background) }" v-model="item.background" placeholder="背景颜色">
-                    <el-color-picker v-model="item.background" class="relative top-px-5 left-px-0" popper-class="setting-color-picker-popper" slot="prefix" size="mini"></el-color-picker>
+                    <el-color-picker
+                      v-model="item.background"
+                      class="relative top-px-5 left-px-0"
+                      popper-class="setting-color-picker-popper"
+                      slot="prefix"
+                      size="mini"
+                    ></el-color-picker>
                   </el-input>
                 </el-tooltip>
                 <el-tooltip :disabled="!!!checkColorCode(item.color)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkColorCode(item.color) }" v-model="item.color" class="mt-px-4" placeholder="字体颜色">
-                    <el-color-picker v-model="item.color" class="relative top-px-5 left-px-0" popper-class="setting-color-picker-popper" slot="prefix" size="mini"></el-color-picker>
+                    <el-color-picker
+                      v-model="item.color"
+                      class="relative top-px-5 left-px-0"
+                      popper-class="setting-color-picker-popper"
+                      slot="prefix"
+                      size="mini"
+                    ></el-color-picker>
                   </el-input>
                 </el-tooltip>
               </li>
@@ -250,14 +267,23 @@
                 </div>
                 <el-tooltip :disabled="!!!checkImgUrl(item.background)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkImgUrl(item.background) }" v-model="item.background" placeholder="图片链接">
-                    <div slot="prefix" class="w-px-28 h-px-28 p-px-4 relative top-px-5 left-px-0 border border-solid border-gray-300 rounded flex justify-center items-center pointer">
+                    <div
+                      slot="prefix"
+                      class="w-px-28 h-px-28 p-px-4 relative top-px-5 left-px-0 border border-solid border-gray-300 rounded flex justify-center items-center pointer"
+                    >
                       <i class="el-icon-upload text-lg text-gray-600 hover:text-blue-600" @click="handleUpload(item, 'background')"></i>
                     </div>
                   </el-input>
                 </el-tooltip>
                 <el-tooltip :disabled="!!!checkColorCode(item.headerFontColor)" class="item" effect="light" content="数据格式异常" placement="right">
                   <el-input :class="{ 'error-tip': !!checkColorCode(item.headerFontColor) }" v-model="item.headerFontColor" class="mt-px-4" placeholder="字体颜色">
-                    <el-color-picker v-model="item.headerFontColor" class="relative top-px-5 left-px-0" popper-class="setting-color-picker-popper" slot="prefix" size="mini"></el-color-picker>
+                    <el-color-picker
+                      v-model="item.headerFontColor"
+                      class="relative top-px-5 left-px-0"
+                      popper-class="setting-color-picker-popper"
+                      slot="prefix"
+                      size="mini"
+                    ></el-color-picker>
                   </el-input>
                 </el-tooltip>
               </li>
@@ -311,7 +337,15 @@
         <el-row class="mt-px-8" :gutter="10">
           <el-col :span="24">
             <div class="result">
-              <VueJsonEditor class="json-edit" v-model="setting" :show-btns="true" :expandedOnStart="true" mode="view" :modes="['code', 'view']" @json-save="handleJSONSave"></VueJsonEditor>
+              <VueJsonEditor
+                class="json-edit"
+                v-model="setting"
+                :show-btns="true"
+                :expandedOnStart="true"
+                mode="view"
+                :modes="['code', 'view']"
+                @json-save="handleJSONSave"
+              ></VueJsonEditor>
             </div>
           </el-col>
         </el-row>
@@ -426,7 +460,7 @@ export default {
     };
   },
 
-  created() {
+  activated() {
     this.queryCity();
     this.queryConfig();
     this.queryArticle();
@@ -503,7 +537,7 @@ export default {
      * 查询城市信息
      */
     queryCity() {
-      this.API.app.getCity().then(res => {
+      this.API.app.getCity({}, { notify: false }).then(res => {
         this.cityOptions = res.data;
       });
     },

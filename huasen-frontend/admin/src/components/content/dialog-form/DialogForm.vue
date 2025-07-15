@@ -32,7 +32,13 @@
           <!-- 开关 -->
           <el-switch v-if="formTtem.type === 'switch'" :disabled="!!LODASH.get(formTtem, 'disabled')" v-model="formData[formTtem.key]"></el-switch>
           <!-- 文本域 -->
-          <el-input v-if="formTtem.type === 'textarea'" :disabled="!!LODASH.get(formTtem, 'disabled')" :autosize="{ minRows: 4 }" type="textarea" v-model="formData[formTtem.key]"></el-input>
+          <el-input
+            v-if="formTtem.type === 'textarea'"
+            :disabled="!!LODASH.get(formTtem, 'disabled')"
+            :autosize="{ minRows: 4 }"
+            type="textarea"
+            v-model="formData[formTtem.key]"
+          ></el-input>
           <!-- 图标项 -->
           <div class="icon-group" v-if="formTtem.type === 'icon'">
             <el-tabs v-model="activeName" type="border-card" @tab-click="handleTabClick">
@@ -46,7 +52,9 @@
                     <i class="el-icon-warning-outline"></i>
                   </el-tooltip>
                 </div>
-                <div class="result-view-container"><IconResultContainer id="icon-text-target-container" :isTextMode="true" :color.sync="iconColor" :text="iconText"></IconResultContainer></div>
+                <div class="result-view-container">
+                  <IconResultContainer id="icon-text-target-container" :isTextMode="true" :color.sync="iconColor" :text="iconText"></IconResultContainer>
+                </div>
               </el-tab-pane>
               <el-tab-pane label="上传图标" name="upload">
                 <div>已选图标</div>
@@ -82,7 +90,9 @@
               </el-tab-pane>
               <el-input class="mt-px-10" style="font-size: 12px" placeholder="图标地址" :disabled="!showUpload" v-model="formData[formTtem.key]">
                 <el-tooltip slot="append" effect="dark" :content="showUpload ? '从图标库中选择' : '生成并存储图标'" placement="top">
-                  <el-button class="create" :icon="showUpload ? 'el-icon-files' : 'el-icon-document-add'" @click="handleCreateIconUrl">{{ showUpload ? '从图标库中选择' : '生成并存储图标' }}</el-button>
+                  <el-button class="create" :icon="showUpload ? 'el-icon-files' : 'el-icon-document-add'" @click="handleCreateIconUrl">{{
+                    showUpload ? '从图标库中选择' : '生成并存储图标'
+                  }}</el-button>
                 </el-tooltip>
               </el-input>
             </el-tabs>
@@ -121,7 +131,9 @@
                   <div style="width: 348px; height: 80px" class="flex justify-center items-center border-dashed border border-gray-500 rounded">
                     <i class="el-icon-plus text-24px"></i>
                   </div>
-                  <div class="text-gray-500" @click.stop>仅支持 .xlsx 文件，大小不超过 1MB，点击<font class="text-blue-500 pointer" @click="downloadSiteTemplate">下载模版</font>！</div>
+                  <div class="text-gray-500" @click.stop>
+                    仅支持 .xlsx 文件，大小不超过 1MB，点击<font class="text-blue-500 pointer" @click="downloadSiteTemplate">下载模版</font>！
+                  </div>
                 </el-upload>
               </el-tab-pane>
               <el-tab-pane label="导出">
@@ -426,6 +438,15 @@ export default {
     // 模版导入成功之后，关闭面板
     handleSiteImportSuccess(result, file, fileList, type) {
       this.$tips('success', '链接导入成功', 'top-right', 1200);
+      this.$emit('siteImportSuccess');
+    },
+
+    // 链接导入失败
+    handleSiteImportError() {
+      this.$tips('error', '链接导入失败', 'top-right', 1200, () => {
+        this.$refs.siteImportUpload[0]?.clearFiles();
+        this.$emit('siteImportError');
+      });
     },
 
     // 请求图片地址
@@ -444,13 +465,6 @@ export default {
       this.$tips('error', '上传失败', 'top-right', 1200);
     },
 
-    // 链接导入失败
-    handleSiteImportError() {
-      this.$tips('error', '链接导入失败', 'top-right', 1200, () => {
-        this.$refs.siteImportUpload[0]?.clearFiles();
-      });
-    },
-
     // 链接导入文件超过限制，并且清空已选文件
     handleSiteImportExceed() {
       this.$tips('error', '您上传文件数量已超过限制，每次导入仅可选择一份模版。', 'top-right', 2000, () => {
@@ -460,9 +474,15 @@ export default {
 
     // 按栏目导出链接
     exportSite() {
-      downloadFileByBlob('/site/exportSite', { columns: JSON.stringify(this.formData.columnId) }, 'sites', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', () => {
-        this.$tips('success', '链接导出成功', 'top-right', 2000);
-      });
+      downloadFileByBlob(
+        '/site/exportSite',
+        { columns: JSON.stringify(this.formData.columnId) },
+        'sites',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        () => {
+          this.$tips('success', '链接导出成功', 'top-right', 2000);
+        },
+      );
     },
   },
 };

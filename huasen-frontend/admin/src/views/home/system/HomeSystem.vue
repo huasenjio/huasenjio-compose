@@ -68,13 +68,13 @@ export default {
     };
   },
 
-  mounted() {
-    this.queryDiskOverview();
-  },
-
-  // activated() {
+  // mounted() {
   //   this.queryDiskOverview();
   // },
+
+  activated() {
+    this.queryDiskOverview();
+  },
 
   methods: {
     queryDiskOverview() {

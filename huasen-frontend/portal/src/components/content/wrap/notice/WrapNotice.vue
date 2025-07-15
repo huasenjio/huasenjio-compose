@@ -58,10 +58,10 @@ export default {
         ).then(res => {
           let noticeInfo = this.STORAGE.getItem(this.CONSTANT.appNotice) || {};
           let notice = this.LODASH.get(res, 'data[0]') || {};
-          if (Object.keys(notice).length !== 0 && (notice._id !== noticeInfo._id || notice.time !== noticeInfo.time)) {
+          if (Object.keys(notice).length !== 0 && (notice._id !== noticeInfo._id || notice.updateTime !== noticeInfo.time)) {
             // 有公告的前提下，如果id、时间对不上，就会弹送公告
             this.noticeId = notice._id;
-            this.noticeTime = notice.time;
+            this.noticeTime = notice.updateTime;
             this.noticeContent = notice.content;
             this.showNotice = true;
           }

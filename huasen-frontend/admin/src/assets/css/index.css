@@ -1,5 +1,5 @@
 /* 主题文件 */
-@import url('./theme.scss');
+@import url('./base.css');
 /* 项目样式 */
 @import url('./content.scss');
 /* 图标文件 */

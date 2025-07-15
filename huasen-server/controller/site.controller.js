@@ -265,7 +265,7 @@ function bindColumn(req, res, next) {
           let updateResult = await Site.bulkWrite(bulkUpdates);
           global.huasen.responseData(res, updateResult, 'SUCCESS', '链接已绑定栏目');
         }
-      } catch (err) { }
+      } catch (err) {}
     },
   );
 }
@@ -303,7 +303,7 @@ function unbindColumn(req, res, next) {
           let updateResult = await Site.bulkWrite(bulkUpdates);
           global.huasen.responseData(res, updateResult, 'SUCCESS', '链接已解绑栏目');
         }
-      } catch (err) { }
+      } catch (err) {}
     },
   );
 }
@@ -311,8 +311,8 @@ function unbindColumn(req, res, next) {
 function importSite(req, res, next) {
   const mixtureUpload = new MixtureUpload({
     onSuccess: (data, fileMap) => {
-      const columns = JSON.parse(data.columns)
-      const { file } = fileMap
+      const columns = JSON.parse(data.columns);
+      const { file } = fileMap;
       // 查询绑定的栏目
       req.epWorking(
         [
@@ -324,54 +324,57 @@ function importSite(req, res, next) {
         ],
         columns => {
           // 获取全部栏目id，用于绑定站点
-          let columnsIds = columns.map(el => el._id)
+          let columnsIds = columns.map(el => el._id);
           // 即将解析excel文件的站点数据
           const workbook = new ExcelJS.Workbook();
-          workbook.xlsx.readFile(file.path)
+          workbook.xlsx
+            .readFile(file.path)
             .then(() => {
-              const sites = []
+              const sites = [];
               // 获取第一个工作表
               const worksheet = workbook.getWorksheet(1);
               // 解析xlsx文件的内容
               worksheet.eachRow((row, rowNumber) => {
                 if (rowNumber > 1) {
-                  let rowData = row.values
+                  let rowData = row.values;
                   let site = {
                     name: rowData[1] || '花森小窝',
-                    url: typeof rowData[2] === 'object' ? rowData[2].text : (rowData[2] || 'huasenjio.top'),
+                    url: typeof rowData[2] === 'object' ? rowData[2].text : rowData[2] || 'www.huasenjio.top',
                     code: Number(rowData[3]) || 0,
                     enabled: rowData[4] === '是',
-                    icon: typeof rowData[5] === 'object' ? rowData[5].text : (rowData[5] || 'http://n.huasenjio.top/huasen-store/icon/logo.png'),
+                    icon: typeof rowData[5] === 'object' ? rowData[5].text : rowData[5] || 'https://n.huasenjio.top/huasen-store/icon/logo.png',
                     description: rowData[6] || '',
                     remarks: rowData[9] || '',
-                  }
+                    pv: Number(rowData[10]) || 0,
+                    detail: rowData[11] || '',
+                  };
                   let tags = [];
                   let pins = [];
                   let columnStore = [];
-                  let tagStr = rowData[7]
-                  let pinStr = rowData[8]
+                  let tagStr = rowData[7];
+                  let pinStr = rowData[8];
                   // 解析tag
                   if (tagStr && tagStr.trim() !== '') {
-                    tags = tagStr.split('&')
+                    tags = tagStr.split('&');
                   }
                   // 解析pin
                   if (pinStr && pinStr.trim() !== '') {
                     pinStr.split('&').forEach(el => {
-                      let code = global.hsDic.getDicValueByLabel('pin', el)
-                      if (code) pins.push(code)
-                    })
+                      let code = global.hsDic.getDicValueByLabel('pin', el);
+                      if (code) pins.push(code);
+                    });
                   }
                   // 添加绑定的栏目
                   if (columnsIds.length) {
-                    columnStore = [...columnsIds]
+                    columnStore = [...columnsIds];
                   }
                   let expand = {
                     tag: tags,
                     pin: pins,
-                    columnStore
-                  }
-                  site.expand = JSON.stringify(expand)
-                  sites.push(site)
+                    columnStore,
+                  };
+                  site.expand = JSON.stringify(expand);
+                  sites.push(site);
                 }
               });
               // 批量插入站点，获取全部站点id，用于绑定栏目
@@ -384,18 +387,18 @@ function importSite(req, res, next) {
                   },
                 ],
                 async siteList => {
-                  let siteIds = siteList.map(el => el._id)
+                  let siteIds = siteList.map(el => el._id);
                   let bulkUpdates = [];
                   columns.forEach(column => {
-                    let siteStore = JSON.parse(column.siteStore)
-                    siteStore = Array.from(new Set([...siteStore, ...siteIds]))
+                    let siteStore = JSON.parse(column.siteStore);
+                    siteStore = Array.from(new Set([...siteStore, ...siteIds]));
                     bulkUpdates.push({
                       updateOne: {
                         filter: { _id: column._id },
                         update: { $set: { siteStore: JSON.stringify(siteStore) } },
                       },
                     });
-                  })
+                  });
                   let updateResult = await Column.bulkWrite(bulkUpdates);
                   global.huasen.responseData(res, siteList, 'SUCCESS', '导入站点');
                 },
@@ -403,9 +406,10 @@ function importSite(req, res, next) {
             })
             .catch(err => {
               global.huasen.responseData(res, {}, 'ERROR', 'excel解析异常：' + err.toString());
-            }).finally(() => {
+            })
+            .finally(() => {
               // 删除临时文件
-              fs.unlinkSync(file.path)
+              fs.unlinkSync(file.path);
             });
         },
       );
@@ -418,18 +422,18 @@ function importSite(req, res, next) {
 }
 
 async function exportSite(req, res, next) {
-  const columns = JSON.parse(req.huasenParams.columns || '[]')
+  const columns = JSON.parse(req.huasenParams.columns || '[]');
   let sites = [];
   if (Array.isArray(columns) && columns.length) {
     let siteIds = [];
-    let columnList = await Column.find({ _id: { $in: columns } })
+    let columnList = await Column.find({ _id: { $in: columns } });
     columnList.map(el => {
-      siteIds = siteIds.concat(JSON.parse(el.siteStore))
-    })
-    siteIds = Array.from(new Set(siteIds))
-    sites = await Site.find({ _id: { $in: siteIds } })
+      siteIds = siteIds.concat(JSON.parse(el.siteStore));
+    });
+    siteIds = Array.from(new Set(siteIds));
+    sites = await Site.find({ _id: { $in: siteIds } });
   } else {
-    sites = await Site.find()
+    sites = await Site.find();
   }
   // 创建一个工作簿
   const workbook = new ExcelJS.Workbook();
@@ -445,34 +449,31 @@ async function exportSite(req, res, next) {
     { header: '网站标签', key: 'tagStr', width: 20 },
     { header: '置顶标记', key: 'pinStr' },
     { header: '备注', key: 'remarks' },
+    { header: '访问量', key: 'pv' },
+    { header: '详情页', key: 'detail', width: 60 },
   ];
   // 处理网站字段，映射xlsx字段
   sites.forEach(site => {
-    let expand = JSON.parse(site.expand || "{}")
+    let expand = JSON.parse(site.expand || '{}');
     // 真实有效的标记
-    let realPins = (expand.pin || []).filter(code => global.hsDic.getDicLabelByValue('pin', Number(code)))
-    let pinStr = (realPins.map(code => global.hsDic.getDicLabelByValue('pin', Number(code)))).join('&')
-    let tagStr = (expand.tag || []).join('&')
-    site.enabledStr = site.enabled ? '是' : '否'
-    site.pinStr = pinStr
-    site.tagStr = tagStr
+    let realPins = (expand.pin || []).filter(code => global.hsDic.getDicLabelByValue('pin', Number(code)));
+    let pinStr = realPins.map(code => global.hsDic.getDicLabelByValue('pin', Number(code))).join('&');
+    let tagStr = (expand.tag || []).join('&');
+    site.enabledStr = site.enabled ? '是' : '否';
+    site.pinStr = pinStr;
+    site.tagStr = tagStr;
+    site.pv = site.pv || 0;
     worksheet.addRow(site);
-  })
+  });
   worksheet.eachRow((row, rowNumber) => {
     row.eachCell((cell, colNumber) => {
       cell.alignment = { wrapText: true, vertical: 'middle' }; // 设置自动换行
     });
   });
-  res.setHeader(
-    'Content-Type',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-  );
-  res.setHeader(
-    'Content-Disposition',
-    'attachment; filename=' + 'sites.xlsx'
-  );
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', 'attachment; filename=' + 'sites.xlsx');
   const buffer = await workbook.xlsx.writeBuffer();
-  res.send(buffer)
+  res.send(buffer);
 }
 
 /**
@@ -505,7 +506,7 @@ function getFaviconByUrl(siteUrl) {
 
 async function findSiteFavicon(req, res, next) {
   let { url } = req.huasenParams;
-  const faviconBase64s = []
+  const faviconBase64s = [];
   try {
     const icons = await fetchFavicons(url);
     console.log(`网链 ${url} 推荐图标列表：`, icons);
@@ -517,11 +518,11 @@ async function findSiteFavicon(req, res, next) {
         console.error('下载图片捕获到错误', err);
       }
     }
-    const iconUrl = getFaviconByUrl(url)
+    const iconUrl = getFaviconByUrl(url);
     if (iconUrl) {
       try {
         let iconUrlBase64 = await downloadAndConvertToBase64(iconUrl);
-        faviconBase64s.unshift(iconUrlBase64)
+        faviconBase64s.unshift(iconUrlBase64);
       } catch (err) {
         console.error('下载favicon.im图片捕获到错误', err);
       }
@@ -530,6 +531,41 @@ async function findSiteFavicon(req, res, next) {
   } catch (err) {
     global.huasen.responseData(res, [], 'ERROR', '推荐图标异常');
   }
+}
+
+async function findSiteDetail(req, res, next) {
+  let { _id } = req.huasenParams;
+  let { proof } = req.huasenJWT;
+  req.epWorking(
+    [
+      {
+        schemaName: 'Site',
+        methodName: 'findOne',
+        payloads: [
+          {
+            _id,
+            // 筛选出小于等于用户权限的订阅源
+            code: { $lte: proof.code },
+            // 可订阅
+            enabled: true,
+          },
+        ],
+      },
+      {
+        schemaName: 'Site',
+        methodName: 'upPV',
+        payloads: [_id],
+        self: true,
+      },
+    ],
+    site => {
+      if (site) {
+        global.huasen.responseData(res, site, 'SUCCESS', '查询站点详情');
+      } else {
+        global.huasen.responseData(res, null, 'ERROR', '站点不存在或权限不足');
+      }
+    },
+  );
 }
 
 module.exports = {
@@ -547,5 +583,6 @@ module.exports = {
   unbindColumn,
   importSite,
   exportSite,
-  findSiteFavicon
+  findSiteFavicon,
+  findSiteDetail,
 };

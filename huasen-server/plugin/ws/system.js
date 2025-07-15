@@ -6,7 +6,7 @@
  * @Description: 系统信息
  */
 const os = require('os');
-const moment = require('moment');
+const { tool } = require('huasen-lib');
 const { bytesToSize } = require('../../utils/tool.js');
 
 // 获取系统数据
@@ -25,7 +25,7 @@ function getSystemInformation() {
     let cpuUsage = (global.huasenStatus.currentCPU * 100).toFixed(2) + '%'; // cpu占有率
     let memoryUsage = ((used / total) * 100).toFixed(2) + '%'; // 内存占有率
     return {
-      time: moment().format('HH:mm:ss'),
+      time: tool.formatDate(new Date(), 'HH:mm:ss'),
 
       freeMemory,
       usedMemory,

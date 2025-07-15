@@ -75,11 +75,10 @@ export default {
     display: flex;
     align-items: center;
     overflow: hidden;
-    z-index: 1;
   }
   .wrap-footer {
+    position: relative;
     width: 100%;
-    z-index: 2;
   }
 }
 </style>

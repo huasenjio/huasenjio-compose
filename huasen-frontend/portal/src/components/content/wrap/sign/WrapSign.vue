@@ -33,7 +33,14 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item class="form__password" prop="password">
-                  <el-input type="password" v-model="submitForm.password" :show-password="true" autocomplete="off" placeholder="密码仅支持数字/字母/下划线" @keyup.enter.native="login"></el-input>
+                  <el-input
+                    type="password"
+                    v-model="submitForm.password"
+                    :show-password="true"
+                    autocomplete="off"
+                    placeholder="密码仅支持数字/字母/下划线"
+                    @keyup.enter.native="login"
+                  ></el-input>
                 </el-form-item>
               </el-form>
               <div class="btn" @click="login">

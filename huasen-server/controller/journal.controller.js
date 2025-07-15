@@ -196,7 +196,7 @@ function findJournalInformationById(req, res, next) {
             siteStore.forEach(sitId => {
               siteList.some(sitItem => {
                 if (sitItem._id == sitId) {
-                  let { _id, name, url, icon, code, expand, description, remarks } = sitItem;
+                  let { _id, name, url, icon, code, expand, description, detail, remarks } = sitItem;
                   sites.push({
                     _id,
                     name,
@@ -206,8 +206,7 @@ function findJournalInformationById(req, res, next) {
                     expand,
                     description,
                     remarks,
-                    describe: description,
-                    remark: remarks,
+                    hasDetail: !!detail,
                   });
                   return true;
                 }

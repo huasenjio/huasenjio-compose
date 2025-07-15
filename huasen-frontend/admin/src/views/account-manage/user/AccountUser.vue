@@ -82,6 +82,14 @@ export default {
           key: 'code',
         },
         {
+          label: '注册时间',
+          key: 'createTime',
+        },
+        {
+          label: '更新时间',
+          key: 'updateTime',
+        },
+        {
           label: '是否启用',
           key: 'enabled',
         },
@@ -195,8 +203,11 @@ export default {
       deep: true,
     },
   },
-  mounted() {
+  activated() {
     this.queryUser();
+  },
+  mounted() {
+    // this.queryUser();
   },
   methods: {
     queryUser() {

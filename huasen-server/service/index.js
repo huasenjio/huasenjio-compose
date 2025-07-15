@@ -9,7 +9,14 @@
 const EventProxy = require('eventproxy');
 
 // 任务模版模版
-const { findByPage, count, limit, init } = require('./template.js');
+const { findByPage, count, limit, init, upPV } = require('./template.js');
+const methodMap = {
+  findByPage,
+  count,
+  limit,
+  init,
+  upPV,
+};
 
 // 表实例
 const User = require('../mongodb/model/user.js');
@@ -18,7 +25,6 @@ const Article = require('../mongodb/model/article.js');
 const Column = require('../mongodb/model/column.js');
 const Site = require('../mongodb/model/site.js');
 const Journal = require('../mongodb/model/journal.js');
-
 const schemaMap = {
   User,
   Record,
@@ -26,13 +32,6 @@ const schemaMap = {
   Column,
   Site,
   Journal,
-};
-
-const methodMap = {
-  findByPage,
-  count,
-  limit,
-  init,
 };
 
 // 生成任务的事件名
@@ -64,15 +63,24 @@ function epWorking(works, callback, config = {}, notRequest = false) {
     let params = work.payloads ? [...work.payloads] : [];
     // 任务分流
     if (work.self) {
-      methodMap[work.methodName](ep, schema, eventName, ...params);
+      if (typeof methodMap[work.methodName] === 'function') {
+        ep._eventName = eventName;
+        methodMap[work.methodName](ep, schema, ...params);
+      } else {
+        console.error(`自建服务模版 ${eventName} 未定义`);
+      }
     } else {
-      schema[work.methodName](...params)
-        .then(result => {
-          ep.emit(eventName, result);
-        })
-        .catch(err => {
-          ep.emit('error', err);
-        });
+      if (typeof schema[work.methodName] === 'function') {
+        schema[work.methodName](...params)
+          .then(result => {
+            ep.emit(eventName, result);
+          })
+          .catch(err => {
+            ep.emit('error', err);
+          });
+      } else {
+        console.error(`schema 服务模版 ${eventName} 未定义`);
+      }
     }
   }
 }

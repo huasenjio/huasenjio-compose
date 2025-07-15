@@ -11,15 +11,15 @@ const ejs = require('ejs');
 const osUtils = require('os-utils');
 const schedule = require('node-schedule');
 const path = require('path');
-const moment = require('moment');
 const { get } = require('lodash');
-const setting = require('../setting.json')
+const { tool } = require('huasen-lib');
 
+const setting = require('../setting.json');
 
 const { POOL_ACCESS } = require('../config.js');
 const { schemaMap } = require('../service/index.js');
-const { Record } = schemaMap
-const { getUid, writeToFile } = require('../utils/tool.js');
+const { Record } = schemaMap;
+const { writeToFile } = require('../utils/tool.js');
 const { delRedisItem } = require('../plugin/ioredis/common.js');
 const { getObjectRedisItem } = require('../plugin/ioredis/map.js');
 const { readDirectory } = require('../utils/tool.js');
@@ -41,8 +41,8 @@ let accessRecordJob = schedule.scheduleJob('0 0 3 * * *', async () => {
     let log = await getObjectRedisItem(POOL_ACCESS);
     // 组合数据，存入数据库
     let logObject = {
-      id: String(getUid(16, 8)),
-      time: moment().format('YYYY-MM-DD HH:mm:ss'),
+      id: String(tool.getUid(16, 8)),
+      time: tool.formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss'),
       log: JSON.parse(JSON.stringify(log)),
     };
     await Record.insertMany(logObject);
@@ -80,7 +80,8 @@ let accessYesterdaySummaryJob = schedule.scheduleJob('0 0 3 * * *', async () => 
         },
       ],
       async (users, articleCount) => {
-        let userCount = 0, manageCount = 0;
+        let userCount = 0;
+        let manageCount = 0;
         users.forEach(item => {
           if (item.code >= 2) {
             manageCount++;
@@ -96,7 +97,7 @@ let accessYesterdaySummaryJob = schedule.scheduleJob('0 0 3 * * *', async () => 
         global.huasenStatus.fileCount = file.length;
         let visitor = await getObjectRedisItem(POOL_ACCESS);
         global.huasenStatus.visitorCount = Object.values(visitor).length;
-        console.log(global.huasenStatus)
+        console.log(global.huasenStatus);
       },
     );
   } catch (err) {
@@ -106,7 +107,7 @@ let accessYesterdaySummaryJob = schedule.scheduleJob('0 0 3 * * *', async () => 
 
 // 每小时更新一次SEO数据
 let accessSEOJob = schedule.scheduleJob('0 0 * * * *', async () => {
-  const code = 0
+  const code = 0;
   const sitemapPath = path.resolve(__dirname, '../public/webapp/portal/index-seo.html');
   const sitemapTemplatePath = path.resolve(__dirname, '../public/seo/portal.ejs');
   global.huasen.createEpWorking(
@@ -125,7 +126,7 @@ let accessSEOJob = schedule.scheduleJob('0 0 * * * *', async () => {
             name: 1,
             url: 1,
             description: 1,
-          }
+          },
         ],
       },
       {
@@ -144,15 +145,15 @@ let accessSEOJob = schedule.scheduleJob('0 0 * * * *', async () => {
             tag: 0,
             bannerImg: 0,
             isDraft: 0,
-          }
+          },
         ],
       },
     ],
     async (sites, articles) => {
-      const origin = get(setting, 'site.origin') || ''
+      const origin = get(setting, 'site.origin') || '';
       articles.forEach(item => {
-        item.url = `${origin}/#/read/${item._id}`
-      })
+        item.url = `${origin}/#/read/${item._id}`;
+      });
       const ejsOpt = {
         brandName: get(setting, 'site.brandName'),
         brandUrl: get(setting, 'site.brandUrl'),
@@ -161,15 +162,13 @@ let accessSEOJob = schedule.scheduleJob('0 0 * * * *', async () => {
         headHtml: get(setting, 'site.headHtml'),
         bodyHtml: get(setting, 'site.bodyHtml'),
         sites,
-        articles
-      }
+        articles,
+      };
       ejs.renderFile(sitemapTemplatePath, ejsOpt, async (err, html) => {
         if (err) throw err;
         const formatted = await prettier.format(html, { parser: 'html', tabWidth: 2, printWidth: 300 });
         await writeToFile(sitemapPath, formatted);
       });
-
     },
   );
 });
-

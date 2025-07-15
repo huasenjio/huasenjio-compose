@@ -15,7 +15,13 @@
         <i class="iconfont icon-a-unfoldcross-line" @click="handleNavbar"> </i>
       </li>
       <li class="sidebar__item shadow" v-for="(item, index) in displayAsidebar" :key="index" :title="item.label" @click="handleSidebar(item)">
-        <el-popover placement="left" popper-class="app-wrap__asidebar__popover" :open-delay="400" :trigger="item.typeConfig.trigger === 'click' ? 'click' : 'hover'" :disabled="!(item.type === 'html')">
+        <el-popover
+          placement="left"
+          popper-class="app-wrap__asidebar__popover"
+          :open-delay="400"
+          :trigger="item.typeConfig.trigger === 'click' ? 'click' : 'hover'"
+          :disabled="!(item.type === 'html')"
+        >
           <div v-if="item.type === 'html'" v-html="item.typeConfig.domStr"></div>
           <template slot="reference">
             <IconBox size="28px" :icon="item.icon"></IconBox>
@@ -72,7 +78,7 @@ export default {
           },
         },
       });
-      this.$store.dispatch('snapshoot');
+      this.$store.dispatch('snapshoot', { paths: ['config.showNavbar'] });
     },
 
     handleSidebar(item) {

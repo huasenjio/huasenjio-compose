@@ -155,10 +155,8 @@ export default {
   }
   main {
     width: 90%;
-    max-height: 320px;
+    height: fit-content;
     margin: 10px auto;
-    overflow-x: hidden;
-    overflow-y: auto;
     ul {
       li {
         display: flex;

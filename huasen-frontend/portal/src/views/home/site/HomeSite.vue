@@ -15,7 +15,12 @@
           <div v-if="showTag(category)" class="w-full pb-px-4 my-px-4 overflow-x-auto overflow-y-hidden">
             <div class="inherit-bg tag-container flex items-center p-px-4 bg-gray-100 rounded-full">
               <!-- 默认占位标签 -->
-              <div class="inherit-bg flex-shrink-0 text-12px text text-center w-px-80 px-px-2 py-px-4 ml-px-6 first:ml-px-0 hover:bg-blue-400 hover:text-white transition rounded-full pointer" title="全部" :class="{ selected: category.selectedTag === '' }" @click="handleSelectTag(category, '')">
+              <div
+                class="inherit-bg flex-shrink-0 text-12px text text-center w-px-80 px-px-2 py-px-4 ml-px-6 first:ml-px-0 hover:bg-blue-400 hover:text-white transition rounded-full pointer"
+                title="全部"
+                :class="{ selected: category.selectedTag === '' }"
+                @click="handleSelectTag(category, '')"
+              >
                 全部
               </div>
               <!-- 其他标签 -->
@@ -34,9 +39,14 @@
         </header>
         <main>
           <ul v-balance>
-            <a class="relative site inherit-text" v-for="(site, i) in handleDisplaySites(category)" :key="`${site.url}-${i}`" :href="site.url" :title="site.describe" target="_blank">
+            <div v-for="(site, i) in handleDisplaySites(category)" :key="`${site.url}-${i}`" class="site relative inherit-text" @click="openDetail(site)">
               <div class="pin-group absolute -top-px-6 right-px-0 w-full h-px-16 flex justify-end">
-                <div v-for="(pin, pinIndex) in handlePin(site)" :key="`${pin}-${pinIndex}`" :style="{ backgroundColor: LODASH.get(pinMap, pin + '.color') }" class="w-px-16 h-px-16 mr-px-2 text-12px text-gray-0 flex justify-center items-center rounded-full">
+                <div
+                  v-for="(pin, pinIndex) in handlePin(site)"
+                  :key="`${pin}-${pinIndex}`"
+                  :style="{ backgroundColor: LODASH.get(pinMap, pin + '.color') }"
+                  class="w-px-16 h-px-16 mr-px-2 text-12px text-gray-0 flex justify-center items-center rounded-full"
+                >
                   <template v-if="LODASH.get(pinMap, pin)">
                     {{ LODASH.get(pinMap, pin + '.label') }}
                   </template>
@@ -46,26 +56,34 @@
               <div class="site-card inherit-text text w-px-180 sm:w-px-150">
                 <div class="img-group">
                   <img v-lazy="{ siteUrl: site.url, iconPatch: appConfig.site.autoIconPatch }" :src="imgUrl(site)" />
+                  <div class="direct" title="直达站点" @click.stop="goSite(site)"><i class="iconfont icon-xiangyou"></i></div>
                 </div>
                 <div class="text-group">
-                  <div class="name text">{{ site.name }}</div>
-                  <div class="describe inherit-text text">{{ site.describe }}</div>
+                  <div class="name text" :title="site.name">{{ site.name }}</div>
+                  <div class="describe inherit-text text" :title="site.description">{{ site.description }}</div>
                 </div>
               </div>
-            </a>
+            </div>
           </ul>
         </main>
       </div>
     </section>
+    <SiteDetail v-if="showDetail" :visible.sync="showDetail" :site="currentSite" :append-to-body="true" @close="closeDetail"></SiteDetail>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import { tool } from 'huasen-lib';
+import SiteDetail from '@/views/home/site/SiteDetail.vue';
 export default {
   name: 'HomeSite',
+  components: {
+    SiteDetail,
+  },
   data() {
     return {
-      loadedTag: false,
+      showDetail: false,
+      currentSite: null,
       pinMap: {
         1: {
           label: '热',
@@ -99,7 +117,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('initLocalStyleInfo');
+    this.$store.dispatch('initLocalThemeInfo');
   },
   methods: {
     showTag(category) {
@@ -131,7 +149,7 @@ export default {
       let tags = [];
       let sites = this.LODASH.get(type, 'sites') || [];
       sites.forEach(site => {
-        let expand = this.TOOL.parseJSON(site.expand, {});
+        let expand = tool.parseJSON(site.expand, 'Object', {});
         let tag = this.LODASH.get(expand, 'tag');
         // 存在
         if (Array.isArray(tag)) {
@@ -153,6 +171,28 @@ export default {
         pin = [];
       }
       return pin;
+    },
+
+    goSite(site) {
+      window.open(site.url, '_blank');
+    },
+
+    openDetail(site) {
+      this.API.Site.findSiteDetail({ _id: site._id }, { notify: false })
+        .then(res => {
+          this.currentSite = res.data;
+          this.$nextTick(() => {
+            this.showDetail = true;
+          });
+        })
+        .catch(err => {});
+    },
+
+    closeDetail() {
+      this.showDetail = false;
+      this.$nextTick(() => {
+        this.currentSite = null;
+      });
     },
   },
 };
@@ -207,8 +247,8 @@ export default {
             }
             .site-card {
               position: relative;
-              height: 50px;
-              padding: 5px;
+              height: 64px;
+              padding: 8px;
               display: flex;
               align-items: center;
               border-radius: 3px;
@@ -228,12 +268,32 @@ export default {
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: 100% 100%;
-                border-radius: 6px;
+                border-radius: 8px;
                 overflow: hidden;
                 z-index: 2;
                 img {
+                  position: absolute;
+                  border-radius: 8px;
                   width: 100%;
                   height: 100%;
+                }
+                .direct {
+                  position: absolute;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 8px;
+                  width: 100%;
+                  height: 100%;
+                  background-color: transparent;
+                  transition: all 0.3s ease;
+                  pointer-events: none;
+                  cursor: pointer;
+                  i {
+                    font-size: 24px;
+                    color: transparent;
+                    transition: color 0.3s ease;
+                  }
                 }
               }
               .text-group {
@@ -246,6 +306,17 @@ export default {
                 .describe {
                   color: var(--gray-400);
                   font-size: 12px;
+                }
+              }
+              &:hover {
+                .img-group {
+                  .direct {
+                    pointer-events: all;
+                    background-color: var(--black-o5);
+                    i {
+                      color: var(--white);
+                    }
+                  }
                 }
               }
             }

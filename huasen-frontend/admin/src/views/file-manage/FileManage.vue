@@ -43,10 +43,10 @@
         <el-table-column prop="date" label="操作" width="320">
           <template slot-scope="scope">
             <el-popconfirm @confirm="remove('single', scope.row.url, scope.$index)" class="mr-px-10" popper-class="delete-popcomfirm" title="确定删除吗？">
-              <el-button slot="reference" size="mini" type="danger">删 除</el-button>
+              <el-button slot="reference" size="mini" plain type="danger">删 除</el-button>
             </el-popconfirm>
-            <el-button size="mini" @click="copy(scope.row.url, scope.$index)" type="warning">复 制</el-button>
-            <el-button size="mini" @click="preview(scope.row.url, scope.$index)" type="primary">预 览</el-button>
+            <el-button size="mini" plain @click="copy(scope.row.url, scope.$index)" type="warning">复 制</el-button>
+            <el-button size="mini" plain @click="preview(scope.row.url, scope.$index)" type="primary">预 览</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { tool } from 'huasen-lib';
 import FileUpLoad from '@/components/common/file-upload/FileUpload.vue';
 export default {
   name: 'FileManage',
@@ -118,6 +119,10 @@ export default {
       filterType: '',
       filterText: '',
     };
+  },
+
+  activated() {
+    // this.queryFile();
   },
 
   mounted() {
@@ -202,7 +207,9 @@ export default {
 
     // 拷贝链接
     copy(url, index) {
-      this.TOOL.copyTextToClip(url, '拷贝链接成功');
+      tool.copyTextToClip(url, () => {
+        alert('已拷贝链接');
+      });
     },
 
     // 移除文件

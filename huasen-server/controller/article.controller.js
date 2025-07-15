@@ -35,8 +35,8 @@ function findByPage(req, res, next) {
           pageNo,
           pageSize,
           {
-            content: 0
-          }
+            content: 0,
+          },
         ],
         self: true,
       },
@@ -78,6 +78,12 @@ function findById(req, res, next) {
             code: { $lte: proof.code },
           },
         ],
+      },
+      {
+        schemaName: 'Article',
+        methodName: 'upPV',
+        payloads: [_id],
+        self: true,
       },
     ],
     result => {
@@ -141,8 +147,8 @@ function findByCode(req, res, next) {
             isDraft: false,
           },
           {
-            content: 0
-          }
+            content: 0,
+          },
         ],
       },
     ],

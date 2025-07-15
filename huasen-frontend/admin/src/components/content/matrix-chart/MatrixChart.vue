@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { tool } from 'huasen-lib';
 import '@/plugin/echarts-wordcloud.min.js';
 export default {
   name: 'MatrixChart',
@@ -35,7 +36,7 @@ export default {
 
   computed: {
     chartId() {
-      return String(this.TOOL.getUid(4, 6));
+      return String(tool.getUid(4, 6));
     },
   },
 
@@ -96,13 +97,15 @@ export default {
           this.chart.resize();
         });
         this.chartObserve.observe(dom);
-        this.$once('hook:beforeDestroy', function() {
+        this.$once('hook:beforeDestroy', function () {
           this.chartObserve.unobserve(dom);
         });
       }
       this.chart.setOption(option);
       this.chart.on('click', params => {
-        this.TOOL.copyTextToClip(params.name, '拷贝成功');
+        tool.copyTextToClip(params.name, () => {
+          alert('拷贝成功');
+        });
       });
     },
   },
