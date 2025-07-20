@@ -409,6 +409,7 @@ export default {
     initCustomStyle(data, paths) {
       this.commitAll(data);
       this.$store.dispatch('snapshoot', { paths });
+      this.$tips('success', '已保存配置', null, 2000);
     },
   },
 };

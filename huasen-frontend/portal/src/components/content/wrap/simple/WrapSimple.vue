@@ -6,11 +6,13 @@
  * @Description: 
 -->
 <template>
-  <div class="wrap-simpleMode animate__animated animate__fadeInDown">
+  <div class="wrap-simple-mode animate__animated animate__fadeInDown">
     <HomeWallpaper :fullscreen="true"></HomeWallpaper>
     <HomeSearch :top="'180px'"></HomeSearch>
     <!-- 关闭极简模式按钮 -->
-    <i @click="closeSimpleMode" class="exit iconfont icon-md-qr-scanner mix-blend-lighten"></i>
+    <div class="exit">
+      <i @click="closeSimpleMode" class="iconfont icon-md-qr-scanner mix-blend-lighten"></i>
+    </div>
   </div>
 </template>
 <script>
@@ -49,20 +51,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrap-simpleMode {
+.wrap-simple-mode {
   position: absolute;
   width: 100%;
   height: 100%;
   .exit {
+    width: 30px;
+    height: 30px;
     position: absolute;
     padding: 2px;
     bottom: 18px;
     right: 26px;
-    font-size: 24px;
-    // filter: invert(100%);
-    cursor: pointer;
-    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
     background-color: var(--gray-o5);
+    i {
+      color: var(--gray-o5);
+      font-size: 24px;
+      cursor: pointer;
+    }
   }
 }
 </style>

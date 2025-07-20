@@ -12,14 +12,12 @@ mongoose.set('useCreateIndex', true); // 使用 createIndex 替代 ensureIndex
 // 官方示例
 // mongodb://username:password@host:port/database?options
 
-
 let mongoUrl = null;
 if (DB.dbDirConnection) {
   mongoUrl = `mongodb://${DB.name}:${DB.password}@${DB.ip}:${DB.port}/${DB.dbName}?authSource=${DB.dbName}`;
 } else {
   mongoUrl = `mongodb://${DB.name}:${DB.password}@${DB.ip}/${DB.dbName}?authSource=${DB.dbName}`;
 }
-
 
 function initMongo() {
   // 连接数据库
@@ -28,7 +26,7 @@ function initMongo() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-};
+}
 initMongo();
 
 const db = mongoose.connection;
