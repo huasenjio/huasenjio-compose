@@ -9,6 +9,10 @@ COPY /huasen-lib /app/huasen-lib
 COPY /huasen-server /app/huasen-server
 # 使用最新淘宝镜像源
 RUN npm config set registry https://registry.npmmirror.com
+# 清空npm缓存
+RUN npm cache clean --force
+# 超时时间
+RUN npm config set fetch-retry-maxtimeout 120000
 # 安装 pm2 用来做服务器的进程守护
 RUN npm install pm2 -g
 # 切换huasen-lib目录并安装依赖

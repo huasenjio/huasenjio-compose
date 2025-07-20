@@ -23,7 +23,7 @@ if (DB.dbDirConnection) {
 
 function initMongo() {
   // 连接数据库
-  console.log('[Huasen Log]：即将连接数据库...');
+  console.log('[Huasen Log]：连接数据库中...');
   mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -33,7 +33,13 @@ initMongo();
 
 const db = mongoose.connection;
 db.on('error', err => {
-  console.log('数据库异常', err);
+  if (err.message.includes('ECONNREFUSED')) {
+    console.log('[Huasen Log]：数据库未启动');
+  } else if (err.message.includes('Authentication failed')) {
+    console.log('[Huasen Log]：数据库认证身份异常');
+  } else {
+    console.log('[Huasen Log]：数据库异常', err);
+  }
   setTimeout(() => {
     initMongo();
   }, 3000);

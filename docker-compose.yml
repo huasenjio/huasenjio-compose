@@ -18,12 +18,23 @@ services:
     volumes:
       # /data/db数据目录挂载到宿主机
       - ./huasen-mongo/volume:/data/db
-      # 记录终端输出
-      - ./huasen-mongo/tail/null:/huasen-mongo/tail/null
+      # 日志目录挂载
+      # - ./huasen-mongo/logs:/huasen-mongo/logs
       # init-mongo-open.js 文件会在 mongodb 容器初始化完成之后执行，创建数据库默认的角色
       - ./huasen-mongo/init-mongo-open.js:/docker-entrypoint-initdb.d/init-mongo-open.js
-    # 执行命令，windows 系统下，设置 15 秒的睡眠时间，避免 mongo 没有启动，执行初始化脚本失败
-    command: sh -c "mongod --bind_ip 0.0.0.0 & sleep 15 && mongo /docker-entrypoint-initdb.d/init-mongo-open.js && tail -f /huasen-mongo/tail/null"
+    command: >
+      sh -c "
+      mongod --bind_ip 0.0.0.0 --logpath /dev/null --fork;
+      until mongo --eval 'db.runCommand({ ping: 1 })' --quiet; do
+        echo '[Huasen Log] 等待 MongoDB 启动...';
+        sleep 2;
+      done;
+      echo '[Huasen Log] 初始化数据库脚本...';
+      mongo /docker-entrypoint-initdb.d/init-mongo-open.js;
+      mongod --shutdown;
+      echo '[Huasen Log] 启动 MongoDB 服务...';
+      exec mongod --bind_ip 0.0.0.0 --auth --logpath /dev/null
+      "
     environment:
       # 设置时区为上海（东八区）
       TZ: Asia/Shanghai

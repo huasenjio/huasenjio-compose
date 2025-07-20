@@ -10,24 +10,23 @@
 // root       MONGO_INITDB_ROOT_USERNAME
 // password   MONGO_INITDB_ROOT_PASSWORD
 
-db.auth("root", "Mongo12345*");
-const huasenDB = db.getSiblingDB("huasen");
+// 确保先切换到目标数据库
+db = db.getSiblingDB("huasen");
 
-// printjson(huasenDB.getUser("huasenjio"));
-
-// 判断是否存在指定用户
-if (!huasenDB.getUser("huasenjio")) {
-  print("create user for huasen DB...");
-  // 不存在则创建用户
-  huasenDB.createUser({
+if (!db.getUser("huasenjio")) {
+  print("创建 huasenjio 用户...");
+  // 创建用户前切换到目标数据库
+  db.createUser({
     user: "huasenjio",
     pwd: "Mongo12345*",
     roles: [
       {
-        // 赋予这个用户读写 huasen 数据库的权限
         role: "readWrite",
         db: "huasen",
       },
     ],
   });
+  print("huasenjio 用户创建成功");
+} else {
+  print("huasenjio 用户已存在");
 }
