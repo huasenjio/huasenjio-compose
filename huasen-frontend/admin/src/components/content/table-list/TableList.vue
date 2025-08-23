@@ -11,31 +11,59 @@
     <header v-if="showHeader">
       <el-form ref="searchForm" :inline="true" :model="formData">
         <el-row :gutter="10">
-          <el-col v-for="(formItem, index) in formMap" :key="index" :span="formItem.span || 5">
-            <el-form-item>
-              <!-- input -->
-              <el-input
-                v-if="formItem.type == 'input'"
-                v-model="formData[formItem.key]"
-                :placeholder="handlePlaceHolder(formItem)"
-                @keyup.native.enter="search"
-                @clear="search"
-                clearable
-              ></el-input>
-              <!-- select -->
-              <el-select v-if="formItem.type == 'select'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)" @change="search">
-                <el-option label="全部" value=""></el-option>
-                <el-option v-for="item in formItem.selectOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
+          <el-col v-for="(formItem, index) in visiableFormMap" :key="index" :span="formItem.span || 5">
+            <el-form-item v-if="typeof formItem.show === 'undefined' ? true : !!formItem.show" class="search-item" :prop="formItem.key">
+              <div class="control">
+                <!-- input -->
+                <el-input
+                  v-if="formItem.type == 'input'"
+                  v-model="formData[formItem.key]"
+                  :placeholder="handlePlaceHolder(formItem)"
+                  @keyup.native.enter="search"
+                  @clear="search"
+                  clearable
+                ></el-input>
+                <!-- select -->
+                <el-select v-if="formItem.type == 'select'" v-model="formData[formItem.key]" :placeholder="handlePlaceHolder(formItem)" @change="search">
+                  <el-option label="全部" :value="undefined"></el-option>
+                  <el-option v-for="item in formItem.typeConfig.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+                <!-- switch -->
+                <el-switch
+                  v-if="formItem.type == 'switch'"
+                  v-model="formData[formItem.key]"
+                  active-value="true"
+                  inactive-value="false"
+                  active-text="是"
+                  inactive-text="否"
+                  @change="search"
+                ></el-switch>
+                <!-- 日期选择器 -->
+                <el-date-picker
+                  v-if="formItem.type == 'date-picker'"
+                  v-model="formData[formItem.key]"
+                  style="width: 100%"
+                  align="center"
+                  type="datetimerange"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  :default-time="['00:00:00', '23:59:59']"
+                  @change="search"
+                >
+                </el-date-picker>
+              </div>
+              <div v-if="index === visiableFormMap.length - 1" class="more">
+                <el-button size="mini" icon="iconfont icon-guolv" @click="showFilterDialog = true">筛选</el-button>
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item>
-              <el-button size="small" type="primary" @click="search">查询</el-button>
-              <el-button size="small" v-if="showAdd" type="success" @click="add">添加</el-button>
-              <el-button size="small" v-if="showAddMany" type="info" @click="addMany">导入/出</el-button>
+              <el-button size="mini" type="primary" icon="el-icon-search" @click="search">查询</el-button>
+              <el-button size="mini" v-if="showAdd" type="success" icon="el-icon-plus" @click="add">添加</el-button>
+              <el-button size="mini" v-if="showAddMany" type="info" @click="addMany">导入/出</el-button>
               <el-popconfirm v-if="showRemoveMany" @confirm="removeMany" class="ml-px-10" popper-class="delete-popcomfirm" title="确定删除吗？">
-                <el-button slot="reference" size="small" type="danger">批量删除</el-button>
+                <el-button slot="reference" size="mini" type="danger">批量删除</el-button>
               </el-popconfirm>
             </el-form-item>
           </el-col>
@@ -117,24 +145,31 @@
       >
       </el-pagination>
     </footer>
+    <!-- 过滤弹窗 -->
+    <HSDialog v-if="showFilterDialog" title="编辑过滤条件" width="480px" maxHeight="500px" :visible.sync="showFilterDialog">
+      <el-table height="100%" :data="this.formMap" stripe>
+        <el-table-column property="label" label="条件名称"></el-table-column>
+        <el-table-column property="key" label="条件关键词"></el-table-column>
+        <el-table-column label="显示状态">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.show" size="mini" @change="val => handleFilterVisiable(val, scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+      </el-table>
+    </HSDialog>
   </div>
 </template>
 
 <script>
 import { tool } from 'huasen-lib';
+import HSDialog from '@/components/common/dialog/Dialog.vue';
 export default {
+  components: {
+    HSDialog,
+  },
   name: 'TableList',
 
   props: {
-    formData: {
-      type: Object,
-      default: () => {
-        return {
-          name: 'huasen',
-        };
-      },
-    },
-
     formMap: {
       type: Array,
       default: () => [
@@ -206,6 +241,9 @@ export default {
   },
 
   computed: {
+    visiableFormMap() {
+      return this.formMap.filter(item => item.show);
+    },
     showContent() {
       return this.tableMap.length === 0 ? false : true;
     },
@@ -216,16 +254,31 @@ export default {
 
   data() {
     return {
+      formData: {},
       pagination: {
         pageNo: 1,
         pageSize: 10,
       },
       // 是否显示多选删除按钮
       showRemoveMany: false,
+      showFilterDialog: false,
     };
   },
 
   watch: {
+    formMap: {
+      handler(val) {
+        const fd = {};
+        val.forEach(item => {
+          if (item.show) {
+            fd[item.key] = item.value;
+          }
+        });
+        this.formData = fd;
+      },
+      deep: true,
+      immediate: true,
+    },
     pagination: {
       handler(val) {
         this.$emit('updatePagination', val.pageNo, val.pageSize);
@@ -236,6 +289,25 @@ export default {
   },
 
   methods: {
+    /**
+     * 该方法支持外界引用调用
+     */
+    getFormData() {
+      return this.formData;
+    },
+
+    handleFilterVisiable(val, row) {
+      if (this.visiableFormMap.length < 1) {
+        this.$message.error('至少保留一个筛选条件');
+        this.$set(row, 'show', true);
+        return;
+      }
+    },
+
+    handleFilterSelectionChange(selection) {
+      this.filterForm = selection;
+    },
+
     handleSelectionChange() {
       this.showRemoveMany = this.$refs.table.selection.length === 0 ? false : true;
     },
@@ -320,7 +392,10 @@ export default {
 .table-list {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   header {
+    height: fit-content;
     ::v-deep .el-form {
       .el-col {
         .el-form-item {
@@ -328,6 +403,17 @@ export default {
           margin: 10px 0;
           .el-form-item__content {
             width: 100%;
+            height: 32px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            .control {
+              flex: 1;
+              overflow: hidden;
+            }
+            .more {
+              margin-left: 10px;
+            }
           }
           .el-select {
             width: 100%;
@@ -340,10 +426,14 @@ export default {
     }
   }
   main {
-    width: 100%;
-    height: 100%;
+    flex: 1;
+    overflow: hidden;
+    ::v-deep .el-table {
+      height: 100%;
+    }
   }
   footer {
+    height: fit-content;
     ::v-deep .el-pagination {
       .el-pagination__sizes {
         margin-right: auto;

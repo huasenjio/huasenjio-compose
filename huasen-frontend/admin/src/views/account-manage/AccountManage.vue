@@ -48,7 +48,7 @@ export default {
       height: calc(100% - 60px);
       .el-tab-pane {
         width: 100%;
-        height: calc(100% - 120px);
+        height: 100%;
       }
     }
   }

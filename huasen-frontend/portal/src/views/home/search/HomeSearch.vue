@@ -329,6 +329,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--gray-o7);
+  z-index: 1;
   form {
     position: relative;
     width: 100%;

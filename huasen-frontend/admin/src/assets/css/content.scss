@@ -42,3 +42,10 @@ li {
 #nprogress .spinner-icon {
   display: none;
 }
+
+.el-button {
+  .iconfont {
+    font-size: inherit;
+    margin-right: 5px;
+  }
+}

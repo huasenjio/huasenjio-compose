@@ -9,9 +9,9 @@
 <template>
   <div class="account-blacklist">
     <TableList
+      ref="tableList"
       :tableData="blacklist"
       :tableMap="tableMap"
-      :formData.sync="searchForm"
       :formMap="searchFormMap"
       :showAdd="true"
       :showEdit="false"
@@ -63,16 +63,12 @@ export default {
       total: 0,
 
       // 搜索表单
-      searchForm: {
-        ip: '',
-      },
-
-      // 搜索表单
       searchFormMap: [
         {
           label: 'IP地址',
           type: 'input',
           key: 'ip',
+          show: true,
         },
       ],
 
@@ -109,12 +105,13 @@ export default {
   },
   methods: {
     queryBlacklist() {
+      let formData = this.$refs.tableList.getFormData();
       let params = Object.assign(
         {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
         },
-        this.searchForm,
+        formData,
       );
       this.API.blacklist
         .findBlacklistByPage(params, {

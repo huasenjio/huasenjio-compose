@@ -8,9 +8,9 @@
 <template>
   <div class="site-manage">
     <TableList
+      ref="tableList"
       :tableData="tableData"
       :tableMap="tableMap"
-      :formData.sync="searchForm"
       :formMap="searchFormMap"
       :total="total"
       :showAdd="true"
@@ -139,28 +139,80 @@ export default {
         },
       ],
 
-      // 搜索表单
-      searchForm: {
-        name: '',
-        code: '',
-        tag: '',
-      },
       searchFormMap: [
         {
           label: '名称',
           type: 'input',
           key: 'name',
+          value: '',
+          show: true,
+        },
+        {
+          label: '链接',
+          key: 'url',
+          type: 'input',
+          value: '',
+          show: false,
+        },
+        {
+          label: '描述',
+          type: 'input',
+          key: 'description',
+          value: '',
+          show: false,
+        },
+        {
+          label: '备注',
+          type: 'input',
+          key: 'remarks',
+          value: '',
+          show: false,
         },
         {
           label: '标签',
           type: 'input',
           key: 'tag',
+          value: '',
+          show: false,
+        },
+        {
+          label: '置顶标记',
+          type: 'select',
+          key: 'pin',
+          value: undefined,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.pin,
+          },
+          show: false,
         },
         {
           label: '权限码',
           key: 'code',
           type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
+          value: undefined,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.code,
+          },
+          show: true,
+        },
+        {
+          label: '是否可用',
+          key: 'enabled',
+          type: 'select',
+          value: undefined,
+          typeConfig: {
+            options: [
+              {
+                label: '可用',
+                value: true,
+              },
+              {
+                label: '禁用',
+                value: false,
+              },
+            ],
+          },
+          show: false,
         },
       ],
       show: false,
@@ -193,8 +245,8 @@ export default {
           label: '网站标签',
           key: 'siteTag',
           type: 'select',
-          selectOptions: [],
-          selectConfig: {
+          typeConfig: {
+            options: [],
             'allow-create': true,
             filterable: true,
             multiple: true,
@@ -204,8 +256,8 @@ export default {
           label: '置顶标记',
           key: 'sitePin',
           type: 'select',
-          selectOptions: this.CONSTANT.dictionary.pin,
-          selectConfig: {
+          typeConfig: {
+            options: this.CONSTANT.dictionary.pin,
             filterable: true,
             multiple: true,
           },
@@ -214,8 +266,8 @@ export default {
           label: '所属栏目',
           key: 'columnId',
           type: 'select',
-          selectOptions: [],
-          selectConfig: {
+          typeConfig: {
+            options: [],
             'allow-create': true,
             filterable: true,
             multiple: true,
@@ -230,7 +282,9 @@ export default {
           label: '权限码',
           key: 'code',
           type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.code,
+          },
         },
         {
           label: '是否可用',
@@ -248,8 +302,8 @@ export default {
           label: '所属栏目',
           key: 'columnId',
           type: 'select',
-          selectOptions: [],
-          selectConfig: {
+          typeConfig: {
+            options: [],
             filterable: true,
             multiple: true,
           },
@@ -310,12 +364,14 @@ export default {
 
   methods: {
     queryData() {
+      // 获取搜索表单数据
+      let formData = this.$refs.tableList.getFormData();
       let params = Object.assign(
         {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
         },
-        this.searchForm,
+        formData,
       );
       // 请求站点数据
       this.API.site
@@ -337,8 +393,8 @@ export default {
             value: tagName,
           };
         });
-        if (existObj) existObj.selectOptions = [...this.siteTagNameOptions];
-        if (importExistObj) importExistObj.selectOptions = [...this.siteTagNameOptions];
+        if (existObj) existObj.typeConfig.options = [...this.siteTagNameOptions];
+        if (importExistObj) importExistObj.typeConfig.options = [...this.siteTagNameOptions];
       });
     },
 
@@ -353,8 +409,8 @@ export default {
         });
         let importFormColumnItem = this.importFormMap.find(el => el.key === 'columnId');
         let formColumnItem = this.formMap.find(el => el.key === 'columnId');
-        if (importFormColumnItem) importFormColumnItem.selectOptions = [...this.columnOptions];
-        if (formColumnItem) formColumnItem.selectOptions = [...this.columnOptions];
+        if (importFormColumnItem) importFormColumnItem.typeConfig.options = [...this.columnOptions];
+        if (formColumnItem) formColumnItem.typeConfig.options = [...this.columnOptions];
       });
     },
 
@@ -559,7 +615,7 @@ export default {
 <style lang="scss" scoped>
 .site-manage {
   width: 100%;
-  height: calc(100% - 120px);
+  height: 100%;
   padding: 10px 10px;
   ::v-deep .h-markdown-editor {
     width: 100%;

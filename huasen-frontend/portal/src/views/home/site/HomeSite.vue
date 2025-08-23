@@ -7,7 +7,7 @@
 -->
 <template>
   <div id="js-home-site" class="home-site" v-discolor>
-    <section :id="`site-anchor-${encodeURI(index)}`" v-for="(category, index) in categorySitesData" :key="`${category.typeName}-${index}`">
+    <section :id="`site-anchor-${encodeURI(index)}`" v-for="(category, index) in categorySitesData" :key="category.typeId">
       <div class="site-item" v-discolor>
         <header>
           <i class="category-icon relative left-px-2 iconfont icon-tag"></i>
@@ -39,7 +39,7 @@
         </header>
         <main>
           <ul v-balance>
-            <div v-for="(site, i) in handleDisplaySites(category)" :key="`${site.url}-${i}`" class="site relative inherit-text" @click="openDetail(site)">
+            <div v-for="site in handleDisplaySites(category)" :key="`${category.typeId}-${site._id}`" class="site relative inherit-text" @click="openDetail(site)">
               <div class="pin-group absolute -top-px-6 right-px-0 w-full h-px-16 flex justify-end">
                 <div
                   v-for="(pin, pinIndex) in handlePin(site)"
@@ -55,7 +55,7 @@
 
               <div class="site-card inherit-text text w-px-180 sm:w-px-150">
                 <div class="img-group">
-                  <img v-lazy="{ siteUrl: site.url, iconPatch: appConfig.site.autoIconPatch }" :src="imgUrl(site)" />
+                  <img v-lazy="{ siteUrl: site.url, iconPatch: appConfig.site.autoIconPatch }" :key="`${category.typeId}-${site._id}-${site.url}`" :src="imgUrl(site)" />
                   <div class="direct" title="直达站点" @click.stop="goSite(site)"><i class="iconfont icon-xiangyou"></i></div>
                 </div>
                 <div class="text-group">
@@ -68,22 +68,15 @@
         </main>
       </div>
     </section>
-    <SiteDetail v-if="showDetail" :visible.sync="showDetail" :site="currentSite" :append-to-body="true" @close="closeDetail"></SiteDetail>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex';
 import { tool } from 'huasen-lib';
-import SiteDetail from '@/views/home/site/SiteDetail.vue';
 export default {
   name: 'HomeSite',
-  components: {
-    SiteDetail,
-  },
   data() {
     return {
-      showDetail: false,
-      currentSite: null,
       pinMap: {
         1: {
           label: '热',
@@ -125,7 +118,6 @@ export default {
     },
     // 处理图标链接
     imgUrl(site) {
-      // return site.icon ? site.icon : require('@/assets/img/error/image-error.png');
       return site.icon;
     },
 
@@ -177,22 +169,9 @@ export default {
       window.open(site.url, '_blank');
     },
 
-    openDetail(site) {
-      this.API.Site.findSiteDetail({ _id: site._id }, { notify: false })
-        .then(res => {
-          this.currentSite = res.data;
-          this.$nextTick(() => {
-            this.showDetail = true;
-          });
-        })
-        .catch(err => {});
-    },
-
-    closeDetail() {
-      this.showDetail = false;
-      this.$nextTick(() => {
-        this.currentSite = null;
-      });
+    async openDetail(site) {
+      const res = await this.API.Site.findSiteDetail({ _id: site._id }, { notify: false });
+      this.$emit('openDetail', res.data);
     },
   },
 };

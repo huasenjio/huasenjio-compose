@@ -22,7 +22,20 @@ function add(req, res, next) {
 }
 
 function findByPage(req, res, next) {
-  let { pageNo, pageSize, title, manageId } = req.huasenParams;
+  let { pageNo, pageSize, manageId, title, tag, isDraft, code } = req.huasenParams;
+  let params = { title: { $regex: new RegExp(title, 'i') } };
+  if (tag) {
+    params.tag = { $regex: new RegExp(tag, 'i') };
+  }
+  if (manageId) {
+    params.manageId = { $regex: new RegExp(manageId, 'i') };
+  }
+  if (typeof isDraft === 'boolean') {
+    params.isDraft = isDraft;
+  }
+  if (code !== '' && code !== undefined && code !== null) {
+    params.code = code;
+  }
   req.epWorking(
     [
       {
@@ -30,7 +43,7 @@ function findByPage(req, res, next) {
         methodName: 'findByPage',
         payloads: [
           {
-            $and: [{ title: { $regex: new RegExp(title, 'i') } }, { manageId: { $regex: new RegExp(manageId, 'i') } }],
+            $and: [params],
           },
           pageNo,
           pageSize,

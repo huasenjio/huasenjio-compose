@@ -41,9 +41,12 @@ function getDomainFromURL(urlString) {
 // 图片标签懒加载
 Vue.directive('lazy', {
   inserted: handleLazy,
-  // componentUpdated: handleLazy, // 组件更新时触发太过频繁
+  componentUpdated: handleLazy, // 组件更新时触发太过频繁
 });
 function handleLazy(el, binding) {
+  if (el.dataset.loaded === 'true') {
+    return;
+  }
   const url = el.src; // 保存原始图标地址
   el.src = loadImg; // 替换图标为加载图标
   el.isIconPatch = false; // 一为图标加载标记
@@ -54,6 +57,8 @@ function handleLazy(el, binding) {
       el.src = url;
       el.onload = function() {
         observe.unobserve(el);
+        // 标记图片已经加载成功
+        el.dataset.loaded = 'true';
       };
       el.onerror = function() {
         if (iconPatch && !el.isIconPatch && siteUrl) {

@@ -9,9 +9,9 @@
 <template>
   <div class="record-manage p-px-10">
     <TableList
+      ref="tableList"
       :tableData="records"
       :tableMap="tableMap"
-      :formData.sync="searchForm"
       :formMap="searchFormMap"
       :showAdd="false"
       :showEdit="false"
@@ -49,28 +49,24 @@ export default {
           label: '记录时间',
           key: 'time',
         },
-        // {
-        //   label: '日志内容',
-        //   key: 'log',
-        // },
       ],
       total: 0,
 
-      // 搜索表单
-      searchForm: {
-        id: '',
-        time: '',
-      },
       searchFormMap: [
         {
           label: '索引',
           type: 'input',
           key: 'id',
+          show: true,
+          span: 5,
         },
         {
-          label: '存入时间',
+          label: '记录时间',
           key: 'time',
-          type: 'input',
+          value: '',
+          type: 'date-picker',
+          show: true,
+          span: 11,
         },
       ],
 
@@ -95,12 +91,13 @@ export default {
     },
 
     queryRecord() {
+      let formData = this.$refs.tableList.getFormData();
       let params = Object.assign(
         {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
         },
-        this.searchForm,
+        formData,
       );
       this.API.record
         .findRecordByPage(params, {
@@ -140,6 +137,6 @@ export default {
 <style lang="scss" scoped>
 .record-manage {
   width: 100%;
-  height: calc(100% - 120px);
+  height: 100%;
 }
 </style>

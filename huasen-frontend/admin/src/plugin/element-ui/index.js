@@ -56,6 +56,7 @@ import RadioGroup from 'element-ui/lib/radio-group';
 import Popover from 'element-ui/lib/popover';
 import Alert from 'element-ui/lib/alert';
 import Tag from 'element-ui/lib/tag';
+import DatePicker from 'element-ui/lib/date-picker';
 import { InfiniteScroll } from 'element-ui';
 
 Vue.use(Button);
@@ -91,6 +92,7 @@ Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(Alert);
 Vue.use(Tag);
+Vue.use(DatePicker);
 Vue.use(Loading.directive);
 Vue.use(InfiniteScroll);
 

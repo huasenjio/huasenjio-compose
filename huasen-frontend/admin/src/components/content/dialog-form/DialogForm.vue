@@ -20,14 +20,14 @@
           <el-select
             v-if="formTtem.type === 'select'"
             v-model="formData[formTtem.key]"
-            :allow-create="getSelectByAttr('selectConfig.allow-create', formTtem)"
-            :filterable="getSelectByAttr('selectConfig.filterable', formTtem)"
-            :multiple="getSelectByAttr('selectConfig.multiple', formTtem)"
-            :multiple-limit="getSelectByAttr('selectConfig.multiple-limit', formTtem, 8)"
+            :allow-create="getSelectByAttr('typeConfig.allow-create', formTtem)"
+            :filterable="getSelectByAttr('typeConfig.filterable', formTtem)"
+            :multiple="getSelectByAttr('typeConfig.multiple', formTtem)"
+            :multiple-limit="getSelectByAttr('typeConfig.multiple-limit', formTtem, 8)"
             :popper-append-to-body="false"
             :disabled="!!LODASH.get(formTtem, 'disabled')"
           >
-            <el-option v-for="(option, i) in formTtem.selectOptions" :key="i" :label="option.label" :value="option.value"> </el-option>
+            <el-option v-for="(option, i) in formTtem.typeConfig.options" :key="i" :label="option.label" :value="option.value"> </el-option>
           </el-select>
           <!-- 开关 -->
           <el-switch v-if="formTtem.type === 'switch'" :disabled="!!LODASH.get(formTtem, 'disabled')" v-model="formData[formTtem.key]"></el-switch>
@@ -224,16 +224,18 @@ export default {
           label: '下拉选择',
           key: 'area',
           type: 'select',
-          selectOptions: [
-            {
-              label: '滨江区',
-              value: 1,
-            },
-            {
-              label: '萧山区',
-              value: 2,
-            },
-          ],
+          typeConfig: {
+            options: [
+              {
+                label: '滨江区',
+                value: 1,
+              },
+              {
+                label: '萧山区',
+                value: 2,
+              },
+            ],
+          },
         },
       ],
     },

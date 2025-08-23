@@ -16,7 +16,7 @@
           <el-button slot="reference" size="mini" icon="el-icon-delete" type="danger">批量删除</el-button>
         </el-popconfirm>
         <el-button style="margin-left: 6px" size="mini" icon="el-icon-download" type="info" @click="downloadStore">下载全部</el-button>
-        <el-input v-model="filterText" style="width: 300px" class="ml-auto" placeholder="文件关键词" size="mini" clearable>
+        <el-input v-model="filterText" style="width: 300px" class="ml-auto" placeholder="关键词" size="mini" clearable>
           <el-select style="width: 95px" v-model="filterType" slot="prepend" placeholder="文件类型">
             <el-option label="全部" value=""></el-option>
             <el-option v-for="item in filterTypes" :label="item.label" :value="item.value" :key="item.value"></el-option>

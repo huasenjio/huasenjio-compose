@@ -8,9 +8,9 @@
 <template>
   <div class="journal-manage">
     <TableList
+      ref="tableList"
       :tableData="tableData"
       :tableMap="tableMap"
-      :formData.sync="searchForm"
       :formMap="searchFormMap"
       :total="total"
       :showAdd="true"
@@ -89,22 +89,41 @@ export default {
         },
       ],
 
-      // 搜索表单
-      searchForm: {
-        name: '',
-        code: '',
-      },
       searchFormMap: [
         {
           label: '名称',
           type: 'input',
           key: 'name',
+          show: true,
         },
         {
           label: '权限码',
           key: 'code',
           type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
+          value: undefined,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.code,
+          },
+          show: true,
+        },
+        {
+          label: '是否可用',
+          key: 'enabled',
+          type: 'select',
+          value: undefined,
+          typeConfig: {
+            options: [
+              {
+                label: '可用',
+                value: true,
+              },
+              {
+                label: '禁用',
+                value: false,
+              },
+            ],
+          },
+          show: false,
         },
       ],
 
@@ -132,7 +151,9 @@ export default {
           label: '权限码',
           key: 'code',
           type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.code,
+          },
         },
         {
           label: '是否可用',
@@ -165,12 +186,13 @@ export default {
   },
   methods: {
     queryData() {
+      let formData = this.$refs.tableList.getFormData();
       let params = Object.assign(
         {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
         },
-        this.searchForm,
+        formData,
       );
       this.API.journal
         .findJournalByPage(params, {
@@ -249,7 +271,7 @@ export default {
 <style lang="scss" scoped>
 .journal-manage {
   width: 100%;
-  height: calc(100% - 120px);
+  height: 100%;
   padding: 10px 10px;
 }
 </style>

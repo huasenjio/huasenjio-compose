@@ -9,10 +9,17 @@
 const { Column } = require('../service/index.js').schemaMap;
 
 function findByPage(req, res, next) {
-  let { pageNo, pageSize, name, code } = req.huasenParams;
-  // 模糊查询参数
+  let { pageNo, pageSize, name, description, remarks, enabled, code } = req.huasenParams;
   let params = { name: { $regex: new RegExp(name, 'i') } };
-  // 处理权限码模糊查询
+  if (description) {
+    params.description = { $regex: new RegExp(description, 'i') };
+  }
+  if (remarks) {
+    params.remarks = { $regex: new RegExp(remarks, 'i') };
+  }
+  if (typeof enabled === 'boolean') {
+    params.enabled = enabled;
+  }
   if (code !== '' && code !== undefined && code !== null) {
     params.code = code;
   }

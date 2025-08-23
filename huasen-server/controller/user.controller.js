@@ -9,7 +9,7 @@ const _ = require('lodash');
 const { encrypt, decrypt } = require('huasen-lib');
 const JWT = require('../plugin/jwt.js');
 const { SECRET_AES } = require('../config.js');
-const { offlineByKey } = require('./common.controller.js')
+const { offlineByKey } = require('./common.controller.js');
 const { User } = require('../service/index.js').schemaMap;
 
 function login(req, res, next) {
@@ -141,9 +141,11 @@ function recovery(req, res, next) {
 }
 
 function findByPage(req, res, next) {
-  let { pageNo, pageSize, id, code, name } = req.huasenParams;
-  // 模糊查询参数
+  let { pageNo, pageSize, id, code, name, enabled } = req.huasenParams;
   let params = { id: { $regex: new RegExp(id, 'i') }, name: { $regex: new RegExp(name, 'i') } };
+  if (typeof enabled === 'boolean') {
+    params.enabled = enabled;
+  }
   if (code !== '' && code !== undefined && code !== null) {
     params.code = code;
   }
@@ -194,9 +196,9 @@ function remove(req, res, next) {
         schemaName: 'User',
         methodName: 'find',
         payloads: [{ _id }],
-      }
+      },
     ],
-    async (users) => {
+    async users => {
       let userId = _.get(users, '[0].id');
       if (userId === proof.key) {
         global.huasen.responseData(res, {}, 'ERROR', '无法删除自己');
@@ -240,7 +242,6 @@ function update(req, res, next) {
           const result = await User.updateOne({ _id }, { $set: req.huasenParams }, { runValidators: true });
           await JWT.destroyTokenByKey(user.id);
           global.huasen.responseData(res, result, 'SUCCESS', '已更新');
-
         }
       }
     },
@@ -268,7 +269,7 @@ function manageLogin(req, res, next) {
         ],
       },
     ],
-    async (manages) => {
+    async manages => {
       const manage = manages[0];
       if (!manage) {
         global.huasen.responseData(res, {}, 'ERROR', '管理员不存在');
@@ -306,7 +307,7 @@ async function manageExist(req, res, next) {
         ],
       },
     ],
-    async (manages) => {
+    async manages => {
       const manage = manages[0];
       if (!manage) {
         global.huasen.responseData(res, false, 'SUCCESS', '请添加管理员账号');
@@ -330,7 +331,7 @@ async function manageInit(req, res, next) {
         ],
       },
     ],
-    async (manages) => {
+    async manages => {
       const manage = manages[0];
       if (!manage) {
         // 初始化创建作者权限账号
@@ -342,7 +343,6 @@ async function manageInit(req, res, next) {
     },
   );
 }
-
 
 module.exports = {
   login,

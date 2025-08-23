@@ -6,23 +6,49 @@
  * @Description: 站点表控制器
  */
 const fs = require('fs');
+const _ = require('lodash');
 const ExcelJS = require('exceljs');
+const { tool } = require('huasen-lib');
 const { fetchFavicons } = require('@meltwater/fetch-favicon');
 const { MixtureUpload } = require('../plugin/mixture-upload/index.js');
 const { downloadAndConvertToBase64 } = require('../utils/tool.js');
 const { Site, Column } = require('../service/index.js').schemaMap;
 
 function findByPage(req, res, next) {
-  let { pageNo, pageSize, name, code, tag } = req.huasenParams;
-  // 模糊查询参数
+  let { pageNo, pageSize, name, url, description, remarks, enabled, code, tag, pin } = req.huasenParams;
   let params = { name: { $regex: new RegExp(name, 'i') } };
-  // 处理权限码参数
+  if (url) {
+    params.url = { $regex: new RegExp(url, 'i') };
+  }
+  if (description) {
+    params.description = { $regex: new RegExp(description, 'i') };
+  }
+  if (remarks) {
+    params.remarks = { $regex: new RegExp(remarks, 'i') };
+  }
+  if (tag) {
+    const tags = tag.split(/[，；,;]/).map(t => t.trim());
+    params.$or = tags.map(tagItem => ({
+      expand: {
+        $regex: new RegExp(`\\"tag\\":\\s*\\[.*\\"${tagItem}\\".*\\]`, 'i'),
+      },
+    }));
+  }
+  if (pin) {
+    // 匹配pin数组包含指定值的JSON字符串
+    params.$and = [
+      {
+        expand: {
+          $regex: new RegExp(`\\"pin\\":\\s*\\[.*\\b${pin}\\b.*\\]`, 'i'),
+        },
+      },
+    ];
+  }
+  if (typeof enabled === 'boolean') {
+    params.enabled = enabled;
+  }
   if (code !== '' && code !== undefined && code !== null) {
     params.code = code;
-  }
-  // 处理标签参数
-  if (tag) {
-    params.expand = { $regex: new RegExp(`"tag":\\s*\\[[\\s\\S]*?"${tag}"[\\s\\S]*?\\]`, 'i') };
   }
   req.epWorking(
     [
@@ -40,7 +66,25 @@ function findByPage(req, res, next) {
       },
     ],
     result => {
-      global.huasen.responseData(res, result, 'SUCCESS', '分页查询站点成');
+      // 代码没有问题，此方法不能达到效果，仅作让你知道一些信息。
+      // if (result.total > 0) {
+      //   result.list = result.list.filter(item => {
+      //     const expandObj = tool.parseJSON(item.expand, 'Object', {});
+      //     if (tag) {
+      //       const tags = tag.split(/[，；,;]/).map(t => t.trim());
+      //       if (tags.length > 0) {
+      //         const tagList = _.get(expandObj, 'tag', []);
+      //         const isFocusTag = _.intersection(tagList, tags).length > 0;
+      //         console.log(tagList, tags, isFocusTag);
+      //         if (!isFocusTag) {
+      //           return false;
+      //         }
+      //       }
+      //     }
+      //     return true;
+      //   });
+      // }
+      global.huasen.responseData(res, result, 'SUCCESS', '分页查询站点成功');
     },
   );
 }

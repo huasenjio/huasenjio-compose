@@ -23,6 +23,15 @@ function add(req, res, next) {
 
 function findByPage(req, res, next) {
   let { pageNo, pageSize, id, time } = req.huasenParams;
+  let params = { id: { $regex: new RegExp(id, 'i') } };
+  if (Array.isArray(time) && time.length === 2) {
+    const startTime = new Date(time[0]).toISOString().replace('T', ' ').substring(0, 19);
+    const endTime = new Date(time[1]).toISOString().replace('T', ' ').substring(0, 19);
+    params.time = {
+      $gte: startTime,
+      $lte: endTime,
+    };
+  }
   req.epWorking(
     [
       {
@@ -30,7 +39,7 @@ function findByPage(req, res, next) {
         methodName: 'findByPage',
         payloads: [
           {
-            $and: [{ id: { $regex: new RegExp(id, 'i') } }, { time: { $regex: new RegExp(time, 'i') } }],
+            $and: [params],
           },
           pageNo,
           pageSize,

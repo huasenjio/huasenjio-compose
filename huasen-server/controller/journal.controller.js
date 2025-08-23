@@ -6,10 +6,12 @@
  * @Description: 订阅表控制器
  */
 function findByPage(req, res, next) {
-  let { pageNo, pageSize, name, code } = req.huasenParams;
+  let { pageNo, pageSize, name, enabled, code } = req.huasenParams;
   // 模糊查询参数
   let params = { name: { $regex: new RegExp(name, 'i') } };
-  // 处理权限码模糊查询
+  if (typeof enabled === 'boolean') {
+    params.enabled = enabled;
+  }
   if (code !== '' && code !== undefined && code !== null) {
     params.code = code;
   }
@@ -213,6 +215,7 @@ function findJournalInformationById(req, res, next) {
               });
             });
             displayColumns.push({
+              typeId: column._id,
               typeName,
               sites,
             });

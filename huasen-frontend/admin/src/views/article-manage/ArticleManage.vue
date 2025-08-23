@@ -8,9 +8,9 @@
 <template>
   <div class="article-manage">
     <TableList
+      ref="tableList"
       :tableData="articles"
       :tableMap="tableMap"
-      :formData.sync="searchForm"
       :formMap="searchFormMap"
       :total="total"
       @paginationChange="paginationChange"
@@ -75,20 +75,53 @@ export default {
           key: 'time',
         },
       ],
-      searchForm: {
-        manageId: '',
-        title: '',
-      },
       searchFormMap: [
         {
-          label: '文章标题',
+          label: '标题',
           type: 'input',
           key: 'title',
+          show: true,
         },
         {
           label: '发布者',
           type: 'input',
           key: 'manageId',
+          show: true,
+        },
+        {
+          label: '标签内容',
+          type: 'input',
+          key: 'tag',
+          show: false,
+        },
+        {
+          label: '权限码',
+          key: 'code',
+          type: 'select',
+          value: undefined,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.code,
+          },
+          show: true,
+        },
+        {
+          label: '是否草稿',
+          key: 'isDraft',
+          type: 'select',
+          value: undefined,
+          typeConfig: {
+            options: [
+              {
+                label: '草稿',
+                value: true,
+              },
+              {
+                label: '已发布',
+                value: false,
+              },
+            ],
+          },
+          show: false,
         },
       ],
       pageNo: 1,
@@ -105,12 +138,13 @@ export default {
   methods: {
     // 获取全部的新闻数据
     queryArticle() {
+      let formData = this.$refs.tableList.getFormData();
       let params = Object.assign(
         {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
         },
-        this.searchForm,
+        formData,
       );
       this.API.article.findArticleByPage(params, { notify: false }).then(res => {
         this.articles = res.data.list;
@@ -149,7 +183,7 @@ export default {
 <style lang="scss" scoped>
 .article-manage {
   width: 100%;
-  height: calc(100% - 120px);
+  height: 100%;
   padding: 10px;
 }
 </style>

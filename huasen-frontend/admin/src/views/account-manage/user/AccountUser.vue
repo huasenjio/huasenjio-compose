@@ -9,9 +9,9 @@
 <template>
   <div class="account-user">
     <TableList
+      ref="tableList"
       :tableData="users"
       :tableMap="tableMap"
-      :formData.sync="searchForm"
       :formMap="searchFormMap"
       :showAdd="true"
       :total="total"
@@ -96,28 +96,46 @@ export default {
       ],
       total: 0,
 
-      // 搜索表单
-      searchForm: {
-        id: '',
-        name: '',
-        code: '',
-      },
       searchFormMap: [
         {
           label: '账号',
           type: 'input',
           key: 'id',
+          show: true,
         },
         {
           label: '昵称',
           type: 'input',
           key: 'name',
+          show: true,
         },
         {
           label: '权限码',
           key: 'code',
           type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.code,
+          },
+          show: true,
+        },
+        {
+          label: '是否可用',
+          key: 'enabled',
+          type: 'select',
+          value: undefined,
+          typeConfig: {
+            options: [
+              {
+                label: '可用',
+                value: true,
+              },
+              {
+                label: '禁用',
+                value: false,
+              },
+            ],
+          },
+          show: false,
         },
       ],
 
@@ -160,7 +178,9 @@ export default {
           label: '权限码',
           key: 'code',
           type: 'select',
-          selectOptions: this.CONSTANT.dictionary.code,
+          typeConfig: {
+            options: this.CONSTANT.dictionary.code,
+          },
         },
         {
           label: '是否可用',
@@ -211,12 +231,13 @@ export default {
   },
   methods: {
     queryUser() {
+      let formData = this.$refs.tableList.getFormData();
       let params = Object.assign(
         {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
         },
-        this.searchForm,
+        formData,
       );
       this.API.user
         .findUserByPage(params, {

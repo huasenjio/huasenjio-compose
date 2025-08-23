@@ -16,13 +16,14 @@
         <HomeSearch></HomeSearch>
         <HomeRecord></HomeRecord>
         <HomeNav v-if="!categoryEmpty"></HomeNav>
-        <HomeSite ref="siteContent" v-if="!categoryEmpty"></HomeSite>
+        <HomeSite ref="siteContent" v-if="!categoryEmpty" @openDetail="openDetail"></HomeSite>
         <!-- 空内容展示 -->
         <div v-if="categoryEmpty" class="empty-panel">
           <Empty></Empty>
         </div>
       </main>
     </section>
+    <SiteDetail v-if="showDetail" :visible.sync="showDetail" :site="currentSite" :append-to-body="true" @close="closeDetail"></SiteDetail>
   </div>
 </template>
 <script>
@@ -38,13 +39,18 @@ import HomeRecord from './record/HomeRecord.vue';
 import HomeNav from './nav/HomeNav.vue';
 import HomeSite from './site/HomeSite.vue';
 
+import SiteDetail from '@/views/home/site/SiteDetail.vue';
+
 import Empty from '@/components/content/empty/Empty.vue';
 
 export default {
   name: 'Home',
-  components: { HomeHead, HomeWallpaper, HomeSearch, HomeRecord, HomeNav, HomeSite, Empty },
+  components: { HomeHead, HomeWallpaper, HomeSearch, HomeRecord, HomeNav, HomeSite, SiteDetail, Empty },
   data() {
     return {
+      showDetail: false,
+      currentSite: null,
+
       headBgConfig: {
         clear: true,
         white: false,
@@ -88,6 +94,20 @@ export default {
   methods: {
     ...mapMutations(['commitAll']),
     ...mapActions(['initLocalThemeInfo']),
+
+    openDetail(site) {
+      this.currentSite = site;
+      this.$nextTick(() => {
+        this.showDetail = true;
+      });
+    },
+
+    closeDetail() {
+      this.showDetail = false;
+      this.$nextTick(() => {
+        this.currentSite = null;
+      });
+    },
 
     handleHomeSearchFucos(event) {
       Bus.pubEv(BusType.HOME_FUCOS, event.key);
