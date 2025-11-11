@@ -7,9 +7,9 @@
  */
 
 export function judgeBgType(value) {
-  let tag = undefined;
+  let tag;
   if (typeof value === 'string') {
-    if (/^(((https?:\/\/)|(www\.))|((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost)).+(gif|png|jpe?g)$/.test(value) || /img\//.test(value)) {
+    if (/^(((https?:\/\/)|(www\.))|((([0-9]{1,3}\.){3}[0-9]{1,3})|localhost)).+(gif|png|jpe?g)$/.test(value) || /^huasen-store\//.test(value) || /^img\//.test(value)) {
       tag = 'img';
     } else if (/^#[0-9a-fA-F]+$/.test(value)) {
       tag = 'color';

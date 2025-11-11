@@ -19,13 +19,27 @@ docker_compose_url="https://github.com/docker/compose/releases/download/1.29.2/d
 docker_compose_path="/usr/local/bin/docker-compose"
 
 
-echo '[Huasen Log]：脚本已初始化完成，请确保 80、37017、7379、8080、3000、8181 端口不被占用，如出现问题，请添加微信：huasencc，然后进群寻求帮助...'
+echo '[Huasen Log]：脚本已初始化完成，请确保 80、37017、7379、8080、3000、8181 端口不被占用，如出现问题，请添加微信：huasencc，加入社群寻求帮助...'
 
 # 检查是否为root用户运行
 if [ "$(id -u)" != "0" ]; then
     echo "[Huasen Log]：请以root用户运行脚本，避免权限不足产生异常问题！"
     exit 1
 fi
+
+ask_nginx_port() {
+    echo "[Huasen Log]：花森起始页的网关默认配置为 80，您是否需要修改为其他端口？建议1024-65535，避免与其他服务冲突。例如：8282，如您直接回车或不输入，视为无需修改，保持默认配置，请输入："
+    read -r nginx_port
+
+    if [ -n "$nginx_port" ]; then
+        echo "[Huasen Log]：正在修改nginx宿主机端口为 $nginx_port:80 ..."
+        sed -i "s/- [0-9]*:80/- $nginx_port:80/" "$project_path/$git_name/docker-compose.yml"
+        echo "[Huasen Log]：nginx宿主机端口已修改为 $nginx_port:80"
+    else
+        echo "[Huasen Log]：未修改nginx端口配置"
+    fi
+}
+
 
 # 更新yum源为阿里云源
 update_yum_repo() {
@@ -51,6 +65,7 @@ install_git() {
         echo '[Huasen Log]：git 已经安装，跳过安装步骤...'
     else
         echo '[Huasen Log]：正在安装 git 程序...'
+        # 不安装wandisco的git源
         install_package "http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm"
         install_package "git"
     fi
@@ -156,6 +171,7 @@ main() {
     configure_docker
     install_docker_compose
     pull_code
+    ask_nginx_port
     start_containers
     setup_shortcut_scripts
 }

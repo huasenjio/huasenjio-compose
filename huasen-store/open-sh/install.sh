@@ -27,6 +27,20 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+ask_nginx_port() {
+    echo "[Huasen Log]：花森起始页的网关默认配置为 80，您是否需要修改为其他端口？建议1024-65535，避免与其他服务冲突。例如：8282，如您直接回车或不输入，视为无需修改，保持默认配置，请输入："
+    read -r nginx_port
+
+    if [ -n "$nginx_port" ]; then
+        echo "[Huasen Log]：正在修改nginx宿主机端口为 $nginx_port:80 ..."
+        sed -i "s/- [0-9]*:80/- $nginx_port:80/" "$project_path/$git_name/docker-compose.yml"
+        echo "[Huasen Log]：nginx宿主机端口已修改为 $nginx_port:80"
+    else
+        echo "[Huasen Log]：未修改nginx端口配置"
+    fi
+}
+
+
 # 更新yum源为阿里云源
 update_yum_repo() {
     echo '[Huasen Log]：正在安装基础工具...'
@@ -51,6 +65,7 @@ install_git() {
         echo '[Huasen Log]：git 已经安装，跳过安装步骤...'
     else
         echo '[Huasen Log]：正在安装 git 程序...'
+        # 不安装wandisco的git源
         install_package "http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm"
         install_package "git"
     fi
@@ -156,6 +171,7 @@ main() {
     configure_docker
     install_docker_compose
     pull_code
+    ask_nginx_port
     start_containers
     setup_shortcut_scripts
 }
