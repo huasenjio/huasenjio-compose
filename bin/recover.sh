@@ -17,7 +17,7 @@ docker_compose_url="https://github.com/docker/compose/releases/download/1.29.2/d
 docker_compose_path="/usr/local/bin/docker-compose"
 
 
-echo '[Huasen Log]：脚本已初始化完成，请确保 80、37017、7379、8080、3000、8181 端口不被占用，如出现问题，请添加微信：huasencc，然后进群寻求帮助...'
+echo '[Huasen Log]：脚本已初始化完成，请确保 80、37017、7379、3000、8181 端口不被占用，如出现问题，请添加微信：huasencc，然后进群寻求帮助...'
 
 # 检查是否为root用户运行
 if [ "$(id -u)" != "0" ]; then
@@ -60,7 +60,7 @@ install_git() {
 install_docker() {
     echo '[Huasen Log]：正在安装 docker 程序...'
     if ! command -v docker &>/dev/null; then
-        yum remove -y docker* # 移除既有Docker相关包
+        yum remove -y docker*
         install_package "device-mapper-persistent-data"
         install_package "lvm2"
         yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
