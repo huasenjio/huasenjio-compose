@@ -1,0 +1,125 @@
+# 版本号
+version: "3"
+# 自定义网络
+networks:
+  # 网络名字
+  huasenNetwork:
+    # 网关驱动
+    driver: bridge
+    # ipam:
+    #   config:
+    #     - subnet: 172.18.0.0/16
+
+# 容器服务
+services:
+  # 服务名称
+  mongo:
+    # 安装镜像
+    image: mongo:4.2.2
+    # 容器名称
+    container_name: mongo
+    restart: always
+    # 数据卷映射
+    volumes:
+      # /data/db数据目录挂载到宿主机
+      - ./huasen-mongo/volume:/data/db
+    command: >
+      sh -c "
+      mongod --bind_ip 0.0.0.0 --logpath /dev/null --fork;
+      until mongo --eval 'db.runCommand({ ping: 1 })' --quiet; do
+        echo '[Huasen Log] 等待 MongoDB 启动...';
+        sleep 2;
+      done;
+      echo '[Huasen Log] 初始化数据库用户...';
+      mongo huasen --eval \"
+        if (!db.getUser('${MONGO_APP_USERNAME:-huasenjio}')) {
+          print('创建数据库用户...');
+          db.createUser({
+            user: '${MONGO_APP_USERNAME:-huasenjio}',
+            pwd: '${MONGO_APP_PASSWORD:-Mongo12345*}',
+            roles: [{ role: 'readWrite', db: 'huasen' }]
+          });
+          print('数据库用户创建成功');
+        } else {
+          print('数据库用户已存在');
+        }
+      \";
+      mongod --shutdown;
+      echo '[Huasen Log] 启动 MongoDB 服务...';
+      exec mongod --bind_ip 0.0.0.0 --auth --logpath /dev/null
+      "
+    # 设置环境变量
+    environment:
+      # 设置时区为上海（东八区）
+      TZ: Asia/Shanghai
+      # 初始化mongodb的账户，账户创建在admin下，拥有超管权限
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-guaiMongo233*}
+    ports:
+      # 将容器的27017端口映射到宿主机的37017端口
+      - 37017:27017
+    networks:
+      - huasenNetwork
+
+  redis:
+    image: redis:6.0.10-alpine
+    container_name: redis
+    restart: always
+    privileged: true
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 7379:6379
+    volumes:
+      - ./huasen-redis/data:/data:rw
+    command: redis-server --requirepass ${REDIS_PASSWORD:-Redis12345*} --appendonly yes --bind 0.0.0.0 --maxmemory 1024mb --maxmemory-policy volatile-ttl
+    networks:
+      - huasenNetwork
+
+  nginx:
+    image: nginx:1.23.1
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./huasen-nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./huasen-nginx/www:/home/www
+      - ./huasen-nginx/log:/var/log/nginx
+      - ./huasen-nginx/html:/usr/share/nginx/html
+    ports:
+      # 宿主机:容器
+      - ${NGINX_PORT:-8081}:80
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - huasenNetwork
+
+  server:
+    # 指定Dockerflie构建镜像
+    build:
+      context: .
+      dockerfile: huasen-server/Dockerfile
+    # 定义容器名称
+    container_name: server
+    restart: always
+    privileged: true
+    user: root
+    # 挂载日志、静态文件目录、依赖库、服务参数、项目配置、前端构建包、环境变量文件
+    volumes:
+      - ./.env:/app/.env
+      - ./bin/:/app/bin
+      - ./huasen-log/:/app/huasen-server/log
+      - ./huasen-store/:/app/huasen-store
+      - ./huasen-server/public/:/app/huasen-server/public
+      - ./huasen-server/setting.json:/app/huasen-server/setting.json
+      - ./huasen-server/config.js:/app/huasen-server/config.js
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "3000:3000"
+      - "8181:8181"
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - huasenNetwork

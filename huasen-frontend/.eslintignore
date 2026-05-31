@@ -1,0 +1,8 @@
+../huasen-lib/
+
+packages/shared/**
+packages/ui/**
+packages/closed-source/**
+
+portal/src/assets/font/iconfont.js
+admin/src/assets/font/iconfont.js

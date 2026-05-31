@@ -1,0 +1,130 @@
+[
+  {
+    "path": "/",
+    "redirect": "/home"
+  },
+  {
+    "path": "/home",
+    "name": "Home",
+    "menuCode": 0,
+    "component": "home/Home",
+    "keepAlive": true,
+    "title": "数据仪表盘",
+    "children": []
+  },
+  {
+    "path": "/error404",
+    "name": "Error404",
+    "menuCode": 0,
+    "component": "error/Error404",
+    "title": "404",
+    "children": []
+  },
+  {
+    "path": "/error403",
+    "name": "Error403",
+    "menuCode": 0,
+    "component": "error/Error403",
+    "title": "403",
+    "children": []
+  },
+  {
+    "path": "/public",
+    "name": "Public",
+    "menuCode": 0,
+    "component": "public/Public",
+    "keepAlive": true,
+    "title": "发布文章",
+    "children": []
+  },
+  {
+    "path": "/article-manage",
+    "name": "ArticleManage",
+    "menuCode": 0,
+    "component": "article-manage/ArticleManage",
+    "keepAlive": true,
+    "title": "文章管理",
+    "children": []
+  },
+  {
+    "path": "/account-manage",
+    "name": "AccountManage",
+    "menuCode": 0,
+    "component": "account-manage/AccountManage",
+    "keepAlive": true,
+    "title": "账号管理",
+    "children": []
+  },
+  {
+    "path": "/file-manage",
+    "name": "FileManage",
+    "menuCode": 0,
+    "component": "file-manage/FileManage",
+    "keepAlive": true,
+    "title": "文件管理",
+    "children": []
+  },
+  {
+    "path": "/site-manage",
+    "name": "SiteManage",
+    "menuCode": 0,
+    "component": "site-manage/SiteManage",
+    "keepAlive": true,
+    "title": "网链管理",
+    "children": []
+  },
+  {
+    "path": "/journal-manage",
+    "name": "JournalManage",
+    "menuCode": 0,
+    "component": "journal-manage/JournalManage",
+    "keepAlive": true,
+    "title": "订阅源管理",
+    "children": []
+  },
+  {
+    "path": "/column-manage",
+    "name": "ColumnManage",
+    "menuCode": 0,
+    "component": "column-manage/ColumnManage",
+    "keepAlive": true,
+    "title": "栏目管理",
+    "children": []
+  },
+  {
+    "path": "/record-manage",
+    "name": "RecordManage",
+    "menuCode": 0,
+    "component": "record-manage/RecordManage",
+    "keepAlive": true,
+    "title": "日志管理",
+    "children": []
+  },
+  {
+    "path": "/ai-manage",
+    "name": "AiManage",
+    "menuCode": 0,
+    "component": "ai-manage/AiManage",
+    "keepAlive": true,
+    "title": "智能配置",
+    "children": []
+  },
+  {
+    "path": "/license-manage",
+    "name": "LicenseManage",
+    "menuCode": 0,
+    "component": "license-manage/LicenseManage",
+    "keepAlive": true,
+    "title": "授权管理",
+    "children": []
+  },
+  {
+    "path": "/setting",
+    "name": "Setting",
+    "menuCode": 0,
+    "component": "setting/Setting",
+    "keepAlive": true,
+    "title": "系统配置",
+    "children": []
+  }
+]

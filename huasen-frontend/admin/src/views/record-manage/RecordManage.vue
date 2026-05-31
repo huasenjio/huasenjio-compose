@@ -1,0 +1,143 @@
+<!--
+ * @Autor: huasenjio
+ * @Date: 2022-10-07 10:21:54
+ * @LastEditors: huasenjio
+ * @LastEditTime: 2023-05-14 12:13:59
+ * @Description: 管理员账号管理
+-->
+
+<template>
+  <div class="record-manage p-px-10">
+    <TableList
+      ref="tableList"
+      :tableData="records"
+      :tableMap="tableMap"
+      :formMap="searchFormMap"
+      :showAdd="false"
+      :showEdit="false"
+      :showCopy="true"
+      :showSelection="true"
+      :showRemoveMany="true"
+      :total="total"
+      @remove="removeRecord"
+      @removeMany="handleRemoveMany"
+      @search="queryRecord"
+      @copy="handleCopy"
+      @paginationChange="paginationChange"
+      @updatePagination="updatePagination"
+    >
+    </TableList>
+  </div>
+</template>
+
+<script>
+import { tool } from 'huasen-lib';
+import TableList from '@/components/content/table-list/TableList.vue';
+
+export default {
+  name: 'RecordManage',
+  components: { TableList },
+  data() {
+    return {
+      // 表格相关
+      records: [],
+      tableMap: [
+        {
+          label: '索引',
+          key: 'id',
+        },
+        {
+          label: '记录时间',
+          key: 'time',
+        },
+      ],
+      total: 0,
+
+      searchFormMap: [
+        {
+          label: '索引',
+          type: 'input',
+          key: 'id',
+          show: true,
+          span: 5,
+        },
+        {
+          label: '记录时间',
+          key: 'time',
+          value: '',
+          type: 'date-picker',
+          show: true,
+          span: 11,
+        },
+      ],
+
+      pageNo: 1,
+      pageSize: 10,
+    };
+  },
+  activated() {
+    this.queryRecord();
+  },
+  mounted() {
+    // this.queryRecord();
+  },
+  methods: {
+    handleCopy(index, row) {
+      const { _id } = row;
+      this.API.record.copyRecord({ _id }).then(res => {
+        tool.copyTextToClip(JSON.stringify(res.data), () => {
+          this.$message.success('拷贝成功');
+        });
+      });
+    },
+
+    queryRecord() {
+      let formData = this.$refs.tableList.getFormData();
+      let params = Object.assign(
+        {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+        },
+        formData,
+      );
+      this.API.record
+        .findRecordByPage(params, {
+          notify: false,
+        })
+        .then(res => {
+          this.records = res.data.list.sort((a, b) => b.time - a.time);
+          this.total = res.data.total;
+        });
+    },
+
+    updatePagination(pageNo, pageSize) {
+      this.pageNo = pageNo;
+      this.pageSize = pageSize;
+    },
+
+    removeRecord(index, row, pageNo, pageSize) {
+      this.API.record.removeRecord({ _id: row._id }).then(res => {
+        this.queryRecord();
+      });
+    },
+
+    handleRemoveMany(list) {
+      let _ids = list.map(item => item._id);
+      this.API.record.removeManyRecord({ _ids }).then(res => {
+        this.queryRecord();
+      });
+    },
+
+    // 分页组件发生变化
+    paginationChange(pageNo, pageSize) {
+      this.queryRecord();
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.record-manage {
+  width: 100%;
+  height: 100%;
+}
+</style>

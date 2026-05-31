@@ -1,0 +1,153 @@
+
+models.png
+size: 4096,4096
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Agent
+  rotate: false
+  xy: 1036, 1426
+  size: 733, 1024
+  orig: 733, 1024
+  offset: 0, 0
+  index: -1
+Bashnya01
+  rotate: false
+  xy: 4, 1426
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+Bashnya02
+  rotate: false
+  xy: 1612, 3034
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+Coin01
+  rotate: false
+  xy: 2870, 450
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+GG01
+  rotate: false
+  xy: 4, 394
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+Idol01
+  rotate: false
+  xy: 3390, 614
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+Luch01
+  rotate: false
+  xy: 3676, 3350
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+Magnit01
+  rotate: false
+  xy: 3390, 404
+  size: 400, 202
+  orig: 400, 202
+  offset: 0, 0
+  index: -1
+Min01
+  rotate: false
+  xy: 1036, 94
+  size: 512, 292
+  orig: 512, 292
+  offset: 0, 0
+  index: -1
+Mnoj01
+  rotate: false
+  xy: 3676, 3042
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+Mummy02
+  rotate: false
+  xy: 1036, 394
+  size: 794, 1024
+  orig: 794, 1024
+  offset: 0, 0
+  index: -1
+Naves01
+  rotate: false
+  xy: 2644, 3034
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+Nigga
+  rotate: false
+  xy: 2589, 970
+  size: 734, 1024
+  orig: 734, 1024
+  offset: 0, 0
+  index: -1
+Rock01
+  rotate: false
+  xy: 3331, 1134
+  size: 696, 860
+  orig: 696, 860
+  offset: 0, 0
+  index: -1
+Rock02
+  rotate: false
+  xy: 1777, 2002
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+Schit01
+  rotate: false
+  xy: 3676, 3658
+  size: 350, 400
+  orig: 350, 400
+  offset: 0, 0
+  index: -1
+TileOsn01
+  rotate: false
+  xy: 4, 2458
+  size: 1600, 1600
+  orig: 1600, 1600
+  offset: 0, 0
+  index: -1
+Tree01
+  rotate: false
+  xy: 2809, 2002
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: -1
+Wall01
+  rotate: false
+  xy: 4, 4
+  size: 1024, 382
+  orig: 1024, 382
+  offset: 0, 0
+  index: -1
+Woman01
+  rotate: false
+  xy: 1838, 970
+  size: 743, 1024
+  orig: 743, 1024
+  offset: 0, 0
+  index: -1
+brevno01
+  rotate: false
+  xy: 1838, 289
+  size: 1024, 673
+  orig: 1024, 673
+  offset: 0, 0
+  index: -1

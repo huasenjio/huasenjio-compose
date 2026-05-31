@@ -1,0 +1,90 @@
+
+play.png
+size: 4096,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+arrow
+  rotate: false
+  xy: 1038, 493
+  size: 953, 459
+  orig: 953, 459
+  offset: 0, 0
+  index: -1
+back
+  rotate: false
+  xy: 3040, 674
+  size: 329, 278
+  orig: 329, 278
+  offset: 0, 0
+  index: -1
+coin
+  rotate: false
+  xy: 2712, 535
+  size: 70, 89
+  orig: 70, 89
+  offset: 0, 0
+  index: -1
+hand
+  rotate: false
+  xy: 1999, 473
+  size: 362, 479
+  orig: 362, 479
+  offset: 0, 0
+  index: -1
+key_active
+  rotate: false
+  xy: 2712, 632
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+keys
+  rotate: false
+  xy: 4, 268
+  size: 1026, 684
+  orig: 1026, 684
+  offset: 0, 0
+  index: -1
+mouse
+  rotate: false
+  xy: 2369, 508
+  size: 335, 444
+  orig: 335, 444
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 1038, 294
+  size: 191, 191
+  orig: 191, 191
+  offset: 0, 0
+  index: -1
+sound_off
+  rotate: false
+  xy: 3377, 761
+  size: 191, 191
+  orig: 191, 191
+  offset: 0, 0
+  index: -1
+sound_on
+  rotate: false
+  xy: 1237, 294
+  size: 191, 191
+  orig: 191, 191
+  offset: 0, 0
+  index: -1
+text
+  rotate: false
+  xy: 4, 4
+  size: 512, 256
+  orig: 512, 256
+  offset: 0, 0
+  index: -1
+x2
+  rotate: false
+  xy: 524, 19
+  size: 318, 241
+  orig: 318, 241
+  offset: 0, 0
+  index: -1

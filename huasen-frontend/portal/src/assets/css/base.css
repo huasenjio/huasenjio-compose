@@ -1,0 +1,17 @@
+html {
+  /* 缅怀黑白风格 */
+  /* filter: grayscale(100%); */
+
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* 共享设计令牌（颜色变量集中维护于 @huasen/ui/src/styles/variables.css） */
+@import '~@huasen/ui/src/styles/variables.css';

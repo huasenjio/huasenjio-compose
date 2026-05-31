@@ -1,0 +1,107 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Bug Issues
+title: "[Bug] 标题"
+description: 该 issues 用于一定场景下功能没有按预期工作的异常问题，请慎重选择！
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请大家注意标点符号、措辞、语法规范，认真写好每一句话，锻炼自己把话说清楚的能力，若潦草不认真，不予答复并删除，希望理解！
+
+  - type: checkboxes
+    attributes:
+      label: 提交前搜索 issues
+      description: >
+        请确保先搜索 [issues](https://github.com/huasenjio/huasenjio-compose/issues) ，查看是否已经报告了相同的问题。
+      options:
+        - label: >
+            我已经搜索了[issues](https://github.com/huasenjio/huasenjio-compose/issues)，没有发现类似的问题。
+          required: true
+
+  - type: dropdown
+    attributes:
+      label: 环境
+      description: 选择网站部署的运行环境
+      options:
+        - Mac
+        - Windows
+        - Linux
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: 源码版本
+      description: 选择部署网站的源码版本
+      options:
+        - 不清楚
+        - 1.0.0
+        - 其它
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 功能场景
+      description: 使用什么功能模块出现异常？
+      placeholder: >
+        此处无需描述具体问题，仅说明异常场景即可，例如：主页面 || 登陆功能 ...
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 复现步骤
+      description: >
+        复现问题的步骤？
+      placeholder: >
+        例如：我点击 a 按钮，弹出 b 弹窗，然后点击提交，发生了异常！
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 问题现象
+      description: 产生的现象？
+      placeholder: >
+        描述问题的现象
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: 你愿意提交 PR 吗？
+      description: >
+        如果您已经很好地理解了如何实施修复异常，我们非常乐意您能贡献代码。
+      options:
+        - label: 是的，我愿意提交 PR ！
+
+  - type: checkboxes
+    attributes:
+      label: 行为准则
+      description: >
+        行为准则有助于为每个人创造一个安全的空间，我们要求每个人都同意它。
+      options:
+        - label: 严格遵守中华人民共和国相关法律，项目仅供大家学习交流，请勿用于商业用途！
+
+  - type: markdown
+    attributes:
+      value: "感谢您填写我们的表格！"

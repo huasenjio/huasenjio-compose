@@ -1,0 +1,60 @@
+{
+  "name": "portal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build",
+    "lint": "vue-cli-service lint --ignore-path ../.eslintignore"
+  },
+  "dependencies": {
+    "@huasen/shared": "file:../packages/shared",
+    "@huasen/ui": "file:../packages/ui",
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "highlight": "0.2.4",
+    "highlight.js": "11.11.1",
+    "huasen-lib": "file:../../huasen-lib",
+    "lodash": "4.17.21",
+    "markdown-it": "14.1.0",
+    "markdown-it-anchor": "9.2.0",
+    "markdown-it-ins": "4.0.0",
+    "markdown-it-mark": "4.0.0",
+    "markdown-it-sub": "2.0.0",
+    "markdown-it-sup": "2.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-eslint": "4.5.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-empty": "off",
+      "no-debugger": "off",
+      "no-console": "off"
+    },
+    "globals": {
+      "document": true,
+      "localStorage": true,
+      "window": true
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

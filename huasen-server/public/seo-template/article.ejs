@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="<%= brandUrl %>" />
+    <title><%= pageTitle %></title>
+    <meta name="description" content="<%= pageDescription %>" />
+    <meta name="keywords" content="<%= pageKeywords %>" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="<%= pageTitle %>" />
+    <meta property="og:description" content="<%= pageDescription %>" />
+    <meta property="og:url" content="<%= pageUrl %>" />
+    <meta property="og:site_name" content="<%= brandName %>" />
+    <% if (coverUrl) { %>
+    <meta property="og:image" content="<%= coverUrl %>" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="<%= coverUrl %>" />
+    <% } else { %>
+    <meta name="twitter:card" content="summary" />
+    <% } %>
+    <script type="application/ld+json"><%- schemaJSON %></script>
+    <%- headHtml %>
+    <style>
+      body { max-width: 960px; margin: 0 auto; }
+      main {
+        background: whitesmoke; padding: 18px; border-radius: 4px;
+      }
+      img { max-width: 100%; border-radius: 12px; }
+      article { margin-top: 24px; font-size: 16px; }
+      a { color: blue; }
+      .meta { color: gray; font-size: 14px; }
+      .tags { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+      .tags li { background: gold; padding: 4px 10px; border-radius: 999px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p><a href="<%= origin %>"><%= brandName %></a></p>
+      <h1><%= article.title %></h1>
+      <p class="meta">最近更新：<time datetime="<%= updatedAt %>"><%= updatedAt %></time></p>
+      <% if (article.tags.length) { %>
+      <ul class="tags">
+        <% article.tags.forEach(tag => { %>
+        <li><%= tag %></li>
+        <% }) %>
+      </ul>
+      <% } %>
+      <% if (coverUrl) { %>
+      <p><img src="<%= coverUrl %>" alt="<%= article.title %> 封面" /></p>
+      <% } %>
+    </header>
+    <main>
+      <article><%- articleHTML %></article>
+    </main>
+    <footer>
+      <p>Sitemap URL：<a href="<%= canonicalUrl %>"><%= canonicalUrl %></a></p>
+      <p>Real Site URL：<a href="<%= realCanonicalUrl %>"><%= realCanonicalUrl %></a></p>
+    </footer>
+    <%- bodyHtml %>
+  </body>
+</html>

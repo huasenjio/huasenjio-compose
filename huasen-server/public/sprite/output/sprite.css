@@ -1,0 +1,5 @@
+.icon-lhs { background-image: url(./sprite.png);background-size: 522px 500px;}
+.icon-lhs-favicon { width: 200px; height: 200px; background-position: 0px -300px; }
+.icon-lhs-huasen { width: 280px; height: 280px; background-position: 0px 0px; }
+.icon-lhs-node { width: 222px; height: 250px; background-position: -300px 0px; }
+.icon-lhs-vue { width: 200px; height: 200px; background-position: -220px -300px; }

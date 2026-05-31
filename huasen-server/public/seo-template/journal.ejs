@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="<%= brandUrl %>" />
+    <title><%= pageTitle %></title>
+    <meta name="description" content="<%= pageDescription %>" />
+    <meta name="keywords" content="<%= pageKeywords %>" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<%= pageTitle %>" />
+    <meta property="og:description" content="<%= pageDescription %>" />
+    <meta property="og:url" content="<%= pageUrl %>" />
+    <meta property="og:site_name" content="<%= brandName %>" />
+    <script type="application/ld+json"><%- schemaJSON %></script>
+    <%- headHtml %>
+    <style>
+      body { max-width: 960px; margin: 0 auto; }
+      main {
+        background: whitesmoke; padding: 18px; border-radius: 4px;
+      }
+      section { margin-top: 32px }
+      ul { padding-left: 20px }
+      li { margin-bottom: 16px }
+      a { color: blue }
+      .meta { color: gray; font-size: 14px }
+      .tags { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-left: 8px }
+      .tag { background: gold; padding: 2px 8px; border-radius: 50%; font-size: 12px }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p><a href="<%= origin %>"><%= brandName %></a></p>
+      <h1><%= journal.name %></h1>
+      <p><%= pageDescription %></p>
+      <p class="meta">最近更新：<time datetime="<%= updatedAt %>"><%= updatedAt %></time> · 栏目 <%= journal.series.length %> 个 · 站点 <%= siteCount %> 个</p>
+    </header>
+    <main>
+      <% journal.series.forEach(series => { %>
+      <section>
+        <h2><%= series.typeName %></h2>
+        <% if (series.description) { %>
+        <p><%= series.description %></p>
+        <% } %>
+        <ul>
+          <% series.sites.forEach(site => { %>
+          <li>
+            <article>
+              <h3><a href="<%= site.url %>" target="_blank" rel="nofollow noopener"><%= site.name %></a></h3>
+              <% if (site.description) { %>
+              <p><%= site.description %></p>
+              <% } %>
+              <% if (site.tags && site.tags.length) { %>
+              <div class="tags">
+                <% site.tags.forEach(tag => { %>
+                <span class="tag"><%= tag %></span>
+                <% }) %>
+              </div>
+              <% } %>
+            </article>
+          </li>
+          <% }) %>
+        </ul>
+      </section>
+      <% }) %>
+    </main>
+    <footer>
+      <p>Sitemap URL：<a href="<%= canonicalUrl %>"><%= canonicalUrl %></a></p>
+      <p>Real Site URL：<a href="<%= realCanonicalUrl %>"><%= realCanonicalUrl %></a></p>
+    </footer>
+    <%- bodyHtml %>
+  </body>
+</html>

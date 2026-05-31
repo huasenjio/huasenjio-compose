@@ -1,0 +1,17 @@
+{
+  "name": "huasen-compose",
+  "version": "1.0.0",
+  "description": "a docker-compose app for huasen",
+  "author": "huasen",
+  "license": "MIT",
+  "scripts": {
+    "base": "docker-compose stop && docker-compose up redis mongo -d",
+    "build:open": "cd ./huasen-frontend && npm install && npm run build",
+    "rdd:open": "npm run build:open && docker-compose build --no-cache && docker-compose up -d",
+    "build": "cd ./huasen-lib && npm install && npm run build && cd ../huasen-frontend && npm install && npm run build",
+    "rdd": "npm run build && docker-compose build --no-cache && docker-compose up -d"
+  },
+  "dependencies": {
+    "fs-extra": "^11.1.1"
+  }
+}

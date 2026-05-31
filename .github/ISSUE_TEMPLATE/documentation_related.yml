@@ -1,0 +1,65 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: 文档相关
+title: "[文档相关] 标题"
+description: 该 issues 用于提交项目文档的错误点，请慎重选择！
+labels: ["type: documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请大家注意标点符号、措辞、语法规范，认真写好每一句话，锻炼自己把话说清楚的能力，若潦草不认真，不予答复并删除，希望理解！
+
+  - type: checkboxes
+    attributes:
+      label: 提交前搜索 issues
+      description: >
+        请确保先搜索 [issues](https://github.com/huasenjio/huasenjio-compose/issues) ，查看是否已经报告了相同的问题。
+      options:
+        - label: >
+            我已经搜索了[issues](https://github.com/huasenjio/huasenjio-compose/issues)，没有发现类似的问题。
+          required: true
+
+  - type: textarea
+    attributes:
+      label: 文档相关
+      description: 描述关于文档问题
+      placeholder: >
+        清晰简洁地描述对于项目文档的存在的问题
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: 你愿意提交 PR 吗？
+      description: >
+        如果您已经很好地理解了如何更正文档，我们非常乐意您能贡献代码。
+      options:
+        - label: 是的，我愿意提交 PR ！
+
+  - type: checkboxes
+    attributes:
+      label: 行为准则
+      description: >
+        行为准则有助于为每个人创造一个安全的空间，我们要求每个人都同意它。
+      options:
+        - label: 严格遵守中华人民共和国相关法律，项目仅供大家学习交流，请勿用于商业用途！
+
+  - type: markdown
+    attributes:
+      value: "感谢您填写我们的表格！"

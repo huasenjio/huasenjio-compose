@@ -1,0 +1,61 @@
+{
+  "name": "admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build",
+    "lint": "vue-cli-service lint --ignore-path ../.eslintignore"
+  },
+  "dependencies": {
+    "@huasen/shared": "file:../packages/shared",
+    "@huasen/ui": "file:../packages/ui",
+    "huasen-lib": "file:../../huasen-lib",
+    "awe-dnd": "0.3.4",
+    "echarts-liquidfill": "3.1.0",
+    "html2canvas": "1.4.1",
+    "jsencrypt": "3.2.1",
+    "mavon-editor": "2.10.4",
+    "sortablejs": "1.10.2",
+    "vue-json-editor-fix-cn": "1.4.3",
+    "vuedraggable": "2.24.3",
+    "zrender": "5.3.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-eslint": "4.5.0",
+    "echarts": "5.3.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-empty": "off",
+      "no-debugger": "off",
+      "no-prototype-builtins": "off"
+    },
+    "globals": {
+      "document": true,
+      "localStorage": true,
+      "window": true,
+      "define": true
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

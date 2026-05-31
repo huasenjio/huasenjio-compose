@@ -1,0 +1,79 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: > 0.5% or last 5 versions or not dead
+*/
+
+#js-app-loading__container--ie {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  visibility: hidden;
+  background-color: #fff;
+}
+
+.browser-tips-group {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 375px;
+  height: 375px;
+  transform: translate(-50%, -30%);
+  border-radius: 50px;
+  box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+  background-color: #fff;
+  background-image: url('./img/no-support.png');
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center center;
+}
+.browser-tips-group .title {
+  position: absolute;
+  bottom: 48px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.browser-tips-group .icon {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+}
+.browser-tips-group .icon .img-box {
+  width: 100%;
+  height: 100%;
+  color: #4b5563;
+}
+.browser-tips-group .icon .img-box img {
+  width: 100%;
+  height: 100%;
+}
+.browser-tips-group .icon .name-box {
+  font-size: 12px;
+  text-align: center;
+  color: #4b5563;
+}
+.browser-tips-group .edge {
+  right: 110px;
+  top: 78px;
+}
+.browser-tips-group .chrome {
+  right: 42px;
+  bottom: 200px;
+}
+.browser-tips-group .safari {
+  top: 174px;
+  right: 110px;
+}
+.browser-tips-group a {
+  color: #4b5563;
+}

@@ -1,0 +1,154 @@
+@mixin markdown-typora-content {
+  font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #333;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Source Sans Pro', 'Noto Sans SC', sans-serif;
+    color: #333;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    border-bottom: none;
+  }
+
+  h1 {
+    font-size: 1.8em;
+    text-align: center;
+    margin-top: 0;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #eee;
+  }
+
+  h2 {
+    font-size: 1.4em;
+    border-left: 4px solid #42b983;
+    padding-left: 10px;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+
+  h4 {
+    font-size: 1.1em;
+  }
+
+  h5,
+  h6 {
+    font-size: 1em;
+  }
+
+  p {
+    margin: 0.8em 0;
+    text-align: justify;
+  }
+
+  a {
+    color: #42b983;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      border-bottom-color: #42b983;
+    }
+  }
+
+  blockquote {
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    border-left: 4px solid #42b983;
+    background-color: #f8f8f8;
+    color: #666;
+
+    p {
+      margin: 0.5em 0;
+    }
+  }
+
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+    font-size: 0.9em;
+    padding: 2px 6px;
+    background-color: rgba(66, 185, 131, 0.1);
+    color: #e96900;
+    border-radius: 3px;
+  }
+
+  pre {
+    margin: 1em 0;
+    padding: 1em;
+    background-color: #282c34;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+
+  pre code {
+    background: transparent;
+    color: #abb2bf;
+    padding: 0;
+  }
+
+  ul,
+  ol {
+    padding-left: 2em;
+    margin: 0.8em 0;
+  }
+
+  li {
+    margin: 0.3em 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 1em 0;
+    width: 100%;
+  }
+
+  table th,
+  table td {
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+  }
+
+  table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+
+  table tr:nth-child(2n) {
+    background-color: #fafafa;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 2em 0;
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 4px;
+    margin: 1em auto;
+    display: block;
+  }
+
+  strong,
+  b {
+    color: #e96900;
+    font-weight: bold;
+  }
+
+  em,
+  i {
+    color: #42b983;
+    font-style: italic;
+  }
+}

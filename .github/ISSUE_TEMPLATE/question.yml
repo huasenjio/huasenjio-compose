@@ -1,0 +1,49 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: 提问
+title: "[提问] 标题"
+description: 该 issues 用于提出在文档或代码中没有得到解答的疑问，请慎重选择！
+labels: ["type: question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请大家注意标点符号、措辞、语法规范，认真写好每一句话，锻炼自己把话说清楚的能力，若潦草不认真，不予答复并删除，希望理解！
+
+  - type: checkboxes
+    attributes:
+      label: 提交前搜索 issues
+      description: >
+        请确保先搜索 [issues](https://github.com/huasenjio/huasenjio-compose/issues) ，查看是否已经报告了相同的问题。
+      options:
+        - label: >
+            我已经搜索了[issues](https://github.com/huasenjio/huasenjio-compose/issues)，没有发现类似的问题。
+          required: true
+
+  - type: textarea
+    attributes:
+      label: 疑问内容
+      description: 文档或项目上的疑问
+      placeholder: >
+        清晰简洁地描述您的疑问
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "感谢您填写我们的表格！"
