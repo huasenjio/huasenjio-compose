@@ -11,7 +11,7 @@
       <el-form-item label="文章标题" prop="title">
         <el-input v-model="articleForm.title" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="封面链接" prop="bannerImg">
+      <el-form-item label="封面链接（底部上传或粘贴链接）" prop="bannerImg">
         <el-input v-model="articleForm.bannerImg" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="发布作者" prop="manageId">
@@ -24,7 +24,14 @@
             <i class="iconfont icon-md-close-circle" v-if="item" @click="deleteTag(index)"></i>
           </li>
         </ul>
-        <el-input v-model="tagItem" autocomplete="off" @keyup.enter.native="handleTag" placeholder="回车添加标签"></el-input>
+        <el-input
+          v-model="tagItem"
+          autocomplete="off"
+          @compositionstart.native="isTagComposing = true"
+          @compositionend.native="isTagComposing = false"
+          @keydown.enter.native="handleTagEnter"
+          placeholder="回车添加标签"
+        ></el-input>
       </el-form-item>
       <el-form-item label="访问权限" prop="code">
         <el-select class="w-full" v-model="articleForm.code" popper-class="code-select" :popper-append-to-body="false">
@@ -39,9 +46,21 @@
     </el-form>
     <MarkdownEditor :value.sync="articleForm.content" :onImgAdd="handleImgAddUrl" @onSave="handleSave"></MarkdownEditor>
     <div class="upload-img-group">
-      <el-upload class="upload-box" :style="uploadStyle" :headers="headers" :action="action" :on-error="uploadImgError" :on-success="uploadImgSuccess" accept=".png" drag>
+      <el-upload
+        class="upload-box"
+        :style="uploadStyle"
+        :headers="headers"
+        :action="action"
+        :on-error="uploadImgError"
+        :on-success="uploadImgSuccess"
+        accept=".jpg,.jpeg,.png,.svg,.gif"
+        drag
+      >
         <i class="el-icon-upload"></i>
-        <div class="el-upload__text">拖拽上传 · <em>点击上传</em></div>
+        <div class="el-upload__text">
+          <em>拖拽上传 · 点击上传</em>
+          <div class="el-upload__tip" slot="tip">建议上传280*300尺寸图片且大小不超过2MB</div>
+        </div>
       </el-upload>
     </div>
     <div class="submit-group">
@@ -85,14 +104,14 @@ export default {
       // 标签
       tags: [],
       tagItem: '',
+      isTagComposing: false,
     };
   },
 
   watch: {
     tags: {
-      handler(nV, oV) {
-        let tagStr = this.tags.join('/');
-        this.articleForm.tag = tagStr;
+      handler() {
+        this.syncArticleTag();
       },
       deep: true,
     },
@@ -142,10 +161,26 @@ export default {
     },
 
     // 处理标签
+    handleTagEnter(event) {
+      if (this.isTagComposing || event.isComposing || event.keyCode === 229) return;
+      event.preventDefault();
+      this.handleTag();
+    },
+
     handleTag() {
-      if (!this.tagItem) return;
-      this.tags.push(this.tagItem.trim());
+      if (this.isTagComposing) return;
+      let tagItem = this.tagItem.trim();
+      if (!tagItem) return;
+      this.tags.push(tagItem);
       this.tagItem = '';
+    },
+
+    // 同步标签到提交表单
+    syncArticleTag() {
+      this.articleForm.tag = this.tags
+        .map(item => item.trim())
+        .filter(Boolean)
+        .join('/');
     },
 
     // 点击删除标签小按钮
@@ -174,6 +209,8 @@ export default {
 
     // 提交新闻信息
     submit() {
+      this.handleTag();
+      this.syncArticleTag();
       this.$refs.articleForm.validate(valid => {
         if (valid) {
           if (this.articleForm._id) {

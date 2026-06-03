@@ -375,13 +375,13 @@ export default {
         color: var(--gray-600);
       }
       .h1Point {
-        border-left-color: #0969da;
+        border-left-color: var(--blue-700);
       }
       .h2Point {
-        background-color: #0969da;
+        background-color: var(--blue-500);
       }
       .h3Point {
-        background-color: var(--gray-500);
+        background-color: var(--gray-400);
       }
     }
     &.catalog-typora {

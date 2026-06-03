@@ -64,9 +64,14 @@
               </el-tooltip>
             </template>
             <el-select
+              :ref="`select-${formItem.key}`"
               v-model="formData[formItem.key]"
               :allow-create="getSelectByAttr('typeConfig.allow-create', formItem)"
               :filterable="getSelectByAttr('typeConfig.filterable', formItem)"
+              :remote="getSelectByAttr('typeConfig.remote', formItem, false)"
+              :remote-method="getSelectByAttr('typeConfig.remoteMethod', formItem)"
+              :loading="getSelectByAttr('typeConfig.loading', formItem, false)"
+              :reserve-keyword="getSelectByAttr('typeConfig.reserveKeyword', formItem, false)"
               :multiple="getSelectByAttr('typeConfig.multiple', formItem)"
               :multiple-limit="getSelectByAttr('typeConfig.multiple-limit', formItem, 8)"
               :popper-append-to-body="false"
@@ -74,6 +79,7 @@
               :placeholder="LODASH.get(formItem, 'typeConfig.placeholder', '请选择')"
               :clearable="getSelectByAttr('typeConfig.clearable', formItem, true)"
               @change="value => $emit('onSelectChange', formItem.key, value)"
+              @visible-change="visible => handleSelectVisibleChange(visible, formItem)"
             >
               <el-option v-for="(option, i) in formItem.typeConfig.options" :key="i" :label="option.label" :value="option.value"> </el-option>
             </el-select>
@@ -279,7 +285,27 @@ export default {
 
     getSelectByAttr(attr, data, def) {
       let value = this.LODASH.get(data, attr);
-      return value || def || null;
+      return value !== undefined && value !== null ? value : def !== undefined ? def : null;
+    },
+
+    // Element UI 只给 select 弹层设置 min-width，长选项会把弹层撑宽；打开时强制同步为输入框宽度。
+    handleSelectVisibleChange(visible, formItem) {
+      if (!visible || !formItem || !formItem.key) return;
+      this.$nextTick(() => {
+        const selectRefs = this.$refs[`select-${formItem.key}`];
+        const selectRef = Array.isArray(selectRefs) ? selectRefs[0] : selectRefs;
+        const popperRef = this.LODASH.get(selectRef, '$refs.popper');
+        const popperEl = selectRef && selectRef.popperElm ? selectRef.popperElm : popperRef && popperRef.$el ? popperRef.$el : popperRef;
+        if (!selectRef || !selectRef.$el || !popperRef || !popperEl) return;
+        const width = selectRef.$el.getBoundingClientRect().width;
+        if (!width) return;
+        const widthText = `${width}px`;
+        popperRef.minWidth = widthText;
+        popperEl.style.width = widthText;
+        popperEl.style.minWidth = widthText;
+        popperEl.style.maxWidth = widthText;
+        popperEl.style.boxSizing = 'border-box';
+      });
     },
 
     // 点击确定
@@ -359,6 +385,14 @@ export default {
   ::v-deep .el-form {
     .el-select {
       width: 100%;
+      .el-select-dropdown__item {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .el-select-dropdown.is-multiple .el-select-dropdown__item {
+        padding-right: 42px;
+      }
     }
     .el-input {
       width: 100%;

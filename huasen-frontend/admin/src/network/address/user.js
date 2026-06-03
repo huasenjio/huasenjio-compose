@@ -18,5 +18,6 @@ const addUser = post('/user/add');
 const removeUser = post('/user/remove');
 const updateUser = post('/user/update');
 const findUserByPage = post('/user/findByPage');
+const findUserOptions = post('/user/options');
 
-export { getCaptcha, login, exist, init, findUserByPage, addUser, removeUser, updateUser, quit };
+export { getCaptcha, login, exist, init, findUserByPage, findUserOptions, addUser, removeUser, updateUser, quit };

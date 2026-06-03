@@ -34,7 +34,7 @@ async function getJournalInformationById(_id, code = 0) {
           journalId: _id,
         },
         {},
-        { sort: { order: 1 } },
+        { sort: { order: 1, creatTime: 1, _id: 1 } },
       ],
     },
   ]);
@@ -372,7 +372,7 @@ async function findBindedColumn(req, res, next) {
     {
       schemaName: 'journal2column',
       methodName: 'find',
-      payloads: [{ journalId }, {}, { sort: { order: 1 } }],
+      payloads: [{ journalId }, {}, { sort: { order: 1, creatTime: 1, _id: 1 } }],
     },
   ]);
   if (cErr) {
@@ -416,20 +416,20 @@ async function unbindColumn(req, res, next) {
 
 async function bindColumn(req, res, next) {
   let { journalId, columnIds } = req.huasenParams;
-  // 查询journalId关联的栏目数量，用于判断确定order的起始值
-  const [countErr, targetJ2C] = await req.working([
+  // 查询当前订阅源下最大的 order，新绑定栏目从最大值之后追加
+  const [orderErr, lastJ2C] = await req.working([
     {
       schemaName: 'journal2column',
       methodName: 'findOne',
-      payloads: [{ journalId }],
+      payloads: [{ journalId }, {}, { sort: { order: -1, creatTime: -1, _id: -1 } }],
     },
   ]);
-  if (countErr) {
+  if (orderErr) {
     return global.huasen.responseData(res, null, 'ERROR', '查询绑定栏目关系');
   }
-  let startOrder = 0;
-  if (targetJ2C?.order) {
-    startOrder = targetJ2C.order;
+  let startOrder = -1;
+  if (lastJ2C && Number.isFinite(lastJ2C.order)) {
+    startOrder = lastJ2C.order;
   }
   const [cErr, journal2columns] = await req.working([
     {

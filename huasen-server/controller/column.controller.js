@@ -155,7 +155,7 @@ async function findBindedSite(req, res, next) {
     {
       schemaName: 'column2site',
       methodName: 'find',
-      payloads: [{ columnId }, {}, { sort: { order: 1 } }],
+      payloads: [{ columnId }, {}, { sort: { order: 1, creatTime: 1, _id: 1 } }],
     },
   ]);
   if (cErr) {
@@ -200,20 +200,20 @@ async function unbindSite(req, res, next) {
 // 绑定栏目和站点，从已绑定的关系中，查询最大的order值，用于确定新绑定的站点的order值
 async function bindSite(req, res, next) {
   let { columnId, siteIds } = req.huasenParams;
-  // 查询columnId关联的站点数量，用于判断确定order的起始值
-  const [countErr, targetC2S] = await req.working([
+  // 查询当前栏目下最大的 order，新绑定网链从最大值之后追加
+  const [orderErr, lastC2S] = await req.working([
     {
       schemaName: 'column2site',
       methodName: 'findOne',
-      payloads: [{ columnId }],
+      payloads: [{ columnId }, {}, { sort: { order: -1, creatTime: -1, _id: -1 } }],
     },
   ]);
-  if (countErr) {
+  if (orderErr) {
     return global.huasen.responseData(res, null, 'ERROR', '查询栏目和站点关系失败');
   }
-  let startOrder = 0;
-  if (targetC2S?.order) {
-    startOrder = targetC2S.order;
+  let startOrder = -1;
+  if (lastC2S && Number.isFinite(lastC2S.order)) {
+    startOrder = lastC2S.order;
   }
   const [cErr, columns] = await req.working([
     {

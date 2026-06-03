@@ -170,6 +170,42 @@ function findByPage(req, res, next) {
   );
 }
 
+async function findOptions(req, res, next) {
+  try {
+    let { keyword = '', pageSize = 20, enabled } = req.huasenParams;
+    pageSize = Math.min(Math.max(Number(pageSize) || 20, 1), 50);
+
+    const params = {};
+    keyword = typeof keyword === 'string' ? keyword.trim() : '';
+    if (keyword) {
+      const keywordReg = new RegExp(_.escapeRegExp(keyword), 'i');
+      params.$or = [{ id: keywordReg }, { name: keywordReg }];
+    }
+    if (typeof enabled === 'boolean') {
+      params.enabled = enabled;
+    }
+
+    const [err, users = []] = await req.working([
+      {
+        schemaName: 'user',
+        methodName: 'find',
+        payloads: [params, { id: 1, name: 1, _id: 0 }, { sort: { _id: -1 }, limit: pageSize }],
+      },
+    ]);
+    if (err) {
+      return global.huasen.responseData(res, null, 'ERROR', '查询用户选项');
+    }
+
+    const options = users.map(item => ({
+      id: item.id,
+      name: item.name || '',
+    }));
+    global.huasen.responseData(res, options, 'SUCCESS', '查询用户选项');
+  } catch (err) {
+    next(err);
+  }
+}
+
 function add(req, res, next) {
   // 密码对称加密存储
   req.huasenParams.password = encrypt(req.huasenParams.password, SECRET_AES);
@@ -366,6 +402,7 @@ module.exports = {
 
   add,
   findByPage,
+  findOptions,
   remove,
   update,
 

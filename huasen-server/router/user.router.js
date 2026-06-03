@@ -16,6 +16,7 @@ const {
   quit,
   add,
   findByPage,
+  findOptions,
   remove,
   update,
   manageLogin,
@@ -106,5 +107,6 @@ router.post('/add', handleJWT(), checkManagePower, checkManageHighestPower, chec
 router.post('/remove', handleJWT(), checkManagePower, checkManageHighestPower, remove);
 router.post('/update', handleJWT(), checkManagePower, checkManageHighestPower, update);
 router.post('/findByPage', handleJWT(), checkManagePower, findByPage);
+router.post('/options', handleJWT(), checkManagePower, findOptions);
 
 module.exports = router;

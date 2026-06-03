@@ -15,6 +15,67 @@ const { downloadAndConvertToBase64 } = require('../utils/tool.js');
 const { schemaMap, workingBySeesion } = require('../service/index.js');
 const { site, column } = schemaMap;
 
+function getOrderedDocsByIds(docs, ids) {
+  ids = Array.isArray(ids) ? ids : [];
+  const docMap = {};
+  docs.forEach(item => {
+    docMap[item._id.toString()] = item;
+  });
+  return ids.map(id => docMap[id]).filter(item => item);
+}
+
+async function getColumnSiteNextOrderMap(req, columnIds) {
+  columnIds = Array.isArray(columnIds) ? columnIds : [];
+  const uniqueColumnIds = Array.from(new Set(columnIds.filter(columnId => columnId).map(columnId => columnId.toString())));
+  const nextOrderMap = {};
+  if (!uniqueColumnIds.length) return [null, nextOrderMap];
+
+  const [err, relations = []] = await req.working([
+    {
+      schemaName: 'column2site',
+      methodName: 'find',
+      payloads: [{ columnId: { $in: uniqueColumnIds } }, {}, { sort: { columnId: 1, order: -1, creatTime: -1, _id: -1 } }],
+    },
+  ]);
+  if (err) return [err, nextOrderMap];
+
+  const maxOrderMap = {};
+  relations.forEach(relation => {
+    const columnId = relation.columnId;
+    if (!Object.prototype.hasOwnProperty.call(maxOrderMap, columnId) && Number.isFinite(relation.order)) {
+      maxOrderMap[columnId] = relation.order;
+    }
+  });
+  uniqueColumnIds.forEach(columnId => {
+    nextOrderMap[columnId] = Number.isFinite(maxOrderMap[columnId]) ? maxOrderMap[columnId] + 1 : 0;
+  });
+  return [null, nextOrderMap];
+}
+
+function getNextColumnSiteOrderFromRelations(relations, columnId) {
+  let maxOrder = -1;
+  relations.forEach(relation => {
+    if (relation.columnId === columnId && Number.isFinite(relation.order) && relation.order > maxOrder) {
+      maxOrder = relation.order;
+    }
+  });
+  return maxOrder + 1;
+}
+
+async function createColumn2SitePayloads(req, columns, columnIds, siteId) {
+  const orderedColumns = getOrderedDocsByIds(columns, columnIds);
+  const orderedColumnIds = orderedColumns.map(item => item._id.toString());
+  const [orderErr, nextOrderMap] = await getColumnSiteNextOrderMap(req, orderedColumnIds);
+  if (orderErr) return [orderErr, []];
+  const payloads = orderedColumns.map(item => {
+    const columnId = item._id.toString();
+    const order = nextOrderMap[columnId] || 0;
+    nextOrderMap[columnId] = order + 1;
+    return { siteId, columnId, order };
+  });
+  return [null, payloads];
+}
+
 async function findByPage(req, res, next) {
   let { pageNo, pageSize, name, url, description, remarks, enabled, code, tag, pin } = req.huasenParams;
 
@@ -133,13 +194,22 @@ async function add(req, res, next) {
       payloads: [{ _id: { $in: bindTag } }],
     },
   ]);
+  if (err) {
+    return global.huasen.responseData(res, null, 'ERROR', '查找关联资源异常');
+  }
   const works = [];
   if (cdata.length > 0) {
-    works.push({
-      schemaName: 'column2site',
-      methodName: 'insertMany',
-      payloads: [cdata.map(item => ({ siteId: site._id, columnId: item._id }))],
-    });
+    const [orderErr, column2sites] = await createColumn2SitePayloads(req, cdata, bindColumn, site._id.toString());
+    if (orderErr) {
+      return global.huasen.responseData(res, null, 'ERROR', '查询栏目和站点关系异常');
+    }
+    if (column2sites.length) {
+      works.push({
+        schemaName: 'column2site',
+        methodName: 'insertMany',
+        payloads: [column2sites],
+      });
+    }
   }
   if (pdata.length > 0) {
     works.push({
@@ -267,15 +337,17 @@ async function update(req, res, next) {
   const works = [];
   // 绑定
   if (cdata.length) {
-    const column2sites = cdata.map(item => ({
-      columnId: item._id,
-      siteId: _id,
-    }));
-    works.push({
-      schemaName: 'column2site',
-      methodName: 'insertMany',
-      payloads: [column2sites],
-    });
+    const [orderErr, column2sites] = await createColumn2SitePayloads(req, cdata, bindColumn, _id);
+    if (orderErr) {
+      return global.huasen.responseData(res, null, 'ERROR', '查询栏目和站点关系异常');
+    }
+    if (column2sites.length) {
+      works.push({
+        schemaName: 'column2site',
+        methodName: 'insertMany',
+        payloads: [column2sites],
+      });
+    }
   }
   if (pdata.length) {
     const site2pins = pdata.map(item => ({
@@ -828,8 +900,10 @@ async function importSiteItems(req, rawItems) {
         },
       });
       if (column && column._id) {
-        const order = Number.isNaN(Number(ref.order)) ? 0 : Number(ref.order);
-        await bindOnce({ schemaName: 'column2site', relationList: c2s, siteId, targetKey: 'columnId', targetId: column._id.toString(), extra: { order } });
+        const columnId = column._id.toString();
+        const hasOrder = ref.order !== undefined && ref.order !== null && `${ref.order}`.trim() !== '';
+        const order = hasOrder && !Number.isNaN(Number(ref.order)) ? Number(ref.order) : getNextColumnSiteOrderFromRelations(c2s, columnId);
+        await bindOnce({ schemaName: 'column2site', relationList: c2s, siteId, targetKey: 'columnId', targetId: columnId, extra: { order } });
       }
     }
   }

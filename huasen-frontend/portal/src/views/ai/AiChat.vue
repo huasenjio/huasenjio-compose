@@ -74,7 +74,16 @@
                     <span class="att-name">{{ att.name }}</span>
                   </div>
                 </div>
-                <Markdown v-if="msg.content" :value="msg.content" :showFooter="false" :showAnchors="false" theme="github" :html="false" :looseCodeFence="msg.role === 'assistant'" class="message-markdown" />
+                <Markdown
+                  v-if="msg.content"
+                  :value="msg.content"
+                  :showFooter="false"
+                  :showAnchors="false"
+                  theme="github"
+                  :html="false"
+                  :looseCodeFence="msg.role === 'assistant'"
+                  class="message-markdown"
+                />
                 <!-- loading光标 -->
                 <span v-if="msg.streaming" class="streaming-cursor"></span>
                 <template v-else>
@@ -1084,7 +1093,7 @@ export default {
 
   .el-select-dropdown__item.selected::after {
     position: absolute;
-    right: 12px;
+    right: 10px !important;
     top: 50%;
     transform: translateY(-50%);
     margin-top: 0;
