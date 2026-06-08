@@ -45,7 +45,7 @@
                 v-if="(site.pins || []).length > 0"
                 :ref="`pinMeasure-${category.typeId}-${site._id}`"
                 class="pin-measure absolute w-px-180 sm:w-px-150 h-px-16 flex justify-end invisible pointer-events-none"
-                style="top: -8px; right: 0; z-index: -1;"
+                style="top: -8px; right: 0; z-index: -1"
               >
                 <div v-for="pin in site.pins" :key="pin.id" class="pin-item h-px-16 p-px-4 mr-px-2 text-12px flex justify-center items-center rounded-full whitespace-nowrap">
                   {{ pin.name }}
@@ -483,6 +483,9 @@ export default {
                 display: block;
                 margin-left: 60px;
                 .name {
+                  height: 20px;
+                  line-height: 20px;
+                  padding-right: 2px;
                   font-weight: 500;
                 }
                 .describe {

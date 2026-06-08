@@ -6,6 +6,34 @@
   "description": "用户个人展示页",
   "glyphs": [
     {
+      "icon_id": "4974166",
+      "name": "网站",
+      "font_class": "wangzhan",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "6102957",
+      "name": "分类",
+      "font_class": "fenlei",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "11799091",
+      "name": "初步分类",
+      "font_class": "chubufenlei",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "21053617",
+      "name": "日志服务",
+      "font_class": "rizhifuwu",
+      "unicode": "e669",
+      "unicode_decimal": 58985
+    },
+    {
       "icon_id": "14401714",
       "name": "github",
       "font_class": "github",

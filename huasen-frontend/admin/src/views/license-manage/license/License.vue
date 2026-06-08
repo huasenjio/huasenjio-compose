@@ -139,14 +139,15 @@
       <div class="activate-form">
         <el-form label-position="top">
           <el-form-item label="授权码">
-            <el-input v-model="licenseKeyInput" placeholder="请输入授权码（如：HSM1-xxxxxxxx-xxxxxxxx-xx）" clearable @keyup.enter.native="handleActivate"> </el-input>
+            <el-input ref="licenseKeyInput" v-model="licenseKeyInput" placeholder="请输入授权码（如：HSM1-xxxxxxxx-xxxxxxxx-xx）" clearable @keyup.enter.native="handleActivate">
+            </el-input>
           </el-form-item>
         </el-form>
         <div class="activate-tip">
-          <i class="el-icon-info"></i>
+          <i class="el-icon-info" style="margin-right: 0px"></i>
           请联系
-          <a href="https://www.huasenjio.top/" target="_blank">官方渠道</a>
-          获取授权码
+          <a class="text-blue-500" href="https://www.huasenjio.top/" target="_blank">官方渠道</a>
+          获取授权码，限时价格：<font class="text-red-500">月度 19 元、年度 199 元、永久 299 元</font>，最多支持 <font class="text-red-500">5</font> 台设备激活。
         </div>
       </div>
     </HDialog>
@@ -260,6 +261,12 @@ export default {
     openActivateDialog() {
       this.licenseKeyInput = '';
       this.showActivateDialog = true;
+
+      this.$nextTick(() => {
+        if (this.$refs.licenseKeyInput) {
+          this.$refs.licenseKeyInput.focus();
+        }
+      });
     },
     handleActivate() {
       const key = this.licenseKeyInput.trim();
@@ -640,6 +647,7 @@ export default {
   font-size: 12px;
   color: var(--gray-400);
   margin-top: 10px;
+  line-height: 18px;
 
   i {
     margin-right: 4px;

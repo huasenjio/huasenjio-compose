@@ -261,6 +261,131 @@ body {
   background-color: #f8f8f8;
   font-size: 15px;
 }
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(34, 40, 49, 0.45);
+}
+.contact-modal.active {
+  display: flex;
+}
+.contact-card {
+  position: relative;
+  width: 278px;
+  padding: 20px 16px 16px;
+  border: 1px solid #d6dde3;
+  border-radius: 10px;
+  background: #ffffff;
+  -webkit-box-shadow: 0 12px 32px rgba(34, 40, 49, 0.18);
+  box-shadow: 0 12px 32px rgba(34, 40, 49, 0.18);
+}
+.contact-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 26px;
+  cursor: pointer;
+  background: transparent;
+}
+.contact-title {
+  padding-right: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2f3a43;
+}
+.contact-tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 3px;
+  border: 1px solid #d6dde3;
+  border-radius: 8px;
+  background: #f6f8f9;
+}
+.contact-tab {
+  flex: 1;
+  height: 30px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+}
+.contact-tab.active {
+  color: #ffffff;
+  background: #71b3dd;
+}
+.contact-body {
+  margin-top: 12px;
+}
+.contact-panel {
+  display: none;
+  padding: 14px;
+  border: 1px solid #edf0f2;
+  border-radius: 8px;
+  background: #fafafa;
+}
+.contact-panel.active {
+  display: block;
+}
+.contact-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2f3a43;
+}
+.contact-tip {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: #7b858c;
+}
+.contact-qr {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 10px auto 0;
+  border: 1px solid #d6dde3;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+}
+.contact-qr img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: #ffffff;
+}
+.contact-qr img.hidden {
+  display: none;
+}
+.contact-qr-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: #9aa3a9;
+  background: #f6f8f9;
+}
 .footer {
   position: fixed;
   bottom: 10px;
