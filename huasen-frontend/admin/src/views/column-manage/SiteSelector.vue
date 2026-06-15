@@ -51,7 +51,7 @@
                 <!-- <el-option :label="'标签名'" :value="'tag'"> </el-option> -->
                 <el-option :label="'网站名'" :value="'siteName'"> </el-option>
               </el-select>
-              <el-input :placeholder="searchPlaceholderText" suffix-icon="el-icon-search" v-model="searchText"> </el-input>
+              <el-input :placeholder="searchPlaceholderText" suffix-icon="el-icon-search" v-model="searchText" clearable> </el-input>
             </div>
           </div>
           <ul class="site-group">

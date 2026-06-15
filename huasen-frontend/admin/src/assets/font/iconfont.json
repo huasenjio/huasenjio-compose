@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "43650228",
+      "name": "ai",
+      "font_class": "a-xinwenjian",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "44308426",
+      "name": "AI",
+      "font_class": "AI",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "46111107",
+      "name": "AI知识库",
+      "font_class": "AI-zhishiku",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "46633269",
+      "name": "ai",
+      "font_class": "ai",
+      "unicode": "e717",
+      "unicode_decimal": 59159
+    },
+    {
       "icon_id": "9730563",
       "name": "过滤",
       "font_class": "guolv",
@@ -67,13 +95,6 @@
       "font_class": "wangzhidaohang",
       "unicode": "e62d",
       "unicode_decimal": 58925
-    },
-    {
-      "icon_id": "11458824",
-      "name": "sousuoyinqing",
-      "font_class": "sousuoyinqing",
-      "unicode": "e67e",
-      "unicode_decimal": 59006
     },
     {
       "icon_id": "41371198",

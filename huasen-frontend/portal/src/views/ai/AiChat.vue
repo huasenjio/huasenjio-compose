@@ -74,8 +74,9 @@
                     <span class="att-name">{{ att.name }}</span>
                   </div>
                 </div>
+                <div v-if="msg.content && msg.role === 'user'" class="message-text">{{ msg.content }}</div>
                 <Markdown
-                  v-if="msg.content"
+                  v-else-if="msg.content"
                   :value="msg.content"
                   :showFooter="false"
                   :showAnchors="false"
@@ -1434,6 +1435,13 @@ export default {
       font-size: 14px;
       line-height: 1.6;
       word-break: break-word;
+    }
+    .message-text {
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
     .expect-hint {
       display: flex;
