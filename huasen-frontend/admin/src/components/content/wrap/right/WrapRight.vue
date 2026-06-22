@@ -58,6 +58,7 @@ import { mapState, mapActions } from 'vuex';
 import RuntimePanel from './RuntimePanel.vue';
 import SetPanel from './SetPanel.vue';
 import JsonToolPanel from './JsonToolPanel.vue';
+import { createTabClosePlan } from './tab-close.js';
 
 export default {
   name: 'WrapRight',
@@ -244,7 +245,7 @@ export default {
     goTab(tab) {
       // path方式只能携带query的参数
       // name方式query和params的参数都能携带
-      this.$router.push({
+      return this.$router.push({
         name: tab.componentName,
         query: tab.query,
         params: tab.params,
@@ -254,31 +255,35 @@ export default {
 
     // 删除标签页
     removeTab(path) {
-      if (this.tabs.length === 1) return;
-      const index = this.tabs.findIndex(tab => tab.path === path);
-      if (index <= -1) return;
+      const plan = createTabClosePlan({
+        tabs: this.tabs,
+        currentTabKey: this.currentTabKey,
+        path,
+        pageNo: this.pageNo,
+        pageSize: this.pageSize,
+      });
+      if (!plan.canClose) return;
 
-      // 记录删除组件的前后tab
-      const preTab = this.tabs[index - 1];
-      const nextTab = this.tabs[index + 1];
-      const removeTab = this.tabs[index];
-
-      // 删除tab
-      this.tabs.splice(index, 1);
-      // 不是第一页的情况下，若删除之后没有展示的标签，则后退一页
-      if (this.pageNo > 1 && this.displayTabs.length === 0) {
-        this.pageNo--;
-      }
-
-      // 删除当前所在路由页面，没有下一个，就取前一个
-      if (this.currentTabKey === path) {
-        if (nextTab) {
-          this.goTab(nextTab);
-        } else if (preTab) {
-          this.goTab(preTab);
+      const applyClose = () => {
+        const nextState = plan.getNextState();
+        this.tabs = nextState.tabs;
+        this.pageNo = nextState.pageNo;
+        if (nextState.removedTab) {
+          this.removeCache(nextState.removedTab.componentName);
         }
+      };
+
+      if (!plan.needNavigate) {
+        applyClose();
+        return;
       }
-      this.removeCache(removeTab.componentName);
+
+      if (!plan.targetTab) return;
+      this.goTab(plan.targetTab)
+        .then(() => {
+          applyClose();
+        })
+        .catch(() => {});
     },
 
     // 刷新当前tab页面

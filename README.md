@@ -231,10 +231,10 @@
 **脚本仅适用 CentOS 7/8、OpenCloudOS 9.x、Debian 12、Ubuntu 22 系统**，部署安装非常简单，进入服务器终端，执行命令：
 
 ```sh
-curl -O https://huasenjio.top/bin/install.sh && \
-curl -O https://huasenjio.top/bin/env-lib.sh && \
+curl -O https://www.huasenjio.top/bin/install.sh && \
+curl -O https://www.huasenjio.top/bin/env-lib.sh && \
 chmod +x install.sh && \
-./install.sh
+bash ./install.sh
 ```
 
 下载安装脚本并且执行。如果运行失败，重新运行即可。如有疑问，请务必查阅 `huasenjio-compose/bin/readme.md` 文档。

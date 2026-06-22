@@ -23,15 +23,16 @@
           </el-select>
         </el-input>
       </div>
-      <el-table ref="fileTable" :data="displayFiles" border style="width: 100%">
+      <el-table ref="fileTable" :data="displayFiles" border style="width: 100%" @filter-change="handleTableFilterChange">
         <el-table-column type="selection" width="45"> </el-table-column>
         <el-table-column type="index" label="序号" width="65"> </el-table-column>
         <el-table-column prop="url" label="文件地址"> </el-table-column>
-        <el-table-column prop="type" label="文件类型" width="100">
+        <el-table-column prop="type" label="文件分类" width="100">
           <template slot-scope="scope">
             <font>{{ fileTypeName[scope.row.type] || '未知' }}</font>
           </template>
         </el-table-column>
+        <el-table-column column-key="ext" prop="ext" label="后缀名" width="110" :filters="extensionFilters" :filtered-value="filterExts" :filter-method="filterExtension"> </el-table-column>
         <el-table-column prop="" label="缩略图" width="150">
           <template slot-scope="scope">
             <div class="w-full h-px-50 p-px-2 flex justify-center items-center rounded">
@@ -71,6 +72,7 @@
 import { tool } from 'huasen-lib';
 import FileUpLoad from '@/components/common/file-upload/FileUpload.vue';
 import { downloadFileByBlob } from '@/network/request.js';
+import { clampFilePagination as clampPagination, DEFAULT_PAGE_SIZE, DEFAULT_CURRENT_PAGE, getFileExtension, buildExtensionFilters, filterFilesByExtensions } from './file-pagination.js';
 export default {
   name: 'FileManage',
   components: { FileUpLoad },
@@ -113,11 +115,12 @@ export default {
       },
 
       // 前端分页相关
-      pageSize: 10,
-      currentPage: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+      currentPage: DEFAULT_CURRENT_PAGE,
 
       filterType: '',
       filterText: '',
+      filterExts: [],
       downloadingStore: false,
     };
   },
@@ -148,6 +151,7 @@ export default {
           return item.url.includes(this.filterText);
         });
       }
+      files = filterFilesByExtensions(files, this.filterExts);
       return files;
     },
     displayFiles() {
@@ -165,12 +169,20 @@ export default {
       });
       return temp;
     },
+    extensionFilters() {
+      return buildExtensionFilters(this.files);
+    },
   },
 
   watch: {
-    filterFiles(val) {
-      this.currentPage = 1;
-      this.pageSize = 10;
+    filterType() {
+      this.resetFilePagination();
+    },
+    filterText() {
+      this.resetFilePagination();
+    },
+    filterExts() {
+      this.resetFilePagination();
     },
   },
 
@@ -202,13 +214,13 @@ export default {
 
     // 图片类型则显示图片
     judgeImgFile(filePath) {
-      let ext = filePath.split('.').slice(-1).join('');
+      let ext = getFileExtension(filePath);
       return ['png', 'jpg', 'jpeg', 'svg', 'gif'].includes(ext);
     },
 
     // 获取文件图标
     getFileIcon(filePath) {
-      let ext = filePath.split('.').slice(-1).join('');
+      let ext = getFileExtension(filePath);
       return this.type2icon[ext] || 'icon-qitawenjian';
     },
 
@@ -258,6 +270,31 @@ export default {
       this.currentPage = currentPage;
     },
 
+    filterExtension(value, row) {
+      return row.ext === value;
+    },
+
+    handleTableFilterChange(filters) {
+      if (Object.prototype.hasOwnProperty.call(filters, 'ext')) {
+        this.filterExts = filters.ext || [];
+      }
+    },
+
+    resetFilePagination() {
+      this.currentPage = DEFAULT_CURRENT_PAGE;
+      this.pageSize = DEFAULT_PAGE_SIZE;
+    },
+
+    clampFilePagination() {
+      const pagination = clampPagination({
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+        total: this.total,
+      });
+      this.currentPage = pagination.currentPage;
+      this.pageSize = pagination.pageSize;
+    },
+
     queryFile() {
       this.API.file
         .findAllFile(
@@ -270,9 +307,9 @@ export default {
           this.files = res.data.map(url => {
             let params = url.split('/');
             let type = params[1];
-            let ext = params[params.length - 1].split('.')[1];
+            let ext = getFileExtension(url);
             let iconClass = this.getFileIcon(url);
-            let isImg = ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'svg', 'SVG', 'gif', 'GIF'].includes(ext);
+            let isImg = this.judgeImgFile(url);
             return {
               url,
               type,
@@ -280,6 +317,9 @@ export default {
               iconClass,
               isImg,
             };
+          });
+          this.$nextTick(() => {
+            this.clampFilePagination();
           });
         });
     },

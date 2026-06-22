@@ -65,6 +65,7 @@
     </div>
     <div class="submit-group">
       <div class="btn-group ml-auto">
+        <span v-if="showAutoSaveStatus" class="auto-save-status" :class="`auto-save-status--${autoSaveStatus}`">{{ autoSaveStatusText }}</span>
         <el-button type="primary" @click="cancel">取消发布</el-button>
         <el-button type="danger" @click="submit">
           {{ this.articleForm._id ? '完成编辑' : '立即发布' }}
@@ -77,24 +78,29 @@
 <script>
 import { mapState } from 'vuex';
 import MarkdownEditor from '@/components/content/markdown-editor/MarkdownEditor.vue';
-import { Validator, tool } from 'huasen-lib';
+import { Validator } from 'huasen-lib';
+import autoSave from './article-auto-save.js';
 const validator = new Validator();
 const getElementFormValidator = validator.getElementFormValidator.bind(validator);
+const AUTO_SAVE_DELAY = 3000;
+function getDefaultArticleForm() {
+  return {
+    manageId: '',
+    title: '',
+    tag: '',
+    content: '',
+    bannerImg: '',
+    code: 0,
+    isDraft: false,
+  };
+}
 export default {
   name: 'Public',
   components: { MarkdownEditor },
   data() {
     return {
       // 提交表单
-      articleForm: {
-        manageId: '',
-        title: '',
-        tag: '',
-        content: '',
-        bannerImg: '',
-        code: 0,
-        isDraft: false,
-      },
+      articleForm: getDefaultArticleForm(),
       // 校验规则
       rules: {
         title: [{ validator: getElementFormValidator(['isNonEmpty::必填项', 'minLength:2::标题长度不小于2', 'maxLength:20::标题长度不大于20']) }],
@@ -105,10 +111,22 @@ export default {
       tags: [],
       tagItem: '',
       isTagComposing: false,
+      autoSaveReady: false,
+      autoSaveTimer: null,
+      autoSaveStatus: 'idle',
+      hasUnsavedChanges: false,
+      localDraftKey: '',
+      isLeavingBySubmit: false,
     };
   },
 
   watch: {
+    articleForm: {
+      handler() {
+        this.handleArticleFormChange();
+      },
+      deep: true,
+    },
     tags: {
       handler() {
         this.syncArticleTag();
@@ -133,31 +151,230 @@ export default {
         '--bannerImg': `url(${this.articleForm.bannerImg})`,
       };
     },
+    showAutoSaveStatus() {
+      return this.autoSaveStatus !== 'idle';
+    },
+    autoSaveStatusText() {
+      const statusMap = {
+        dirty: '未保存',
+        saving: '自动保存中',
+        saved: '已自动保存',
+        local: '已本地暂存',
+        failed: '自动保存失败',
+      };
+      return statusMap[this.autoSaveStatus] || '';
+    },
   },
 
   activated() {
     this.initSubmitForm();
+    window.addEventListener('beforeunload', this.handleBeforeUnload);
+  },
+
+  deactivated() {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    this.clearAutoSaveTimer();
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    this.clearAutoSaveTimer();
+  },
+
+  beforeRouteLeave(to, from, next) {
+    if (this.isLeavingBySubmit || !this.shouldConfirmLeave()) {
+      next();
+      return;
+    }
+    const flag = window.confirm('文章存在未同步到服务端的修改，确定离开吗？');
+    if (flag) {
+      next();
+    } else {
+      next(false);
+    }
   },
 
   methods: {
     // 初始化提交表单
     initSubmitForm() {
+      this.resetAutoSaveState();
       this.$nextTick(async () => {
+        let articleForm = getDefaultArticleForm();
+        let tags = [];
         // 路由跳转携带参数
         if (Object.keys(this.$route.query).length !== 0) {
           let result = await this.API.article.findArticleById({ _id: this.$route.query['_id'] }, { notify: false });
           let article = result.data.pop();
           if (article) {
-            this.articleForm = article;
+            articleForm = Object.assign(getDefaultArticleForm(), article);
             // 解析展示的标签
-            this.tags = this.articleForm.tag ? this.articleForm.tag.split('/') : [];
+            tags = articleForm.tag ? articleForm.tag.split('/') : [];
           } else {
             this.$router.go(-1);
           }
         }
         // 默认赋值
+        this.articleForm = articleForm;
         this.articleForm.manageId = this.manage.id;
+        this.tags = tags;
+        this.refreshLocalDraftKey();
+        this.$nextTick(() => {
+          this.autoSaveReady = true;
+          this.restoreLocalDraft();
+        });
       });
+    },
+
+    resetAutoSaveState() {
+      this.autoSaveReady = false;
+      this.clearAutoSaveTimer();
+      this.autoSaveStatus = 'idle';
+      this.hasUnsavedChanges = false;
+      this.localDraftKey = '';
+      this.isLeavingBySubmit = false;
+    },
+
+    handleArticleFormChange() {
+      if (!this.autoSaveReady) return;
+      this.hasUnsavedChanges = true;
+      this.autoSaveStatus = 'dirty';
+      this.scheduleAutoSave();
+    },
+
+    scheduleAutoSave() {
+      this.clearAutoSaveTimer();
+      this.autoSaveTimer = setTimeout(() => {
+        this.runAutoSave();
+      }, AUTO_SAVE_DELAY);
+    },
+
+    clearAutoSaveTimer() {
+      if (this.autoSaveTimer) {
+        clearTimeout(this.autoSaveTimer);
+        this.autoSaveTimer = null;
+      }
+    },
+
+    refreshLocalDraftKey() {
+      this.localDraftKey = autoSave.buildLocalDraftKey(this.manage.id, this.articleForm._id);
+    },
+
+    getLocalDraftPayload() {
+      this.syncArticleTag();
+      return {
+        articleForm: Object.assign({}, this.articleForm),
+        tags: [].concat(this.tags),
+        savedAt: Date.now(),
+      };
+    },
+
+    saveLocalDraft(status) {
+      this.refreshLocalDraftKey();
+      this.STORAGE.setItem(this.localDraftKey, this.getLocalDraftPayload());
+      this.hasUnsavedChanges = true;
+      this.autoSaveStatus = status || 'local';
+    },
+
+    removeLocalDraft(key) {
+      if (key) {
+        this.STORAGE.removeItemByKey(key);
+      }
+    },
+
+    restoreLocalDraft() {
+      if (!this.localDraftKey) return;
+      const draft = this.STORAGE.getItem(this.localDraftKey);
+      if (!draft || !draft.articleForm) return;
+      this.$confirm('检测到本地暂存的文章内容，是否恢复？', '恢复草稿', {
+        confirmButtonText: '恢复',
+        cancelButtonText: '忽略',
+        type: 'warning',
+      })
+        .then(() => {
+          this.autoSaveReady = false;
+          this.articleForm = Object.assign(getDefaultArticleForm(), draft.articleForm);
+          this.articleForm.manageId = this.manage.id;
+          this.tags = Array.isArray(draft.tags) ? [].concat(draft.tags) : this.articleForm.tag ? this.articleForm.tag.split('/') : [];
+          this.refreshLocalDraftKey();
+          this.$nextTick(() => {
+            this.autoSaveReady = true;
+            this.hasUnsavedChanges = true;
+            this.autoSaveStatus = 'local';
+          });
+        })
+        .catch(() => {});
+    },
+
+    getCreatedArticle(result) {
+      const data = result && result.data;
+      if (Array.isArray(data)) {
+        return data[0];
+      }
+      return data;
+    },
+
+    async runAutoSave() {
+      if (!this.autoSaveReady) return;
+      this.clearAutoSaveTimer();
+      const previousLocalDraftKey = this.localDraftKey;
+      const target = autoSave.resolveAutoSaveTarget(this.articleForm, {
+        now: new Date(),
+        hasArticleId: Boolean(this.articleForm._id),
+      });
+      if (target.target === 'local') {
+        this.saveLocalDraft();
+        return;
+      }
+      this.autoSaveStatus = 'saving';
+      this.syncArticleTag();
+      const payload = Object.assign({}, this.articleForm, {
+        title: target.title,
+      });
+      if (target.forceDraft) {
+        payload.isDraft = true;
+      }
+      try {
+        let result;
+        if (payload._id) {
+          result = await this.API.article.updateArticle(payload, { notify: false, loading: false });
+        } else {
+          result = await this.API.article.addArticle(payload, { notify: false });
+        }
+        this.autoSaveReady = false;
+        if (target.forceDraft) {
+          this.articleForm.title = payload.title;
+          this.articleForm.isDraft = true;
+        }
+        if (!this.articleForm._id) {
+          const article = this.getCreatedArticle(result);
+          if (article && article._id) {
+            this.articleForm._id = article._id;
+            this.$router.replace({ name: 'Public', query: { _id: article._id } }).catch(() => {});
+          }
+        }
+        this.refreshLocalDraftKey();
+        this.removeLocalDraft(previousLocalDraftKey);
+        this.removeLocalDraft(this.localDraftKey);
+        this.hasUnsavedChanges = false;
+        this.autoSaveStatus = 'saved';
+      } catch (err) {
+        this.saveLocalDraft('failed');
+      } finally {
+        this.$nextTick(() => {
+          this.autoSaveReady = true;
+        });
+      }
+    },
+
+    shouldConfirmLeave() {
+      return this.hasUnsavedChanges || this.autoSaveStatus === 'local' || this.autoSaveStatus === 'failed' || this.autoSaveStatus === 'saving';
+    },
+
+    handleBeforeUnload(event) {
+      if (!this.shouldConfirmLeave()) return;
+      event.preventDefault();
+      event.returnValue = '文章存在未同步到服务端的修改，确定离开吗？';
+      return event.returnValue;
     },
 
     // 处理标签
@@ -209,6 +426,7 @@ export default {
 
     // 提交新闻信息
     submit() {
+      this.clearAutoSaveTimer();
       this.handleTag();
       this.syncArticleTag();
       this.$refs.articleForm.validate(valid => {
@@ -216,11 +434,17 @@ export default {
           if (this.articleForm._id) {
             // 编辑
             this.API.article.updateArticle(this.articleForm).then(res => {
+              this.hasUnsavedChanges = false;
+              this.isLeavingBySubmit = true;
+              this.removeLocalDraft(this.localDraftKey);
               this.$router.go(-1);
             });
           } else {
             // 添加
             this.API.article.addArticle(this.articleForm).then(result => {
+              this.hasUnsavedChanges = false;
+              this.isLeavingBySubmit = true;
+              this.removeLocalDraft(this.localDraftKey);
               this.$router.push('/article-manage');
             });
           }
@@ -298,6 +522,29 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .auto-save-status {
+        font-size: 12px;
+        color: var(--gray-500);
+        white-space: nowrap;
+      }
+      .auto-save-status--dirty,
+      .auto-save-status--local {
+        color: var(--orange);
+      }
+      .auto-save-status--saving {
+        color: var(--blue-500);
+      }
+      .auto-save-status--saved {
+        color: var(--green-500);
+      }
+      .auto-save-status--failed {
+        color: var(--red-500);
+      }
+    }
     .time {
       font-weight: 400;
     }

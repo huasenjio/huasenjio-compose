@@ -18,7 +18,7 @@ detect_docker_compose() {
         DOCKER_COMPOSE="docker-compose"
     else
         echo "[Huasen Log]：错误：未找到 docker compose 或 docker-compose 命令"
-        exit 1
+        # exit 1
     fi
 }
 
