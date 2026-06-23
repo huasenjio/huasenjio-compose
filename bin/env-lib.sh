@@ -90,9 +90,43 @@ load_env() {
     local env_file="${1:-.env}"
 
     if [ -f "$env_file" ]; then
-        set -a
-        source "$env_file"
-        set +a
+        local line key value first_char last_char
+
+        while IFS= read -r line || [ -n "$line" ]; do
+            line="${line%$'\r'}"
+
+            if [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]]; then
+                continue
+            fi
+
+            if [[ "$line" == export[[:space:]]* ]]; then
+                line="${line#export }"
+            fi
+
+            if [[ "$line" != *=* ]]; then
+                continue
+            fi
+
+            key="${line%%=*}"
+            value="${line#*=}"
+
+            if [[ ! "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+                log_warn "跳过非法环境变量名: $key"
+                continue
+            fi
+
+            if [ "${#value}" -ge 2 ]; then
+                first_char="${value:0:1}"
+                last_char="${value: -1}"
+
+                if { [ "$first_char" = "'" ] && [ "$last_char" = "'" ]; } || { [ "$first_char" = '"' ] && [ "$last_char" = '"' ]; }; then
+                    value="${value:1:${#value}-2}"
+                fi
+            fi
+
+            export "$key=$value"
+        done < "$env_file"
+
         log_success "已加载环境配置文件"
         return 0
     else
@@ -261,7 +295,7 @@ SMTP_WY_MTP=your_wy_mtp
 AES_SECRET_KEY=dj38Ca8F8hag23nD
 AES_SECRET_IV=k4h9HdcXmEr83nsF
 
-LICENSE_SIGN_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzH0FRO+VGZ+HWEk2lvY9\nkia0iuZjpE3BRMD4kSZHq28fxJaltHyQDqf2q5iew1hs8bQs7tmhAfax0nl5P26o\nzWyUdmdDWdVD/de3p63NBil1Mo4B0OFeoqqQ5iPcfoJfxUZ4yvozO0Uj3sbHu1Xj\nYjPPt3wA8BW8rj/4ExuHP2noLQTvQtHOyJCCJHszO82wkwjyYKdXm09WsYPkoBQN\nVIlhga5yFa5Kzvu2d3beOxIENH4BqY5UC4N5Y2da4SE0CdCKuhB/cT4BbYNlzCBy\nDF0cbQkfYCWiwDkDGvAEJn65mt1f2rGILe4xoI7ppm44ejYecoz5AMasPVaA8V6H\nqwIDAQAB\n-----END PUBLIC KEY-----\n
+LICENSE_SIGN_PUBLIC_KEY='-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzH0FRO+VGZ+HWEk2lvY9\nkia0iuZjpE3BRMD4kSZHq28fxJaltHyQDqf2q5iew1hs8bQs7tmhAfax0nl5P26o\nzWyUdmdDWdVD/de3p63NBil1Mo4B0OFeoqqQ5iPcfoJfxUZ4yvozO0Uj3sbHu1Xj\nYjPPt3wA8BW8rj/4ExuHP2noLQTvQtHOyJCCJHszO82wkwjyYKdXm09WsYPkoBQN\nVIlhga5yFa5Kzvu2d3beOxIENH4BqY5UC4N5Y2da4SE0CdCKuhB/cT4BbYNlzCBy\nDF0cbQkfYCWiwDkDGvAEJn65mt1f2rGILe4xoI7ppm44ejYecoz5AMasPVaA8V6H\nqwIDAQAB\n-----END PUBLIC KEY-----\n'
 
 # 源码仓库地址
 EOF
